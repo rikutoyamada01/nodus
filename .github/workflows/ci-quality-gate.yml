@@ -39,7 +39,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            npx --yes wrangler@4.86.0 pages deploy dist --project-name=nodus-lab --branch=main
+            for attempt in 1 2 3; do
+              if npx --yes wrangler@4.86.0 pages deploy dist --project-name=nodus-lab --branch=main --commit-dirty=true; then
+                exit 0
+              fi
+              echo "Attempt $attempt failed; retrying in 5s..."
+              sleep 5
+            done
+            exit 1
           else
             echo "Cloudflare secrets not set; skipping deploy."
           fi
