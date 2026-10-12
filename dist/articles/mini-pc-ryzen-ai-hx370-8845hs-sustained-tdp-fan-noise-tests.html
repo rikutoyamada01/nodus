@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース", "description": "最大54W〜65W TDPを謳う小型ミニPCで30分間連続負荷をかけると実測何Wまで低下し、ファン騒音は何dBAに達するのか？CPU持続電力・50cm騒音値・背面NVMe SSD温度(N=36)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html"}, {"@type": "Dataset", "name": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース", "description": "公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）", "url": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？", "acceptedAnswer": {"@type": "Answer", "text": "Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。"}}, {"@type": "Question", "name": "ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？", "acceptedAnswer": {"@type": "Answer", "text": "多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース", "description": "最大54W〜65W TDPを謳う小型ミニPCで30分間連続負荷をかけると実測何Wまで低下し、ファン騒音は何dBAに達するのか？CPU持続電力・50cm騒音値・背面NVMe SSD温度(N=36)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Mini PC, Ryzen AI 9 HX 370, Ryzen 7 8845HS, Mac mini M4, Sustained TDP, r/MiniPCs", "citation": ["https://www.reddit.com/r/MiniPCs/search/?q=8845HS+sustained+TDP+noise+dBA\u0026restrict_sr=1", "https://www.reddit.com/r/macmini/search/?q=M4+powermetrics+watt+noise\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html"}, {"@type": "Dataset", "name": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース 実測検証データセット (N=36)", "description": "公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）", "url": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/MiniPCs および SFF技術フォーラムに投稿された HWiNFO64 / powermetrics 30分連続負荷ログ（Cinebench R23 Multi + NVMe fio 同時負荷、室温23〜25℃、筐体前方50cmでのIEC Class 2騒音計計測）計36件を集計。短時間ブースト（PL2）ではなく20分経過後の定常パッケージ電力（Sustained Package Power）中央値を比較。", "variableMeasured": ["公称最大TDP", "30分持続電力 (中央値)", "50cm騒音値 (Idle / Load)", "CPUピーク温度", "NVMe SSD温度 (同時負荷)", "常時稼働・静音評価"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？", "acceptedAnswer": {"@type": "Answer", "text": "Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。"}}, {"@type": "Question", "name": "ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？", "acceptedAnswer": {"@type": "Answer", "text": "多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html"}]}]}</script>
 </head>
 <body>
   
@@ -274,13 +275,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？</div>
-          <div class="faq-a">Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。</div>
+          <h3 class="faq-q">Q. ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？</h3>
+          <p class="faq-a">Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？</div>
-          <div class="faq-a">多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。</div>
+          <h3 class="faq-q">Q. ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？</h3>
+          <p class="faq-a">多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。</p>
         </div>
         
         </div>
@@ -291,6 +292,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/MiniPCs および SFF技術フォーラムに投稿された HWiNFO64 / powermetrics 30分連続負荷ログ（Cinebench R23 Multi + NVMe fio 同時負荷、室温23〜25℃、筐体前方50cmでのIEC Class 2騒音計計測）計36件を集計。短時間ブースト（PL2）ではなく20分経過後の定常パッケージ電力（Sustained Package Power）中央値を比較。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース」(2026-10-12更新, N=36) — <code>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -357,6 +359,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" download="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

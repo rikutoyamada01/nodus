@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース", "description": "ポーリングレート8000Hz(0.125ms)と0.01mm〜0.1mmラピッドトリガーを謳う磁気式・光学式キーボードの実測End-to-End入力遅延は何msか？温度ドリフトや振動によるキー抜け境界(N=38)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html"}, {"@type": "Dataset", "name": "磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース", "description": "公称「8000Hz（0.125ms）・0.01mmラピッドトリガー」の裏にあるADCマトリクススキャン遅延と温度ドリフト・隣接キー振動による誤解除ログ集計（N=38）", "url": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "8000Hzポーリングレートを有効にするとゲームのフレームレート（FPS）が落ちることがあるのは本当ですか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。キー押し下げ中にアナログ値やマウス移動が8000Hzで送信されると、OSカーネルのUSB割り込み処理（ISR/DPC）が増加します。特にCPUボトルネックになりやすい競技タイトル（ValorantやCS2等）で古い世代のCPUを使用している場合、最小FPS（1% Low）が低下することがあるため、4000Hzまたは2000Hz設定が最もバランスの良い選択肢となるケースもあります。"}}, {"@type": "Question", "name": "常時電源ONにするアプリ不要で設定変更できる磁気キーボードはどれですか？", "acceptedAnswer": {"@type": "Answer", "text": "Wooting（Wootility）、Keychron（Keychron Launcher）、DrunkDeer（Antler Web）はいずれもChromium系ブラウザのWebHID API経由でキーボード本体のオンボードメモリへ直接設定を書き込めるため、バックグラウンド常駐ソフトを一切インストールせずに運用可能です。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース", "description": "ポーリングレート8000Hz(0.125ms)と0.01mm〜0.1mmラピッドトリガーを謳う磁気式・光学式キーボードの実測End-to-End入力遅延は何msか？温度ドリフトや振動によるキー抜け境界(N=38)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Hall Effect Keyboard, Rapid Trigger, 8000Hz Polling, Input Latency, Wooting 80HE, r/MechanicalKeyboards", "citation": ["https://www.reddit.com/r/MechanicalKeyboards/search/?q=Hall+Effect+latency+rapid+trigger\u0026restrict_sr=1", "https://www.reddit.com/r/WootingKB/search/?q=80HE+latency+tachyon\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html"}, {"@type": "Dataset", "name": "磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース 実測検証データセット (N=38)", "description": "公称「8000Hz（0.125ms）・0.01mmラピッドトリガー」の裏にあるADCマトリクススキャン遅延と温度ドリフト・隣接キー振動による誤解除ログ集計（N=38）", "url": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/MechanicalKeyboards、r/MouseReview およびハードウェア遅延計測コミュニティで公開された高速ソレノイド＋フォトインタラプタ＋USBパケットアナライザ計測ログ38件を集計。公称USBポーリング周期ではなく、物理打鍵開始からUSB HIDレポート到達までの実測End-to-End入力応答性（10ms基準からの短縮幅および実測ms）を比較。", "variableMeasured": ["検知方式 / ポーリング", "実測入力遅延 (p50 / p95)", "最小設定 / 実用安定設定", "温度・磁気ドリフト耐性", "設定ソフト仕様", "最適ユースケース"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "8000Hzポーリングレートを有効にするとゲームのフレームレート（FPS）が落ちることがあるのは本当ですか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。キー押し下げ中にアナログ値やマウス移動が8000Hzで送信されると、OSカーネルのUSB割り込み処理（ISR/DPC）が増加します。特にCPUボトルネックになりやすい競技タイトル（ValorantやCS2等）で古い世代のCPUを使用している場合、最小FPS（1% Low）が低下することがあるため、4000Hzまたは2000Hz設定が最もバランスの良い選択肢となるケースもあります。"}}, {"@type": "Question", "name": "常時電源ONにするアプリ不要で設定変更できる磁気キーボードはどれですか？", "acceptedAnswer": {"@type": "Answer", "text": "Wooting（Wootility）、Keychron（Keychron Launcher）、DrunkDeer（Antler Web）はいずれもChromium系ブラウザのWebHID API経由でキーボード本体のオンボードメモリへ直接設定を書き込めるため、バックグラウンド常駐ソフトを一切インストールせずに運用可能です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース", "item": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html"}]}]}</script>
 </head>
 <body>
   
@@ -263,13 +264,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. 8000Hzポーリングレートを有効にするとゲームのフレームレート（FPS）が落ちることがあるのは本当ですか？</div>
-          <div class="faq-a">はい。キー押し下げ中にアナログ値やマウス移動が8000Hzで送信されると、OSカーネルのUSB割り込み処理（ISR/DPC）が増加します。特にCPUボトルネックになりやすい競技タイトル（ValorantやCS2等）で古い世代のCPUを使用している場合、最小FPS（1% Low）が低下することがあるため、4000Hzまたは2000Hz設定が最もバランスの良い選択肢となるケースもあります。</div>
+          <h3 class="faq-q">Q. 8000Hzポーリングレートを有効にするとゲームのフレームレート（FPS）が落ちることがあるのは本当ですか？</h3>
+          <p class="faq-a">はい。キー押し下げ中にアナログ値やマウス移動が8000Hzで送信されると、OSカーネルのUSB割り込み処理（ISR/DPC）が増加します。特にCPUボトルネックになりやすい競技タイトル（ValorantやCS2等）で古い世代のCPUを使用している場合、最小FPS（1% Low）が低下することがあるため、4000Hzまたは2000Hz設定が最もバランスの良い選択肢となるケースもあります。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. 常時電源ONにするアプリ不要で設定変更できる磁気キーボードはどれですか？</div>
-          <div class="faq-a">Wooting（Wootility）、Keychron（Keychron Launcher）、DrunkDeer（Antler Web）はいずれもChromium系ブラウザのWebHID API経由でキーボード本体のオンボードメモリへ直接設定を書き込めるため、バックグラウンド常駐ソフトを一切インストールせずに運用可能です。</div>
+          <h3 class="faq-q">Q. 常時電源ONにするアプリ不要で設定変更できる磁気キーボードはどれですか？</h3>
+          <p class="faq-a">Wooting（Wootility）、Keychron（Keychron Launcher）、DrunkDeer（Antler Web）はいずれもChromium系ブラウザのWebHID API経由でキーボード本体のオンボードメモリへ直接設定を書き込めるため、バックグラウンド常駐ソフトを一切インストールせずに運用可能です。</p>
         </div>
         
         </div>
@@ -280,6 +281,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/MechanicalKeyboards、r/MouseReview およびハードウェア遅延計測コミュニティで公開された高速ソレノイド＋フォトインタラプタ＋USBパケットアナライザ計測ログ38件を集計。公称USBポーリング周期ではなく、物理打鍵開始からUSB HIDレポート到達までの実測End-to-End入力応答性（10ms基準からの短縮幅および実測ms）を比較。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース」(2026-10-12更新, N=38) — <code>https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -346,6 +348,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv" download="mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

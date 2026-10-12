@@ -1524,7 +1524,12 @@ def render_article_page(
             "@type": "DataDownload",
             "encodingFormat": "text/csv",
             "contentUrl": f"{base_url}/datasets/{slug}.csv",
-        }
+        },
+        {
+            "@type": "DataDownload",
+            "encodingFormat": "text/markdown",
+            "contentUrl": f"{base_url}/articles/{slug}.md",
+        },
     ]
     if has_raw_log:
         distributions.append(
@@ -1543,6 +1548,11 @@ def render_article_page(
         }
         for f in article.get("faqs", [])
     ]
+    measured_vars = [
+        str(h) for h in article.get("comparison_table", {}).get("headers", [])[1:] if str(h).strip()
+    ]
+    citation_urls = [validate_url(s["url"]) for s in article.get("sources", []) if s.get("url")]
+
     schema_ld = {
         "@context": "https://schema.org",
         "@graph": [
@@ -1552,6 +1562,9 @@ def render_article_page(
                 "description": seo["meta_description"],
                 "datePublished": article["published_at"],
                 "dateModified": article["updated_at"],
+                "inLanguage": "ja",
+                "keywords": ", ".join(article.get("tags", [])),
+                "citation": citation_urls,
                 "author": {
                     "@type": "Organization",
                     "name": site["organization"],
@@ -1562,19 +1575,57 @@ def render_article_page(
                     "name": site["name"],
                     "url": f"{base_url}/",
                 },
+                "speakable": {
+                    "@type": "SpeakableSpecification",
+                    "cssSelector": ["#sec-tldr", "#sec-faq"],
+                },
                 "mainEntityOfPage": canonical_url,
             },
             {
                 "@type": "Dataset",
-                "name": article["title"],
+                "name": f"{article['title']} 実測検証データセット (N={int(article.get('sample_size_n', 0))})",
                 "description": article["subtitle"],
                 "url": canonical_url,
+                "inLanguage": "ja",
+                "license": "https://creativecommons.org/licenses/by/4.0/",
+                "isAccessibleForFree": True,
+                "datePublished": article["published_at"],
                 "dateModified": data_updated_at,
+                "creator": {
+                    "@type": "Organization",
+                    "name": site["organization"],
+                    "url": f"{base_url}/about.html",
+                },
+                "measurementTechnique": methodology_note or "実機・一次計測ログに基づく中央値および条件別定量比較",
+                "variableMeasured": measured_vars,
                 "distribution": distributions,
             },
             {
                 "@type": "FAQPage",
                 "mainEntity": faq_entities,
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": site["name"],
+                        "item": f"{base_url}/",
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": article["category"],
+                        "item": f"{base_url}/index.html",
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": article["title"],
+                        "item": canonical_url,
+                    },
+                ],
             },
         ],
     }
@@ -1724,8 +1775,8 @@ def render_article_page(
     faq_html = "".join(
         f"""
         <div class="faq-item">
-          <div class="faq-q">Q. {esc(f["question"])}</div>
-          <div class="faq-a">{esc(f["answer"])}</div>
+          <h3 class="faq-q">Q. {esc(f["question"])}</h3>
+          <p class="faq-a">{esc(f["answer"])}</p>
         </div>
         """
         for f in article.get("faqs", [])
@@ -1744,6 +1795,12 @@ def render_article_page(
     methodology_html = ""
     if methodology_note:
         methodology_html = f'<div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> {esc(methodology_note)}</div>'
+
+    citation_box_html = (
+        f'<div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> '
+        f'{esc(site["organization"])}「{esc(article["title"])}」({esc(data_updated_at)}更新, N={int(article.get("sample_size_n", 0))}) — '
+        f'<code>{esc(canonical_url)}</code></div>'
+    )
 
     raw_log_btn_html = (
         f'<a href="../logs/{esc(slug)}.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>'
@@ -1841,6 +1898,7 @@ def render_article_page(
   <meta property="og:site_name" content="{esc(site["name"])}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="{esc(site["name"])} Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="{esc(slug)}.md">
   <link rel="stylesheet" href="../assets/style.css">
   <script type="application/ld+json">{safe_json_ld(schema_ld)}</script>
 </head>
@@ -1910,6 +1968,7 @@ def render_article_page(
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         {methodology_html}
+        {citation_box_html}
         <ul class="source-list">
           {sources_html}
         </ul>
@@ -1941,6 +2000,7 @@ def render_article_page(
         <div class="card-takeaway-bar">
           {raw_log_btn_html}
           <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="{esc(slug)}.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>
@@ -1950,6 +2010,81 @@ def render_article_page(
 </body>
 </html>
 """
+
+
+def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> str:
+    """Render a clean, token-efficient Markdown version of the article for Answer Engines and LLM RAG pipelines."""
+    site = config["site"]
+    base_url = validate_url(site["base_url"]).rstrip("/")
+    slug = validate_slug(article["slug"])
+    canonical_url = f"{base_url}/articles/{slug}.html"
+    csv_url = f"{base_url}/datasets/{slug}.csv"
+    has_raw_log = (RAW_LOGS_DIR / f"{slug}.json").exists()
+    data_updated = article.get("data_updated_at", article["updated_at"])
+
+    lines = [
+        f"# {article['title']}",
+        "",
+        f"> {article['subtitle']}",
+        "",
+        f"- **Canonical URL**: {canonical_url}",
+        f"- **CSV Dataset**: {csv_url}",
+    ]
+    if has_raw_log:
+        lines.append(f"- **Raw Verification Log (JSON)**: {base_url}/logs/{slug}.json")
+    lines.extend(
+        [
+            f"- **Category**: {article['category']}",
+            f"- **Sample Size (N)**: {int(article.get('sample_size_n', 0))}",
+            f"- **Data Updated**: {data_updated}",
+            "",
+            "## 結論・実測サマリー (TL;DR)",
+        ]
+    )
+    for b in _build_tldr_bullets(article):
+        lines.append(f"- {b}")
+
+    lines.append("")
+    lines.append("## 主要実測指標 (Key Metrics)")
+    for m in article.get("summary_metrics", []):
+        lines.append(f"- **{m['label']}**: {m['value']} ({m['subtext']})")
+
+    table = article.get("comparison_table", {})
+    headers = [str(h) for h in table.get("headers", [])]
+    rows = table.get("rows", [])
+    if headers and rows:
+        lines.extend(
+            [
+                "",
+                "## 条件別・実測比較データテーブル",
+                "| " + " | ".join(headers) + " |",
+                "| " + " | ".join(["---"] * len(headers)) + " |",
+            ]
+        )
+        for r in rows:
+            cells = [str(c).replace("|", "\\|") for c in r]
+            lines.append("| " + " | ".join(cells) + " |")
+
+    lines.append("")
+    lines.append("## 詳細解説・原因分析")
+    for sec in article.get("sections", []):
+        lines.append(f"### {sec['heading']}")
+        lines.append(sec["body"])
+        lines.append("")
+
+    if article.get("faqs"):
+        lines.append("## よくある疑問と回答 (FAQ)")
+        for f in article["faqs"]:
+            lines.append(f"### Q. {f['question']}")
+            lines.append(f"A. {f['answer']}")
+            lines.append("")
+
+    if article.get("methodology_note"):
+        lines.append("## 検証環境・集計メソドロジー")
+        lines.append(article["methodology_note"])
+        lines.append("")
+
+    return "\n".join(lines).strip() + "\n"
 
 
 def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) -> str:
@@ -2178,7 +2313,7 @@ def render_atom_feed(articles: list[dict[str, Any]], config: dict[str, Any]) -> 
   </entry>"""
         )
     return (
-        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<feed xmlns="http://www.w3.org/2005/Atom">\n'
         f"  <title>{esc(site['name'])} — {esc(site['jp_subtitle'])}</title>\n"
         f'  <link href="{esc(base_url)}/feed.xml" rel="self" />\n'
@@ -2204,6 +2339,15 @@ def build_cloudflare_headers() -> str:
 
 /logs/*.json
   Content-Type: application/json; charset=utf-8
+
+/articles/*.md
+  Content-Type: text/markdown; charset=utf-8
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/llms-full.txt
+  Content-Type: text/markdown; charset=utf-8
 """
 
 
@@ -2245,10 +2389,13 @@ def build_all() -> dict[str, Any]:
         reverse=True,
     )
 
-    # Remove stale generated articles, CSV datasets, and raw logs
+    # Remove stale generated articles, Markdown files, CSV datasets, and raw logs
     for old_html in articles_out_dir.glob("*.html"):
         if old_html.stem not in seen_slugs:
             old_html.unlink()
+    for old_md in articles_out_dir.glob("*.md"):
+        if old_md.stem not in seen_slugs:
+            old_md.unlink()
     for old_csv in datasets_out_dir.glob("*.csv"):
         if old_csv.stem not in seen_slugs:
             old_csv.unlink()
@@ -2257,14 +2404,20 @@ def build_all() -> dict[str, Any]:
             old_log.unlink()
 
     published_logs: list[str] = []
+    markdown_corpus_blocks: list[str] = []
 
-    # Render each article, CSV dataset, and optional site-hosted raw log
+    # Render each article (HTML + Markdown), CSV dataset, and optional site-hosted raw log
     for article in articles:
         slug = validate_slug(article["slug"])
         out_path = (articles_out_dir / f"{slug}.html").resolve()
         if out_path.parent != articles_out_dir.resolve():
             raise ValueError(f"Path traversal blocked for slug: {slug}")
         out_path.write_text(render_article_page(article, config, articles), encoding="utf-8")
+
+        md_content = render_article_markdown(article, config)
+        md_path = (articles_out_dir / f"{slug}.md").resolve()
+        md_path.write_text(md_content, encoding="utf-8")
+        markdown_corpus_blocks.append(md_content)
 
         csv_path = (datasets_out_dir / f"{slug}.csv").resolve()
         csv_path.write_text(build_article_csv(article), encoding="utf-8")
@@ -2301,24 +2454,62 @@ def build_all() -> dict[str, Any]:
     )
     (DIST_DIR / "sitemap.xml").write_text(sitemap_xml, encoding="utf-8")
 
-    # Generate robots.txt
-    robots_txt = f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n"
+    # Generate robots.txt with explicit Answer Engine / AI Search Crawler permissions
+    ai_bots = [
+        "OAI-SearchBot",
+        "ChatGPT-User",
+        "PerplexityBot",
+        "ClaudeBot",
+        "Claude-SearchBot",
+        "Google-Extended",
+        "Applebot-Extended",
+        "Amazonbot",
+    ]
+    bot_rules = "".join(f"User-agent: {bot}\nAllow: /\n\n" for bot in ai_bots)
+    robots_txt = (
+        f"User-agent: *\nAllow: /\n\n"
+        f"{bot_rules}"
+        f"Sitemap: {site_url}/sitemap.xml\n"
+    )
     (DIST_DIR / "robots.txt").write_text(robots_txt, encoding="utf-8")
 
-    # Generate llms.txt (for AI Search Engines / GEO citation)
+    # Generate llms.txt (structured index with empirical KPIs) and llms-full.txt (complete Markdown corpus)
     llms_lines = [
         f"# {config['site']['name']} - {config['site']['tagline']}",
         f"> {config['site']['jp_subtitle']}",
+        "",
+        f"- Full Markdown Corpus for AI/LLMs: [{site_url}/llms-full.txt]({site_url}/llms-full.txt)",
+        "- License for Data Citation: CC BY 4.0 (Attribute Nodus with canonical article URL)",
         "",
         "## Datasets & Quantitative Benchmark Reports",
     ]
     for a in articles:
         slug = a["slug"]
-        raw_suffix = f" ([Raw Log JSON]({site_url}/logs/{slug}.json))" if (RAW_LOGS_DIR / f"{slug}.json").exists() else ""
+        n_val = int(a.get("sample_size_n", 0))
+        kpi_summary = " / ".join(
+            f"{m['label']}: {m['value']}" for m in a.get("summary_metrics", [])[:3] if m.get("value")
+        )
+        raw_suffix = (
+            f" | [Raw Log JSON]({site_url}/logs/{slug}.json)"
+            if (RAW_LOGS_DIR / f"{slug}.json").exists()
+            else ""
+        )
         llms_lines.append(
-            f"- [{a['title']}]({site_url}/articles/{slug}.html) ([CSV Dataset]({site_url}/datasets/{slug}.csv)){raw_suffix}: {a['subtitle']}"
+            f"- [{a['title']}]({site_url}/articles/{slug}.html) "
+            f"([Markdown]({site_url}/articles/{slug}.md) | [CSV Dataset]({site_url}/datasets/{slug}.csv){raw_suffix}): "
+            f"N={n_val} | {kpi_summary} — {a['subtitle']}"
         )
     (DIST_DIR / "llms.txt").write_text("\n".join(llms_lines) + "\n", encoding="utf-8")
+
+    llms_full_header = (
+        f"# {config['site']['name']} — Complete Empirical Benchmark Corpus (llms-full.txt)\n\n"
+        f"> {config['site']['jp_subtitle']}\n\n"
+        "---\n\n"
+    )
+    (DIST_DIR / "llms-full.txt").write_text(
+        llms_full_header + "\n\n---\n\n".join(markdown_corpus_blocks) + "\n",
+        encoding="utf-8",
+    )
 
     summary = {
         "status": "ok",
@@ -2334,8 +2525,10 @@ def build_all() -> dict[str, Any]:
             "sitemap.xml",
             "robots.txt",
             "llms.txt",
+            "llms-full.txt",
         ]
         + [f"articles/{a['slug']}.html" for a in articles]
+        + [f"articles/{a['slug']}.md" for a in articles]
         + [f"datasets/{a['slug']}.csv" for a in articles]
         + published_logs,
     }

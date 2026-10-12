@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="llm-api-providers-ttft-latency-throughput-variance-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース", "description": "OpenAI、Anthropic、Google Vertex AI、Groq、Together AIの5社を対象に、日本時間の昼間と深夜ピーク帯における初回応答遅延(TTFT p50/p95)と出力速度(tok/s)を672回計測比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html"}, {"@type": "Dataset", "name": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース", "description": "公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）", "url": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？", "acceptedAnswer": {"@type": "Answer", "text": "最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。"}}, {"@type": "Question", "name": "夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？", "acceptedAnswer": {"@type": "Answer", "text": "単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース", "description": "OpenAI、Anthropic、Google Vertex AI、Groq、Together AIの5社を対象に、日本時間の昼間と深夜ピーク帯における初回応答遅延(TTFT p50/p95)と出力速度(tok/s)を672回計測比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "LLM API, TTFT Latency, Prompt Caching, OpenAI API, Anthropic Claude, Groq LPU", "citation": ["https://www.reddit.com/r/LocalLLaMA/search/?q=API+TTFT+latency+throughput+benchmark\u0026restrict_sr=1", "https://hn.algolia.com/?q=prompt+caching+TTFT+latency"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html"}, {"@type": "Dataset", "name": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース 実測検証データセット (N=672)", "description": "公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）", "url": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "東京リージョン（ap-northeast-1）から15分間隔×7日間（計672リクエスト/エンドポイント）、入力4,096 tokens・出力512 tokensの構造化JSON生成ストリーミングを実行した公開ベンチマークおよびr/LocalLLaMA運用テレメトリを集計。JST昼間帯（10:00〜18:00）のp50出力速度と、北米営業時間重複帯（JST 22:00〜04:00）の実効スループット（TTFT待ち時間込み）を比較。", "variableMeasured": ["日中 TTFT (p50)", "北米ピーク TTFT (p95)", "純粋出力速度 (p50)", "夜間p95実効速度 (512tok)", "Prompt Caching短縮効果", "推奨ワークロード"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？", "acceptedAnswer": {"@type": "Answer", "text": "最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。"}}, {"@type": "Question", "name": "夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？", "acceptedAnswer": {"@type": "Answer", "text": "単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html"}]}]}</script>
 </head>
 <body>
   
@@ -296,13 +297,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？</div>
-          <div class="faq-a">最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。</div>
+          <h3 class="faq-q">Q. ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？</h3>
+          <p class="faq-a">最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. 夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？</div>
-          <div class="faq-a">単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。</div>
+          <h3 class="faq-q">Q. 夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？</h3>
+          <p class="faq-a">単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。</p>
         </div>
         
         </div>
@@ -313,6 +314,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 東京リージョン（ap-northeast-1）から15分間隔×7日間（計672リクエスト/エンドポイント）、入力4,096 tokens・出力512 tokensの構造化JSON生成ストリーミングを実行した公開ベンチマークおよびr/LocalLLaMA運用テレメトリを集計。JST昼間帯（10:00〜18:00）のp50出力速度と、北米営業時間重複帯（JST 22:00〜04:00）の実効スループット（TTFT待ち時間込み）を比較。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース」(2026-10-12更新, N=672) — <code>https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -379,6 +381,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" download="llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="llm-api-providers-ttft-latency-throughput-variance-benchmarks.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

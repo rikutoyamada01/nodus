@@ -155,6 +155,7 @@ def validate_all() -> dict[str, object]:
         "sitemap.xml",
         "robots.txt",
         "llms.txt",
+        "llms-full.txt",
         "assets/style.css",
         "assets/app.js",
     ]
@@ -163,7 +164,7 @@ def validate_all() -> dict[str, object]:
         if not p.exists() or p.stat().st_size == 0:
             raise ValueError(f"Missing required build output: dist/{rel}")
 
-    # Deep SEO & AEO verification of sitemap.xml, feed.xml, robots.txt, and llms.txt
+    # Deep SEO & AEO verification of sitemap.xml, feed.xml, robots.txt, llms.txt, and llms-full.txt
     import xml.etree.ElementTree as ET
 
     sitemap_raw = (DIST_DIR / "sitemap.xml").read_text(encoding="utf-8")
@@ -185,17 +186,27 @@ def validate_all() -> dict[str, object]:
     robots_raw = (DIST_DIR / "robots.txt").read_text(encoding="utf-8")
     if f"Sitemap: {base_url}/sitemap.xml" not in robots_raw:
         raise ValueError("dist/robots.txt is missing exact Sitemap declaration")
+    for bot_name in ("OAI-SearchBot", "PerplexityBot", "Claude-SearchBot", "Google-Extended"):
+        if f"User-agent: {bot_name}" not in robots_raw:
+            raise ValueError(f"dist/robots.txt is missing AEO crawler allowance for {bot_name}")
 
     llms_raw = (DIST_DIR / "llms.txt").read_text(encoding="utf-8")
+    llms_full_raw = (DIST_DIR / "llms-full.txt").read_text(encoding="utf-8")
     for slug in expected_slugs:
         art_url = f"{base_url}/articles/{slug}.html"
+        md_url = f"{base_url}/articles/{slug}.md"
         csv_url = f"{base_url}/datasets/{slug}.csv"
+        md_file = DIST_DIR / "articles" / f"{slug}.md"
+        if not md_file.exists() or md_file.stat().st_size < 100:
+            raise ValueError(f"Missing or incomplete AEO Markdown output: {md_file}")
         if art_url not in sitemap_locs:
             raise ValueError(f"dist/sitemap.xml is missing article URL: {art_url}")
         if art_url not in feed_ids:
             raise ValueError(f"dist/feed.xml is missing article entry: {art_url}")
-        if art_url not in llms_raw or csv_url not in llms_raw:
-            raise ValueError(f"dist/llms.txt is missing article or dataset citation for {slug}")
+        if art_url not in llms_raw or csv_url not in llms_raw or md_url not in llms_raw:
+            raise ValueError(f"dist/llms.txt is missing article, Markdown, or dataset citation for {slug}")
+        if art_url not in llms_full_raw:
+            raise ValueError(f"dist/llms-full.txt is missing full Markdown section for {slug}")
 
     # Verify Cloudflare Pages _headers CSP rules
     headers_content = (DIST_DIR / "_headers").read_text(encoding="utf-8")

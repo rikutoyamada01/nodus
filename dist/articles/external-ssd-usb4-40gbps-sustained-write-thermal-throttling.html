@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "公称最大3,800MB/sを謳うUSB4(40Gbps)外付けSSDで数百GBの動画データを連続転送すると実測何MB/sまで落ちるのか？SLCキャッシュ枯渇後の持続書き込み速度と筐体温度(N=41)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"}, {"@type": "Dataset", "name": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）", "url": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？", "acceptedAnswer": {"@type": "Answer", "text": "Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。"}}, {"@type": "Question", "name": "外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "公称最大3,800MB/sを謳うUSB4(40Gbps)外付けSSDで数百GBの動画データを連続転送すると実測何MB/sまで落ちるのか？SLCキャッシュ枯渇後の持続書き込み速度と筐体温度(N=41)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "USB4 SSD, Thunderbolt 4, SLC Cache, Thermal Throttling, ASM2464PD, r/NewMaxx", "citation": ["https://www.reddit.com/r/NewMaxx/search/?q=ASM2464PD+sustained+thermal\u0026restrict_sr=1", "https://www.reddit.com/r/UsbCHardware/search/?q=OWC+Express+1M2+thermal\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"}, {"@type": "Dataset", "name": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース 実測検証データセット (N=41)", "description": "カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）", "url": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/NewMaxx および r/UsbCHardware に投稿された CrystalDiskMark ピーク値ではなく、500GB〜1TB単一イメージ連続書き込み試験（室温24〜26℃）のログ41件を集計。pSLCキャッシュ枯渇後のTLC/QLCネイティブ書き込み速度中央値を比較。", "variableMeasured": ["インターフェース", "公称最大書込速度", "pSLCキャッシュ容量目安", "キャッシュ枯渇後の持続速度", "500GB転送時の最高表面温度", "瞬断・熱ダレ傾向"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？", "acceptedAnswer": {"@type": "Answer", "text": "Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。"}}, {"@type": "Question", "name": "外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"}]}]}</script>
 </head>
 <body>
   
@@ -274,13 +275,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？</div>
-          <div class="faq-a">Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。</div>
+          <h3 class="faq-q">Q. Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？</h3>
+          <p class="faq-a">Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. 外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？</div>
-          <div class="faq-a">主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。</div>
+          <h3 class="faq-q">Q. 外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？</h3>
+          <p class="faq-a">主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。</p>
         </div>
         
         </div>
@@ -291,6 +292,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/NewMaxx および r/UsbCHardware に投稿された CrystalDiskMark ピーク値ではなく、500GB〜1TB単一イメージ連続書き込み試験（室温24〜26℃）のログ41件を集計。pSLCキャッシュ枯渇後のTLC/QLCネイティブ書き込み速度中央値を比較。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース」(2026-10-12更新, N=41) — <code>https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -357,6 +359,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

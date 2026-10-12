@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="cross-model-peer-audit-bug-detection-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "description": "「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}, {"@type": "Dataset", "name": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "description": "実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較", "url": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？", "acceptedAnswer": {"@type": "Answer", "text": "監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。"}}, {"@type": "Question", "name": "監査モデルにはリポジトリ全体を渡すべきですか？", "acceptedAnswer": {"@type": "Answer", "text": "いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "description": "「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "AI Coding, Code Review, Multi-Model, MCP, 独自検証", "citation": ["https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json", "https://modelcontextprotocol.io/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}, {"@type": "Dataset", "name": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証 実測検証データセット (N=28)", "description": "実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較", "url": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。", "variableMeasured": ["P1/P2バグ検出率", "平均所要時間", "追加トークン消費", "得意な検出領域", "主な弱点・注意点"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？", "acceptedAnswer": {"@type": "Answer", "text": "監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。"}}, {"@type": "Question", "name": "監査モデルにはリポジトリ全体を渡すべきですか？", "acceptedAnswer": {"@type": "Answer", "text": "いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Software \u0026 SaaS Economics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "item": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}]}]}</script>
 </head>
 <body>
   
@@ -257,13 +258,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. 別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？</div>
-          <div class="faq-a">監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。</div>
+          <h3 class="faq-q">Q. 別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？</h3>
+          <p class="faq-a">監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. 監査モデルにはリポジトリ全体を渡すべきですか？</div>
-          <div class="faq-a">いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。</div>
+          <h3 class="faq-q">Q. 監査モデルにはリポジトリ全体を渡すべきですか？</h3>
+          <p class="faq-a">いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。</p>
         </div>
         
         </div>
@@ -274,6 +275,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証」(2026-10-12更新, N=28) — <code>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -340,6 +342,7 @@
         <div class="card-takeaway-bar">
           <a href="../logs/cross-model-peer-audit-bug-detection-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
           <a href="../datasets/cross-model-peer-audit-bug-detection-benchmarks.csv" download="cross-model-peer-audit-bug-detection-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="cross-model-peer-audit-bug-detection-benchmarks.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

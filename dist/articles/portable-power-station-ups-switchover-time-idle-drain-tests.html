@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="portable-power-station-ups-switchover-time-idle-drain-tests.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース", "description": "公称1000Whクラスのリン酸鉄（LiFePO4）ポータブル電源は、ACコンセントから実質何Wh取り出せるのか？インバータ待機消費電力（15〜32W）とデスクトップPCが落ちないUPS切替時間（ms）を実測比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html"}, {"@type": "Dataset", "name": "1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース", "description": "カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）", "url": "https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/portable-power-station-ups-switchover-time-idle-drain-tests.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "車載冷蔵庫やルーターを最も長持ちさせる接続方法は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "AC 100Vコンセント出力を使わず、DC 12V（シガーソケット）またはUSB-C PD出力に直接接続することです。ACインバータをOFFにすることで毎時16〜30Wのインバータ待機電力をゼロにでき、実測稼働時間が約1.3倍〜1.6倍に延びます。"}}, {"@type": "Question", "name": "パススルー（常時コンセント接続）でUPSとして使い続けるとバッテリーは劣化しますか？", "acceptedAnswer": {"@type": "Answer", "text": "現行のリン酸鉄（LiFePO4）採用かつ純正バイパス回路を搭載したモデルでは、通常時は商用電源をそのままスルー出力し、バッテリーへの微弱充放電を抑える制御が入っています。ただし100%満充電のまま高温環境に置くとカレンダー劣化が進むため、アプリ設定で充電上限を80%〜90%に制限して常時接続する運用が推奨されます。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース", "description": "公称1000Whクラスのリン酸鉄（LiFePO4）ポータブル電源は、ACコンセントから実質何Wh取り出せるのか？インバータ待機消費電力（15〜32W）とデスクトップPCが落ちないUPS切替時間（ms）を実測比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Portable Power Station, LiFePO4, UPS Switchover, Inverter Efficiency, EcoFlow, Anker Solix", "citation": ["https://www.reddit.com/r/SolarDIY/search/?q=power+station+idle+draw+usable+Wh\u0026restrict_sr=1", "https://www.reddit.com/r/Ecoflow/search/?q=UPS+ms+oscilloscope+switchover\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html"}, {"@type": "Dataset", "name": "1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース 実測検証データセット (N=46)", "description": "カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）", "url": "https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/SolarDIY、r/Ecoflow、および独立系電力検証ログ（N=46）より、（1）0.2C〜0.3C（200W〜300W）定電力AC負荷時の積算電力計による実効放電容量（Wh）、（2）AC出力ON・無負荷放置時の1時間あたりバッテリー減少率から算出したインバータ待機電力（W）、（3）商用電源遮断時のオシロスコープ電圧ゼロクロス停止時間（ms）を集計。", "variableMeasured": ["公称容量", "AC実効容量 (300W負荷)", "実効変換効率", "AC無負荷待機電力", "UPS切替時間 (公称 / 実測)", "主な適性用途"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/portable-power-station-ups-switchover-time-idle-drain-tests.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "車載冷蔵庫やルーターを最も長持ちさせる接続方法は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "AC 100Vコンセント出力を使わず、DC 12V（シガーソケット）またはUSB-C PD出力に直接接続することです。ACインバータをOFFにすることで毎時16〜30Wのインバータ待機電力をゼロにでき、実測稼働時間が約1.3倍〜1.6倍に延びます。"}}, {"@type": "Question", "name": "パススルー（常時コンセント接続）でUPSとして使い続けるとバッテリーは劣化しますか？", "acceptedAnswer": {"@type": "Answer", "text": "現行のリン酸鉄（LiFePO4）採用かつ純正バイパス回路を搭載したモデルでは、通常時は商用電源をそのままスルー出力し、バッテリーへの微弱充放電を抑える制御が入っています。ただし100%満充電のまま高温環境に置くとカレンダー劣化が進むため、アプリ設定で充電上限を80%〜90%に制限して常時接続する運用が推奨されます。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html"}]}]}</script>
 </head>
 <body>
   
@@ -274,13 +275,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. 車載冷蔵庫やルーターを最も長持ちさせる接続方法は何ですか？</div>
-          <div class="faq-a">AC 100Vコンセント出力を使わず、DC 12V（シガーソケット）またはUSB-C PD出力に直接接続することです。ACインバータをOFFにすることで毎時16〜30Wのインバータ待機電力をゼロにでき、実測稼働時間が約1.3倍〜1.6倍に延びます。</div>
+          <h3 class="faq-q">Q. 車載冷蔵庫やルーターを最も長持ちさせる接続方法は何ですか？</h3>
+          <p class="faq-a">AC 100Vコンセント出力を使わず、DC 12V（シガーソケット）またはUSB-C PD出力に直接接続することです。ACインバータをOFFにすることで毎時16〜30Wのインバータ待機電力をゼロにでき、実測稼働時間が約1.3倍〜1.6倍に延びます。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. パススルー（常時コンセント接続）でUPSとして使い続けるとバッテリーは劣化しますか？</div>
-          <div class="faq-a">現行のリン酸鉄（LiFePO4）採用かつ純正バイパス回路を搭載したモデルでは、通常時は商用電源をそのままスルー出力し、バッテリーへの微弱充放電を抑える制御が入っています。ただし100%満充電のまま高温環境に置くとカレンダー劣化が進むため、アプリ設定で充電上限を80%〜90%に制限して常時接続する運用が推奨されます。</div>
+          <h3 class="faq-q">Q. パススルー（常時コンセント接続）でUPSとして使い続けるとバッテリーは劣化しますか？</h3>
+          <p class="faq-a">現行のリン酸鉄（LiFePO4）採用かつ純正バイパス回路を搭載したモデルでは、通常時は商用電源をそのままスルー出力し、バッテリーへの微弱充放電を抑える制御が入っています。ただし100%満充電のまま高温環境に置くとカレンダー劣化が進むため、アプリ設定で充電上限を80%〜90%に制限して常時接続する運用が推奨されます。</p>
         </div>
         
         </div>
@@ -291,6 +292,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/SolarDIY、r/Ecoflow、および独立系電力検証ログ（N=46）より、（1）0.2C〜0.3C（200W〜300W）定電力AC負荷時の積算電力計による実効放電容量（Wh）、（2）AC出力ON・無負荷放置時の1時間あたりバッテリー減少率から算出したインバータ待機電力（W）、（3）商用電源遮断時のオシロスコープ電圧ゼロクロス停止時間（ms）を集計。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース」(2026-10-12更新, N=46) — <code>https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -357,6 +359,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/portable-power-station-ups-switchover-time-idle-drain-tests.csv" download="portable-power-station-ups-switchover-time-idle-drain-tests.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="portable-power-station-ups-switchover-time-idle-drain-tests.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

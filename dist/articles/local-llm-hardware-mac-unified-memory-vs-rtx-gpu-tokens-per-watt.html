@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較", "description": "ローカルLLM（32B/70B Q4_K_M）を動かすならMac Studio/MacBook Proの統合メモリとNVIDIA RTX 4090/3090 2枚刺しのどちらが速くて省電力か？llama.cpp実測データ(N=74)からtok/sとワット効率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html"}, {"@type": "Dataset", "name": "ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較", "description": "llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）", "url": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。"}}, {"@type": "Question", "name": "メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？", "acceptedAnswer": {"@type": "Answer", "text": "動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較", "description": "ローカルLLM（32B/70B Q4_K_M）を動かすならMac Studio/MacBook Proの統合メモリとNVIDIA RTX 4090/3090 2枚刺しのどちらが速くて省電力か？llama.cpp実測データ(N=74)からtok/sとワット効率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Local LLM, llama.cpp, Apple Silicon, RTX 4090, Memory Bandwidth, r/LocalLLaMA", "citation": ["https://github.com/ggml-org/llama.cpp/discussions/4167", "https://www.reddit.com/r/LocalLLaMA/search/?q=llama-bench+3090+4090+Mac+Studio\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html"}, {"@type": "Dataset", "name": "ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較 実測検証データセット (N=74)", "description": "llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）", "url": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/LocalLLaMA および ggml-org/llama.cpp 公式ディスカッションの llama-bench 計測スレッド（N=74）より、Qwen2.5-32B-Instruct (Q4_K_M, 約19.8GB) および Llama-3.3-70B-Instruct (Q4_K_M, 約42.5GB) のトークン生成速度（tg128, tok/s）とプロンプト処理速度（pp512, tok/s）、およびシステム全体の壁コンセント消費電力（W）を集計。", "variableMeasured": ["利用可能VRAM / 統合メモリ", "公称メモリ帯域", "32B (Q4_K_M) 生成速度", "70B (Q4_K_M) 生成速度", "推論時システム消費電力", "70B時の電力効率 (tok/kJ)"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。"}}, {"@type": "Question", "name": "メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？", "acceptedAnswer": {"@type": "Answer", "text": "動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較", "item": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html"}]}]}</script>
 </head>
 <body>
   
@@ -274,13 +275,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？</div>
-          <div class="faq-a">32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。</div>
+          <h3 class="faq-q">Q. RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？</h3>
+          <p class="faq-a">32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？</div>
-          <div class="faq-a">動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。</div>
+          <h3 class="faq-q">Q. メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？</h3>
+          <p class="faq-a">動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。</p>
         </div>
         
         </div>
@@ -291,6 +292,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/LocalLLaMA および ggml-org/llama.cpp 公式ディスカッションの llama-bench 計測スレッド（N=74）より、Qwen2.5-32B-Instruct (Q4_K_M, 約19.8GB) および Llama-3.3-70B-Instruct (Q4_K_M, 約42.5GB) のトークン生成速度（tg128, tok/s）とプロンプト処理速度（pp512, tok/s）、およびシステム全体の壁コンセント消費電力（W）を集計。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較」(2026-10-12更新, N=74) — <code>https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -357,6 +359,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" download="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

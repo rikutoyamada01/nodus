@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="100w-140w-gan-charger-thermal-throttling-real-world-tests.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース", "description": "公称100W・140WのUSB-C GaN充電器は、実際に何分間フル出力を維持できるのか？r/UsbCHardware等のオシロスコープ・電子負荷試験データ(N=38)から、サーマルスロットリング（出力低下）と待機電力を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html"}, {"@type": "Dataset", "name": "100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース", "description": "公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）", "url": "https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/100w-140w-gan-charger-thermal-throttling-real-world-tests.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "MacBook Pro (14インチ/16インチ) の通常作業でも熱ダレの影響はありますか？", "acceptedAnswer": {"@type": "Answer", "text": "通常のWebブラウジングやオフィス作業では消費電力が15W〜35W程度のため、超小型モデルでも熱ダレは発生しません。ただし、バッテリー残量10%以下からの急速充電中に動画書き出しやローカルLLM推論を同時に行う場合、30分以上90W前後の要求が続くため、持続出力の高いモデルを選ぶメリットが大きくなります。"}}, {"@type": "Question", "name": "ケーブルによっても実測出力は変わりますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。60W（20V/3A）を超える出力には、eMarkerチップを内蔵した100W（5A）または240W（EPR 5A）対応ケーブルが必須です。eMarker非搭載ケーブルを接続した場合、充電器側が100W対応であっても自動的に最大60Wに制限されます。"}}, {"@type": "Question", "name": "超小型100W充電器が途中で65Wに落ちる（瞬断する）のは故障ですか？", "acceptedAnswer": {"@type": "Answer", "text": "故障ではなく、内部基板温度が規定値（約90〜105℃）に達した際に働くサーマルスロットリング（過熱保護制御）です。実測ログ（N=38）では、電力密度1.1 W/cm³以上の超小型モデルにおいて連続負荷20〜26分前後で100Wから65Wへの再ネゴシエーションが発生しています。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース", "description": "公称100W・140WのUSB-C GaN充電器は、実際に何分間フル出力を維持できるのか？r/UsbCHardware等のオシロスコープ・電子負荷試験データ(N=38)から、サーマルスロットリング（出力低下）と待機電力を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "GaN Charger, USB-C PD, Thermal Throttling, Anker, UGREEN, r/UsbCHardware", "citation": ["https://www.reddit.com/r/UsbCHardware/search/?q=100W+thermal+throttling\u0026restrict_sr=1", "https://www.usb.org/document-library/usb-power-delivery"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html"}, {"@type": "Dataset", "name": "100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース 実測検証データセット (N=38)", "description": "公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）", "url": "https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "室温24〜26℃環境におけるUSB-C PD電子負荷試験（定電力20V/5A=100Wおよび28V/5A=140W、60分間連続通電）の公開計測ログ38件を集計。数値は中央値（四分位範囲 ±4.5℃ / ±3分）を記載。", "variableMeasured": ["公称最大出力", "60分連続出力実測 (中央値)", "スロットリング開始時間", "最大表面温度 (室温25℃)", "リップル電圧 (mVp-p)", "無負荷待機電力"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/100w-140w-gan-charger-thermal-throttling-real-world-tests.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "MacBook Pro (14インチ/16インチ) の通常作業でも熱ダレの影響はありますか？", "acceptedAnswer": {"@type": "Answer", "text": "通常のWebブラウジングやオフィス作業では消費電力が15W〜35W程度のため、超小型モデルでも熱ダレは発生しません。ただし、バッテリー残量10%以下からの急速充電中に動画書き出しやローカルLLM推論を同時に行う場合、30分以上90W前後の要求が続くため、持続出力の高いモデルを選ぶメリットが大きくなります。"}}, {"@type": "Question", "name": "ケーブルによっても実測出力は変わりますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。60W（20V/3A）を超える出力には、eMarkerチップを内蔵した100W（5A）または240W（EPR 5A）対応ケーブルが必須です。eMarker非搭載ケーブルを接続した場合、充電器側が100W対応であっても自動的に最大60Wに制限されます。"}}, {"@type": "Question", "name": "超小型100W充電器が途中で65Wに落ちる（瞬断する）のは故障ですか？", "acceptedAnswer": {"@type": "Answer", "text": "故障ではなく、内部基板温度が規定値（約90〜105℃）に達した際に働くサーマルスロットリング（過熱保護制御）です。実測ログ（N=38）では、電力密度1.1 W/cm³以上の超小型モデルにおいて連続負荷20〜26分前後で100Wから65Wへの再ネゴシエーションが発生しています。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html"}]}]}</script>
 </head>
 <body>
   
@@ -290,18 +291,18 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. MacBook Pro (14インチ/16インチ) の通常作業でも熱ダレの影響はありますか？</div>
-          <div class="faq-a">通常のWebブラウジングやオフィス作業では消費電力が15W〜35W程度のため、超小型モデルでも熱ダレは発生しません。ただし、バッテリー残量10%以下からの急速充電中に動画書き出しやローカルLLM推論を同時に行う場合、30分以上90W前後の要求が続くため、持続出力の高いモデルを選ぶメリットが大きくなります。</div>
+          <h3 class="faq-q">Q. MacBook Pro (14インチ/16インチ) の通常作業でも熱ダレの影響はありますか？</h3>
+          <p class="faq-a">通常のWebブラウジングやオフィス作業では消費電力が15W〜35W程度のため、超小型モデルでも熱ダレは発生しません。ただし、バッテリー残量10%以下からの急速充電中に動画書き出しやローカルLLM推論を同時に行う場合、30分以上90W前後の要求が続くため、持続出力の高いモデルを選ぶメリットが大きくなります。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. ケーブルによっても実測出力は変わりますか？</div>
-          <div class="faq-a">はい。60W（20V/3A）を超える出力には、eMarkerチップを内蔵した100W（5A）または240W（EPR 5A）対応ケーブルが必須です。eMarker非搭載ケーブルを接続した場合、充電器側が100W対応であっても自動的に最大60Wに制限されます。</div>
+          <h3 class="faq-q">Q. ケーブルによっても実測出力は変わりますか？</h3>
+          <p class="faq-a">はい。60W（20V/3A）を超える出力には、eMarkerチップを内蔵した100W（5A）または240W（EPR 5A）対応ケーブルが必須です。eMarker非搭載ケーブルを接続した場合、充電器側が100W対応であっても自動的に最大60Wに制限されます。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. 超小型100W充電器が途中で65Wに落ちる（瞬断する）のは故障ですか？</div>
-          <div class="faq-a">故障ではなく、内部基板温度が規定値（約90〜105℃）に達した際に働くサーマルスロットリング（過熱保護制御）です。実測ログ（N=38）では、電力密度1.1 W/cm³以上の超小型モデルにおいて連続負荷20〜26分前後で100Wから65Wへの再ネゴシエーションが発生しています。</div>
+          <h3 class="faq-q">Q. 超小型100W充電器が途中で65Wに落ちる（瞬断する）のは故障ですか？</h3>
+          <p class="faq-a">故障ではなく、内部基板温度が規定値（約90〜105℃）に達した際に働くサーマルスロットリング（過熱保護制御）です。実測ログ（N=38）では、電力密度1.1 W/cm³以上の超小型モデルにおいて連続負荷20〜26分前後で100Wから65Wへの再ネゴシエーションが発生しています。</p>
         </div>
         
         </div>
@@ -312,6 +313,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 室温24〜26℃環境におけるUSB-C PD電子負荷試験（定電力20V/5A=100Wおよび28V/5A=140W、60分間連続通電）の公開計測ログ38件を集計。数値は中央値（四分位範囲 ±4.5℃ / ±3分）を記載。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース」(2026-10-12更新, N=38) — <code>https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -378,6 +380,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/100w-140w-gan-charger-thermal-throttling-real-world-tests.csv" download="100w-140w-gan-charger-thermal-throttling-real-world-tests.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

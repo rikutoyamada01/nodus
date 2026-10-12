@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース", "description": "公称9,300Mbps〜19,000Mbpsを謳うWi-Fi 7(802.11be)ルーターで、実際に何Gbps出るのか？2x2クライアント接続時のiperf3実測速度、MLOの効果、6GHz帯の壁越し減衰率、常時消費電力を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html"}, {"@type": "Dataset", "name": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース", "description": "カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）", "url": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？", "acceptedAnswer": {"@type": "Answer", "text": "外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。"}}, {"@type": "Question", "name": "MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース", "description": "公称9,300Mbps〜19,000Mbpsを謳うWi-Fi 7(802.11be)ルーターで、実際に何Gbps出るのか？2x2クライアント接続時のiperf3実測速度、MLOの効果、6GHz帯の壁越し減衰率、常時消費電力を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Wi-Fi 7, 802.11be, MLO, 6GHz, iperf3, r/HomeNetworking", "citation": ["https://www.reddit.com/r/HomeNetworking/search/?q=WiFi+7+MLO+iperf3+throughput\u0026restrict_sr=1", "https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html"}, {"@type": "Dataset", "name": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース 実測検証データセット (N=52)", "description": "カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）", "url": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/HomeNetworking および有志のローカル10GbE NAS環境における iperf3（TCPマルチストリーム）計測ログ52件を集計。クライアント側は Intel BE200 / Qualcomm FastConnect 7800 (2x2 MIMO, 320MHz対応) を基準とし、見通し3m（同室）および壁2枚越し（距離10m）での実効スループット中央値を算出。", "variableMeasured": ["周波数・チャネル幅", "2x2 PHY理論リンク速度", "iperf3実測中央値", "Ping P99遅延 (負荷時)", "主なボトルネック要因"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？", "acceptedAnswer": {"@type": "Answer", "text": "外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。"}}, {"@type": "Question", "name": "MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html"}]}]}</script>
 </head>
 <body>
   
@@ -263,13 +264,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？</div>
-          <div class="faq-a">外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。</div>
+          <h3 class="faq-q">Q. インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？</h3>
+          <p class="faq-a">外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？</div>
-          <div class="faq-a">はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。</div>
+          <h3 class="faq-q">Q. MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？</h3>
+          <p class="faq-a">はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。</p>
         </div>
         
         </div>
@@ -280,6 +281,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/HomeNetworking および有志のローカル10GbE NAS環境における iperf3（TCPマルチストリーム）計測ログ52件を集計。クライアント側は Intel BE200 / Qualcomm FastConnect 7800 (2x2 MIMO, 320MHz対応) を基準とし、見通し3m（同室）および壁2枚越し（距離10m）での実効スループット中央値を算出。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース」(2026-10-12更新, N=52) — <code>https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -346,6 +348,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" download="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

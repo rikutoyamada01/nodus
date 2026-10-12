@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="ai-coding-subscriptions-real-rate-limits-token-economics.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較", "description": "公式には具体的なトークン数が公開されていないClaude Pro/MaxやCursor Proのレートリミット・クレジット消費を、開発者コミュニティの実測ログ(N=85)から定量化。月額定額とAPI従量課金の損益分岐点を算出。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html"}, {"@type": "Dataset", "name": "AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較", "description": "公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）", "url": "https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。"}}, {"@type": "Question", "name": "バックグラウンドの自動バッチ処理に定額プランのアカウントを使えますか？", "acceptedAnswer": {"@type": "Answer", "text": "利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較", "description": "公式には具体的なトークン数が公開されていないClaude Pro/MaxやCursor Proのレートリミット・クレジット消費を、開発者コミュニティの実測ログ(N=85)から定量化。月額定額とAPI従量課金の損益分岐点を算出。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Claude Code, Cursor, Rate Limits, Token Economics, LLM Benchmark", "citation": ["https://www.reddit.com/r/ClaudeAI/search/?q=ccusage+rate+limit+tokens\u0026restrict_sr=1", "https://www.reddit.com/r/cursor/search/?q=context+window+limit+tokens\u0026restrict_sr=1", "https://docs.cursor.com/account/plans-and-usage", "https://docs.anthropic.com/en/docs/about-claude/models"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html"}, {"@type": "Dataset", "name": "AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較 実測検証データセット (N=85)", "description": "公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）", "url": "https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。", "variableMeasured": ["月額料金", "公式表記の課金・上限仕様", "コミュニティ実測上限 (中央値)", "実質コンテキストウィンドウ", "API従量比のコスト効率", "主な適性用途"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。"}}, {"@type": "Question", "name": "バックグラウンドの自動バッチ処理に定額プランのアカウントを使えますか？", "acceptedAnswer": {"@type": "Answer", "text": "利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Software \u0026 SaaS Economics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較", "item": "https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html"}]}]}</script>
 </head>
 <body>
   
@@ -279,13 +280,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？</div>
-          <div class="faq-a">トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。</div>
+          <h3 class="faq-q">Q. Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？</h3>
+          <p class="faq-a">トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. バックグラウンドの自動バッチ処理に定額プランのアカウントを使えますか？</div>
-          <div class="faq-a">利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。</div>
+          <h3 class="faq-q">Q. バックグラウンドの自動バッチ処理に定額プランのアカウントを使えますか？</h3>
+          <p class="faq-a">利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。</p>
         </div>
         
         </div>
@@ -296,6 +297,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較」(2026-10-12更新, N=85) — <code>https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -372,6 +374,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv" download="ai-coding-subscriptions-real-rate-limits-token-economics.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="ai-coding-subscriptions-real-rate-limits-token-economics.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>

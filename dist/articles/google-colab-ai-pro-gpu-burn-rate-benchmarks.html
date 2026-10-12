@@ -13,8 +13,9 @@
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="google-colab-ai-pro-gpu-burn-rate-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "description": "Google AI Proプランに付帯する月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html"}, {"@type": "Dataset", "name": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "description": "公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点", "url": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Google ColabのCompute Unitsはアイドル中も消費されますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。"}}, {"@type": "Question", "name": "超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？", "acceptedAnswer": {"@type": "Answer", "text": "RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "description": "Google AI Proプランに付帯する月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Google Colab, Google AI Pro, GPU Benchmark, A100, H100, RTX 6000 Blackwell", "citation": ["https://www.reddit.com/r/GoogleColab/search/?q=compute+units+per+hour+A100+L4\u0026restrict_sr=1", "https://www.reddit.com/r/LocalLLaMA/search/?q=colab+compute+units+A100+L4\u0026restrict_sr=1", "https://research.google.com/colaboratory/faq.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html"}, {"@type": "Dataset", "name": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較 実測検証データセット (N=64)", "description": "公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点", "url": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "Google Colabの公式仕様ではGPUごとの固定CU消費レートは非公開（動的変動表記）であるため、r/GoogleColab (N=42) および r/LocalLLaMA (N=22) の計64セッションにおけるランタイム接続前後の残高差分（CU/h）を集計。チャート上段は外部クラウドGPUスポット相場（$13.3/200CU相当基準）からの理論換算時間、下段はColab 200 CU枠での実測稼働時間中央値を示す。", "variableMeasured": ["VRAM容量", "公式表記レート", "実測消費レート中央値 (CU/時)", "200 CUでの稼働時間目安", "参考単価換算 (1 CU ≈ ¥7.5基準)", "主な適性ワークロード"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Google ColabのCompute Unitsはアイドル中も消費されますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。"}}, {"@type": "Question", "name": "超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？", "acceptedAnswer": {"@type": "Answer", "text": "RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "item": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html"}]}]}</script>
 </head>
 <body>
   
@@ -301,13 +302,13 @@
         <div class="faq-list">
           
         <div class="faq-item">
-          <div class="faq-q">Q. Google ColabのCompute Unitsはアイドル中も消費されますか？</div>
-          <div class="faq-a">はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。</div>
+          <h3 class="faq-q">Q. Google ColabのCompute Unitsはアイドル中も消費されますか？</h3>
+          <p class="faq-a">はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。</p>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. 超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？</div>
-          <div class="faq-a">RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。</div>
+          <h3 class="faq-q">Q. 超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？</h3>
+          <p class="faq-a">RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。</p>
         </div>
         
         </div>
@@ -318,6 +319,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> Google Colabの公式仕様ではGPUごとの固定CU消費レートは非公開（動的変動表記）であるため、r/GoogleColab (N=42) および r/LocalLLaMA (N=22) の計64セッションにおけるランタイム接続前後の残高差分（CU/h）を集計。チャート上段は外部クラウドGPUスポット相場（$13.3/200CU相当基準）からの理論換算時間、下段はColab 200 CU枠での実測稼働時間中央値を示す。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較」(2026-10-12更新, N=64) — <code>https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -389,6 +391,7 @@
         <div class="card-takeaway-bar">
           
           <a href="../datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv" download="google-colab-ai-pro-gpu-burn-rate-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="google-colab-ai-pro-gpu-burn-rate-benchmarks.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
         </div>
       </div>
     </aside>
