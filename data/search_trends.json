@@ -1,0 +1,244 @@
+{
+  "generated_at": "2026-10-12T20:32:58.170259",
+  "google_suggest_analysis": [
+    {
+      "seed": "Claude Code",
+      "total_suggestions": 59,
+      "top_suggestions": [
+        "claude code",
+        "claude code 使い方",
+        "claude code 料金",
+        "claude code とは",
+        "claude code インストール",
+        "claude code できること",
+        "claude code 始め方",
+        "claude code cli",
+        "claude code 無料",
+        "claude codeとclaudeの違い",
+        "claude code 比較",
+        "claude code 比較 codex",
+        "claude code 比較 cursor",
+        "claude code 比較 gemini",
+        "claude code 比較 対象"
+      ],
+      "uncovered_content_gaps": [
+        "claude code 使い方",
+        "claude code 料金",
+        "claude code とは",
+        "claude code インストール",
+        "claude code できること",
+        "claude code 始め方",
+        "claude code cli",
+        "claude code 無料",
+        "claude codeとclaudeの違い",
+        "claude code 比較 gemini",
+        "claude code 比較 対象",
+        "github copilot claude code 比較"
+      ]
+    },
+    {
+      "seed": "Google Colab",
+      "total_suggestions": 50,
+      "top_suggestions": [
+        "google colab",
+        "google colaboratory",
+        "google colab a100",
+        "google colab 使い方",
+        "google colab 料金",
+        "google colaboratory python",
+        "google colab とは",
+        "google colab python",
+        "google colaboratory 使い方",
+        "google colab 何ができる",
+        "google colab 比較",
+        "google colab gpu 性能 比較",
+        "google colab gpu 比較",
+        "google colab aws 比較",
+        "google colab プラン 比較"
+      ],
+      "uncovered_content_gaps": [
+        "google colaboratory",
+        "google colab 使い方",
+        "google colab 料金",
+        "google colaboratory python",
+        "google colab とは",
+        "google colab python",
+        "google colaboratory 使い方",
+        "google colab 何ができる",
+        "google colab aws 比較",
+        "jupyter notebook google colab 比較",
+        "google colab 制限時間",
+        "google colab 無料 制限"
+      ]
+    },
+    {
+      "seed": "ローカルLLM",
+      "total_suggestions": 39,
+      "top_suggestions": [
+        "ローカルllm",
+        "ローカルllmとは",
+        "ローカルllm おすすめ",
+        "ローカルllm 画像生成",
+        "ローカルllm スペック",
+        "ローカルllm できること",
+        "ローカルllm 作り方",
+        "ローカルllmモデル比較",
+        "ローカルllm コーディング",
+        "ローカルllm 検閲なし 日本語",
+        "ローカルllm 比較",
+        "ローカルllm 比較 2026",
+        "ローカルllm 比較 コーディング",
+        "ローカルllm 比較(2025)",
+        "ローカルllm 比較 日本語"
+      ],
+      "uncovered_content_gaps": [
+        "ローカルllmとは",
+        "ローカルllm おすすめ",
+        "ローカルllm 画像生成",
+        "ローカルllm スペック",
+        "ローカルllm できること",
+        "ローカルllm 作り方",
+        "ローカルllmモデル比較",
+        "ローカルllm 検閲なし 日本語",
+        "ローカルllm 比較 2026",
+        "ローカルllm 比較(2025)",
+        "ローカルllm 比較 日本語",
+        "ローカルllm 比較サイト"
+      ]
+    }
+  ],
+  "zenn_daily_trending": [
+    {
+      "title": "SQLite 本体にベクトル検索拡張 vec1 がやってきた",
+      "liked_count": 97,
+      "comments_count": 0,
+      "url": "https://zenn.dev/mattn/articles/6e9996319ac099",
+      "published_at": "2026-10-11"
+    },
+    {
+      "title": "Haiku 5.5 を機に Sonnet 以下で動かしていたサブエージェントを見直した",
+      "liked_count": 60,
+      "comments_count": 1,
+      "url": "https://zenn.dev/genda_jp/articles/haiku-5-5-subagent-roles",
+      "published_at": "2026-10-08"
+    },
+    {
+      "title": "若手エンジニアに必要だと感じた「AIを使う力」",
+      "liked_count": 58,
+      "comments_count": 0,
+      "url": "https://zenn.dev/muit_techblog/articles/6ea28887c79457",
+      "published_at": "2026-10-08"
+    },
+    {
+      "title": "AIで浮いた時間を「もっと作る」に使っていませんか",
+      "liked_count": 31,
+      "comments_count": 0,
+      "url": "https://zenn.dev/idealog/articles/a3e9cf4299b1cf",
+      "published_at": "2026-10-09"
+    },
+    {
+      "title": "嫌われるデザインの歴史",
+      "liked_count": 449,
+      "comments_count": 0,
+      "url": "https://zenn.dev/blackmose/articles/de0170a13be930",
+      "published_at": "2026-10-06"
+    },
+    {
+      "title": "2025 年 10 月から 2026 年 10 月までの Mozc に対する主な変更",
+      "liked_count": 26,
+      "comments_count": 0,
+      "url": "https://zenn.dev/komatsuh/articles/komatsuh_mozc_updates_from_2025_10",
+      "published_at": "2026-10-10"
+    },
+    {
+      "title": "レビューの口伝を40ルールに棚卸ししてAIレビューに載せた",
+      "liked_count": 43,
+      "comments_count": 0,
+      "url": "https://zenn.dev/edash_tech_blog/articles/c52409a3d6fa12",
+      "published_at": "2026-10-07"
+    },
+    {
+      "title": "CSSの`text-box`で文字を上下中央に揃えたい",
+      "liked_count": 57,
+      "comments_count": 0,
+      "url": "https://zenn.dev/chot/articles/be424332489e7a",
+      "published_at": "2026-10-08"
+    },
+    {
+      "title": "【速報】Claude の新機能 Claude Motion 早速使ってみた",
+      "liked_count": 32,
+      "comments_count": 0,
+      "url": "https://zenn.dev/branbran/articles/047821d64590f0",
+      "published_at": "2026-10-10"
+    },
+    {
+      "title": "React習熟度ベンチマークでHaiku 5.5が見せた底力",
+      "liked_count": 13,
+      "comments_count": 0,
+      "url": "https://zenn.dev/uhyo/articles/react-profession-bench-20",
+      "published_at": "2026-10-10"
+    }
+  ],
+  "hackernews_frontpage": [
+    {
+      "title": "Passkeys are a trap",
+      "points": 678,
+      "num_comments": 388,
+      "url": "https://nonfunctional.substack.com/p/passkeys-are-a-trap-do-not-use-them"
+    },
+    {
+      "title": "Total Annihilation, rebuilt for modern computers",
+      "points": 545,
+      "num_comments": 207,
+      "url": "https://nanolathe.gg"
+    },
+    {
+      "title": "The gap in shared understanding of LLM capability is widening",
+      "points": 490,
+      "num_comments": 725,
+      "url": "https://twitter.com/karpathy/status/2109361546505966046"
+    },
+    {
+      "title": "NYC's \"Click to Cancel\" rule is now in effect",
+      "points": 490,
+      "num_comments": 244,
+      "url": "https://www.nyc.gov/main/click-to-cancel"
+    },
+    {
+      "title": "Fingerprints are the new cookies",
+      "points": 422,
+      "num_comments": 217,
+      "url": "https://royfish.dev/fingerprints-are-the-new-cookies"
+    },
+    {
+      "title": "Terence Tao: Math 2.0 [pdf]",
+      "points": 420,
+      "num_comments": 440,
+      "url": "https://teorth.github.io/tao-web/slides/math-2-0-caltech-2026.pdf"
+    },
+    {
+      "title": "So, you’d like to sell your print issues of The Onion?",
+      "points": 333,
+      "num_comments": 50,
+      "url": "https://theonion.com/archivehunt/"
+    },
+    {
+      "title": "Cartographers of North Korea (2019)",
+      "points": 271,
+      "num_comments": 51,
+      "url": "https://cartographers-nk.wonyoung.so/"
+    },
+    {
+      "title": "Will Linux phones become a viable alternative to the Android/iOS duopoly?",
+      "points": 168,
+      "num_comments": 188,
+      "url": "https://amosbbatto.wordpress.com/2026/10/05/linux-phones-alternative/"
+    },
+    {
+      "title": "Calculus with Julia",
+      "points": 144,
+      "num_comments": 15,
+      "url": "https://jverzani.github.io/CalculusWithJuliaNotes.jl/"
+    }
+  ]
+}
