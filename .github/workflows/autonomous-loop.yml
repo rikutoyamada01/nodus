@@ -63,9 +63,14 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - name: Deploy updated dist to Cloudflare Pages (if token configured)
-        if: github.ref == 'refs/heads/main' && env.CLOUDFLARE_API_TOKEN != ''
+      - name: Deploy updated dist to Cloudflare Pages
+        if: github.ref == 'refs/heads/main'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 pages deploy dist --project-name=nodus-lab --branch=main
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            npx --yes wrangler@4.86.0 pages deploy dist --project-name=nodus-lab --branch=main
+          else
+            echo "Cloudflare secrets not set; skipping deploy."
+          fi
