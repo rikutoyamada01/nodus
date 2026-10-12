@@ -1,0 +1,7 @@
+# Nodus - Quantitative Spec & Real-World Benchmark Intelligence
+> 公称スペックとコミュニティ実測値の定量比較データベース
+
+## Datasets & Quantitative Benchmark Reports
+- [100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html): 公称ピーク出力には書かれない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）
+- [AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html): 公式表記「5倍のメッセージ枠」「無制限リクエスト」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）
+- [Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html): 公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点

@@ -1,0 +1,14 @@
+# Ignore temporary files and local credentials
+__pycache__/
+*.pyc
+.env
+service_account.json
+gsc_credentials.json
+
+# Explicitly allow JSON and TXT inside projects/nodus (overrides root .gitignore)
+!*.json
+!*.txt
+!data/**
+!content/**
+!config/**
+!dist/**

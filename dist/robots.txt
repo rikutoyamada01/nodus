@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nodus-lab.pages.dev/sitemap.xml

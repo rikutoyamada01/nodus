@@ -1,0 +1,77 @@
+{
+  "site": {
+    "name": "Nodus",
+    "tagline": "Quantitative Spec & Real-World Benchmark Intelligence",
+    "jp_subtitle": "公称スペックとコミュニティ実測値の定量比較データベース",
+    "base_url": "https://nodus-lab.pages.dev",
+    "language": "ja",
+    "organization": "Nodus Research Editorial",
+    "contact_email": "editorial@nodus-lab.example.com",
+    "copyright_year": 2026
+  },
+  "compliance": {
+    "pr_disclosure_text": "※本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開コミュニティ（Reddit等）および一次検証ログの集計結果に基づく客観的指標であり、特定のメーカーによる委託検証ではありません。",
+    "require_source_links": true,
+    "excluded_categories": ["medical", "supplements", "pharmaceuticals", "unverified_health"]
+  },
+  "seo_loop": {
+    "gsc_property_url": "sc-domain:nodus-lab.pages.dev",
+    "ga4_property_id": "",
+    "thresholds": {
+      "high_impression_min": 100,
+      "low_ctr_threshold": 0.025,
+      "striking_distance_rank_min": 8.0,
+      "striking_distance_rank_max": 20.0,
+      "prune_days_without_clicks": 90
+    }
+  },
+  "affiliates": {
+    "amazon_associate_tag": "nodus-stealth-22",
+    "rakuten_affiliate_id": "",
+    "a8_media_id": "",
+    "links": {
+      "google-ai-pro": {
+        "label": "Google One AI Pro 公式プラン詳細",
+        "url": "https://one.google.com/about/ai-premium/",
+        "badge": "公式・初月特典あり",
+        "provider": "Google"
+      },
+      "runpod-gpu": {
+        "label": "RunPod (時間課金クラウドGPU比較用)",
+        "url": "https://www.runpod.io/",
+        "badge": "H100/A100 従量課金",
+        "provider": "RunPod"
+      },
+      "anker-prime-100w": {
+        "label": "Anker Prime Wall Charger (100W, 3 ports, GaN)",
+        "url": "https://www.amazon.co.jp/s?k=Anker+Prime+Wall+Charger+100W&tag=nodus-stealth-22",
+        "badge": "連続負荷安定性 1位",
+        "provider": "Amazon.co.jp"
+      },
+      "ugreen-nexode-pro-100w": {
+        "label": "UGREEN Nexode Pro 100W GaN充電器",
+        "url": "https://www.amazon.co.jp/s?k=UGREEN+Nexode+Pro+100W&tag=nodus-stealth-22",
+        "badge": "コスパ・薄型設計",
+        "provider": "Amazon.co.jp"
+      },
+      "shargeek-140w": {
+        "label": "SHARGEEK 140W PD3.1 ディスプレイ搭載充電器",
+        "url": "https://www.amazon.co.jp/s?k=SHARGEEK+140W&tag=nodus-stealth-22",
+        "badge": "実測W数表示対応",
+        "provider": "Amazon.co.jp"
+      },
+      "claude-pro": {
+        "label": "Anthropic Claude Pro / Max プラン",
+        "url": "https://claude.ai/",
+        "badge": "コーディング実測1位",
+        "provider": "Anthropic"
+      },
+      "cursor-pro": {
+        "label": "Cursor Pro (AI Code Editor)",
+        "url": "https://www.cursor.com/",
+        "badge": "開発者利用率 No.1",
+        "provider": "Anysphere"
+      }
+    }
+  }
+}

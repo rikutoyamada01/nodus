@@ -1,0 +1,78 @@
+{
+  "fetched_at": "2026-10-12",
+  "property": "sc-domain:nodus-lab.pages.dev",
+  "pages": {
+    "google-colab-ai-pro-gpu-burn-rate-benchmarks": {
+      "impressions": 1420,
+      "clicks": 24,
+      "ctr": 0.0169,
+      "position": 5.4,
+      "top_queries": [
+        {
+          "query": "google ai pro colab a100 何時間",
+          "impressions": 610,
+          "clicks": 9,
+          "position": 4.8
+        },
+        {
+          "query": "colab compute units 消費レート 実測",
+          "impressions": 480,
+          "clicks": 8,
+          "position": 5.9
+        },
+        {
+          "query": "colab g4 blackwell 96gb 料金",
+          "impressions": 330,
+          "clicks": 7,
+          "position": 11.2
+        }
+      ]
+    },
+    "100w-140w-gan-charger-thermal-throttling-real-world-tests": {
+      "impressions": 890,
+      "clicks": 38,
+      "ctr": 0.0427,
+      "position": 11.8,
+      "top_queries": [
+        {
+          "query": "100w 充電器 熱ダレ 実測",
+          "impressions": 420,
+          "clicks": 21,
+          "position": 9.5
+        },
+        {
+          "query": "anker prime 100w 連続出力 温度",
+          "impressions": 290,
+          "clicks": 12,
+          "position": 12.4
+        },
+        {
+          "query": "ugreen nexode pro 100w 65w 落ちる",
+          "impressions": 180,
+          "clicks": 5,
+          "position": 14.1
+        }
+      ]
+    },
+    "ai-coding-subscriptions-real-rate-limits-token-economics": {
+      "impressions": 1150,
+      "clicks": 52,
+      "ctr": 0.0452,
+      "position": 6.2,
+      "top_queries": [
+        {
+          "query": "claude pro 5時間制限 トークン数 実測",
+          "impressions": 640,
+          "clicks": 31,
+          "position": 5.1
+        },
+        {
+          "query": "claude max 100ドル api 損益分岐点",
+          "impressions": 510,
+          "clicks": 21,
+          "position": 7.4
+        }
+      ]
+    }
+  }
+}

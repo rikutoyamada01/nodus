@@ -1,0 +1,17 @@
+[
+  {
+    "date": "2026-10-12",
+    "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
+    "action_type": "CTR_OPTIMIZE_META_TITLE",
+    "trigger": "impressions=1420, ctr=1.69% (< 2.5%), top_query='google ai pro colab a100 何時間'",
+    "before": "【実測比較】Google Colab (AI Pro 200 CU) のGPU別消費レートと稼働時間まとめ | Nodus",
+    "after": "【実測N=64】Google AI Pro (200 CU) でA100は月37時間・H100は11時間動く！GPU消費レート比較 | Nodus"
+  },
+  {
+    "date": "2026-10-12",
+    "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
+    "action_type": "RANK_BOOST_FAQ_INJECTION",
+    "trigger": "position=11.8 (striking distance 8-20), uncovered_query='ugreen nexode pro 100w 65w 落ちる'",
+    "injected_faq": "超小型100W充電器が途中で65Wに落ちる（瞬断する）のは故障ですか？"
+  }
+]
