@@ -2517,6 +2517,14 @@ def build_all() -> dict[str, Any]:
         (DIST_DIR / f"{indexnow_key}.txt").write_text(indexnow_key + "\n", encoding="utf-8")
         extra_files.append(f"{indexnow_key}.txt")
 
+    gsc_verify_file = str(config.get("seo_loop", {}).get("google_site_verification_file", "")).strip()
+    if gsc_verify_file and re.match(r"^google[a-fA-F0-9]{10,32}\.html$", gsc_verify_file):
+        (DIST_DIR / gsc_verify_file).write_text(
+            f"google-site-verification: {gsc_verify_file}",
+            encoding="utf-8",
+        )
+        extra_files.append(gsc_verify_file)
+
     summary = {
         "status": "ok",
         "articles_built": len(articles),

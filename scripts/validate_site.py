@@ -218,8 +218,17 @@ def validate_all() -> dict[str, object]:
     ):
         raise ValueError("dist/_headers is missing strict Content-Security-Policy")
 
+    gsc_verify_file = str(config.get("seo_loop", {}).get("google_site_verification_file", "")).strip()
+    if gsc_verify_file:
+        gsc_path = DIST_DIR / gsc_verify_file
+        if not gsc_path.exists() or gsc_path.read_text(encoding="utf-8").strip() != f"google-site-verification: {gsc_verify_file}":
+            raise ValueError(f"Missing or invalid Google Search Console verification file: {gsc_verify_file}")
+
     # Check all generated HTML files for CSP compliance, legal disclosures, and A11y landmarks
-    html_files = list(DIST_DIR.glob("*.html")) + list((DIST_DIR / "articles").glob("*.html"))
+    html_files = [
+        p for p in list(DIST_DIR.glob("*.html")) + list((DIST_DIR / "articles").glob("*.html"))
+        if not re.match(r"^google[a-fA-F0-9]{10,32}\.html$", p.name)
+    ]
     for html_path in html_files:
         content = html_path.read_text(encoding="utf-8")
         if INLINE_HANDLER_RE.search(content):
