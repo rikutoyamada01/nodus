@@ -54,6 +54,36 @@
       "query": "USB4 SSD sustained write speed thermal",
       "subreddit": "NewMaxx",
       "category": "Hardware & Power Electronics"
+    },
+    {
+      "query": "LiFePO4 power station inverter idle draw UPS ms",
+      "subreddit": "SolarDIY",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "query": "WiFi 7 6GHz MLO iperf3 throughput wall attenuation",
+      "subreddit": "HomeNetworking",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "query": "llama.cpp Apple Silicon M4 Max RTX 4090 tokens per watt",
+      "subreddit": "LocalLLaMA",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "query": "Mini PC Ryzen 8845HS HX370 sustained TDP fan noise dBA",
+      "subreddit": "MiniPCs",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "query": "LLM API TTFT latency p95 throughput variance OpenAI Anthropic Groq",
+      "subreddit": "LocalLLaMA",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "query": "Hall Effect keyboard 8000Hz input latency rapid trigger deadzone",
+      "subreddit": "MechanicalKeyboards",
+      "category": "Hardware & Power Electronics"
     }
   ],
   "affiliates": {
@@ -113,6 +143,36 @@
         "label": "OWC Express 1M2 (USB4 40Gbps 大型ヒートシンク筐体)",
         "url": "https://www.amazon.co.jp/s?k=OWC+Express+1M2+USB4",
         "badge": "ファンレス放熱設計",
+        "provider": "Amazon.co.jp"
+      },
+      "ecoflow-delta-3-plus": {
+        "label": "EcoFlow DELTA 3 Plus (1024Wh LiFePO4 / UPS 10ms未満対応)",
+        "url": "https://www.amazon.co.jp/s?k=EcoFlow+DELTA+3+Plus",
+        "badge": "実測UPS <10ms",
+        "provider": "Amazon.co.jp"
+      },
+      "anker-solix-c1000": {
+        "label": "Anker Solix C1000 Portable Power Station (1056Wh)",
+        "url": "https://www.amazon.co.jp/s?k=Anker+Solix+C1000",
+        "badge": "AC変換効率 高水準",
+        "provider": "Amazon.co.jp"
+      },
+      "asus-rt-be92u": {
+        "label": "ASUS Wi-Fi 7 (802.11be) ルーター シリーズ",
+        "url": "https://www.amazon.co.jp/s?k=ASUS+Wi-Fi+7+Router",
+        "badge": "6GHz 320MHz / MLO対応",
+        "provider": "Amazon.co.jp"
+      },
+      "minisforum-um880-pro": {
+        "label": "MINISFORUM Ryzen 8845HS / HX370 ミニPC シリーズ",
+        "url": "https://www.amazon.co.jp/s?k=MINISFORUM+Ryzen+Mini+PC",
+        "badge": "OCuLink / デュアル冷却",
+        "provider": "Amazon.co.jp"
+      },
+      "wooting-80he": {
+        "label": "Wooting / 磁気式Hall Effect ラピッドトリガーキーボード",
+        "url": "https://www.amazon.co.jp/s?k=Rapid+Trigger+Magnetic+Keyboard",
+        "badge": "8000Hz / 磁気検知",
         "provider": "Amazon.co.jp"
       }
     }

@@ -1,0 +1,82 @@
+{
+  "description": "Backlog of quantitative spec-vs-reality benchmark topics for Batch 2 (Articles 11-25) and Batch 3 (Articles 26-40).",
+  "workflow": [
+    "1. Move selected topics from `backlog` into `config/site_config.json` -> `mining_topics`.",
+    "2. Run `python scripts/miner.py --all-configured` to harvest HN / GitHub / Reddit numerical logs into `data/candidates/`.",
+    "3. Generate structured dataset JSON in `content/articles/<slug>.json` adhering to `validate_article` schema.",
+    "4. Run `python scripts/build_site.py && python scripts/validate_site.py` to compile HTML + CSV and pass all security/legal/A11y checks.",
+    "5. Push to `main` to trigger automatic Cloudflare Pages deployment via `.github/workflows/ci-quality-gate.yml`."
+  ],
+  "batch_2_candidates": [
+    {
+      "slug": "thunderbolt-4-usb4-docks-pd-wattage-drop-multi-display-bandwidth",
+      "query": "Thunderbolt 4 dock PD charging drop dual 4K 144Hz DSC bandwidth",
+      "subreddit": "Thunderbolt",
+      "category": "Hardware & Power Electronics",
+      "focus": "公称96W/100W給電ドックに周辺機器をフル接続した際の実測PD供給電力低下とDisplayPort Alt Mode DSC帯域制限"
+    },
+    {
+      "slug": "qd-oled-woled-monitors-burn-in-apl-brightness-text-fringing",
+      "query": "QD-OLED WOLED monitor 1000 nits APL real brightness burn-in hours",
+      "subreddit": "OLED_Gaming",
+      "category": "Hardware & Power Electronics",
+      "focus": "公称ピーク1000nits OLEDモニターのAPL（表示面積）10%〜100%時における実測輝度低下と2000時間稼働後の焼き付き・サブピクセル文字滲み"
+    },
+    {
+      "slug": "cloud-vector-databases-qdrant-pinecone-pgvector-recall-p99-latency",
+      "query": "pgvector HNSW Qdrant Pinecone 1M vectors p99 latency recall memory",
+      "subreddit": "LocalLLaMA",
+      "category": "Cloud & AI Infrastructure",
+      "focus": "100万〜1000万ベクトル（1536次元）検索時のHNSWメモリ消費量・Recall@10対p99レイテンシ・月額コスト実測比較"
+    },
+    {
+      "slug": "ups-pure-sine-wave-active-pfc-power-supply-compatibility-tests",
+      "query": "Active PFC PSU simulated sine wave UPS trip switchover ms",
+      "subreddit": "homelab",
+      "category": "Hardware & Power Electronics",
+      "focus": "Active PFC電源（RTX 4090/サーバ用電源）における矩形波/正弦波UPSの停電切替時シャットダウン発生率と突入電流耐性"
+    },
+    {
+      "slug": "usb-c-240w-epr-cables-voltage-drop-emarker-resistance-tests",
+      "query": "USB-C 240W EPR cable resistance mOhm voltage drop 5A thermal",
+      "subreddit": "UsbCHardware",
+      "category": "Hardware & Power Electronics",
+      "focus": "240W EPR (48V/5A) および 40Gbps USB4ケーブルの内部導体抵抗(mΩ)・5A通電時の電圧降下・コネクタ部発熱比較"
+    },
+    {
+      "slug": "serverless-postgres-neon-supabase-aurora-cold-start-iops-pricing",
+      "query": "Serverless Postgres Neon Supabase cold start latency CU burn rate",
+      "subreddit": "PostgreSQL",
+      "category": "Software & SaaS Economics",
+      "focus": "サーバーレスPostgreSQL各社のScale-to-Zero復帰時間（コールドスタートms）と自動スケールによる実質月額課金膨張の検証"
+    },
+    {
+      "slug": "nas-10gbe-sfp-plus-rj45-transceiver-temperature-link-drop-tests",
+      "query": "10GbE SFP+ RJ45 transceiver 90C thermal link drop Aquantia Intel",
+      "subreddit": "homelab",
+      "category": "Hardware & Power Electronics",
+      "focus": "10GbE SFP+ to RJ45変換モジュール（Broadcom / Marvell製チップ）の消費電力・表面温度（65℃〜95℃）と熱リンクダウン比較"
+    },
+    {
+      "slug": "ai-voice-tts-stt-apis-elevenlabs-whisper-deepgram-wer-latency",
+      "query": "Deepgram Whisper ElevenLabs streaming TTS STT latency ms Japanese WER",
+      "subreddit": "LocalLLaMA",
+      "category": "Cloud & AI Infrastructure",
+      "focus": "リアルタイム音声AI（STT/TTS）API各社のストリーミング初回音声到達遅延（ms）と日本語固有名詞の認識誤り率（WER/CER）"
+    },
+    {
+      "slug": "laptop-power-banks-20000mah-actual-wh-conversion-efficiency",
+      "query": "20000mAh 27000mAh 140W power bank actual Wh efficiency thermal throttling",
+      "subreddit": "UsbCHardware",
+      "category": "Hardware & Power Electronics",
+      "focus": "公称20,000mAh〜27,650mAh（機内持込上限級）モバイルバッテリーの20V/5A出力時における実効取り出しWh（変換効率72%〜88%）と途中減速"
+    },
+    {
+      "slug": "web-scraping-headless-browser-proxies-cloudflare-turnstile-cost",
+      "query": "Playwright headless browser memory leak concurrency cost per 10k pages",
+      "subreddit": "webscraping",
+      "category": "Software & SaaS Economics",
+      "focus": "大規模クローラ基盤におけるヘッドレスブラウザ並列実行時のメモリ消費・1万ページあたりのプロキシ/計算コスト比較"
+    }
+  ]
+}
