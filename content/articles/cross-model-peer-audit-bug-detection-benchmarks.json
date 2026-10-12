@@ -31,7 +31,8 @@
       "Claude Codex 相互レビュー 監査",
       "AIエージェント セルフレビュー バグ",
       "マルチモデル コード監査 実測"
-    ]
+    ],
+    "primary_seed": "AI コードレビュー"
   },
   "summary_metrics": [
     {

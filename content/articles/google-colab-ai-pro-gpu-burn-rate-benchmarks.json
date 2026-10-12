@@ -24,7 +24,8 @@
       "Google AI Pro Colab A100 時間",
       "Colab H100 CU 実測",
       "Colab L4 A100 比較"
-    ]
+    ],
+    "primary_seed": "Google Colab GPU"
   },
   "summary_metrics": [
     {

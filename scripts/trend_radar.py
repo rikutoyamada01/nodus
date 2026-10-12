@@ -141,17 +141,26 @@ def classify_search_intent(query: str) -> str:
 
 
 def derive_seed_for_article(article: dict[str, Any]) -> str:
-    """Derive a clean, market-searchable seed phrase from an article's tags and title."""
+    """Derive a clean, market-searchable Japanese seed phrase from an article's seo.primary_seed or title."""
     explicit = article.get("seo", {}).get("primary_seed") or article.get("primary_seed")
     if explicit:
         return str(explicit).strip()
 
+    title = str(article.get("title", "")).strip()
+    if title:
+        head = re.split(r"[「？｜|]", title)[0]
+        head = re.sub(r"（[^）]*）|\([^)]*\)", " ", head)
+        tokens = re.findall(r"[A-Za-z0-9][A-Za-z0-9.\-+]*|[一-龥ァ-ヶー]{2,}", head)
+        stop = {"実測", "比較", "検証", "データベース", "推論", "主要", "高性能", "1000Wh級", "4機種の", "5社の"}
+        clean_tokens = [t for t in tokens if t not in stop]
+        if len(clean_tokens) >= 2:
+            return " ".join(clean_tokens[:2])
+        if clean_tokens:
+            return clean_tokens[0]
+
     tags = [str(t).strip() for t in article.get("tags", []) if str(t).strip() and str(t).lower() not in {"first-party", "benchmark"}]
-    if len(tags) >= 2:
-        return f"{tags[0]} {tags[1]}"
-    if len(tags) == 1:
+    if tags:
         return tags[0]
-    title = article.get("title", "")
     return title[:20].strip()
 
 

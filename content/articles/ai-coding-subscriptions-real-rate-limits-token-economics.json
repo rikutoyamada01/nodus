@@ -23,7 +23,8 @@
       "Cursor Pro クレジット 消費 実測",
       "Claude Code API 定額 どっちが得",
       "AI サブスク トークン単価 比較"
-    ]
+    ],
+    "primary_seed": "Claude Code Cursor"
   },
   "summary_metrics": [
     {

@@ -24,7 +24,8 @@
       "OpenAI Anthropic TTFT 速度 遅い",
       "Groq Vertex AI スループット 比較",
       "Prompt Caching レイテンシ 短縮"
-    ]
+    ],
+    "primary_seed": "LLM API"
   },
   "summary_metrics": [
     {

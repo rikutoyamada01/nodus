@@ -24,7 +24,8 @@
       "GaN 充電器 連続出力 比較",
       "Anker UGREEN 100W 発熱 比較",
       "USB-C 140W 持続時間"
-    ]
+    ],
+    "primary_seed": "GaN 充電器 100W"
   },
   "summary_metrics": [
     {

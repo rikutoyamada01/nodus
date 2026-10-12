@@ -24,7 +24,8 @@
       "M4 Max Local LLM token/s 実測",
       "70B LLM RTX 3090 2枚 消費電力",
       "llama.cpp メモリ帯域 実測"
-    ]
+    ],
+    "primary_seed": "ローカルLLM Mac"
   },
   "summary_metrics": [
     {

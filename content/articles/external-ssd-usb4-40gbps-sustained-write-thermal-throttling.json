@@ -24,7 +24,8 @@
       "外付けSSD キャッシュ切れ 書き込み速度",
       "ASM2464PD 発熱 切断",
       "OWC Express 1M2 実測"
-    ]
+    ],
+    "primary_seed": "USB4 外付けSSD"
   },
   "summary_metrics": [
     {

@@ -31,7 +31,8 @@
       "AIエージェント コンテキスト 肥大化 対策",
       "AST 骨格抽出 トークン削減",
       "AI チャット 5時間制限 長持ち"
-    ]
+    ],
+    "primary_seed": "Claude Code トークン"
   },
   "summary_metrics": [
     {

@@ -24,7 +24,8 @@
       "ポータブル電源 UPS 切替時間 PC 落ちる",
       "ポータブル電源 待機電力 インバータ",
       "EcoFlow Anker 1000Wh 比較 実測"
-    ]
+    ],
+    "primary_seed": "ポータブル電源 UPS"
   },
   "summary_metrics": [
     {
