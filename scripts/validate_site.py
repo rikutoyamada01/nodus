@@ -7,6 +7,7 @@ Exits with non-zero code if any invariant is violated.
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 import sys
@@ -17,7 +18,10 @@ from build_site import (
     CONFIG_PATH,
     DIST_DIR,
     ROOT_DIR,
+    is_monetized,
     load_json,
+    render_footer,
+    resolve_affiliate_url,
     safe_json_ld,
     validate_article,
     validate_slug,
@@ -33,7 +37,7 @@ SCRIPT_TAG_RE = re.compile(r"<script\b([^>]*)>(.*?)</script>", re.IGNORECASE | r
 EXACT_AMAZON_DISCLOSURE = "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。"
 
 
-def run_security_self_tests() -> None:
+def run_security_self_tests(config: dict[str, object]) -> None:
     # 1. Path traversal, trailing newline, or uppercase in slug must fail
     for bad_slug in ["../index", "valid-slug\n", "foo/bar", "UPPERCASE", "a", ""]:
         try:
@@ -60,10 +64,23 @@ def run_security_self_tests() -> None:
     if "1.78 GB/s" not in unit_sample or "99.6 Wh" not in unit_sample:
         raise AssertionError(f"QUANT_PATTERN truncated compound units: {unit_sample}")
 
+    # 5. Monetization toggle test: when tag is set, Amazon disclosure and ?tag= must activate automatically
+    mock_cfg = copy.deepcopy(config)
+    mock_cfg["affiliates"]["amazon_associate_tag"] = "verify-22"  # type: ignore[index]
+    if not is_monetized(mock_cfg):  # type: ignore[arg-type]
+        raise AssertionError("is_monetized should be True when amazon_associate_tag is non-empty")
+    tagged_url = resolve_affiliate_url("https://www.amazon.co.jp/s?k=Anker", mock_cfg)  # type: ignore[arg-type]
+    if "tag=verify-22" not in tagged_url:
+        raise AssertionError(f"resolve_affiliate_url failed to append tag: {tagged_url}")
+    footer_monetized = render_footer(mock_cfg)  # type: ignore[arg-type]
+    if EXACT_AMAZON_DISCLOSURE not in footer_monetized:
+        raise AssertionError("render_footer failed to include exact Amazon disclosure when monetized")
+
 
 def validate_all() -> dict[str, object]:
-    run_security_self_tests()
     config = load_json(CONFIG_PATH)
+    run_security_self_tests(config)
+
     config_raw = CONFIG_PATH.read_text(encoding="utf-8")
     if "example.com" in config_raw:
         raise ValueError("config/site_config.json still contains placeholder 'example.com'")
@@ -71,6 +88,8 @@ def validate_all() -> dict[str, object]:
     amazon_text = config["compliance"].get("amazon_disclosure_text", "")
     if amazon_text != EXACT_AMAZON_DISCLOSURE:
         raise ValueError("Exact mandatory Amazon Associates disclosure missing in config")
+
+    monetized = is_monetized(config)
 
     article_files = sorted(ARTICLES_DIR.glob("*.json"))
     if not article_files:
@@ -144,22 +163,28 @@ def validate_all() -> dict[str, object]:
                 raise ValueError(f"{html_path.name}: contains inline executable <script> tag")
         if "example.com" in content:
             raise ValueError(f"{html_path.name}: contains placeholder 'example.com'")
-        if EXACT_AMAZON_DISCLOSURE not in content:
-            raise ValueError(f"{html_path.name}: missing exact Amazon Associates disclosure")
-        if "【PR】" not in content:
-            raise ValueError(f"{html_path.name}: missing 【PR】 stealth marketing disclosure")
+        if monetized:
+            if EXACT_AMAZON_DISCLOSURE not in content:
+                raise ValueError(f"{html_path.name}: missing exact Amazon Associates disclosure in monetized mode")
+            if "【PR】" not in content:
+                raise ValueError(f"{html_path.name}: missing 【PR】 stealth marketing disclosure in monetized mode")
+        else:
+            if "tag=" in content:
+                raise ValueError(f"{html_path.name}: contains affiliate tag= parameter while monetization_enabled is false")
         if 'class="skip-link"' not in content or 'id="main-content"' not in content:
             raise ValueError(f"{html_path.name}: missing skip-link or #main-content landmark")
 
     report = {
         "status": "pass",
+        "monetization_mode": "MONETIZED" if monetized else "PRE_REVIEW_NON_COMMERCIAL",
         "validated_articles": len(article_files),
         "validated_html_pages": len(html_files),
         "checks": [
             "security_self_tests_slug_newline_and_units",
+            "monetization_switch_self_test",
             "strict_csp_no_inline_js_or_style_or_script_tags",
             "headers_csp_verified",
-            "japanese_legal_and_exact_amazon_disclosure",
+            "legal_and_disclosure_mode_verified",
             "copyright_no_verbatim_snippets",
             "a11y_landmarks_and_sortable_table_buttons",
             "csv_datasets_present",

@@ -1154,9 +1154,32 @@ def build_js() -> str:
 """
 
 
+def is_monetized(config: dict[str, Any]) -> bool:
+    comp = config.get("compliance", {})
+    aff = config.get("affiliates", {})
+    return bool(comp.get("monetization_enabled")) or bool(str(aff.get("amazon_associate_tag", "")).strip())
+
+
+def resolve_affiliate_url(raw_url: str, config: dict[str, Any]) -> str:
+    url = validate_url(raw_url)
+    tag = str(config.get("affiliates", {}).get("amazon_associate_tag", "")).strip()
+    if tag and "amazon.co.jp" in url and "tag=" not in url:
+        sep = "&" if "?" in url else "?"
+        return f"{url}{sep}tag={tag}"
+    return url
+
+
 def render_header(config: dict[str, Any], root_prefix: str = "") -> str:
     site = config["site"]
-    disclosure = config["compliance"]["pr_disclosure_text"]
+    comp = config["compliance"]
+    banner_text = (
+        comp["pr_disclosure_text"]
+        if is_monetized(config)
+        else comp.get(
+            "non_commercial_notice",
+            "現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。",
+        )
+    )
     return f"""
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
@@ -1169,22 +1192,30 @@ def render_header(config: dict[str, Any], root_prefix: str = "") -> str:
     <nav class="site-nav" aria-label="グローバルナビゲーション">
       <a href="{root_prefix}index.html">実測データベース一覧</a>
       <a href="{root_prefix}about.html">調査手法・運営情報</a>
-      <a href="{root_prefix}about.html#privacy">広告表記・プライバシー</a>
+      <a href="{root_prefix}about.html#privacy">運営ポリシー・プライバシー</a>
       <a href="{root_prefix}feed.xml">RSS/Atom</a>
     </nav>
   </div>
 </header>
-<div class="pr-banner" role="note" aria-label="プロモーション開示">
-  <div class="container">{esc(disclosure)}</div>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">{esc(banner_text)}</div>
 </div>
 """
 
 
 def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
     site = config["site"]
-    amazon_notice = config["compliance"].get(
-        "amazon_disclosure_text",
-        "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
+    comp = config["compliance"]
+    footer_notice = (
+        comp.get(
+            "amazon_disclosure_text",
+            "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
+        )
+        if is_monetized(config)
+        else comp.get(
+            "non_commercial_notice",
+            "現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。",
+        )
     )
     contact_url = validate_url(site.get("contact_url", "https://github.com/rikutoyamada01/nodus/issues"))
     return f"""
@@ -1199,7 +1230,7 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
         <p class="footer-desc">
           {esc(site["tagline"])} — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
         </p>
-        <p class="footer-amazon-notice">{esc(amazon_notice)}</p>
+        <p class="footer-amazon-notice">{esc(footer_notice)}</p>
       </div>
       <div class="footer-links">
         <a href="{root_prefix}index.html">トップページ</a>
@@ -1368,20 +1399,23 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
     )
 
     aff_map = config.get("affiliates", {}).get("links", {})
+    monetized = is_monetized(config)
     cta_cards = []
     for key in article.get("affiliate_keys", []):
         if key in aff_map:
             aff = aff_map[key]
-            aff_url = validate_url(aff["url"])
+            aff_url = resolve_affiliate_url(aff["url"], config)
+            rel_attr = "nofollow sponsored noopener noreferrer" if monetized else "noopener noreferrer"
+            provider_suffix = "（広告リンク）" if monetized else "（公式・参考リンク）"
             cta_cards.append(
                 f"""
                 <div class="cta-card">
                   <div>
                     <span class="cta-badge">{esc(aff["badge"])}</span>
                     <div class="cta-title">{esc(aff["label"])}</div>
-                    <div class="cta-provider">取扱・提供元: {esc(aff["provider"])} （広告リンク）</div>
+                    <div class="cta-provider">取扱・提供元: {esc(aff["provider"])} {provider_suffix}</div>
                   </div>
-                  <a href="{esc(aff_url)}" target="_blank" rel="nofollow sponsored noopener noreferrer" class="cta-btn">
+                  <a href="{esc(aff_url)}" target="_blank" rel="{rel_attr}" class="cta-btn">
                     公式仕様・最新価格を確認する &rarr;
                   </a>
                 </div>
@@ -1389,17 +1423,23 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
             )
     cta_panel_html = ""
     if cta_cards:
+        panel_badge = "【広告・PR】Sponsored Links" if monetized else "Reference Links (広告なし)"
+        panel_note = (
+            f"※上記リンクにはアフィリエイト広告が含まれます。{esc(amazon_notice)}"
+            if monetized
+            else "※上記は読者の利便性のための純粋な参考リンクであり、現在アフィリエイトタグや広告報酬は一切設定されていません。"
+        )
         cta_panel_html = f"""
-        <section class="panel" aria-label="関連製品・公式リンク（プロモーション）">
+        <section class="panel" aria-label="検証対象モデル・関連サービス参考リンク">
           <div class="panel-title">
             <span>検証対象モデル・関連サービス取扱先リンク</span>
-            <span class="panel-unit">【広告・PR】Sponsored Links</span>
+            <span class="panel-unit">{panel_badge}</span>
           </div>
           <div class="cta-grid">
             {''.join(cta_cards)}
           </div>
           <p class="cta-disclosure-note">
-            ※上記リンクにはアフィリエイト広告が含まれます。{esc(amazon_notice)}
+            {panel_note}
           </p>
         </section>
         """
@@ -1692,12 +1732,11 @@ def render_about_page(config: dict[str, Any]) -> str:
         </p>
       </div>
       <div class="prose-section" id="privacy">
-        <h2>3. 広告配信（アフィリエイトプログラム）および景品表示法（ステマ規制）への対応</h2>
+        <h2>3. 編集独立性・広告配信方針および景品表示法（ステマ規制）への対応</h2>
         <p>
-          <strong>【Amazonアソシエイト・プログラム等の開示】</strong><br>
-          {esc(amazon_notice)} また、当サイトは各種ASPおよびSaaSパートナープログラムに参加しており、記事内の「広告・PR（Sponsored Links）」セクションのリンクを経由して適格な購入や契約が行われた場合、紹介料を受領することがあります。<br><br>
+          {f"<strong>【Amazonアソシエイト・プログラム等の開示】</strong><br>{esc(amazon_notice)} また、当サイトは各種ASPおよびSaaSパートナープログラムに参加しており、記事内の「広告・PR（Sponsored Links）」セクションのリンクを経由して適格な購入や契約が行われた場合、紹介料を受領することがあります。" if is_monetized(config) else "<strong>【現在の運営ステータス（非商用・広告なし）】</strong><br>現在、当サイトはアフィリエイト広告やプロモーションリンクを一切掲載していない独立リサーチメディアとして運営されています。記事内の外部製品・サービスへのリンクはすべて読者の検証・参照利便性のための純粋な参考リンクであり、金銭的報酬やトラッキングタグは含まれていません。将来、審査通過後にアフィリエイトプログラムを導入する際は、日本の景品表示法（ステルスマーケティング告示）および各プログラム規約に準拠し、全ページ上部およびリンク周辺に明瞭な「【PR】」開示および必須文言を表示します。"}<br><br>
           <strong>【編集の独立性と不当表示の防止】</strong><br>
-          日本の景品表示法（令和5年10月施行のステルスマーケティング告示）に準拠し、全ページ上部およびリンク周辺に「【PR】プロモーションを含みます」等の明瞭な広告表示を行っています。特定のメーカーや広告主からの金銭的対価によって実測データの数値を改変したり、根拠のない順位付けを行うことは一切ありません。
+          特定のメーカーや外部事業者からの対価によって実測データの数値を改変したり、根拠のない順位付けを行うことは一切ありません。
         </p>
       </div>
       <div class="prose-section">
