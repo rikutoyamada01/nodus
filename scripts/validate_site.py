@@ -107,6 +107,20 @@ def validate_all() -> dict[str, object]:
         csv_file = DIST_DIR / "datasets" / f"{article['slug']}.csv"
         if not csv_file.exists() or csv_file.stat().st_size < 20:
             raise ValueError(f"Missing or empty CSV dataset: {csv_file}")
+        raw_article_str = path.read_text(encoding="utf-8")
+        prohibited_terms = [
+            "欠陥品",
+            "粗悪品",
+            "詐欺まがい",
+            "景表法違反",
+            "違法製品",
+            "絶対に買ってはいけない",
+            "100%治る",
+            "必ず儲かる",
+        ]
+        for bad_term in prohibited_terms:
+            if bad_term in raw_article_str:
+                raise ValueError(f"{path.name}: contains legally high-risk or defamatory term {bad_term!r}")
         if article.get("origin") == "first_party":
             log_file = DIST_DIR / "logs" / f"{article['slug']}.json"
             if not log_file.exists() or log_file.stat().st_size < 20:

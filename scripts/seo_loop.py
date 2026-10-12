@@ -190,10 +190,79 @@ def load_telemetry(config: dict[str, Any]) -> tuple[dict[str, Any], bool]:
     return {"source_mode": "EMPTY", "pages": {}}, False
 
 
+TITLE_VARIANTS = [
+    "v1_metric_lead",
+    "v2_query_answer",
+    "v3_spec_vs_real",
+    "v4_year_conclusion",
+]
+
+DESC_VARIANTS = [
+    "d1_kpi_frontload",
+    "d2_tldr_summary",
+    "d3_query_bolding",
+]
+
+LEAD_VARIANTS = [
+    "default",
+    "table_first",
+    "faq_boost",
+]
+
+
+def _build_title_variant(article: dict[str, Any], variant_id: str, top_query: str) -> str:
+    sample_n = int(article.get("sample_size_n", 0))
+    title = article["title"]
+    metrics = article.get("summary_metrics", [])
+    m_val = metrics[1]["value"] if len(metrics) > 1 else (metrics[0]["value"] if metrics else f"N={sample_n}")
+    year = article.get("updated_at", "2026")[:4]
+
+    if variant_id == "v1_metric_lead":
+        return f"【実測: {m_val}】{title} (N={sample_n}) | Nodus"
+    if variant_id == "v2_query_answer" and top_query:
+        return f"{top_query}の実測検証 — {title} (N={sample_n}) | Nodus"
+    if variant_id == "v3_spec_vs_real":
+        return f"【公称値vs実測N={sample_n}】{title}（比較表・CSV付）| Nodus"
+    return f"[{year}年実測N={sample_n}] {title}｜検証データと結論まとめ | Nodus"
+
+
+def _build_desc_variant(article: dict[str, Any], variant_id: str, top_queries: list[dict[str, Any]]) -> str:
+    sample_n = int(article.get("sample_size_n", 0))
+    metrics = article.get("summary_metrics", [])
+    m0 = f"{metrics[0]['label']}: {metrics[0]['value']}" if len(metrics) > 0 else ""
+    m1 = f"{metrics[1]['label']}: {metrics[1]['value']}" if len(metrics) > 1 else ""
+    tldr = article.get("tldr", [])
+    base_desc = article["seo"].get("meta_description", article.get("subtitle", ""))
+
+    if variant_id == "d1_kpi_frontload" and (m0 or m1):
+        kpi_lead = " / ".join(x for x in [m0, m1] if x)
+        return f"【実測N={sample_n}】{kpi_lead}。{base_desc}"[:155]
+    if variant_id == "d2_tldr_summary" and tldr:
+        return f"【結論】{tldr[0]}（N={sample_n}・検証CSVデータ付）"[:155]
+    if variant_id == "d3_query_bolding" and top_queries:
+        q_terms = "・".join(q["query"] for q in top_queries[:2] if q.get("query"))
+        return f"「{q_terms}」を一次ログ（N={sample_n}）から定量検証。{base_desc}"[:155]
+    return base_desc
+
+
+def _select_intent_lead_variant(top_queries: list[dict[str, Any]], tried_leads: list[str]) -> str:
+    combined_q = " ".join(str(q.get("query", "")) for q in top_queries).lower()
+    if any(k in combined_q for k in ["比較", "一覧", "違い", "vs", "コスパ", "単価", "スペック"]) and "table_first" not in tried_leads:
+        return "table_first"
+    if any(k in combined_q for k in ["なぜ", "制限", "上限", "原因", "対策", "どっち", "方法"]) and "faq_boost" not in tried_leads:
+        return "faq_boost"
+    for cand in LEAD_VARIANTS:
+        if cand not in tried_leads:
+            return cand
+    return LEAD_VARIANTS[len(tried_leads) % len(LEAD_VARIANTS)]
+
+
 def evaluate_past_actions(
     ledger: list[dict[str, Any]], pages: dict[str, Any], today_str: str
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], set[str]]:
+    """Return (evaluation_entries, slugs_needing_variant_rotation)."""
     evaluations: list[dict[str, Any]] = []
+    rotate_slugs: set[str] = set()
     today_dt = datetime.strptime(today_str, "%Y-%m-%d")
     for entry in ledger:
         if entry.get("evaluated_at") or entry.get("action_type") == "EVALUATE_PREVIOUS_LOOP":
@@ -207,9 +276,19 @@ def evaluate_past_actions(
         except ValueError:
             continue
         if (today_dt - action_dt).days >= 14:
-            current_ctr = pages[slug].get("ctr", 0.0)
-            current_pos = pages[slug].get("position", 0.0)
+            current_ctr = float(pages[slug].get("ctr", 0.0))
+            current_pos = float(pages[slug].get("position", 0.0))
+            base_ctr = float(entry.get("baseline_ctr", 0.0))
+            base_pos = float(entry.get("baseline_position", current_pos))
+
+            ctr_improved = base_ctr > 0 and current_ctr >= base_ctr * 1.05
+            pos_improved = base_pos > 0 and (base_pos - current_pos) >= 0.5 and current_ctr >= base_ctr * 0.95
+            outcome = "WIN_KEPT" if (ctr_improved or pos_improved) else "UNDERPERFORMED_ROTATE"
+            if outcome == "UNDERPERFORMED_ROTATE":
+                rotate_slugs.add(slug)
+
             entry["evaluated_at"] = today_str
+            entry["outcome"] = outcome
             entry["post_metrics"] = {"ctr": current_ctr, "position": current_pos}
             evaluations.append(
                 {
@@ -217,11 +296,15 @@ def evaluate_past_actions(
                     "slug": slug,
                     "action_type": "EVALUATE_PREVIOUS_LOOP",
                     "reference_date": action_date_str,
+                    "variant_tested": entry.get("variant_bundle", {}),
+                    "baseline_ctr": base_ctr,
                     "observed_ctr": current_ctr,
+                    "baseline_position": base_pos,
                     "observed_position": current_pos,
+                    "outcome": outcome,
                 }
             )
-    return evaluations
+    return evaluations, rotate_slugs
 
 
 def analyze_and_optimize(apply_changes: bool = False, allow_sample: bool = False) -> dict[str, Any]:
@@ -245,7 +328,7 @@ def analyze_and_optimize(apply_changes: bool = False, allow_sample: bool = False
 
     today = datetime.now().strftime("%Y-%m-%d")
     pages = telemetry.get("pages", {})
-    actions_taken: list[dict[str, Any]] = evaluate_past_actions(ledger, pages, today)
+    actions_taken, rotate_slugs = evaluate_past_actions(ledger, pages, today)
     modified_articles: list[tuple[Path, dict[str, Any]]] = []
 
     for slug, metrics in pages.items():
@@ -254,21 +337,59 @@ def analyze_and_optimize(apply_changes: bool = False, allow_sample: bool = False
             continue
 
         article = load_json(article_path)
+        seo = article["seo"]
         impressions = int(metrics.get("impressions", 0))
         ctr = float(metrics.get("ctr", 0.0))
         position = float(metrics.get("position", 0.0))
         top_queries = metrics.get("top_queries", [])
         modified = False
 
-        # Rule 1: High Impressions + Low CTR -> Ensure concrete sample size (N=...) is in meta_title
-        if impressions >= thresholds["high_impression_min"] and ctr < thresholds["low_ctr_threshold"]:
+        # Multi-Element A/B Test Trigger:
+        # Either (High Impressions + Low CTR) OR previous 14-day A/B variant underperformed and needs rotation
+        needs_ab_switch = (
+            impressions >= thresholds["high_impression_min"] and ctr < thresholds["low_ctr_threshold"]
+        ) or (slug in rotate_slugs)
+
+        if needs_ab_switch:
             primary_q = top_queries[0]["query"] if top_queries else ""
-            old_title = article["seo"]["meta_title"]
-            sample_n = int(article.get("sample_size_n", 0))
-            badge_tag = f"N={sample_n}"
-            if sample_n > 0 and badge_tag not in old_title:
-                new_title = f"【実測{badge_tag}】{article['title']} | Nodus"
-                article["seo"]["meta_title"] = new_title
+            history: list[dict[str, str]] = list(seo.get("ab_history", []))
+            tried_titles = [h.get("title_variant", "") for h in history]
+            tried_descs = [h.get("desc_variant", "") for h in history]
+            tried_leads = [h.get("lead_variant", "") for h in history]
+
+            next_title_var = next(
+                (v for v in TITLE_VARIANTS if v not in tried_titles),
+                TITLE_VARIANTS[len(tried_titles) % len(TITLE_VARIANTS)],
+            )
+            next_desc_var = next(
+                (v for v in DESC_VARIANTS if v not in tried_descs),
+                DESC_VARIANTS[len(tried_descs) % len(DESC_VARIANTS)],
+            )
+            next_lead_var = _select_intent_lead_variant(top_queries, tried_leads)
+
+            old_snapshot = {
+                "meta_title": seo.get("meta_title", ""),
+                "meta_description": seo.get("meta_description", ""),
+                "lead_variant": seo.get("lead_variant", "default"),
+            }
+            new_title = _build_title_variant(article, next_title_var, primary_q)
+            new_desc = _build_desc_variant(article, next_desc_var, top_queries)
+
+            if (
+                new_title != old_snapshot["meta_title"]
+                or new_desc != old_snapshot["meta_description"]
+                or next_lead_var != old_snapshot["lead_variant"]
+            ):
+                seo["meta_title"] = new_title
+                seo["meta_description"] = new_desc
+                seo["lead_variant"] = next_lead_var
+                variant_bundle = {
+                    "title_variant": next_title_var,
+                    "desc_variant": next_desc_var,
+                    "lead_variant": next_lead_var,
+                }
+                history.append({"date": today, **variant_bundle})
+                seo["ab_history"] = history[-8:]
                 article["updated_at"] = today
                 modified = True
                 actions_taken.append(
@@ -276,14 +397,25 @@ def analyze_and_optimize(apply_changes: bool = False, allow_sample: bool = False
                         "date": today,
                         "slug": slug,
                         "source_mode": telemetry.get("source_mode"),
-                        "action_type": "CTR_OPTIMIZE_META_TITLE",
-                        "trigger": f"impressions={impressions}, ctr={ctr:.2%} (< {thresholds['low_ctr_threshold']:.1%}), top_query='{primary_q}'",
-                        "before": old_title,
-                        "after": new_title,
+                        "action_type": "AB_VARIANT_SWITCH",
+                        "trigger": (
+                            f"rotate_after_14d_eval"
+                            if slug in rotate_slugs
+                            else f"impressions={impressions}, ctr={ctr:.2%} (< {thresholds['low_ctr_threshold']:.1%}), top_query='{primary_q}'"
+                        ),
+                        "baseline_ctr": ctr,
+                        "baseline_position": position,
+                        "variant_bundle": variant_bundle,
+                        "before": old_snapshot,
+                        "after": {
+                            "meta_title": new_title,
+                            "meta_description": new_desc,
+                            "lead_variant": next_lead_var,
+                        },
                     }
                 )
 
-        # Rule 2: Striking Distance Rank (8.0 <= position <= 20.0) -> Flag uncovered high-impression query
+        # Rule 2: Striking Distance Rank (8.0 <= position <= 20.0) -> Flag uncovered high-impression query & switch layout if needed
         if thresholds["striking_distance_rank_min"] <= position <= thresholds["striking_distance_rank_max"]:
             existing_text = (
                 article.get("title", "")
@@ -331,7 +463,7 @@ def analyze_and_optimize(apply_changes: bool = False, allow_sample: bool = False
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Nodus Closed-Loop SEO Optimizer")
+    parser = argparse.ArgumentParser(description="Nodus Closed-Loop Multi-Variant SEO Optimizer")
     parser.add_argument("--apply", action="store_true", help="Apply optimizations to article JSONs and rebuild site")
     parser.add_argument(
         "--allow-sample",

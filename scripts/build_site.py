@@ -1462,7 +1462,34 @@ def _build_tldr_bullets(article: dict[str, Any]) -> list[str]:
     return bullets
 
 
-def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
+def _select_related_articles(
+    current: dict[str, Any], all_articles: list[dict[str, Any]], limit: int = 3
+) -> list[dict[str, Any]]:
+    cur_slug = current.get("slug", "")
+    cur_cat = current.get("category", "")
+    cur_tags = {str(t).lower() for t in current.get("tags", [])}
+    scored: list[tuple[int, str, dict[str, Any]]] = []
+    for cand in all_articles:
+        c_slug = cand.get("slug", "")
+        if not c_slug or c_slug == cur_slug:
+            continue
+        score = 0
+        if cand.get("category") == cur_cat:
+            score += 3
+        c_tags = {str(t).lower() for t in cand.get("tags", [])}
+        score += len(cur_tags & c_tags) * 2
+        if cand.get("origin") in {"first_party", "hybrid"}:
+            score += 1
+        scored.append((score, cand.get("updated_at", ""), cand))
+    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    return [item[2] for item in scored[:limit]]
+
+
+def render_article_page(
+    article: dict[str, Any],
+    config: dict[str, Any],
+    all_articles: list[dict[str, Any]] | None = None,
+) -> str:
     site = config["site"]
     seo = article["seo"]
     slug = validate_slug(article["slug"])
@@ -1479,6 +1506,7 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
     )
     if is_self and not origin_text.startswith(("🔬", "🧪")):
         origin_text = f"🔬 {origin_text}"
+    lead_variant = seo.get("lead_variant", "default")
 
     amazon_notice = config["compliance"].get(
         "amazon_disclosure_text",
@@ -1551,7 +1579,12 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         ],
     }
 
-    tldr_bullets_html = "".join(f"<li>{esc(b)}</li>" for b in _build_tldr_bullets(article))
+    tldr_bullets = _build_tldr_bullets(article)
+    if lead_variant == "faq_boost" and article.get("faqs"):
+        top_faq = article["faqs"][0]
+        tldr_bullets = [f"【最多の疑問】Q. {top_faq['question']} → {top_faq['answer']}"] + tldr_bullets
+    tldr_bullets_html = "".join(f"<li>{esc(b)}</li>" for b in tldr_bullets)
+
     kpi_html = "".join(
         f"""
         <div class="kpi-item">
@@ -1723,6 +1756,76 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         else ""
     )
 
+    related_list = _select_related_articles(article, all_articles or [])
+    related_section_html = ""
+    if related_list:
+        rel_items = []
+        for r in related_list:
+            r_slug = validate_slug(r["slug"])
+            r_m1 = r["summary_metrics"][0] if r.get("summary_metrics") else {"label": "実測", "value": "-"}
+            rel_items.append(
+                f"""
+                <li class="source-item">
+                  <a href="{esc(r_slug)}.html"><strong>{esc(r["title"])}</strong></a>
+                  <span class="source-meta">{esc(r_m1["label"])}: {esc(r_m1["value"])} (N={int(r.get("sample_size_n", 0))})</span>
+                </li>
+                """
+            )
+        related_section_html = f"""
+        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
+          <h2 class="section-h2"><span>6. あわせて読みたい関連検証データ</span></h2>
+          <ul class="source-list">
+            {''.join(rel_items)}
+          </ul>
+        </section>
+        """
+
+    chart_num = "2" if lead_variant == "table_first" else "1"
+    table_num = "1" if lead_variant == "table_first" else "2"
+
+    chart_section_block = f"""
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>{chart_num}. {esc(chart["title"])}</span>
+          <span class="section-subnote">単位: {esc(chart["unit"])}</span>
+        </h2>
+        <div class="gap-list">
+          {''.join(gap_items_html)}
+        </div>
+      </section>
+    """
+    table_section_block = f"""
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>{table_num}. 条件別・実測比較データテーブル</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>{esc(article["title"])} — 実測検証データ比較表</caption>
+            <thead><tr>{th_html}</tr></thead>
+            <tbody>{tr_html}</tbody>
+          </table>
+        </div>
+      </section>
+    """
+    primary_quant_blocks = (
+        table_section_block + chart_section_block
+        if lead_variant == "table_first"
+        else chart_section_block + table_section_block
+    )
+    toc_quant_links = (
+        """
+          <li><a href="#sec-table">1. 条件別・比較データ表</a></li>
+          <li><a href="#sec-chart">2. 実測ギャップ・比較グラフ</a></li>
+        """
+        if lead_variant == "table_first"
+        else """
+          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
+          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
+        """
+    )
+
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1784,29 +1887,7 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         </div>
       </section>
 
-      <section id="sec-chart" class="article-section">
-        <h2 class="section-h2">
-          <span>1. {esc(chart["title"])}</span>
-          <span class="section-subnote">単位: {esc(chart["unit"])}</span>
-        </h2>
-        <div class="gap-list">
-          {''.join(gap_items_html)}
-        </div>
-      </section>
-
-      <section id="sec-table" class="article-section">
-        <h2 class="section-h2">
-          <span>2. 条件別・実測比較データテーブル</span>
-          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
-        </h2>
-        <div class="table-wrap">
-          <table class="data-table">
-            <caption>{esc(article["title"])} — 実測検証データ比較表</caption>
-            <thead><tr>{th_html}</tr></thead>
-            <tbody>{tr_html}</tbody>
-          </table>
-        </div>
-      </section>
+      {primary_quant_blocks}
 
       <section id="sec-analysis" class="article-section">
         <h2 class="section-h2">
@@ -1833,6 +1914,8 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
           {sources_html}
         </ul>
       </section>
+
+      {related_section_html}
     </main>
 
     <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
@@ -1840,8 +1923,7 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         <div class="sidebar-title">目次</div>
         <ul class="toc-list">
           <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
-          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
-          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
+          {toc_quant_links}
           <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
           <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
           <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
@@ -2181,7 +2263,7 @@ def build_all() -> dict[str, Any]:
         out_path = (articles_out_dir / f"{slug}.html").resolve()
         if out_path.parent != articles_out_dir.resolve():
             raise ValueError(f"Path traversal blocked for slug: {slug}")
-        out_path.write_text(render_article_page(article, config), encoding="utf-8")
+        out_path.write_text(render_article_page(article, config, articles), encoding="utf-8")
 
         csv_path = (datasets_out_dir / f"{slug}.csv").resolve()
         csv_path.write_text(build_article_csv(article), encoding="utf-8")
