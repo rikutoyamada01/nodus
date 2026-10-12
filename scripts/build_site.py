@@ -93,33 +93,73 @@ def validate_article(article: dict[str, Any], config: dict[str, Any]) -> None:
             raise ValueError(f"Article {slug}: invalid status {item.get('status')!r}")
 
 
+def _looks_numeric_cell(text: str) -> bool:
+    s = str(text).strip()
+    if not s:
+        return False
+    return bool(
+        re.match(
+            r"^(?:約\s*|実測\s*|最大\s*|平均\s*|<|>|≦|≧|~|〜)*[-+$¥]?[0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?\s*(?:%|倍|x|X|W|V|A|Wh|mWh|kTokens|Tokens|tok/s|t/s|ms|秒|s|分|時間|MB/s|GB/s|Gbps|GB|TB|dBA|dB|°C|℃|円|USD|\$|件|回|アカウント|セッション|Models|CU)",
+            s,
+            re.IGNORECASE,
+        )
+    )
+
+
+def _normalize_sort_value(text: str) -> str:
+    """Extract a unit-normalized numeric sort key when possible so '900 ms' < '1.2 秒' and '1.5 GB/s' > '800 MB/s'."""
+    s = str(text).strip()
+    m = re.search(r"([-+]?(?:\d+(?:,\d{3})+|\d+)(?:\.\d+)?|\.\d+)", s)
+    if not m:
+        return ""
+    try:
+        val = float(m.group(1).replace(",", ""))
+    except ValueError:
+        return ""
+    rest = s[m.end() :].strip().lower()
+    if rest.startswith("万"):
+        val *= 10000.0
+    elif rest.startswith("gb/s"):
+        val *= 1000.0
+    elif rest.startswith("tb"):
+        val *= 1024.0
+    elif rest.startswith("ktokens") or rest.startswith("k "):
+        val *= 1000.0
+    elif rest.startswith("m ") or rest.startswith("mtokens"):
+        val *= 1000000.0
+    elif (rest.startswith("秒") or rest.startswith("s")) and not rest.startswith("session"):
+        if "ms" not in s.lower():
+            val *= 1000.0
+    return f"{val:.6f}"
+
+
 def build_css() -> str:
     return """
 :root {
-  --bg-page: #f8fafc;
+  --bg-page: #f5f7f9;
   --bg-surface: #ffffff;
-  --bg-subtle: #f1f5f9;
-  --bg-dark: #0f172a;
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #475569;
+  --bg-subtle: #f0f3f6;
+  --bg-callout: #f2f9f6;
+  --text-primary: #181a1c;
+  --text-secondary: #374151;
+  --text-muted: #64748b;
   --border-color: #e2e8f0;
   --border-strong: #cbd5e1;
-  --brand-primary: #1e40af;
-  --brand-accent: #2563eb;
-  --brand-light: #eff6ff;
-  --status-good: #047857;
-  --status-good-bg: #ecfdf5;
-  --status-warn: #b45309;
-  --status-warn-bg: #fffbeb;
-  --status-danger: #b91c1c;
-  --status-danger-bg: #fef2f2;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, "Liberation Mono", Menlo, monospace;
-  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --brand-primary: #0f5c4d;
+  --brand-accent: #0d7462;
+  --brand-light: #e6f4f1;
+  --origin-self-bg: #e6f4f1;
+  --origin-self-fg: #0b5345;
+  --origin-comm-bg: #f1f5f9;
+  --origin-comm-fg: #334155;
+  --status-good: #065f46;
+  --status-good-bg: #d1fae5;
+  --status-warn: #92400e;
+  --status-warn-bg: #fef3c7;
+  --status-danger: #991b1b;
+  --status-danger-bg: #fee2e2;
+  --font-sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Consolas, "BIZ UDGothic", "Liberation Mono", Menlo, monospace;
 }
 
 * {
@@ -129,14 +169,15 @@ def build_css() -> str:
 }
 
 html {
-  scroll-padding-top: 80px;
+  scroll-padding-top: 72px;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-page);
   color: var(--text-primary);
-  line-height: 1.7;
+  line-height: 1.8;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -148,22 +189,20 @@ body {
   background: var(--brand-primary);
   color: #ffffff;
   padding: 8px 16px;
-  border-radius: var(--radius-md);
+  border-radius: 4px;
   font-weight: 700;
   z-index: 1000;
-  transition: top 0.15s ease;
 }
 
 .skip-link:focus {
   top: 12px;
   color: #ffffff;
-  outline: 3px solid #93c5fd;
+  outline: 2px solid var(--brand-accent);
 }
 
 a {
   color: var(--brand-accent);
   text-decoration: none;
-  transition: color 0.15s ease;
 }
 
 a:hover {
@@ -179,16 +218,16 @@ input:focus-visible {
 }
 
 .container {
-  max-width: 1120px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* Header */
+/* Clean Editorial Tech Header (Zenn / Note / Qiita vibe) */
 .site-header {
-  background: var(--bg-dark);
-  color: #ffffff;
-  border-bottom: 1px solid #1e293b;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -198,9 +237,9 @@ input:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  min-height: 58px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -209,15 +248,15 @@ input:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: 1.18rem;
   letter-spacing: -0.02em;
   text-decoration: none;
 }
 
 .brand-logo:hover {
-  color: #ffffff;
+  color: var(--brand-primary);
   text-decoration: none;
 }
 
@@ -225,135 +264,114 @@ input:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  background: var(--text-primary);
   color: #ffffff;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
   flex-shrink: 0;
 }
 
 .brand-tagline {
   font-size: 0.78rem;
-  color: #cbd5e1;
-  font-weight: 400;
-  border-left: 1px solid #334155;
-  padding-left: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  border-left: 1px solid var(--border-strong);
+  padding-left: 10px;
 }
 
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 18px;
-  font-size: 0.85rem;
+  gap: 16px;
+  font-size: 0.84rem;
   flex-wrap: wrap;
 }
 
 .site-nav a {
-  color: #e2e8f0;
-  font-weight: 500;
+  color: var(--text-secondary);
+  font-weight: 600;
   text-decoration: none;
 }
 
 .site-nav a:hover {
-  color: #ffffff;
+  color: var(--brand-primary);
   text-decoration: underline;
 }
 
-/* Compliance Bar */
+/* Compliance Notice Bar */
 .pr-banner {
-  background: #f1f5f9;
+  background: var(--bg-subtle);
   border-bottom: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  font-size: 0.78rem;
-  padding: 8px 0;
-  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  padding: 6px 0;
 }
 
-/* Hero Section */
-.hero {
-  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-  color: #ffffff;
-  padding: 52px 0 44px;
-  border-bottom: 1px solid #334155;
+/* Compact Reader Intro Banner (Replaces dark SaaS Hero) */
+.editorial-intro {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 24px 0 20px;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(59, 130, 246, 0.18);
-  border: 1px solid rgba(96, 165, 250, 0.35);
-  color: #bfdbfe;
+.intro-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.intro-copy {
+  max-width: 720px;
+}
+
+.intro-kicker {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  padding: 4px 12px;
-  border-radius: 999px;
-  margin-bottom: 16px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin-bottom: 4px;
 }
 
-.hero h1 {
-  font-size: 2.15rem;
-  line-height: 1.28;
+.intro-copy h1 {
+  font-size: 1.38rem;
+  line-height: 1.4;
   font-weight: 800;
-  letter-spacing: -0.025em;
-  margin-bottom: 14px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
 }
 
-.hero p {
-  color: #e2e8f0;
-  font-size: 1.02rem;
-  max-width: 760px;
+.intro-copy p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
-  gap: 16px;
-  margin-top: 32px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.hero-stat-item {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 14px 18px;
-  border-radius: var(--radius-md);
-}
-
-.hero-stat-num {
-  font-family: var(--font-mono);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #93c5fd;
-}
-
-.hero-stat-label {
-  font-size: 0.8rem;
-  color: #cbd5e1;
-  margin-top: 2px;
-}
-
-/* Index Controls & Cards */
-.section-header {
+.intro-stats-inline {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 36px 0 20px;
+  gap: 16px;
   flex-wrap: wrap;
-  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  padding: 10px 14px;
+  border-radius: 6px;
+  align-self: center;
 }
 
-.section-title {
-  font-size: 1.35rem;
+.intro-stats-inline strong {
+  color: var(--text-primary);
   font-weight: 700;
-  letter-spacing: -0.01em;
 }
 
+/* Index Controls & Feed List */
 .controls-wrap {
   display: flex;
   align-items: center;
@@ -361,62 +379,65 @@ input:focus-visible {
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin: 22px 0 18px;
 }
 
 .filter-bar {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .filter-btn {
   background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
 }
 
 .filter-btn[aria-pressed="true"],
 .filter-btn:hover {
-  background: var(--brand-accent);
+  background: var(--text-primary);
   color: #ffffff;
-  border-color: var(--brand-accent);
+  border-color: var(--text-primary);
 }
 
 .search-input {
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
   color: var(--text-primary);
-  padding: 7px 14px;
-  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  border-radius: 6px;
   font-size: 0.85rem;
   min-width: 240px;
   max-width: 100%;
 }
 
+/* Scannable Article Feed (Zenn / Qiita / Reddit list feel) */
 .article-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-bottom: 56px;
 }
 
 .article-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 22px;
-  box-shadow: var(--shadow-sm);
+  border-radius: 8px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  gap: 10px;
+  transition: border-color 0.12s ease;
+}
+
+.article-card[data-origin="first_party"] {
+  border-left: 4px solid var(--brand-accent);
 }
 
 .article-card[hidden] {
@@ -424,39 +445,51 @@ input:focus-visible {
 }
 
 .article-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: #93c5fd;
+  border-color: var(--border-strong);
 }
 
 .card-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  font-size: 0.75rem;
-  margin-bottom: 12px;
+  font-size: 0.76rem;
   flex-wrap: wrap;
 }
 
+.origin-badge {
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.74rem;
+}
+
+.origin-self {
+  background: var(--origin-self-bg);
+  color: var(--origin-self-fg);
+}
+
+.origin-community {
+  background: var(--origin-comm-bg);
+  color: var(--origin-comm-fg);
+}
+
 .category-pill {
-  background: var(--brand-light);
-  color: var(--brand-primary);
+  color: var(--text-muted);
   font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
+  font-size: 0.76rem;
 }
 
 .date-text {
   color: var(--text-muted);
   font-family: var(--font-mono);
+  font-size: 0.75rem;
+  margin-left: auto;
 }
 
 .article-card h2 {
-  font-size: 1.12rem;
+  font-size: 1.18rem;
   line-height: 1.45;
-  margin-bottom: 10px;
+  font-weight: 800;
   color: var(--text-primary);
 }
 
@@ -471,232 +504,373 @@ input:focus-visible {
 }
 
 .article-card p {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  margin-bottom: 18px;
+  line-height: 1.65;
 }
 
-.card-metrics-preview {
-  background: var(--bg-subtle);
-  border-radius: var(--radius-md);
-  padding: 10px 12px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.mini-metric-label {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-
-.mini-metric-val {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.card-footer {
+.card-takeaway-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color);
-  font-size: 0.82rem;
-  font-weight: 600;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--bg-subtle);
 }
 
-.card-count-meta {
+.card-metrics-inline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.inline-metric {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-page);
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.inline-metric strong {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-left: 4px;
 }
 
-/* Article Detail Layout */
-.article-header {
+.card-tags-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.tag-chip {
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.73rem;
+}
+
+/* Article Detail: Zenn / Qiita / Note 2-Column Readable Layout */
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 760px) 280px;
+  gap: 28px;
+  align-items: start;
+  padding: 28px 0 64px;
+}
+
+.article-sheet {
   background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 36px 40px 48px;
+}
+
+.article-sidebar {
+  position: sticky;
+  top: 78px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px 18px;
+  font-size: 0.84rem;
+}
+
+.sidebar-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--border-color);
-  padding: 36px 0 28px;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.toc-list a {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  display: block;
+}
+
+.toc-list a:hover {
+  color: var(--brand-primary);
+}
+
+.meta-kv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.meta-kv-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 4px;
+}
+
+.meta-kv-row strong {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
 }
 
 .breadcrumb {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   margin-bottom: 14px;
-  font-family: var(--font-mono);
   word-break: break-word;
 }
 
-.article-title {
-  font-size: 1.85rem;
-  line-height: 1.32;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.article-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   margin-bottom: 12px;
 }
 
+.article-title {
+  font-size: 1.72rem;
+  line-height: 1.38;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
 .article-subtitle {
-  font-size: 1.02rem;
+  font-size: 0.96rem;
   color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.article-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
   margin-bottom: 16px;
 }
 
 .article-timestamps {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 24px;
 }
 
-.methodology-box {
-  background: var(--bg-subtle);
-  border-left: 4px solid var(--brand-primary);
-  padding: 12px 16px;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  font-size: 0.84rem;
-  color: var(--text-secondary);
-  margin-top: 12px;
-}
-
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
-  gap: 16px;
-  margin-top: 24px;
-}
-
-.kpi-card {
-  background: var(--bg-page);
-  border: 1px solid var(--border-color);
+/* TL;DR / Key Takeaways Callout (結論ファースト) */
+.tldr-box {
+  background: var(--bg-callout);
+  border: 1px solid #b7e4d8;
   border-left: 4px solid var(--brand-accent);
-  border-radius: var(--radius-md);
-  padding: 16px;
-}
-
-.kpi-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.kpi-value {
-  font-family: var(--font-mono);
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 4px 0;
-}
-
-.kpi-sub {
-  font-size: 0.76rem;
-  color: var(--text-secondary);
-}
-
-.article-body {
-  padding: 32px 0 64px;
-}
-
-.panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 24px;
+  border-radius: 6px;
+  padding: 18px 20px;
   margin-bottom: 28px;
-  box-shadow: var(--shadow-sm);
 }
 
-.panel-title {
-  font-size: 1.18rem;
-  font-weight: 700;
-  margin-bottom: 6px;
+.tldr-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--origin-self-fg);
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
-.panel-actions {
+.tldr-list {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #ccebe2;
+}
+
+.kpi-item {
+  background: #ffffff;
+  border: 1px solid #d5ede6;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0;
+}
+
+.kpi-sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+/* Cohesive Markdown-Style Sections inside Article Sheet */
+.article-section {
+  margin-top: 38px;
+}
+
+.section-h2 {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 8px;
 }
 
-.panel-unit {
+.section-subnote {
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--text-muted);
-  background: var(--bg-subtle);
-  padding: 4px 10px;
+}
+
+.prose-section {
+  margin-bottom: 28px;
+}
+
+.prose-section h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  padding-left: 10px;
+  border-left: 3px solid var(--brand-accent);
+}
+
+.prose-section p {
+  color: var(--text-primary);
+  font-size: 0.98rem;
+  line-height: 1.85;
+}
+
+.methodology-box {
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  padding: 14px 16px;
   border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-top: 12px;
 }
 
 .csv-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   font-family: var(--font-mono);
   font-size: 0.76rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--brand-primary);
   background: var(--brand-light);
-  border: 1px solid #bfdbfe;
-  padding: 4px 10px;
-  border-radius: 6px;
+  border: 1px solid #a7f3d0;
+  padding: 5px 11px;
+  border-radius: 4px;
   text-decoration: none;
 }
 
 .csv-btn:hover {
-  background: #dbeafe;
+  background: #d1fae5;
   text-decoration: none;
 }
 
-/* Spec Gap Chart (SVG bars for zero inline CSS) */
+/* Honest Zero-Baseline Quantitative Plot */
 .gap-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin-top: 18px;
+  gap: 14px;
+  margin-top: 12px;
 }
 
 .gap-item {
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  background: #fcfdff;
+  border-radius: 6px;
+  padding: 14px 16px;
+  background: var(--bg-page);
 }
 
 .gap-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 .gap-item-name {
   font-weight: 700;
-  font-size: 0.96rem;
+  font-size: 0.94rem;
 }
 
 .status-badge {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 999px;
+  padding: 2px 8px;
+  border-radius: 4px;
 }
 
 .status-good {
@@ -717,28 +891,29 @@ input:focus-visible {
 .bar-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 10px 0;
+  gap: 6px;
+  margin: 8px 0;
 }
 
 .bar-row {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 270px 1fr;
   align-items: center;
   gap: 12px;
 }
 
 .bar-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 .bar-svg {
   width: 100%;
-  height: 12px;
-  background: var(--bg-subtle);
-  border-radius: 999px;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 2px;
   overflow: hidden;
   display: block;
 }
@@ -759,37 +934,39 @@ input:focus-visible {
   border-top: 1px dashed var(--border-color);
 }
 
-/* Comparison Table */
+/* Booktabs-style Comparison Table with Right-Aligned Numeric Columns */
 .table-wrap {
   overflow-x: auto;
-  margin-top: 14px;
+  margin-top: 12px;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: 6px;
 }
 
 table.data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   text-align: left;
+  font-variant-numeric: tabular-nums;
 }
 
 table.data-table caption {
   text-align: left;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
-  padding: 8px 14px;
-  background: var(--bg-subtle);
+  padding: 8px 12px;
+  background: var(--bg-page);
   border-bottom: 1px solid var(--border-color);
 }
 
 table.data-table thead th {
-  background: var(--bg-dark);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  font-weight: 700;
   padding: 0;
   white-space: nowrap;
   font-size: 0.78rem;
+  border-bottom: 2px solid var(--border-strong);
 }
 
 .th-sort-btn {
@@ -797,8 +974,8 @@ table.data-table thead th {
   border: none;
   color: inherit;
   font: inherit;
-  font-weight: 600;
-  padding: 12px 14px;
+  font-weight: 700;
+  padding: 10px 12px;
   width: 100%;
   text-align: left;
   cursor: pointer;
@@ -809,21 +986,26 @@ table.data-table thead th {
 }
 
 .th-sort-btn:hover {
-  background: #1e293b;
+  background: #e2e8f0;
 }
 
 table.data-table td,
 table.data-table tbody th {
-  padding: 12px 14px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border-color);
-  font-family: var(--font-mono);
   font-size: 0.82rem;
+}
+
+table.data-table td.num-cell {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 table.data-table tbody th {
   font-family: var(--font-sans);
   font-weight: 700;
-  background: #f8fafc;
+  background: #fafbfc;
   color: var(--text-primary);
 }
 
@@ -834,49 +1016,26 @@ table.data-table tr:last-child th {
 
 table.data-table tbody tr:hover td,
 table.data-table tbody tr:hover th {
-  background: #f1f5f9;
+  background: var(--bg-page);
 }
 
-/* Analytical Prose */
-.prose-section {
-  margin-bottom: 24px;
-}
-
-.prose-section:last-child {
-  margin-bottom: 0;
-}
-
-.prose-section h2 {
-  font-size: 1.16rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--bg-subtle);
-}
-
-.prose-section p {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-/* Monetization / Affiliate CTA */
+/* Reference / Affiliate Links */
 .cta-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .cta-card {
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  padding: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 14px 16px;
+  background: var(--bg-page);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .cta-badge {
@@ -885,37 +1044,36 @@ table.data-table tbody tr:hover th {
   color: var(--brand-primary);
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   width: fit-content;
 }
 
 .cta-title {
   font-weight: 700;
-  font-size: 0.96rem;
+  font-size: 0.92rem;
   color: var(--text-primary);
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .cta-provider {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .cta-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-accent);
+  background: var(--text-primary);
   color: #ffffff;
   font-weight: 600;
-  font-size: 0.86rem;
-  padding: 10px 16px;
-  border-radius: 6px;
+  font-size: 0.82rem;
+  padding: 8px 14px;
+  border-radius: 4px;
   text-align: center;
   text-decoration: none;
-  transition: background 0.15s;
 }
 
 .cta-btn:hover {
@@ -925,9 +1083,9 @@ table.data-table tbody tr:hover th {
 }
 
 .cta-disclosure-note {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 /* FAQ & Sources */
@@ -937,7 +1095,7 @@ table.data-table tbody tr:hover th {
 
 .faq-item {
   border-bottom: 1px solid var(--border-color);
-  padding: 16px 0;
+  padding: 14px 0;
 }
 
 .faq-item:last-child {
@@ -946,21 +1104,22 @@ table.data-table tbody tr:hover th {
 
 .faq-q {
   font-weight: 700;
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   margin-bottom: 6px;
   color: var(--text-primary);
 }
 
 .faq-a {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
+  line-height: 1.75;
 }
 
 .source-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-top: 12px;
 }
 
@@ -968,9 +1127,10 @@ table.data-table tbody tr:hover th {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--bg-subtle);
-  padding: 10px 14px;
-  border-radius: 6px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  padding: 9px 12px;
+  border-radius: 4px;
   font-size: 0.82rem;
   flex-wrap: wrap;
   gap: 8px;
@@ -979,16 +1139,17 @@ table.data-table tbody tr:hover th {
 .source-meta {
   font-family: var(--font-mono);
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.74rem;
 }
 
-/* Footer */
+/* Clean Minimal Footer */
 .site-footer {
-  background: var(--bg-dark);
-  color: #cbd5e1;
-  padding: 48px 0 36px;
-  font-size: 0.85rem;
-  margin-top: 64px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 40px 0 32px;
+  font-size: 0.84rem;
+  margin-top: 48px;
 }
 
 .footer-grid {
@@ -996,66 +1157,76 @@ table.data-table tbody tr:hover th {
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 32px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid #1e293b;
+  gap: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .footer-desc {
-  max-width: 480px;
-  color: #cbd5e1;
+  max-width: 500px;
+  color: var(--text-secondary);
   margin-top: 8px;
   font-size: 0.82rem;
 }
 
 .footer-amazon-notice {
-  margin-top: 10px;
-  font-size: 0.78rem;
-  color: #94a3b8;
+  margin-top: 8px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
 }
 
 .footer-links {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 
 .footer-links a {
-  color: #e2e8f0;
-  text-decoration: none;
-}
-
-.footer-links a:hover {
-  color: #ffffff;
-  text-decoration: underline;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .footer-bottom {
-  padding-top: 24px;
+  padding-top: 20px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  font-size: 0.78rem;
-  color: #94a3b8;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 960px) {
+  .article-layout {
+    grid-template-columns: 1fr;
+  }
+  .article-sidebar {
+    position: static;
+    order: -1;
+  }
 }
 
 @media (max-width: 680px) {
   .brand-tagline {
     display: none;
   }
-  .hero h1 {
-    font-size: 1.55rem;
+  .article-sheet {
+    padding: 22px 18px 32px;
   }
   .article-title {
-    font-size: 1.4rem;
+    font-size: 1.38rem;
   }
   .bar-row {
     grid-template-columns: 1fr;
     gap: 4px;
-  }
-  .panel {
-    padding: 18px;
   }
 }
 """
@@ -1072,12 +1243,17 @@ def build_js() -> str:
     var cards = document.querySelectorAll(".article-card[data-category]");
     if (!filterBtns.length && !searchInput) return;
 
-    var activeCategory = "all";
+    var activeFilter = "all";
 
     function applyFilter() {
       var query = searchInput ? searchInput.value.trim().toLowerCase() : "";
       cards.forEach(function (card) {
-        var catMatch = activeCategory === "all" || card.getAttribute("data-category") === activeCategory;
+        var cat = card.getAttribute("data-category") || "";
+        var origin = card.getAttribute("data-origin") || "community";
+        var catMatch =
+          activeFilter === "all" ||
+          (activeFilter === "first_party" && (origin === "first_party" || origin === "hybrid")) ||
+          cat === activeFilter;
         var textMatch = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
         if (catMatch && textMatch) {
           card.removeAttribute("hidden");
@@ -1089,7 +1265,7 @@ def build_js() -> str:
 
     filterBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
-        activeCategory = btn.getAttribute("data-filter") || "all";
+        activeFilter = btn.getAttribute("data-filter") || "all";
         filterBtns.forEach(function (b) {
           b.setAttribute("aria-pressed", b === btn ? "true" : "false");
         });
@@ -1102,8 +1278,15 @@ def build_js() -> str:
     }
   }
 
-  function extractLeadingNumber(text) {
-    var m = text.match(/[-+]?\d+(?:,\d{3})*(?:\.\d+)?/);
+  function extractSortNumber(cell) {
+    if (!cell) return NaN;
+    var attrVal = cell.getAttribute("data-sort-value");
+    if (attrVal !== null && attrVal !== "") {
+      var parsed = parseFloat(attrVal);
+      if (!isNaN(parsed)) return parsed;
+    }
+    var text = cell.textContent.trim();
+    var m = text.match(/[-+]?(?:\d+(?:,\d{3})+|\d+)(?:\.\d+)?/);
     return m ? parseFloat(m[0].replace(/,/g, "")) : NaN;
   }
 
@@ -1125,14 +1308,16 @@ def build_js() -> str:
           th.setAttribute("aria-sort", asc ? "ascending" : "descending");
 
           rows.sort(function (a, b) {
-            var cellA = a.children[colIdx] ? a.children[colIdx].textContent.trim() : "";
-            var cellB = b.children[colIdx] ? b.children[colIdx].textContent.trim() : "";
-            var numA = extractLeadingNumber(cellA);
-            var numB = extractLeadingNumber(cellB);
+            var cellA = a.children[colIdx];
+            var cellB = b.children[colIdx];
+            var numA = extractSortNumber(cellA);
+            var numB = extractSortNumber(cellB);
             if (!isNaN(numA) && !isNaN(numB) && numA !== numB) {
               return asc ? numA - numB : numB - numA;
             }
-            return asc ? cellA.localeCompare(cellB, "ja") : cellB.localeCompare(cellA, "ja");
+            var txtA = cellA ? cellA.textContent.trim() : "";
+            var txtB = cellB ? cellB.textContent.trim() : "";
+            return asc ? txtA.localeCompare(txtB, "ja") : txtB.localeCompare(txtA, "ja");
           });
 
           rows.forEach(function (r) { tbody.appendChild(r); });
@@ -1187,13 +1372,13 @@ def render_header(config: dict[str, Any], root_prefix: str = "") -> str:
     <a href="{root_prefix}index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>{esc(site["name"])}</span>
-      <span class="brand-tagline">{esc(site["jp_subtitle"])}</span>
+      <span class="brand-tagline">一次検証・定量技術ノート</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="{root_prefix}index.html">実測データベース一覧</a>
-      <a href="{root_prefix}about.html">調査手法・運営情報</a>
-      <a href="{root_prefix}about.html#privacy">運営ポリシー・プライバシー</a>
-      <a href="{root_prefix}feed.xml">RSS/Atom</a>
+      <a href="{root_prefix}index.html">検証記事一覧</a>
+      <a href="{root_prefix}about.html">検証手法・運営情報</a>
+      <a href="{root_prefix}about.html#privacy">ポリシー</a>
+      <a href="{root_prefix}feed.xml">RSS</a>
     </nav>
   </div>
 </header>
@@ -1228,14 +1413,14 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
           <span>{esc(site["name"])}</span>
         </div>
         <p class="footer-desc">
-          {esc(site["tagline"])} — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
+          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
         </p>
         <p class="footer-amazon-notice">{esc(footer_notice)}</p>
       </div>
       <div class="footer-links">
-        <a href="{root_prefix}index.html">トップページ</a>
-        <a href="{root_prefix}about.html">調査手法・免責事項</a>
-        <a href="{root_prefix}about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="{root_prefix}index.html">記事一覧</a>
+        <a href="{root_prefix}about.html">検証手法・免責事項</a>
+        <a href="{root_prefix}about.html#privacy">プライバシーポリシー</a>
         <a href="{esc(contact_url)}" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="{root_prefix}sitemap.xml">Sitemap</a>
         <a href="{root_prefix}llms.txt">LLMs.txt</a>
@@ -1243,7 +1428,7 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
     </div>
     <div class="footer-bottom">
       <span>&copy; {esc(site["copyright_year"])} {esc(site["organization"])}. All rights reserved.</span>
-      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
+      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
     </div>
   </div>
 </footer>
@@ -1262,6 +1447,20 @@ def build_article_csv(article: dict[str, Any]) -> str:
     return buf.getvalue()
 
 
+def _build_tldr_bullets(article: dict[str, Any]) -> list[str]:
+    custom_tldr = article.get("tldr")
+    if isinstance(custom_tldr, list) and custom_tldr:
+        return [str(item) for item in custom_tldr]
+    bullets: list[str] = []
+    for m in article.get("summary_metrics", [])[:3]:
+        bullets.append(f"{m['label']}は「{m['value']}」（{m['subtext']}）。")
+    items = article.get("spec_gap_chart", {}).get("items", [])
+    if items:
+        top = items[0]
+        bullets.append(f"{top['name']}：{top['note']}")
+    return bullets
+
+
 def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
     site = config["site"]
     seo = article["seo"]
@@ -1270,6 +1469,16 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
     canonical_url = f"{base_url}/articles/{slug}.html"
     data_updated_at = article.get("data_updated_at", article["updated_at"])
     methodology_note = article.get("methodology_note", "")
+    origin = article.get("origin", "community")
+    is_self = origin in {"first_party", "hybrid"}
+    origin_badge_cls = "origin-self" if is_self else "origin-community"
+    origin_text = article.get(
+        "origin_label",
+        "🔬 独自実機・AIチャット検証" if is_self else "📊 一次検証ログ定量調査",
+    )
+    if is_self and not origin_text.startswith(("🔬", "🧪")):
+        origin_text = f"🔬 {origin_text}"
+
     amazon_notice = config["compliance"].get(
         "amazon_disclosure_text",
         "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
@@ -1323,9 +1532,10 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         ],
     }
 
+    tldr_bullets_html = "".join(f"<li>{esc(b)}</li>" for b in _build_tldr_bullets(article))
     kpi_html = "".join(
         f"""
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">{esc(m["label"])}</div>
           <div class="kpi-value">{esc(m["value"])}</div>
           <div class="kpi-sub">{esc(m["subtext"])}</div>
@@ -1334,18 +1544,29 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         for m in article.get("summary_metrics", [])
     )
 
+    tags_html = "".join(f'<span class="tag-chip">#{esc(t)}</span>' for t in article.get("tags", []))
+
     chart = article["spec_gap_chart"]
-    max_scale = float(chart.get("max_scale", 100.0)) or 100.0
+    configured_max = float(chart.get("max_scale", 100.0)) or 100.0
+    observed_max = max(
+        [configured_max]
+        + [
+            max(0.0, float(it.get("official_value", 0.0)), float(it.get("measured_value", 0.0)))
+            for it in chart.get("items", [])
+        ]
+    )
     gap_items_html = []
     for item in chart.get("items", []):
-        off_pct = min(100.0, max(4.0, (float(item["official_value"]) / max_scale) * 100.0))
-        meas_pct = min(100.0, max(4.0, (float(item["measured_value"]) / max_scale) * 100.0))
+        off_v = max(0.0, float(item["official_value"]))
+        meas_v = max(0.0, float(item["measured_value"]))
+        off_pct = (off_v / observed_max) * 100.0 if observed_max > 0 else 0.0
+        meas_pct = (meas_v / observed_max) * 100.0 if observed_max > 0 else 0.0
         status_raw = item.get("status", "good")
         status_cls = f"status-{status_raw if status_raw in ALLOWED_STATUSES else 'good'}"
         status_text = {
-            "good": "実測良好 / 高効率",
+            "good": "実測良好・高効率",
             "warning": "条件付き制限・乖離あり",
-            "danger": "大幅乖離・高消費注意",
+            "danger": "大幅乖離・要注意",
         }.get(status_raw, "検証済")
 
         gap_items_html.append(
@@ -1359,13 +1580,13 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
                 <div class="bar-row">
                   <span class="bar-label">{esc(item["official_label"])}</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="{esc(item['official_label'])}">
-                    <rect class="bar-rect-official" x="0" y="0" width="{off_pct:.1f}" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="{off_pct:.2f}" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>{esc(item["measured_label"])}</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="{esc(item['measured_label'])}">
-                    <rect class="bar-rect-measured" x="0" y="0" width="{meas_pct:.1f}" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="{meas_pct:.2f}" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -1384,14 +1605,20 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         if not row:
             continue
         first_cell = f'<th scope="row">{esc(row[0])}</th>'
-        rest_cells = "".join(f"<td>{esc(cell)}</td>" for cell in row[1:])
-        tr_rows.append(f"<tr>{first_cell}{rest_cells}</tr>")
+        rest_cells = []
+        for cell in row[1:]:
+            cell_str = str(cell)
+            cls_attr = ' class="num-cell"' if _looks_numeric_cell(cell_str) else ""
+            sort_val = _normalize_sort_value(cell_str)
+            sort_attr = f' data-sort-value="{esc(sort_val)}"' if sort_val else ""
+            rest_cells.append(f"<td{cls_attr}{sort_attr}>{esc(cell_str)}</td>")
+        tr_rows.append(f"<tr>{first_cell}{''.join(rest_cells)}</tr>")
     tr_html = "".join(tr_rows)
 
     sections_html = "".join(
         f"""
         <div class="prose-section">
-          <h2>{esc(sec["heading"])}</h2>
+          <h3>{esc(sec["heading"])}</h3>
           <p>{esc(sec["body"])}</p>
         </div>
         """
@@ -1413,34 +1640,32 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
                   <div>
                     <span class="cta-badge">{esc(aff["badge"])}</span>
                     <div class="cta-title">{esc(aff["label"])}</div>
-                    <div class="cta-provider">取扱・提供元: {esc(aff["provider"])} {provider_suffix}</div>
+                    <div class="cta-provider">提供元: {esc(aff["provider"])} {provider_suffix}</div>
                   </div>
                   <a href="{esc(aff_url)}" target="_blank" rel="{rel_attr}" class="cta-btn">
-                    公式仕様・最新価格を確認する &rarr;
+                    公式仕様・詳細を見る &rarr;
                   </a>
                 </div>
                 """
             )
-    cta_panel_html = ""
+    cta_section_html = ""
     if cta_cards:
-        panel_badge = "【広告・PR】Sponsored Links" if monetized else "Reference Links (広告なし)"
+        panel_badge = "【広告・PR】Sponsored" if monetized else "公式・参考リンク (広告なし)"
         panel_note = (
             f"※上記リンクにはアフィリエイト広告が含まれます。{esc(amazon_notice)}"
             if monetized
-            else "※上記は読者の利便性のための純粋な参考リンクであり、現在アフィリエイトタグや広告報酬は一切設定されていません。"
+            else "※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。"
         )
-        cta_panel_html = f"""
-        <section class="panel" aria-label="検証対象モデル・関連サービス参考リンク">
-          <div class="panel-title">
-            <span>検証対象モデル・関連サービス取扱先リンク</span>
-            <span class="panel-unit">{panel_badge}</span>
-          </div>
+        cta_section_html = f"""
+        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
+          <h2 class="section-h2">
+            <span>検証対象モデル・関連サービス公式リンク</span>
+            <span class="section-subnote">{panel_badge}</span>
+          </h2>
           <div class="cta-grid">
             {''.join(cta_cards)}
           </div>
-          <p class="cta-disclosure-note">
-            {panel_note}
-          </p>
+          <p class="cta-disclosure-note">{panel_note}</p>
         </section>
         """
 
@@ -1458,7 +1683,7 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         f"""
         <li class="source-item">
           <a href="{esc(validate_url(s["url"]))}" target="_blank" rel="noopener noreferrer">{esc(s["title"])}</a>
-          <span class="source-meta">対象: {esc(s["sample_size"])} | 確認日: {esc(s["verified_date"])}</span>
+          <span class="source-meta">サンプル: {esc(s["sample_size"])} | 確認日: {esc(s["verified_date"])}</span>
         </li>
         """
         for s in article.get("sources", [])
@@ -1466,7 +1691,7 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
 
     methodology_html = ""
     if methodology_note:
-        methodology_html = f'<div class="methodology-box"><strong>集計・測定条件メソドロジー:</strong> {esc(methodology_note)}</div>'
+        methodology_html = f'<div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> {esc(methodology_note)}</div>'
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -1489,76 +1714,120 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
 <body>
   {render_header(config, root_prefix="../")}
 
-  <section class="article-header">
-    <div class="container">
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
       <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>{esc(article["category"])}</span> &rsaquo; <span>{esc(slug)}</span>
+        <a href="../index.html">Nodus</a> &rsaquo; <span>{esc(article["category"])}</span>
       </nav>
+
+      <div class="article-meta-top">
+        <span class="origin-badge {origin_badge_cls}">{esc(origin_text)}</span>
+        <span class="category-pill">{esc(article["category"])}</span>
+      </div>
+
       <h1 class="article-title">{esc(article["title"])}</h1>
       <p class="article-subtitle">{esc(article["subtitle"])}</p>
+
+      <div class="article-tags-row">
+        {tags_html}
+      </div>
+
       <div class="article-timestamps">
-        <span>公開日: <time datetime="{esc(article["published_at"])}">{esc(article["published_at"])}</time></span>
-        <span>実測データ更新日: <time datetime="{esc(data_updated_at)}">{esc(data_updated_at)}</time></span>
-        <span>記事改訂日: <time datetime="{esc(article["updated_at"])}">{esc(article["updated_at"])}</time></span>
+        <span>公開: <time datetime="{esc(article["published_at"])}">{esc(article["published_at"])}</time></span>
+        <span>実測データ更新: <time datetime="{esc(data_updated_at)}">{esc(data_updated_at)}</time></span>
+        <span>サンプル数: <strong>N = {int(article.get("sample_size_n", 0))}</strong></span>
       </div>
-      {methodology_html}
-      <div class="kpi-grid">
-        {kpi_html}
-      </div>
-    </div>
-  </section>
 
-  <main id="main-content" class="container article-body">
-    <section class="panel">
-      <div class="panel-title">
-        <span>{esc(chart["title"])}</span>
-        <span class="panel-unit">単位: {esc(chart["unit"])}</span>
-      </div>
-      <div class="gap-list">
-        {''.join(gap_items_html)}
-      </div>
-    </section>
+      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
+        <div class="tldr-title">
+          <span>💡 この記事でわかること（結論・実測サマリー）</span>
+          <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVデータを取得</a>
+        </div>
+        <ul class="tldr-list">
+          {tldr_bullets_html}
+        </ul>
+        <div class="kpi-strip">
+          {kpi_html}
+        </div>
+      </section>
 
-    <section class="panel">
-      <div class="panel-title">
-        <span>公称スペック vs コミュニティ実測値 マトリクス比較表</span>
-        <div class="panel-actions">
-          <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVダウンロード</a>
-          <span class="panel-unit">列ヘッダークリックでソート可能</span>
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>1. {esc(chart["title"])}</span>
+          <span class="section-subnote">単位: {esc(chart["unit"])}</span>
+        </h2>
+        <div class="gap-list">
+          {''.join(gap_items_html)}
+        </div>
+      </section>
+
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>2. 条件別・実測比較データテーブル</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>{esc(article["title"])} — 実測検証データ比較表</caption>
+            <thead><tr>{th_html}</tr></thead>
+            <tbody>{tr_html}</tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sec-analysis" class="article-section">
+        <h2 class="section-h2">
+          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
+        </h2>
+        {sections_html}
+      </section>
+
+      {cta_section_html}
+
+      <section id="sec-faq" class="article-section">
+        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
+        <div class="faq-list">
+          {faq_html}
+        </div>
+      </section>
+
+      <section id="sec-sources" class="article-section">
+        <h2 class="section-h2">
+          <span>5. 検証条件・一次情報ソース (Provenance)</span>
+        </h2>
+        {methodology_html}
+        <ul class="source-list">
+          {sources_html}
+        </ul>
+      </section>
+    </main>
+
+    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
+      <div class="sidebar-box">
+        <div class="sidebar-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
+          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
+          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
+          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
+          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
+          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">検証データ概要</div>
+        <div class="meta-kv-list">
+          <div class="meta-kv-row"><span>データ種別</span><strong>{"独自一次検証" if is_self else "一次ログ集計"}</strong></div>
+          <div class="meta-kv-row"><span>サンプル数</span><strong>N = {int(article.get("sample_size_n", 0))}</strong></div>
+          <div class="meta-kv-row"><span>比較行数</span><strong>{len(table["rows"])} 件</strong></div>
+          <div class="meta-kv-row"><span>最終検証日</span><strong>{esc(data_updated_at)}</strong></div>
+        </div>
+        <div class="card-takeaway-bar">
+          <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVをダウンロード</a>
         </div>
       </div>
-      <div class="table-wrap">
-        <table class="data-table">
-          <caption>{esc(article["title"])} — 定量比較データテーブル（実測値中央値および公称仕様）</caption>
-          <thead><tr>{th_html}</tr></thead>
-          <tbody>{tr_html}</tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel">
-      {sections_html}
-    </section>
-
-    {cta_panel_html}
-
-    <section class="panel">
-      <div class="panel-title"><span>よくある質問（実測データFAQ）</span></div>
-      <div class="faq-list">
-        {faq_html}
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">
-        <span>一次情報・コミュニティ検証ログ出典・仕様基準 (Primary Sources)</span>
-        <span class="panel-unit">Fact Provenance</span>
-      </div>
-      <ul class="source-list">
-        {sources_html}
-      </ul>
-    </section>
-  </main>
+    </aside>
+  </div>
 
   {render_footer(config, root_prefix="../")}
 </body>
@@ -1572,10 +1841,11 @@ def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) ->
     categories = sorted({a["category"] for a in articles})
 
     total_samples = sum(int(a.get("sample_size_n", 0)) for a in articles)
-    total_models = sum(len(a.get("comparison_table", {}).get("rows", [])) for a in articles)
+    first_party_count = sum(1 for a in articles if a.get("origin") in {"first_party", "hybrid"})
 
     filter_btns = [
-        '<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて表示</button>'
+        '<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて表示</button>',
+        '<button type="button" class="filter-btn" data-filter="first_party" aria-pressed="false">🔬 独自検証・チャット知見</button>',
     ]
     for cat in categories:
         filter_btns.append(
@@ -1585,36 +1855,38 @@ def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) ->
     cards_html = []
     for a in articles:
         slug = validate_slug(a["slug"])
+        origin = a.get("origin", "community")
+        is_self = origin in {"first_party", "hybrid"}
+        origin_badge_cls = "origin-self" if is_self else "origin-community"
+        origin_text = a.get(
+            "origin_label",
+            "🔬 独自実機・AIチャット検証" if is_self else "📊 一次検証ログ定量調査",
+        )
+        if is_self and not origin_text.startswith(("🔬", "🧪")):
+            origin_text = f"🔬 {origin_text}"
+
         m1 = a["summary_metrics"][0] if len(a["summary_metrics"]) > 0 else {"label": "データ", "value": "-"}
         m2 = a["summary_metrics"][1] if len(a["summary_metrics"]) > 1 else {"label": "指標", "value": "-"}
         data_date = a.get("data_updated_at", a["updated_at"])
+        tags_chips = "".join(f'<span class="tag-chip">#{esc(t)}</span>' for t in a.get("tags", [])[:4])
         cards_html.append(
             f"""
-            <article class="article-card" data-category="{esc(a["category"])}">
-              <div>
-                <div class="card-meta">
-                  <span class="category-pill">{esc(a["category"])}</span>
-                  <time class="date-text" datetime="{esc(data_date)}">実測更新: {esc(data_date)}</time>
-                </div>
-                <h2><a href="articles/{esc(slug)}.html" class="card-title-link">{esc(a["title"])}</a></h2>
-                <p>{esc(a["subtitle"])}</p>
+            <article class="article-card" data-category="{esc(a["category"])}" data-origin="{esc(origin)}">
+              <div class="card-meta">
+                <span class="origin-badge {origin_badge_cls}">{esc(origin_text)}</span>
+                <span class="category-pill">{esc(a["category"])}</span>
+                <time class="date-text" datetime="{esc(data_date)}">更新: {esc(data_date)}</time>
               </div>
-              <div>
-                <div class="card-metrics-preview">
-                  <div>
-                    <div class="mini-metric-label">{esc(m1["label"])}</div>
-                    <div class="mini-metric-val">{esc(m1["value"])}</div>
-                  </div>
-                  <div>
-                    <div class="mini-metric-label">{esc(m2["label"])}</div>
-                    <div class="mini-metric-val">{esc(m2["value"])}</div>
-                  </div>
+              <h2><a href="articles/{esc(slug)}.html" class="card-title-link">{esc(a["title"])}</a></h2>
+              <p>{esc(a["subtitle"])}</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">{esc(m1["label"])}: <strong>{esc(m1["value"])}</strong></span>
+                  <span class="inline-metric">{esc(m2["label"])}: <strong>{esc(m2["value"])}</strong></span>
                 </div>
-                <div class="card-footer">
-                  <a href="articles/{esc(slug)}.html">実測比較データを見る &rarr;</a>
-                  <span class="card-count-meta">
-                    {len(a["comparison_table"]["rows"])} Models / N={int(a.get("sample_size_n", 0))}
-                  </span>
+                <div class="card-tags-meta">
+                  {tags_chips}
+                  <span>N={int(a.get("sample_size_n", 0))}</span>
                 </div>
               </div>
             </article>
@@ -1627,10 +1899,10 @@ def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) ->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{esc(site["name"])} | {esc(site["jp_subtitle"])}</title>
-  <meta name="description" content="カタログ公称スペックには記載されない実測出力・非公開レート制限・持続性能を、Reddit等の海外一次検証ログから定量集計・比較するデータベースメディア。">
+  <meta name="description" content="Note・Zenn・Qiitaや公式仕様書だけでは辿り着けない「独自の実機・AIチャット検証ログ」と「海外一次検証データ」を、結論ファーストでわかりやすくまとめた技術検証メディア。">
   <link rel="canonical" href="{esc(base_url)}/">
   <meta property="og:title" content="{esc(site["name"])} | {esc(site["jp_subtitle"])}">
-  <meta property="og:description" content="カタログ公称スペックとコミュニティ実測値のギャップを数値とCSVで公開する定量比較データベース。">
+  <meta property="og:description" content="独自の実験・AIチャット検証と一次計測ログから、公式スペックの裏にある実測値をわかりやすく解説する技術検証ノート。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{esc(base_url)}/">
   <link rel="alternate" type="application/atom+xml" title="{esc(site["name"])} Feed" href="feed.xml">
@@ -1639,41 +1911,30 @@ def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) ->
 <body>
   {render_header(config, root_prefix="")}
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-badge">QUANTITATIVE SPEC INTELLIGENCE // NODUS</div>
-      <h1>カタログ値の裏にある「実測値」を、数字で比較する。</h1>
-      <p>
-        メーカー公式ページの「最大〇〇W」「高速アクセス」といった定性的な宣伝文句ではなく、グローバル開発者・ハードウェア検証コミュニティの一次計測ログを集計し、測定条件付きの中央値テーブルおよびCSVデータセットとして公開しています。
-      </p>
-      <div class="hero-stats">
-        <div class="hero-stat-item">
-          <div class="hero-stat-num">{len(articles)} Datasets</div>
-          <div class="hero-stat-label">公開中の実測比較レポート（CSV付）</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num">N = {total_samples}</div>
-          <div class="hero-stat-label">累計集計コミュニティ検証ログ・セッション</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num">{total_models} Models</div>
-          <div class="hero-stat-label">横断比較済みハードウェア・SaaSプラン数</div>
-        </div>
+  <section class="editorial-intro">
+    <div class="container intro-inner">
+      <div class="intro-copy">
+        <div class="intro-kicker">EMPIRICAL TECH NOTES &amp; BENCHMARKS</div>
+        <h1>検索しても出てこない「実測値」と「独自の検証結果」を、結論ファーストで。</h1>
+        <p>
+          公式ドキュメントの曖昧な表記や、Zenn・Qiita・Note・Redditにもまだまとまっていない「実際に手元やAIチャットで試してわかった数値・挙動」を分析・構造化して公開しています。すべての記事に30秒で読める要点まとめと生CSVデータが付属します。
+        </p>
+      </div>
+      <div class="intro-stats-inline" aria-label="公開データ統計">
+        <span>検証記事: <strong>{len(articles)}本</strong> (独自検証 {first_party_count}本)</span>
+        <span>累計検証サンプル: <strong>N = {total_samples}</strong></span>
       </div>
     </div>
   </section>
 
   <main id="main-content" class="container">
-    <div class="section-header">
-      <h2 class="section-title">最新の実測比較・定量検証レポート</h2>
-    </div>
     <div class="controls-wrap">
-      <div class="filter-bar" role="group" aria-label="カテゴリ絞り込み">
+      <div class="filter-bar" role="group" aria-label="カテゴリ・検証種別絞り込み">
         {''.join(filter_btns)}
       </div>
       <div>
-        <label for="datasetSearch" class="mini-metric-label">キーワード検索: </label>
-        <input type="search" id="datasetSearch" class="search-input" placeholder="例: 100W, A100, Claude, USB4...">
+        <label for="datasetSearch" class="category-pill">検索: </label>
+        <input type="search" id="datasetSearch" class="search-input" placeholder="例: AST, Claude, 100W, USB4...">
       </div>
     </div>
 
@@ -1860,7 +2121,13 @@ def build_all() -> dict[str, Any]:
         seen_slugs.add(slug)
         articles.append(article)
 
-    articles.sort(key=lambda x: x.get("updated_at", ""), reverse=True)
+    articles.sort(
+        key=lambda x: (
+            x.get("updated_at", ""),
+            1 if x.get("origin") in {"first_party", "hybrid"} else 0,
+        ),
+        reverse=True,
+    )
 
     # Remove stale generated articles and CSV datasets
     for old_html in articles_out_dir.glob("*.html"):

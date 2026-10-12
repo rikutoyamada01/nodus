@@ -24,13 +24,13 @@
     <a href="../index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">公称スペックとコミュニティ実測値の定量比較データベース</span>
+      <span class="brand-tagline">一次検証・定量技術ノート</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">実測データベース一覧</a>
-      <a href="../about.html">調査手法・運営情報</a>
-      <a href="../about.html#privacy">運営ポリシー・プライバシー</a>
-      <a href="../feed.xml">RSS/Atom</a>
+      <a href="../index.html">検証記事一覧</a>
+      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
     </nav>
   </div>
 </header>
@@ -39,73 +39,90 @@
 </div>
 
 
-  <section class="article-header">
-    <div class="container">
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
       <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>Software &amp; SaaS Economics</span> &rsaquo; <span>ai-coding-subscriptions-real-rate-limits-token-economics</span>
+        <a href="../index.html">Nodus</a> &rsaquo; <span>Software &amp; SaaS Economics</span>
       </nav>
+
+      <div class="article-meta-top">
+        <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+        <span class="category-pill">Software &amp; SaaS Economics</span>
+      </div>
+
       <h1 class="article-title">AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</h1>
       <p class="article-subtitle">公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）</p>
-      <div class="article-timestamps">
-        <span>公開日: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>実測データ更新日: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>記事改訂日: <time datetime="2026-10-12">2026-10-12</time></span>
+
+      <div class="article-tags-row">
+        <span class="tag-chip">#Claude Code</span><span class="tag-chip">#Cursor</span><span class="tag-chip">#Rate Limits</span><span class="tag-chip">#Token Economics</span><span class="tag-chip">#LLM Benchmark</span>
       </div>
-      <div class="methodology-box"><strong>集計・測定条件メソドロジー:</strong> r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。</div>
-      <div class="kpi-grid">
-        
-        <div class="kpi-card">
+
+      <div class="article-timestamps">
+        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>サンプル数: <strong>N = 85</strong></span>
+      </div>
+
+      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
+        <div class="tldr-title">
+          <span>💡 この記事でわかること（結論・実測サマリー）</span>
+          <a href="../datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv" download="ai-coding-subscriptions-real-rate-limits-token-economics.csv" class="csv-btn">CSVデータを取得</a>
+        </div>
+        <ul class="tldr-list">
+          <li>集計開発者ログ数 (N)は「85 アカウント」（r/ClaudeAI (N=54), r/cursor (N=31)）。</li><li>Claude Pro 5時間枠の実測中央値は「約 180万〜240万 Tokens」（キャッシュ込み入力＋出力換算（Sonnet系））。</li><li>定額プランのAPI換算倍率は「約 2.8倍 〜 4.2倍」（月20営業日・通常利用時のAPI単価比）。</li><li>Claude Pro ($20/月)：5時間ごとのリセット枠を月20営業日・1日1.5回消化した場合、API従量課金で約$85〜$110相当のトークンを消化可能（N=34）。</li>
+        </ul>
+        <div class="kpi-strip">
+          
+        <div class="kpi-item">
           <div class="kpi-label">集計開発者ログ数 (N)</div>
           <div class="kpi-value">85 アカウント</div>
           <div class="kpi-sub">r/ClaudeAI (N=54), r/cursor (N=31)</div>
         </div>
         
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">Claude Pro 5時間枠の実測中央値</div>
           <div class="kpi-value">約 180万〜240万 Tokens</div>
           <div class="kpi-sub">キャッシュ込み入力＋出力換算（Sonnet系）</div>
         </div>
         
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">定額プランのAPI換算倍率</div>
           <div class="kpi-value">約 2.8倍 〜 4.2倍</div>
           <div class="kpi-sub">月20営業日・通常利用時のAPI単価比</div>
         </div>
         
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">Max 5x ($100) 損益分岐点</div>
           <div class="kpi-value">API換算 $280/月 以上</div>
           <div class="kpi-sub">Claude Code連続稼働ユーザーの分岐目安</div>
         </div>
         
-      </div>
-    </div>
-  </section>
+        </div>
+      </section>
 
-  <main id="main-content" class="container article-body">
-    <section class="panel">
-      <div class="panel-title">
-        <span>月額定額料金 ($ USD) vs コミュニティ実測に基づく月間API従量換算額中央値 ($ USD換算)</span>
-        <span class="panel-unit">単位: USD ($ 相当額 / 月)</span>
-      </div>
-      <div class="gap-list">
-        
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>1. 月額定額料金 ($ USD) vs コミュニティ実測に基づく月間API従量換算額中央値 ($ USD換算)</span>
+          <span class="section-subnote">単位: USD ($ 相当額 / 月)</span>
+        </h2>
+        <div class="gap-list">
+          
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">Claude Pro ($20/月)</span>
-                <span class="status-badge status-good">実測良好 / 高効率</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
                   <span class="bar-label">公式月額料金: $20.0</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公式月額料金: $20.0">
-                    <rect class="bar-rect-official" x="0" y="0" width="4.4" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="4.44" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>API従量換算 実測中央値: $85.0相当/月</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="API従量換算 実測中央値: $85.0相当/月">
-                    <rect class="bar-rect-measured" x="0" y="0" width="18.9" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="18.89" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -115,19 +132,19 @@
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">Cursor Pro ($20/月・現行クレジット制)</span>
-                <span class="status-badge status-good">実測良好 / 高効率</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
                   <span class="bar-label">公式月額料金: $20.0 ($20使用枠+ボーナス枠)</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公式月額料金: $20.0 ($20使用枠+ボーナス枠)">
-                    <rect class="bar-rect-official" x="0" y="0" width="4.4" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="4.44" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>API従量換算 実測中央値: $56.0相当/月</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="API従量換算 実測中央値: $56.0相当/月">
-                    <rect class="bar-rect-measured" x="0" y="0" width="12.4" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="12.44" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -137,19 +154,19 @@
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">Claude Max 5x ($100/月)</span>
-                <span class="status-badge status-good">実測良好 / 高効率</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
                   <span class="bar-label">公式月額料金: $100.0</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公式月額料金: $100.0">
-                    <rect class="bar-rect-official" x="0" y="0" width="22.2" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="22.22" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>API従量換算 実測中央値: $410.0相当/月</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="API従量換算 実測中央値: $410.0相当/月">
-                    <rect class="bar-rect-measured" x="0" y="0" width="91.1" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="91.11" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -165,74 +182,74 @@
                 <div class="bar-row">
                   <span class="bar-label">API支払額基準: $100.0</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="API支払額基準: $100.0">
-                    <rect class="bar-rect-official" x="0" y="0" width="22.2" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="22.22" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>API従量換算: $100.0 (1.0x 基準値)</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="API従量換算: $100.0 (1.0x 基準値)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="22.2" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="22.22" height="6"></rect>
                   </svg>
                 </div>
               </div>
               <div class="gap-note">5時間ロックはないが、Prompt Cachingが効かない新規ファイル探索タスクでは急速に予算を消化。</div>
             </div>
             
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">
-        <span>公称スペック vs コミュニティ実測値 マトリクス比較表</span>
-        <div class="panel-actions">
-          <a href="../datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv" download="ai-coding-subscriptions-real-rate-limits-token-economics.csv" class="csv-btn">CSVダウンロード</a>
-          <span class="panel-unit">列ヘッダークリックでソート可能</span>
         </div>
-      </div>
-      <div class="table-wrap">
-        <table class="data-table">
-          <caption>AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較 — 定量比較データテーブル（実測値中央値および公称仕様）</caption>
-          <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>プラン名</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>月額料金</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公式表記の課金・上限仕様</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>コミュニティ実測上限 (中央値)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>実質コンテキストウィンドウ</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>API従量比のコスト効率</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>主な適性用途</span><span aria-hidden="true">↕</span></button></th></tr></thead>
-          <tbody><tr><th scope="row">Claude Pro</th><td>$20 / 月</td><td>無料版の5倍以上（5時間ローリング制）</td><td>5時間あたり 約45メッセージ (長文時 15〜20回)</td><td>200K Tokens (フル保持)</td><td>約 4.2x 相当</td><td>日常の設計相談・中規模コード生成</td></tr><tr><th scope="row">Claude Max (5x)</th><td>$100 / 月</td><td>Proの5倍の利用枠（5時間ローリング制）</td><td>5時間あたり 約225メッセージ相当 (Claude Code対応)</td><td>200K Tokens (キャッシュ最適化)</td><td>約 4.1x 相当</td><td>Claude Codeによる自律実装・長時間リファクタ</td></tr><tr><th scope="row">Cursor Pro</th><td>$20 / 月</td><td>月$20相当の使用量枠 + 従量課金オプション (Auto軽減あり)</td><td>前沿モデル直指定で約220〜350回 / Auto併用で約550回相当</td><td>通常約32K〜60K (Max Mode時は拡張・消費増)</td><td>約 2.8x 相当</td><td>IDE内でのTab補完・ピンポイント改修</td></tr><tr><th scope="row">Anthropic API (Tier 2+)</th><td>完全従量制</td><td>RPM/TPM上限のみ (残高限り)</td><td>上限なし (Sonnet: $3/1M In, $15/1M Out)</td><td>200K〜1M Tokens</td><td>1.0x (基準値)</td><td>GitHub Actions等の完全無人バッチ・CIパイプライン</td></tr></tbody>
-        </table>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel">
-      
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>2. 条件別・実測比較データテーブル</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較 — 実測検証データ比較表</caption>
+            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>プラン名</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>月額料金</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公式表記の課金・上限仕様</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>コミュニティ実測上限 (中央値)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>実質コンテキストウィンドウ</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>API従量比のコスト効率</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>主な適性用途</span><span aria-hidden="true">↕</span></button></th></tr></thead>
+            <tbody><tr><th scope="row">Claude Pro</th><td data-sort-value="20.000000">$20 / 月</td><td data-sort-value="5.000000">無料版の5倍以上（5時間ローリング制）</td><td class="num-cell" data-sort-value="5.000000">5時間あたり 約45メッセージ (長文時 15〜20回)</td><td data-sort-value="200000.000000">200K Tokens (フル保持)</td><td class="num-cell" data-sort-value="4.200000">約 4.2x 相当</td><td>日常の設計相談・中規模コード生成</td></tr><tr><th scope="row">Claude Max (5x)</th><td data-sort-value="100.000000">$100 / 月</td><td data-sort-value="5.000000">Proの5倍の利用枠（5時間ローリング制）</td><td class="num-cell" data-sort-value="5.000000">5時間あたり 約225メッセージ相当 (Claude Code対応)</td><td data-sort-value="200000.000000">200K Tokens (キャッシュ最適化)</td><td class="num-cell" data-sort-value="4.100000">約 4.1x 相当</td><td>Claude Codeによる自律実装・長時間リファクタ</td></tr><tr><th scope="row">Cursor Pro</th><td data-sort-value="20.000000">$20 / 月</td><td data-sort-value="20.000000">月$20相当の使用量枠 + 従量課金オプション (Auto軽減あり)</td><td data-sort-value="220.000000">前沿モデル直指定で約220〜350回 / Auto併用で約550回相当</td><td data-sort-value="32.000000">通常約32K〜60K (Max Mode時は拡張・消費増)</td><td class="num-cell" data-sort-value="2.800000">約 2.8x 相当</td><td>IDE内でのTab補完・ピンポイント改修</td></tr><tr><th scope="row">Anthropic API (Tier 2+)</th><td>完全従量制</td><td>RPM/TPM上限のみ (残高限り)</td><td data-sort-value="3.000000">上限なし (Sonnet: $3/1M In, $15/1M Out)</td><td data-sort-value="200.000000">200K〜1M Tokens</td><td class="num-cell" data-sort-value="1.000000">1.0x (基準値)</td><td>GitHub Actions等の完全無人バッチ・CIパイプライン</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sec-analysis" class="article-section">
+        <h2 class="section-h2">
+          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
+        </h2>
+        
         <div class="prose-section">
-          <h2>1. 「残りメッセージ数」は回数ではなく「累計コンテキスト長」で減算される</h2>
+          <h3>1. 「残りメッセージ数」は回数ではなく「累計コンテキスト長」で減算される</h3>
           <p>r/ClaudeAIの有志によるトークンカウンタおよびccusage検証（N=54）により、5時間ごとの利用枠は単純な「送信回数」ではなく、「送信時点のスレッド全体のトークン数 × モデル重み係数」で計算されていることが裏付けられています。たとえば10万トークンの長大なチャット履歴を維持したまま1回質問を送ると、新規スレッドで短い質問を25回送るのと同じだけのクオータを消費します。</p>
         </div>
         
         <div class="prose-section">
-          <h2>2. IDE組み込み型（Cursor Pro現行クレジット制）における「コンテキスト切り詰め閾値」</h2>
+          <h3>2. IDE組み込み型（Cursor Pro現行クレジット制）における「コンテキスト切り詰め閾値」</h3>
           <p>Cursor Proは従来の回数制からAPI単価ベースの使用量プール（$20枠＋Autoモードやキャッシュによる消費軽減）へ移行しています。通常モードでは1リクエストあたりのクレジット消費を抑えるため、ファイル全体をそのまま送らず関連スニペット抽出や要約によって実効コンテキストを32K〜60Kトークン前後に圧縮していることが開発者ログ（N=31）から確認されています。Max Modeを有効にするとフルコンテキストを扱えますが、クレジット消化速度も比例して増加します。</p>
         </div>
         
         <div class="prose-section">
-          <h2>3. 定額プランとAPI従量課金のハイブリッド構成</h2>
+          <h3>3. 定額プランとAPI従量課金のハイブリッド構成</h3>
           <p>定量比較の結論として、人間がターミナルやブラウザで対話的に開発・分析する用途では定額プラン（Pro / Max）がAPI従量比で約2.8〜4.2倍のトークン消化効率を発揮します。一方、GitHub Actions等から無人で定期実行するスクリプトには公式APIキー（Prompt Caching併用）を割り当てるハイブリッド構成が、規約遵守とコスト管理の両面で合理的です。</p>
         </div>
         
-    </section>
+      </section>
 
-    
-        <section class="panel" aria-label="検証対象モデル・関連サービス参考リンク">
-          <div class="panel-title">
-            <span>検証対象モデル・関連サービス取扱先リンク</span>
-            <span class="panel-unit">Reference Links (広告なし)</span>
-          </div>
+      
+        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
+          <h2 class="section-h2">
+            <span>検証対象モデル・関連サービス公式リンク</span>
+            <span class="section-subnote">公式・参考リンク (広告なし)</span>
+          </h2>
           <div class="cta-grid">
             
                 <div class="cta-card">
                   <div>
                     <span class="cta-badge">Claude Code 対応</span>
                     <div class="cta-title">Anthropic Claude Pro / Max プラン</div>
-                    <div class="cta-provider">取扱・提供元: Anthropic （公式・参考リンク）</div>
+                    <div class="cta-provider">提供元: Anthropic （公式・参考リンク）</div>
                   </div>
                   <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・最新価格を確認する &rarr;
+                    公式仕様・詳細を見る &rarr;
                   </a>
                 </div>
                 
@@ -240,24 +257,22 @@
                   <div>
                     <span class="cta-badge">IDE統合型エディタ</span>
                     <div class="cta-title">Cursor Pro (AI Code Editor)</div>
-                    <div class="cta-provider">取扱・提供元: Anysphere （公式・参考リンク）</div>
+                    <div class="cta-provider">提供元: Anysphere （公式・参考リンク）</div>
                   </div>
                   <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・最新価格を確認する &rarr;
+                    公式仕様・詳細を見る &rarr;
                   </a>
                 </div>
                 
           </div>
-          <p class="cta-disclosure-note">
-            ※上記は読者の利便性のための純粋な参考リンクであり、現在アフィリエイトタグや広告報酬は一切設定されていません。
-          </p>
+          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
         </section>
         
 
-    <section class="panel">
-      <div class="panel-title"><span>よくある質問（実測データFAQ）</span></div>
-      <div class="faq-list">
-        
+      <section id="sec-faq" class="article-section">
+        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
+        <div class="faq-list">
+          
         <div class="faq-item">
           <div class="faq-q">Q. Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？</div>
           <div class="faq-a">トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。</div>
@@ -268,39 +283,66 @@
           <div class="faq-a">利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。</div>
         </div>
         
-      </div>
-    </section>
+        </div>
+      </section>
 
-    <section class="panel">
-      <div class="panel-title">
-        <span>一次情報・コミュニティ検証ログ出典・仕様基準 (Primary Sources)</span>
-        <span class="panel-unit">Fact Provenance</span>
-      </div>
-      <ul class="source-list">
-        
+      <section id="sec-sources" class="article-section">
+        <h2 class="section-h2">
+          <span>5. 検証条件・一次情報ソース (Provenance)</span>
+        </h2>
+        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。</div>
+        <ul class="source-list">
+          
         <li class="source-item">
           <a href="https://www.reddit.com/r/ClaudeAI/search/?q=ccusage+rate+limit+tokens&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/ClaudeAI - Search: 5-hour rolling token quota &amp; ccusage empirical measurements</a>
-          <span class="source-meta">対象: N=54 account logs | 確認日: 2026-10-12</span>
+          <span class="source-meta">サンプル: N=54 account logs | 確認日: 2026-10-12</span>
         </li>
         
         <li class="source-item">
           <a href="https://www.reddit.com/r/cursor/search/?q=context+window+limit+tokens&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/cursor - Search: Usage-based pricing credit consumption &amp; context window logs</a>
-          <span class="source-meta">対象: N=31 developer logs | 確認日: 2026-10-12</span>
+          <span class="source-meta">サンプル: N=31 developer logs | 確認日: 2026-10-12</span>
         </li>
         
         <li class="source-item">
           <a href="https://docs.cursor.com/account/plans-and-usage" target="_blank" rel="noopener noreferrer">Cursor Official Documentation - Plans, Usage Pricing &amp; Auto Routing</a>
-          <span class="source-meta">対象: Official Pricing Spec | 確認日: 2026-10-12</span>
+          <span class="source-meta">サンプル: Official Pricing Spec | 確認日: 2026-10-12</span>
         </li>
         
         <li class="source-item">
           <a href="https://docs.anthropic.com/en/docs/about-claude/models" target="_blank" rel="noopener noreferrer">Anthropic Official Documentation - Models &amp; API Pricing Baseline</a>
-          <span class="source-meta">対象: Official Pricing Spec | 確認日: 2026-10-12</span>
+          <span class="source-meta">サンプル: Official Pricing Spec | 確認日: 2026-10-12</span>
         </li>
         
-      </ul>
-    </section>
-  </main>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
+      <div class="sidebar-box">
+        <div class="sidebar-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
+          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
+          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
+          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
+          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
+          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">検証データ概要</div>
+        <div class="meta-kv-list">
+          <div class="meta-kv-row"><span>データ種別</span><strong>一次ログ集計</strong></div>
+          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 85</strong></div>
+          <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
+          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
+        </div>
+        <div class="card-takeaway-bar">
+          <a href="../datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv" download="ai-coding-subscriptions-real-rate-limits-token-economics.csv" class="csv-btn">CSVをダウンロード</a>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   
 <footer class="site-footer">
@@ -312,14 +354,14 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
+          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
         </p>
         <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">トップページ</a>
-        <a href="../about.html">調査手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
         <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
@@ -327,7 +369,7 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
+      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
     </div>
   </div>
 </footer>

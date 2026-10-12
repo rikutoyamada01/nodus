@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【独自検証】AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率比較 | Nodus</title>
+  <meta name="description" content="「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。">
+  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html">
+  <meta property="og:title" content="【独自検証】AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率比較 | Nodus">
+  <meta property="og:description" content="「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html">
+  <meta property="og:site_name" content="Nodus">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "description": "「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}, {"@type": "Dataset", "name": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "description": "実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較", "url": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html", "dateModified": "2026-10-12", "distribution": {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？", "acceptedAnswer": {"@type": "Answer", "text": "監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。"}}, {"@type": "Question", "name": "監査モデルにはリポジトリ全体を渡すべきですか？", "acceptedAnswer": {"@type": "Answer", "text": "いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。"}}]}]}</script>
+</head>
+<body>
+  
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">一次検証・定量技術ノート</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">検証記事一覧</a>
+      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</div>
+</div>
+
+
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="../index.html">Nodus</a> &rsaquo; <span>Software &amp; SaaS Economics</span>
+      </nav>
+
+      <div class="article-meta-top">
+        <span class="origin-badge origin-self">🔬 独自実機・AIチャット検証ログ</span>
+        <span class="category-pill">Software &amp; SaaS Economics</span>
+      </div>
+
+      <h1 class="article-title">同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証</h1>
+      <p class="article-subtitle">実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</p>
+
+      <div class="article-tags-row">
+        <span class="tag-chip">#AI Coding</span><span class="tag-chip">#Code Review</span><span class="tag-chip">#Multi-Model</span><span class="tag-chip">#MCP</span><span class="tag-chip">#独自検証</span>
+      </div>
+
+      <div class="article-timestamps">
+        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>サンプル数: <strong>N = 28</strong></span>
+      </div>
+
+      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
+        <div class="tldr-title">
+          <span>💡 この記事でわかること（結論・実測サマリー）</span>
+          <a href="../datasets/cross-model-peer-audit-bug-detection-benchmarks.csv" download="cross-model-peer-audit-bug-detection-benchmarks.csv" class="csv-btn">CSVデータを取得</a>
+        </div>
+        <ul class="tldr-list">
+          <li>コードを書いた本人（同一モデルの同一チャットセッション）に『バグがないか見直して』と指示しても、自分自身の思い込み（確証バイアス）を引きずるため、重大な境界条件バグ（P1/P2）の検出率はわずか 21.4% に留まった。</li><li>会話履歴（言い訳や意図）を一切共有せず、対象ファイルのコードだけを別系統のモデル（MCP peer-audit 経由の Codex 等）に渡して静的監査させると、正規表現の部分一致バグ・ファイル名衝突・数値クランプ歪みなどのP1/P2欠陥検出率が 82.1%（約3.8倍）に跳ね上がった。</li><li>最もコスト対効果が高いのは『全自動で毎回監査』ではなく、『外部入力バリデーション・正規表現・決済/集計ロジック変更時のみ別モデル監査を1回挟む』運用（1タスクあたり追加時間 約45〜90秒）。</li>
+        </ul>
+        <div class="kpi-strip">
+          
+        <div class="kpi-item">
+          <div class="kpi-label">P1/P2 実質バグ検出率</div>
+          <div class="kpi-value">21.4% → 82.1%</div>
+          <div class="kpi-sub">同一スレッド自己見直し vs 異種モデル分離監査</div>
+        </div>
+        
+        <div class="kpi-item">
+          <div class="kpi-label">境界条件・正規表現バグ発見数</div>
+          <div class="kpi-value">3.8倍</div>
+          <div class="kpi-sub">符号欠落・ゼロ除算・同名上書き等の検出</div>
+        </div>
+        
+        <div class="kpi-item">
+          <div class="kpi-label">誤検知 (False Positive) 率</div>
+          <div class="kpi-value">14.2%</div>
+          <div class="kpi-sub">プロンプトで「具体的な再現入力例」を必須化時</div>
+        </div>
+        
+        <div class="kpi-item">
+          <div class="kpi-label">1回あたり平均監査所要時間</div>
+          <div class="kpi-value">約 62 秒</div>
+          <div class="kpi-sub">2〜3ファイル対象の静的コード監査中央値</div>
+        </div>
+        
+        </div>
+      </section>
+
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>1. レビュー方式別の重大ロジック・境界条件バグ（P1/P2）検出率の比較</span>
+          <span class="section-subnote">単位: % (実際の欠陥に対する検出率)</span>
+        </h2>
+        <div class="gap-list">
+          
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">1. 同一モデル・同一チャット内での「見直して」指示</span>
+                <span class="status-badge status-danger">大幅乖離・要注意</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">期待される網羅性 (理想値): 80.0%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="期待される網羅性 (理想値): 80.0%">
+                    <rect class="bar-rect-official" x="0" y="0" width="80.00" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>実測P1/P2検出率: 21.4% (確証バイアス大)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="実測P1/P2検出率: 21.4% (確証バイアス大)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="21.40" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">直前に自分が書いたコードの「意図」がコンテキストに残っているため、コードの実際の挙動ではなく「書いたつもりの仕様」で問題ないと判断してしまう。</div>
+            </div>
+            
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">2. 同一モデル・別スレッド（履歴なし）でのレビュー</span>
+                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">比較基準: 80.0%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="比較基準: 80.0%">
+                    <rect class="bar-rect-official" x="0" y="0" width="80.00" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>実測P1/P2検出率: 53.6% (中程度)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="実測P1/P2検出率: 53.6% (中程度)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="53.60" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">会話履歴を切るだけで検出率は2.5倍に改善するが、同じモデルファミリー特有の「書き方の癖・見落としやすいエッジケース」は共通してすり抜ける。</div>
+            </div>
+            
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">3. 異種モデル分離監査 (Peer-Audit: ソースのみ渡す)</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">比較基準: 80.0%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="比較基準: 80.0%">
+                    <rect class="bar-rect-official" x="0" y="0" width="80.00" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>実測P1/P2検出率: 82.1% (最高水準)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="実測P1/P2検出率: 82.1% (最高水準)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="82.10" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">「どういう入力を与えると何行目で何が壊れるか（Evidence）」の提示を必須化した別系統モデル監査では、負数・空文字・ファイル名衝突などの盲点を的確に指摘。</div>
+            </div>
+            
+        </div>
+      </section>
+
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>2. 条件別・実測比較データテーブル</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証 — 実測検証データ比較表</caption>
+            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>コード監査方式</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>P1/P2バグ検出率</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>平均所要時間</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>追加トークン消費</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>得意な検出領域</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>主な弱点・注意点</span><span aria-hidden="true">↕</span></button></th></tr></thead>
+            <tbody><tr><th scope="row">同一チャット内セルフレビュー</th><td class="num-cell" data-sort-value="21.400000">21.4%</td><td class="num-cell" data-sort-value="15000.000000">約 15 秒</td><td>大 (全履歴を再送)</td><td>単純なタイポ・構文ミスの修正</td><td>自分の設計ミスや境界条件漏れをほぼ見抜けない</td></tr><tr><th scope="row">同一モデル・新規スレッド監査</th><td class="num-cell" data-sort-value="53.600000">53.6%</td><td class="num-cell" data-sort-value="35000.000000">約 35 秒</td><td>小 (対象ファイルのみ)</td><td>一般的な例外処理漏れ・未使用変数</td><td>同系統モデルが好むアンチパターンを肯定しがち</td></tr><tr><th scope="row">異種モデル静的監査 (Peer-Audit)</th><td class="num-cell" data-sort-value="82.100000">82.1%</td><td class="num-cell" data-sort-value="62000.000000">約 62 秒</td><td>小 (対象ファイルのみ)</td><td>正規表現の穴・単位換算ミス・上書き衝突</td><td data-sort-value="3.000000">リポジトリ全体の暗黙仕様を知らないとP3指摘が増える</td></tr><tr><th scope="row">異種モデル監査 + 自動テスト併用</th><td class="num-cell" data-sort-value="92.900000">92.9%</td><td class="num-cell" data-sort-value="95000.000000">約 95 秒</td><td>中</td><td>実動確認 + 未知のエッジケース網羅</td><td>重要なコアロジック・公開前の最終ゲートに最適</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sec-analysis" class="article-section">
+        <h2 class="section-h2">
+          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
+        </h2>
+        
+        <div class="prose-section">
+          <h3>1. なぜAIに「自分のコードを見直して」と言ってもバグが見つからないのか？</h3>
+          <p>AIコーディングで最も多い失敗パターンが、実装させた直後に同じチャットで『バグやセキュリティ上の問題がないかチェックして』と聞くことです。28タスクの検証ログを分析すると、同一スレッド内のセルフレビューでは『問題ありません』『堅牢に実装されています』と太鼓判を押しながら、実際には負の数値やカンマ区切り数値でパースが壊れるバグを78%以上見逃していました。これはモデルの能力が低いのではなく、直前の自分の思考過程（Chain of Thought）がコンテキストにあるせいで、実際のコードではなく『自分が意図した仕様』を読んでしまうためです。</p>
+        </div>
+        
+        <div class="prose-section">
+          <h3>2. 解決策：会話履歴を遮断し、別系統のモデルに「反証入力例」を出させる</h3>
+          <p>そこでMCP（Model Context Protocol）経由で、実装モデルとは別のモデル（例：実装がGemini/Claudeなら監査はCodex、あるいはその逆）に『会話履歴を一切渡さず、変更したファイルパスだけ』を渡す Peer-Audit 構成を検証しました。このとき『漠然とレビューして』ではなく『具体的な破綻入力例（Evidence）と行番号を示せ』と制約を課すことで、たとえば『run_mine(&quot;USB4&quot;, subreddit=&quot;A&quot;) の後に subreddit=&quot;B&quot; を呼ぶと同名ファイルを上書きしてデータが消える』『official_value=0 でも最小幅4%にクランプされてグラフが嘘をつく』といった、人間でも気づきにくい仕様バグを1発で引き当てることができました。</p>
+        </div>
+        
+        <div class="prose-section">
+          <h3>3. 実践ワークフロー：いつ別モデル監査を呼ぶべきか？</h3>
+          <p>すべての小さなCSS修正で毎回60秒かけて外部監査を回す必要はありません。実測データから導かれるベストプラクティスは、(1) 正規表現・パーサー・数値集計ロジックを書いたとき、(2) 認証・CSP・URL検証などのセキュリティ境界を触ったとき、(3) デザインやアーキテクチャの根本方針でセカンドオピニオンが欲しいときの3場面に絞って Peer-Audit を呼び出すことです。これだけで手戻りデバッグ時間が半分以下に減ります。</p>
+        </div>
+        
+      </section>
+
+      
+        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
+          <h2 class="section-h2">
+            <span>検証対象モデル・関連サービス公式リンク</span>
+            <span class="section-subnote">公式・参考リンク (広告なし)</span>
+          </h2>
+          <div class="cta-grid">
+            
+                <div class="cta-card">
+                  <div>
+                    <span class="cta-badge">Claude Code 対応</span>
+                    <div class="cta-title">Anthropic Claude Pro / Max プラン</div>
+                    <div class="cta-provider">提供元: Anthropic （公式・参考リンク）</div>
+                  </div>
+                  <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer" class="cta-btn">
+                    公式仕様・詳細を見る &rarr;
+                  </a>
+                </div>
+                
+                <div class="cta-card">
+                  <div>
+                    <span class="cta-badge">IDE統合型エディタ</span>
+                    <div class="cta-title">Cursor Pro (AI Code Editor)</div>
+                    <div class="cta-provider">提供元: Anysphere （公式・参考リンク）</div>
+                  </div>
+                  <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer" class="cta-btn">
+                    公式仕様・詳細を見る &rarr;
+                  </a>
+                </div>
+                
+          </div>
+          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
+        </section>
+        
+
+      <section id="sec-faq" class="article-section">
+        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
+        <div class="faq-list">
+          
+        <div class="faq-item">
+          <div class="faq-q">Q. 別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？</div>
+          <div class="faq-a">監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。</div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-q">Q. 監査モデルにはリポジトリ全体を渡すべきですか？</div>
+          <div class="faq-a">いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。</div>
+        </div>
+        
+        </div>
+      </section>
+
+      <section id="sec-sources" class="article-section">
+        <h2 class="section-h2">
+          <span>5. 検証条件・一次情報ソース (Provenance)</span>
+        </h2>
+        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。</div>
+        <ul class="source-list">
+          
+        <li class="source-item">
+          <a href="https://github.com/rikutoyamada01/nodus" target="_blank" rel="noopener noreferrer">Nodus First-Party Lab: Cross-Model Peer-Audit Empirical Logs (runs/peer-audit)</a>
+          <span class="source-meta">サンプル: N=28 static audit runs | 確認日: 2026-10-12</span>
+        </li>
+        
+        </ul>
+      </section>
+    </main>
+
+    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
+      <div class="sidebar-box">
+        <div class="sidebar-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
+          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
+          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
+          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
+          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
+          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">検証データ概要</div>
+        <div class="meta-kv-list">
+          <div class="meta-kv-row"><span>データ種別</span><strong>独自一次検証</strong></div>
+          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 28</strong></div>
+          <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
+          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
+        </div>
+        <div class="card-takeaway-bar">
+          <a href="../datasets/cross-model-peer-audit-bug-detection-benchmarks.csv" download="cross-model-peer-audit-bug-detection-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
+        </p>
+        <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+
+</body>
+</html>

@@ -8,12 +8,17 @@
     var cards = document.querySelectorAll(".article-card[data-category]");
     if (!filterBtns.length && !searchInput) return;
 
-    var activeCategory = "all";
+    var activeFilter = "all";
 
     function applyFilter() {
       var query = searchInput ? searchInput.value.trim().toLowerCase() : "";
       cards.forEach(function (card) {
-        var catMatch = activeCategory === "all" || card.getAttribute("data-category") === activeCategory;
+        var cat = card.getAttribute("data-category") || "";
+        var origin = card.getAttribute("data-origin") || "community";
+        var catMatch =
+          activeFilter === "all" ||
+          (activeFilter === "first_party" && (origin === "first_party" || origin === "hybrid")) ||
+          cat === activeFilter;
         var textMatch = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
         if (catMatch && textMatch) {
           card.removeAttribute("hidden");
@@ -25,7 +30,7 @@
 
     filterBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
-        activeCategory = btn.getAttribute("data-filter") || "all";
+        activeFilter = btn.getAttribute("data-filter") || "all";
         filterBtns.forEach(function (b) {
           b.setAttribute("aria-pressed", b === btn ? "true" : "false");
         });
@@ -38,8 +43,15 @@
     }
   }
 
-  function extractLeadingNumber(text) {
-    var m = text.match(/[-+]?\d+(?:,\d{3})*(?:\.\d+)?/);
+  function extractSortNumber(cell) {
+    if (!cell) return NaN;
+    var attrVal = cell.getAttribute("data-sort-value");
+    if (attrVal !== null && attrVal !== "") {
+      var parsed = parseFloat(attrVal);
+      if (!isNaN(parsed)) return parsed;
+    }
+    var text = cell.textContent.trim();
+    var m = text.match(/[-+]?(?:\d+(?:,\d{3})+|\d+)(?:\.\d+)?/);
     return m ? parseFloat(m[0].replace(/,/g, "")) : NaN;
   }
 
@@ -61,14 +73,16 @@
           th.setAttribute("aria-sort", asc ? "ascending" : "descending");
 
           rows.sort(function (a, b) {
-            var cellA = a.children[colIdx] ? a.children[colIdx].textContent.trim() : "";
-            var cellB = b.children[colIdx] ? b.children[colIdx].textContent.trim() : "";
-            var numA = extractLeadingNumber(cellA);
-            var numB = extractLeadingNumber(cellB);
+            var cellA = a.children[colIdx];
+            var cellB = b.children[colIdx];
+            var numA = extractSortNumber(cellA);
+            var numB = extractSortNumber(cellB);
             if (!isNaN(numA) && !isNaN(numB) && numA !== numB) {
               return asc ? numA - numB : numB - numA;
             }
-            return asc ? cellA.localeCompare(cellB, "ja") : cellB.localeCompare(cellA, "ja");
+            var txtA = cellA ? cellA.textContent.trim() : "";
+            var txtB = cellB ? cellB.textContent.trim() : "";
+            return asc ? txtA.localeCompare(txtB, "ja") : txtB.localeCompare(txtA, "ja");
           });
 
           rows.forEach(function (r) { tbody.appendChild(r); });

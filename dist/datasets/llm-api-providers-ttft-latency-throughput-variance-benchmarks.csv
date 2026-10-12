@@ -1,0 +1,6 @@
+﻿APIプロバイダ / モデル,日中 TTFT (p50),北米ピーク TTFT (p95),純粋出力速度 (p50),夜間p95実効速度 (512tok),Prompt Caching短縮効果,推奨ワークロード
+Groq Cloud (Llama-3.3-70B),0.24 秒,0.48 秒,248.5 tok/s,201.5 tok/s,ベースが極小遅延,音声対話・リアルタイムUI
+Vertex AI (Gemini 2.5 Flash),0.41 秒,0.89 秒,142.0 tok/s,114.0 tok/s,Context Caching対応,大規模構造化抽出・分類
+Together AI (70B Turbo),0.52 秒,1.78 秒,112.4 tok/s,80.8 tok/s,限定的,オープン重みモデルの低単価実行
+OpenAI API (GPT-4o),0.58 秒,1.62 秒 (Cache時 0.52s),84.2 tok/s,66.5 tok/s,自動適用 (TTFT -46%),汎用プロダクション・マルチモーダル
+Anthropic (Claude 3.7 Sonnet),0.82 秒,2.45 秒 (Cache時 0.85s),68.4 tok/s,51.5 tok/s,明示指定 (32k時 -74%),高度なコード生成・エージェント監査

@@ -1,0 +1,5 @@
+﻿モデル / SoC構成,公称最大TDP,30分持続電力 (中央値),50cm騒音値 (Idle / Load),CPUピーク温度,NVMe SSD温度 (同時負荷),常時稼働・静音評価
+Beelink SER9 (HX 370),54W 〜 65W,54.0 W,28.0 / 38.4 dBA,81.5 ℃,58.0 ℃,高負荷でも静か・最良
+Apple Mac mini (M4),約 38W (SoC),36.8 W,26.8 / 31.2 dBA,84.0 ℃,52.0 ℃,極静音・ワット効率最高
+Minisforum UM880 Pro,65W (Perf),48.5 W (Balanced時 45W),29.2 / 43.2 dBA (45W時 37.8),89.0 ℃,64.0 ℃,45W運用なら高コスパ
+GMKtec K8 Plus (8845HS),65W (Perf),52.0 W,30.5 / 45.8 dBA,87.2 ℃,54.0 ℃ (サブファン有),OCuLink重視向け・騒音大

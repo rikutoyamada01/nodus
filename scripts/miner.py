@@ -30,9 +30,9 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT_DIR / "config" / "site_config.json"
 CANDIDATES_DIR = ROOT_DIR / "data" / "candidates"
 
-# Strict quantitative unit regex: longer/compound units ordered first so 'GB/s' and 'Wh' are not truncated to 'GB' or 'W'
+# Strict quantitative unit regex: captures optional sign, comma-grouped or decimal numbers, and compound units first
 QUANT_PATTERN = re.compile(
-    r"\b\d+(?:\.\d+)?\s*(?:mVp-p|MB/s|GB/s|Gbps|tok/s|t/s|tokens|hours?|hrs?|mins?|degC|°C|mWh|CCU|USD|Wh|GB|TB|CU|ms|fps|dB|W|V|A|\$|円)(?![a-zA-Z/])",
+    r"(?<![a-zA-Z0-9_])[-+]?(?:[1-9]\d*(?:,\d{3})+|[1-9]\d*|0)(?:\.\d+)?\s*(?:mVp-p|MB/s|GB/s|Gbps|tok/s|t/s|tokens|hours?|hrs?|mins?|degC|°C|mWh|CCU|USD|Wh|GB|TB|CU|ms|fps|dBA|dB|W|V|(?-i:A)|\$|円)(?![a-zA-Z0-9_/])",
     re.IGNORECASE,
 )
 
@@ -200,7 +200,12 @@ def run_mine(query: str, subreddit: str = "", limit: int = 15) -> dict[str, Any]
     all_errors = reddit_errs + hn_errs + gh_errs
     total_hits = len(reddit_hits) + len(hn_hits) + len(gh_hits)
 
-    slug = re.sub(r"[^a-z0-9]+", "-", query.lower()).strip("-")
+    base_slug = re.sub(r"[^a-z0-9]+", "-", query.lower()).strip("-")
+    sub_slug = re.sub(r"[^a-z0-9]+", "-", subreddit.lower()).strip("-") if subreddit else ""
+    if not base_slug:
+        import hashlib
+        base_slug = "query-" + hashlib.sha1(query.encode("utf-8")).hexdigest()[:8]
+    slug = f"{base_slug}-{sub_slug}" if sub_slug and sub_slug not in base_slug else base_slug
     out_file = CANDIDATES_DIR / f"mined_{slug}.json"
     tmp_file = CANDIDATES_DIR / f"mined_{slug}.json.tmp"
     payload = {

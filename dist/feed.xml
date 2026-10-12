@@ -6,6 +6,20 @@
   <updated>2026-10-12T00:00:00Z</updated>
   <id>https://nodus-lab.pages.dev/</id>
   <entry>
+    <title>AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証</title>
+    <link href="https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html" />
+    <id>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化</summary>
+  </entry>
+  <entry>
+    <title>同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証</title>
+    <link href="https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html" />
+    <id>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</summary>
+  </entry>
+  <entry>
     <title>100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</title>
     <link href="https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html" />
     <id>https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html</id>
@@ -32,5 +46,47 @@
     <id>https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
     <summary>公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点</summary>
+  </entry>
+  <entry>
+    <title>主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース</title>
+    <link href="https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html" />
+    <id>https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）</summary>
+  </entry>
+  <entry>
+    <title>ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較</title>
+    <link href="https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html" />
+    <id>https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）</summary>
+  </entry>
+  <entry>
+    <title>磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース</title>
+    <link href="https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html" />
+    <id>https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>公称「8000Hz（0.125ms）・0.01mmラピッドトリガー」の裏にあるADCマトリクススキャン遅延と温度ドリフト・隣接キー振動による誤解除ログ集計（N=38）</summary>
+  </entry>
+  <entry>
+    <title>高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース</title>
+    <link href="https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html" />
+    <id>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）</summary>
+  </entry>
+  <entry>
+    <title>1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース</title>
+    <link href="https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html" />
+    <id>https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）</summary>
+  </entry>
+  <entry>
+    <title>Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース</title>
+    <link href="https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html" />
+    <id>https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html</id>
+    <updated>2026-10-12T00:00:00Z</updated>
+    <summary>カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）</summary>
   </entry>
 </feed>

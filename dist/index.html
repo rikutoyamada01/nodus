@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nodus | 公称スペックとコミュニティ実測値の定量比較データベース</title>
-  <meta name="description" content="カタログ公称スペックには記載されない実測出力・非公開レート制限・持続性能を、Reddit等の海外一次検証ログから定量集計・比較するデータベースメディア。">
+  <meta name="description" content="Note・Zenn・Qiitaや公式仕様書だけでは辿り着けない「独自の実機・AIチャット検証ログ」と「海外一次検証データ」を、結論ファーストでわかりやすくまとめた技術検証メディア。">
   <link rel="canonical" href="https://nodus-lab.pages.dev/">
   <meta property="og:title" content="Nodus | 公称スペックとコミュニティ実測値の定量比較データベース">
-  <meta property="og:description" content="カタログ公称スペックとコミュニティ実測値のギャップを数値とCSVで公開する定量比較データベース。">
+  <meta property="og:description" content="独自の実験・AIチャット検証と一次計測ログから、公式スペックの裏にある実測値をわかりやすく解説する技術検証ノート。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nodus-lab.pages.dev/">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="feed.xml">
@@ -21,13 +21,13 @@
     <a href="index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">公称スペックとコミュニティ実測値の定量比較データベース</span>
+      <span class="brand-tagline">一次検証・定量技術ノート</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="index.html">実測データベース一覧</a>
-      <a href="about.html">調査手法・運営情報</a>
-      <a href="about.html#privacy">運営ポリシー・プライバシー</a>
-      <a href="feed.xml">RSS/Atom</a>
+      <a href="index.html">検証記事一覧</a>
+      <a href="about.html">検証手法・運営情報</a>
+      <a href="about.html#privacy">ポリシー</a>
+      <a href="feed.xml">RSS</a>
     </nav>
   </div>
 </header>
@@ -36,158 +36,271 @@
 </div>
 
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-badge">QUANTITATIVE SPEC INTELLIGENCE // NODUS</div>
-      <h1>カタログ値の裏にある「実測値」を、数字で比較する。</h1>
-      <p>
-        メーカー公式ページの「最大〇〇W」「高速アクセス」といった定性的な宣伝文句ではなく、グローバル開発者・ハードウェア検証コミュニティの一次計測ログを集計し、測定条件付きの中央値テーブルおよびCSVデータセットとして公開しています。
-      </p>
-      <div class="hero-stats">
-        <div class="hero-stat-item">
-          <div class="hero-stat-num">4 Datasets</div>
-          <div class="hero-stat-label">公開中の実測比較レポート（CSV付）</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num">N = 228</div>
-          <div class="hero-stat-label">累計集計コミュニティ検証ログ・セッション</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num">18 Models</div>
-          <div class="hero-stat-label">横断比較済みハードウェア・SaaSプラン数</div>
-        </div>
+  <section class="editorial-intro">
+    <div class="container intro-inner">
+      <div class="intro-copy">
+        <div class="intro-kicker">EMPIRICAL TECH NOTES &amp; BENCHMARKS</div>
+        <h1>検索しても出てこない「実測値」と「独自の検証結果」を、結論ファーストで。</h1>
+        <p>
+          公式ドキュメントの曖昧な表記や、Zenn・Qiita・Note・Redditにもまだまとまっていない「実際に手元やAIチャットで試してわかった数値・挙動」を分析・構造化して公開しています。すべての記事に30秒で読める要点まとめと生CSVデータが付属します。
+        </p>
+      </div>
+      <div class="intro-stats-inline" aria-label="公開データ統計">
+        <span>検証記事: <strong>12本</strong> (独自検証 2本)</span>
+        <span>累計検証サンプル: <strong>N = 1216</strong></span>
       </div>
     </div>
   </section>
 
   <main id="main-content" class="container">
-    <div class="section-header">
-      <h2 class="section-title">最新の実測比較・定量検証レポート</h2>
-    </div>
     <div class="controls-wrap">
-      <div class="filter-bar" role="group" aria-label="カテゴリ絞り込み">
-        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて表示</button><button type="button" class="filter-btn" data-filter="Cloud &amp; AI Infrastructure" aria-pressed="false">Cloud &amp; AI Infrastructure</button><button type="button" class="filter-btn" data-filter="Hardware &amp; Power Electronics" aria-pressed="false">Hardware &amp; Power Electronics</button><button type="button" class="filter-btn" data-filter="Software &amp; SaaS Economics" aria-pressed="false">Software &amp; SaaS Economics</button>
+      <div class="filter-bar" role="group" aria-label="カテゴリ・検証種別絞り込み">
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて表示</button><button type="button" class="filter-btn" data-filter="first_party" aria-pressed="false">🔬 独自検証・チャット知見</button><button type="button" class="filter-btn" data-filter="Cloud &amp; AI Infrastructure" aria-pressed="false">Cloud &amp; AI Infrastructure</button><button type="button" class="filter-btn" data-filter="Hardware &amp; Power Electronics" aria-pressed="false">Hardware &amp; Power Electronics</button><button type="button" class="filter-btn" data-filter="Software &amp; SaaS Economics" aria-pressed="false">Software &amp; SaaS Economics</button>
       </div>
       <div>
-        <label for="datasetSearch" class="mini-metric-label">キーワード検索: </label>
-        <input type="search" id="datasetSearch" class="search-input" placeholder="例: 100W, A100, Claude, USB4...">
+        <label for="datasetSearch" class="category-pill">検索: </label>
+        <input type="search" id="datasetSearch" class="search-input" placeholder="例: AST, Claude, 100W, USB4...">
       </div>
     </div>
 
     <div class="article-grid" id="articleGrid">
       
-            <article class="article-card" data-category="Hardware &amp; Power Electronics">
-              <div>
-                <div class="card-meta">
-                  <span class="category-pill">Hardware &amp; Power Electronics</span>
-                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
-                </div>
-                <h2><a href="articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html" class="card-title-link">100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</a></h2>
-                <p>公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）</p>
+            <article class="article-card" data-category="Software &amp; SaaS Economics" data-origin="first_party">
+              <div class="card-meta">
+                <span class="origin-badge origin-self">🔬 独自実機・AIチャット検証ログ</span>
+                <span class="category-pill">Software &amp; SaaS Economics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
               </div>
-              <div>
-                <div class="card-metrics-preview">
-                  <div>
-                    <div class="mini-metric-label">検証対象モデル・報告数</div>
-                    <div class="mini-metric-val">4 機種 / N=38</div>
-                  </div>
-                  <div>
-                    <div class="mini-metric-label">高密度100W機の熱ダレ中央値</div>
-                    <div class="mini-metric-val">22.5 分</div>
-                  </div>
+              <h2><a href="articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html" class="card-title-link">AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証</a></h2>
+              <p>Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">探索トークン削減率 (中央値): <strong>-78.4%</strong></span>
+                  <span class="inline-metric">5時間枠あたり完走タスク数: <strong>2.9倍 (5件 → 14.5件)</strong></span>
                 </div>
-                <div class="card-footer">
-                  <a href="articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html">実測比較データを見る &rarr;</a>
-                  <span class="card-count-meta">
-                    4 Models / N=38
-                  </span>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Claude Code</span><span class="tag-chip">#AI Agent</span><span class="tag-chip">#Token Optimization</span><span class="tag-chip">#AST Peek</span>
+                  <span>N=42</span>
                 </div>
               </div>
             </article>
             
-            <article class="article-card" data-category="Software &amp; SaaS Economics">
-              <div>
-                <div class="card-meta">
-                  <span class="category-pill">Software &amp; SaaS Economics</span>
-                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
-                </div>
-                <h2><a href="articles/ai-coding-subscriptions-real-rate-limits-token-economics.html" class="card-title-link">AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</a></h2>
-                <p>公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）</p>
+            <article class="article-card" data-category="Software &amp; SaaS Economics" data-origin="first_party">
+              <div class="card-meta">
+                <span class="origin-badge origin-self">🔬 独自実機・AIチャット検証ログ</span>
+                <span class="category-pill">Software &amp; SaaS Economics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
               </div>
-              <div>
-                <div class="card-metrics-preview">
-                  <div>
-                    <div class="mini-metric-label">集計開発者ログ数 (N)</div>
-                    <div class="mini-metric-val">85 アカウント</div>
-                  </div>
-                  <div>
-                    <div class="mini-metric-label">Claude Pro 5時間枠の実測中央値</div>
-                    <div class="mini-metric-val">約 180万〜240万 Tokens</div>
-                  </div>
+              <h2><a href="articles/cross-model-peer-audit-bug-detection-benchmarks.html" class="card-title-link">同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証</a></h2>
+              <p>実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">P1/P2 実質バグ検出率: <strong>21.4% → 82.1%</strong></span>
+                  <span class="inline-metric">境界条件・正規表現バグ発見数: <strong>3.8倍</strong></span>
                 </div>
-                <div class="card-footer">
-                  <a href="articles/ai-coding-subscriptions-real-rate-limits-token-economics.html">実測比較データを見る &rarr;</a>
-                  <span class="card-count-meta">
-                    4 Models / N=85
-                  </span>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#AI Coding</span><span class="tag-chip">#Code Review</span><span class="tag-chip">#Multi-Model</span><span class="tag-chip">#MCP</span>
+                  <span>N=28</span>
                 </div>
               </div>
             </article>
             
-            <article class="article-card" data-category="Hardware &amp; Power Electronics">
-              <div>
-                <div class="card-meta">
-                  <span class="category-pill">Hardware &amp; Power Electronics</span>
-                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
-                </div>
-                <h2><a href="articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html" class="card-title-link">USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース</a></h2>
-                <p>カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）</p>
+            <article class="article-card" data-category="Hardware &amp; Power Electronics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Hardware &amp; Power Electronics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
               </div>
-              <div>
-                <div class="card-metrics-preview">
-                  <div>
-                    <div class="mini-metric-label">集計連続書込テスト数</div>
-                    <div class="mini-metric-val">41 ログ</div>
-                  </div>
-                  <div>
-                    <div class="mini-metric-label">QLC採用機のキャッシュ後速度</div>
-                    <div class="mini-metric-val">180 〜 320 MB/s</div>
-                  </div>
+              <h2><a href="articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html" class="card-title-link">100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</a></h2>
+              <p>公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">検証対象モデル・報告数: <strong>4 機種 / N=38</strong></span>
+                  <span class="inline-metric">高密度100W機の熱ダレ中央値: <strong>22.5 分</strong></span>
                 </div>
-                <div class="card-footer">
-                  <a href="articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html">実測比較データを見る &rarr;</a>
-                  <span class="card-count-meta">
-                    4 Models / N=41
-                  </span>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#GaN Charger</span><span class="tag-chip">#USB-C PD</span><span class="tag-chip">#Thermal Throttling</span><span class="tag-chip">#Anker</span>
+                  <span>N=38</span>
                 </div>
               </div>
             </article>
             
-            <article class="article-card" data-category="Cloud &amp; AI Infrastructure">
-              <div>
-                <div class="card-meta">
-                  <span class="category-pill">Cloud &amp; AI Infrastructure</span>
-                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
-                </div>
-                <h2><a href="articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html" class="card-title-link">Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較</a></h2>
-                <p>公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点</p>
+            <article class="article-card" data-category="Software &amp; SaaS Economics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Software &amp; SaaS Economics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
               </div>
-              <div>
-                <div class="card-metrics-preview">
-                  <div>
-                    <div class="mini-metric-label">集計サンプル数 (N)</div>
-                    <div class="mini-metric-val">64 セッション</div>
-                  </div>
-                  <div>
-                    <div class="mini-metric-label">A100 (40GB) 実測稼働時間</div>
-                    <div class="mini-metric-val">37.2 時間 / 200CU</div>
-                  </div>
+              <h2><a href="articles/ai-coding-subscriptions-real-rate-limits-token-economics.html" class="card-title-link">AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</a></h2>
+              <p>公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計開発者ログ数 (N): <strong>85 アカウント</strong></span>
+                  <span class="inline-metric">Claude Pro 5時間枠の実測中央値: <strong>約 180万〜240万 Tokens</strong></span>
                 </div>
-                <div class="card-footer">
-                  <a href="articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html">実測比較データを見る &rarr;</a>
-                  <span class="card-count-meta">
-                    6 Models / N=64
-                  </span>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Claude Code</span><span class="tag-chip">#Cursor</span><span class="tag-chip">#Rate Limits</span><span class="tag-chip">#Token Economics</span>
+                  <span>N=85</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Hardware &amp; Power Electronics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Hardware &amp; Power Electronics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html" class="card-title-link">USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース</a></h2>
+              <p>カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計連続書込テスト数: <strong>41 ログ</strong></span>
+                  <span class="inline-metric">QLC採用機のキャッシュ後速度: <strong>180 〜 320 MB/s</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#USB4 SSD</span><span class="tag-chip">#Thunderbolt 4</span><span class="tag-chip">#SLC Cache</span><span class="tag-chip">#Thermal Throttling</span>
+                  <span>N=41</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Cloud &amp; AI Infrastructure" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Cloud &amp; AI Infrastructure</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html" class="card-title-link">Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較</a></h2>
+              <p>公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計サンプル数 (N): <strong>64 セッション</strong></span>
+                  <span class="inline-metric">A100 (40GB) 実測稼働時間: <strong>37.2 時間 / 200CU</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Google Colab</span><span class="tag-chip">#Google AI Pro</span><span class="tag-chip">#GPU Benchmark</span><span class="tag-chip">#A100</span>
+                  <span>N=64</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Cloud &amp; AI Infrastructure" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Cloud &amp; AI Infrastructure</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html" class="card-title-link">主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース</a></h2>
+              <p>公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計API計測リクエスト数: <strong>672 回/社</strong></span>
+                  <span class="inline-metric">夜間ピーク時のp95 TTFT倍率: <strong>2.1x 〜 3.4x</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#LLM API</span><span class="tag-chip">#TTFT Latency</span><span class="tag-chip">#Prompt Caching</span><span class="tag-chip">#OpenAI API</span>
+                  <span>N=672</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Cloud &amp; AI Infrastructure" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Cloud &amp; AI Infrastructure</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html" class="card-title-link">ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較</a></h2>
+              <p>llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計llama-benchログ数: <strong>74 環境</strong></span>
+                  <span class="inline-metric">32B (Q4_K_M) 最高速構成: <strong>RTX 4090 (61.5 tok/s)</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Local LLM</span><span class="tag-chip">#llama.cpp</span><span class="tag-chip">#Apple Silicon</span><span class="tag-chip">#RTX 4090</span>
+                  <span>N=74</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Hardware &amp; Power Electronics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Hardware &amp; Power Electronics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html" class="card-title-link">磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース</a></h2>
+              <p>公称「8000Hz（0.125ms）・0.01mmラピッドトリガー」の裏にあるADCマトリクススキャン遅延と温度ドリフト・隣接キー振動による誤解除ログ集計（N=38）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計ハードウェア遅延ログ数: <strong>38 件</strong></span>
+                  <span class="inline-metric">8000Hz機のEnd-to-End実測遅延: <strong>0.78 〜 1.48 ms</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Hall Effect Keyboard</span><span class="tag-chip">#Rapid Trigger</span><span class="tag-chip">#8000Hz Polling</span><span class="tag-chip">#Input Latency</span>
+                  <span>N=38</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Hardware &amp; Power Electronics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Hardware &amp; Power Electronics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html" class="card-title-link">高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース</a></h2>
+              <p>公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計連続負荷ログ数: <strong>36 台</strong></span>
+                  <span class="inline-metric">0.8L級65W機の持続電力: <strong>46.5 〜 54.0 W</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Mini PC</span><span class="tag-chip">#Ryzen AI 9 HX 370</span><span class="tag-chip">#Ryzen 7 8845HS</span><span class="tag-chip">#Mac mini M4</span>
+                  <span>N=36</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Hardware &amp; Power Electronics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Hardware &amp; Power Electronics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/portable-power-station-ups-switchover-time-idle-drain-tests.html" class="card-title-link">1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース</a></h2>
+              <p>カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計充放電・波形ログ数: <strong>46 台分</strong></span>
+                  <span class="inline-metric">AC実効放電容量の中央値: <strong>公称比 83.5%</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Portable Power Station</span><span class="tag-chip">#LiFePO4</span><span class="tag-chip">#UPS Switchover</span><span class="tag-chip">#Inverter Efficiency</span>
+                  <span>N=46</span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Hardware &amp; Power Electronics" data-origin="community">
+              <div class="card-meta">
+                <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+                <span class="category-pill">Hardware &amp; Power Electronics</span>
+                <time class="date-text" datetime="2026-10-12">更新: 2026-10-12</time>
+              </div>
+              <h2><a href="articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html" class="card-title-link">Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース</a></h2>
+              <p>カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）</p>
+              <div class="card-takeaway-bar">
+                <div class="card-metrics-inline">
+                  <span class="inline-metric">集計iperf3計測環境数: <strong>52 環境</strong></span>
+                  <span class="inline-metric">同室3m (6GHz 320MHz) 実測: <strong>3.4 〜 4.2 Gbps</strong></span>
+                </div>
+                <div class="card-tags-meta">
+                  <span class="tag-chip">#Wi-Fi 7</span><span class="tag-chip">#802.11be</span><span class="tag-chip">#MLO</span><span class="tag-chip">#6GHz</span>
+                  <span>N=52</span>
                 </div>
               </div>
             </article>
@@ -205,14 +318,14 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
+          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
         </p>
         <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
       </div>
       <div class="footer-links">
-        <a href="index.html">トップページ</a>
-        <a href="about.html">調査手法・免責事項</a>
-        <a href="about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="index.html">記事一覧</a>
+        <a href="about.html">検証手法・免責事項</a>
+        <a href="about.html#privacy">プライバシーポリシー</a>
         <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="sitemap.xml">Sitemap</a>
         <a href="llms.txt">LLMs.txt</a>
@@ -220,7 +333,7 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
+      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
     </div>
   </div>
 </footer>

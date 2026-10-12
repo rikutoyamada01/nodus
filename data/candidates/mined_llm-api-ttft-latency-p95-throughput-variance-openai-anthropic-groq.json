@@ -1,0 +1,11 @@
+{
+  "query": "LLM API TTFT latency p95 throughput variance OpenAI Anthropic Groq",
+  "subreddit": "LocalLLaMA",
+  "mined_at": "2026-10-12T19:28:43.225467",
+  "status": "ok",
+  "total_quantitative_hits": 0,
+  "reddit_findings": [],
+  "hn_findings": [],
+  "github_findings": [],
+  "errors": []
+}

@@ -24,13 +24,13 @@
     <a href="../index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">公称スペックとコミュニティ実測値の定量比較データベース</span>
+      <span class="brand-tagline">一次検証・定量技術ノート</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">実測データベース一覧</a>
-      <a href="../about.html">調査手法・運営情報</a>
-      <a href="../about.html#privacy">運営ポリシー・プライバシー</a>
-      <a href="../feed.xml">RSS/Atom</a>
+      <a href="../index.html">検証記事一覧</a>
+      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
     </nav>
   </div>
 </header>
@@ -39,73 +39,90 @@
 </div>
 
 
-  <section class="article-header">
-    <div class="container">
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
       <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>Hardware &amp; Power Electronics</span> &rsaquo; <span>external-ssd-usb4-40gbps-sustained-write-thermal-throttling</span>
+        <a href="../index.html">Nodus</a> &rsaquo; <span>Hardware &amp; Power Electronics</span>
       </nav>
+
+      <div class="article-meta-top">
+        <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
+        <span class="category-pill">Hardware &amp; Power Electronics</span>
+      </div>
+
       <h1 class="article-title">USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース</h1>
       <p class="article-subtitle">カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）</p>
-      <div class="article-timestamps">
-        <span>公開日: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>実測データ更新日: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>記事改訂日: <time datetime="2026-10-12">2026-10-12</time></span>
+
+      <div class="article-tags-row">
+        <span class="tag-chip">#USB4 SSD</span><span class="tag-chip">#Thunderbolt 4</span><span class="tag-chip">#SLC Cache</span><span class="tag-chip">#Thermal Throttling</span><span class="tag-chip">#ASM2464PD</span><span class="tag-chip">#r/NewMaxx</span>
       </div>
-      <div class="methodology-box"><strong>集計・測定条件メソドロジー:</strong> r/NewMaxx および r/UsbCHardware に投稿された CrystalDiskMark ピーク値ではなく、500GB〜1TB単一イメージ連続書き込み試験（室温24〜26℃）のログ41件を集計。pSLCキャッシュ枯渇後のTLC/QLCネイティブ書き込み速度中央値を比較。</div>
-      <div class="kpi-grid">
-        
-        <div class="kpi-card">
+
+      <div class="article-timestamps">
+        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>サンプル数: <strong>N = 41</strong></span>
+      </div>
+
+      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
+        <div class="tldr-title">
+          <span>💡 この記事でわかること（結論・実測サマリー）</span>
+          <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVデータを取得</a>
+        </div>
+        <ul class="tldr-list">
+          <li>集計連続書込テスト数は「41 ログ」（r/NewMaxx 500GB連続転送計測）。</li><li>QLC採用機のキャッシュ後速度は「180 〜 320 MB/s」（公称ピーク比 約8〜10%まで急落）。</li><li>DRAM搭載TLC機の持続速度は「1,450 〜 1,820 MB/s」（放熱筐体との組み合わせ時の中央値）。</li><li>OWC Express 1M2 + DRAM搭載TLC (2TB)：大型フィン付きアルミ筐体によりコントローラ温度が62℃前後に抑えられ、キャッシュ枯渇後も約1.78GB/sを維持（N=14）。</li>
+        </ul>
+        <div class="kpi-strip">
+          
+        <div class="kpi-item">
           <div class="kpi-label">集計連続書込テスト数</div>
           <div class="kpi-value">41 ログ</div>
           <div class="kpi-sub">r/NewMaxx 500GB連続転送計測</div>
         </div>
         
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">QLC採用機のキャッシュ後速度</div>
           <div class="kpi-value">180 〜 320 MB/s</div>
           <div class="kpi-sub">公称ピーク比 約8〜10%まで急落</div>
         </div>
         
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">DRAM搭載TLC機の持続速度</div>
           <div class="kpi-value">1,450 〜 1,820 MB/s</div>
           <div class="kpi-sub">放熱筐体との組み合わせ時の中央値</div>
         </div>
         
-        <div class="kpi-card">
+        <div class="kpi-item">
           <div class="kpi-label">熱切断を防ぐ筐体熱設計目安</div>
           <div class="kpi-value">アルミ総重量 ≥ 180g</div>
           <div class="kpi-sub">薄型エンクロージャは72℃超で減速</div>
         </div>
         
-      </div>
-    </div>
-  </section>
+        </div>
+      </section>
 
-  <main id="main-content" class="container article-body">
-    <section class="panel">
-      <div class="panel-title">
-        <span>公称最大書き込み速度（Peak MB/s）vs 500GB連続書き込み時の持続速度中央値（Sustained MB/s）</span>
-        <span class="panel-unit">単位: MB/s</span>
-      </div>
-      <div class="gap-list">
-        
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>1. 公称最大書き込み速度（Peak MB/s）vs 500GB連続書き込み時の持続速度中央値（Sustained MB/s）</span>
+          <span class="section-subnote">単位: MB/s</span>
+        </h2>
+        <div class="gap-list">
+          
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">OWC Express 1M2 + DRAM搭載TLC (2TB)</span>
-                <span class="status-badge status-good">実測良好 / 高効率</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
                   <span class="bar-label">公称ピーク書込: 3,200 MB/s</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピーク書込: 3,200 MB/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="80.0" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="80.00" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>500GB連続実測中央値: 1,780 MB/s</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="500GB連続実測中央値: 1,780 MB/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="44.5" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="44.50" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -115,19 +132,19 @@
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">Samsung T9 Portable SSD (2TB / USB 3.2 Gen 2x2)</span>
-                <span class="status-badge status-good">実測良好 / 高効率</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
                   <span class="bar-label">公称ピーク書込: 1,950 MB/s</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピーク書込: 1,950 MB/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="48.8" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="48.75" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>500GB連続実測中央値: 1,050 MB/s</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="500GB連続実測中央値: 1,050 MB/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="26.2" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="26.25" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -143,13 +160,13 @@
                 <div class="bar-row">
                   <span class="bar-label">公称ピーク書込: 3,600 MB/s</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピーク書込: 3,600 MB/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="90.0" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="90.00" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>500GB連続実測中央値: 720 MB/s</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="500GB連続実測中央値: 720 MB/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="18.0" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="18.00" height="6"></rect>
                   </svg>
                 </div>
               </div>
@@ -159,75 +176,75 @@
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">小型ポータブルSSD (QLC NAND採用 2TBモデル群)</span>
-                <span class="status-badge status-danger">大幅乖離・高消費注意</span>
+                <span class="status-badge status-danger">大幅乖離・要注意</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
                   <span class="bar-label">公称ピーク書込: 2,000 MB/s</span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピーク書込: 2,000 MB/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="50.0" height="6" rx="3"></rect>
+                    <rect class="bar-rect-official" x="0" y="0" width="50.00" height="6"></rect>
                   </svg>
                 </div>
                 <div class="bar-row">
                   <span class="bar-label"><strong>500GB連続実測中央値: 240 MB/s</strong></span>
                   <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="500GB連続実測中央値: 240 MB/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="6.0" height="6" rx="3"></rect>
+                    <rect class="bar-rect-measured" x="0" y="0" width="6.00" height="6"></rect>
                   </svg>
                 </div>
               </div>
               <div class="gap-note">動的pSLCキャッシュ（約120〜180GB）を使い切った瞬間、HDD並みの240MB/s前後まで急落（N=7）。</div>
             </div>
             
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">
-        <span>公称スペック vs コミュニティ実測値 マトリクス比較表</span>
-        <div class="panel-actions">
-          <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVダウンロード</a>
-          <span class="panel-unit">列ヘッダークリックでソート可能</span>
         </div>
-      </div>
-      <div class="table-wrap">
-        <table class="data-table">
-          <caption>USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース — 定量比較データテーブル（実測値中央値および公称仕様）</caption>
-          <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>構成 / モデル</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>インターフェース</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公称最大書込速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>pSLCキャッシュ容量目安</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>キャッシュ枯渇後の持続速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>500GB転送時の最高表面温度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>瞬断・熱ダレ傾向</span><span aria-hidden="true">↕</span></button></th></tr></thead>
-          <tbody><tr><th scope="row">OWC Express 1M2 + TLC (SN850X等)</th><td>USB4 (40Gbps)</td><td>3,150〜3,600 MB/s</td><td>約 280〜350 GB</td><td>1,650 〜 1,850 MB/s</td><td>54.5 ℃ (大型ヒートシンク)</td><td>熱ダレなし・安定</td></tr><tr><th scope="row">Samsung T9 (2TB)</th><td>USB 3.2 Gen2x2 (20Gbps)</td><td>1,950 MB/s</td><td>約 180 GB</td><td>980 〜 1,120 MB/s</td><td>58.2 ℃ (ラバー外装)</td><td>熱ダレ軽微・安定</td></tr><tr><th scope="row">薄型USB4エンクロージャ + TLC</th><td>USB4 (40Gbps)</td><td>3,600 MB/s</td><td>約 200 GB</td><td>650 〜 820 MB/s</td><td>71.4 ℃ (過熱減速発生)</td><td>10〜15分で速度制限</td></tr><tr><th scope="row">一般的なQLC採用ポータブルSSD</th><td>USB 3.2 Gen2 / Gen2x2</td><td>1,050〜2,000 MB/s</td><td>約 100〜160 GB (空き依存)</td><td>180 〜 310 MB/s</td><td>63.0 ℃</td><td>キャッシュ枯渇後に大幅低下</td></tr></tbody>
-        </table>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel">
-      
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>2. 条件別・実測比較データテーブル</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース — 実測検証データ比較表</caption>
+            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>構成 / モデル</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>インターフェース</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公称最大書込速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>pSLCキャッシュ容量目安</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>キャッシュ枯渇後の持続速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>500GB転送時の最高表面温度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>瞬断・熱ダレ傾向</span><span aria-hidden="true">↕</span></button></th></tr></thead>
+            <tbody><tr><th scope="row">OWC Express 1M2 + TLC (SN850X等)</th><td data-sort-value="4.000000">USB4 (40Gbps)</td><td data-sort-value="3150.000000">3,150〜3,600 MB/s</td><td data-sort-value="280.000000">約 280〜350 GB</td><td data-sort-value="1650.000000">1,650 〜 1,850 MB/s</td><td class="num-cell" data-sort-value="54.500000">54.5 ℃ (大型ヒートシンク)</td><td>熱ダレなし・安定</td></tr><tr><th scope="row">Samsung T9 (2TB)</th><td data-sort-value="3.200000">USB 3.2 Gen2x2 (20Gbps)</td><td class="num-cell" data-sort-value="1950.000000">1,950 MB/s</td><td class="num-cell" data-sort-value="180.000000">約 180 GB</td><td data-sort-value="980.000000">980 〜 1,120 MB/s</td><td class="num-cell" data-sort-value="58.200000">58.2 ℃ (ラバー外装)</td><td>熱ダレ軽微・安定</td></tr><tr><th scope="row">薄型USB4エンクロージャ + TLC</th><td data-sort-value="4.000000">USB4 (40Gbps)</td><td class="num-cell" data-sort-value="3600.000000">3,600 MB/s</td><td class="num-cell" data-sort-value="200.000000">約 200 GB</td><td data-sort-value="650.000000">650 〜 820 MB/s</td><td class="num-cell" data-sort-value="71.400000">71.4 ℃ (過熱減速発生)</td><td data-sort-value="10.000000">10〜15分で速度制限</td></tr><tr><th scope="row">一般的なQLC採用ポータブルSSD</th><td data-sort-value="3.200000">USB 3.2 Gen2 / Gen2x2</td><td data-sort-value="1050.000000">1,050〜2,000 MB/s</td><td data-sort-value="100.000000">約 100〜160 GB (空き依存)</td><td data-sort-value="180.000000">180 〜 310 MB/s</td><td class="num-cell" data-sort-value="63.000000">63.0 ℃</td><td>キャッシュ枯渇後に大幅低下</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sec-analysis" class="article-section">
+        <h2 class="section-h2">
+          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
+        </h2>
+        
         <div class="prose-section">
-          <h2>1. CrystalDiskMarkの数値（1GiB〜4GiB）が連続転送で当てにならない理由</h2>
+          <h3>1. CrystalDiskMarkの数値（1GiB〜4GiB）が連続転送で当てにならない理由</h3>
           <p>一般的なレビュー記事で掲載されるCrystalDiskMarkのデフォルト計測（1GiB×5回）は、SSD全体の数%にあたる高速pSLCキャッシュ領域の中だけで完結します。しかし、ProRes動画素材やLLMの重みファイル（100GB〜500GB）を一括コピーする場合、pSLCキャッシュ領域を超過した時点からNANDフラッシュ本来の書き込み速度（TLCまたはQLCの素の速度）とキャッシュ解放処理が同時に発生し、実効速度が1/3〜1/10に低下します。</p>
         </div>
         
         <div class="prose-section">
-          <h2>2. USB4ブリッジチップ（ASM2464PD）の発熱と電力要求</h2>
+          <h3>2. USB4ブリッジチップ（ASM2464PD）の発熱と電力要求</h3>
           <p>USB4 (40Gbps) 外付けケースの多くに採用されているASMedia製ASM2464PDコントローラは、単体で2.5W〜3.5W前後を発熱します。NVMe SSD自体の発熱（4W〜7W）と合わさると合計7W〜10Wの熱源となるため、サーマルパッドで筐体へ確実に熱伝導できない小型・薄型ケースでは、NANDのキャッシュが切れる前にコントローラ温度が上限に達し、スロットリングやバス再接続（瞬断）を引き起こす事例が報告されています。</p>
         </div>
         
-    </section>
+      </section>
 
-    
-        <section class="panel" aria-label="検証対象モデル・関連サービス参考リンク">
-          <div class="panel-title">
-            <span>検証対象モデル・関連サービス取扱先リンク</span>
-            <span class="panel-unit">Reference Links (広告なし)</span>
-          </div>
+      
+        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
+          <h2 class="section-h2">
+            <span>検証対象モデル・関連サービス公式リンク</span>
+            <span class="section-subnote">公式・参考リンク (広告なし)</span>
+          </h2>
           <div class="cta-grid">
             
                 <div class="cta-card">
                   <div>
                     <span class="cta-badge">ファンレス放熱設計</span>
                     <div class="cta-title">OWC Express 1M2 (USB4 40Gbps 大型ヒートシンク筐体)</div>
-                    <div class="cta-provider">取扱・提供元: Amazon.co.jp （公式・参考リンク）</div>
+                    <div class="cta-provider">提供元: Amazon.co.jp （公式・参考リンク）</div>
                   </div>
                   <a href="https://www.amazon.co.jp/s?k=OWC+Express+1M2+USB4" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・最新価格を確認する &rarr;
+                    公式仕様・詳細を見る &rarr;
                   </a>
                 </div>
                 
@@ -235,24 +252,22 @@
                   <div>
                     <span class="cta-badge">連続書込維持 高水準</span>
                     <div class="cta-title">Samsung T9 Portable SSD (USB 3.2 Gen 2x2)</div>
-                    <div class="cta-provider">取扱・提供元: Amazon.co.jp （公式・参考リンク）</div>
+                    <div class="cta-provider">提供元: Amazon.co.jp （公式・参考リンク）</div>
                   </div>
                   <a href="https://www.amazon.co.jp/s?k=Samsung+T9+Portable+SSD" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・最新価格を確認する &rarr;
+                    公式仕様・詳細を見る &rarr;
                   </a>
                 </div>
                 
           </div>
-          <p class="cta-disclosure-note">
-            ※上記は読者の利便性のための純粋な参考リンクであり、現在アフィリエイトタグや広告報酬は一切設定されていません。
-          </p>
+          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
         </section>
         
 
-    <section class="panel">
-      <div class="panel-title"><span>よくある質問（実測データFAQ）</span></div>
-      <div class="faq-list">
-        
+      <section id="sec-faq" class="article-section">
+        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
+        <div class="faq-list">
+          
         <div class="faq-item">
           <div class="faq-q">Q. Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？</div>
           <div class="faq-a">Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。</div>
@@ -263,29 +278,56 @@
           <div class="faq-a">主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。</div>
         </div>
         
-      </div>
-    </section>
+        </div>
+      </section>
 
-    <section class="panel">
-      <div class="panel-title">
-        <span>一次情報・コミュニティ検証ログ出典・仕様基準 (Primary Sources)</span>
-        <span class="panel-unit">Fact Provenance</span>
-      </div>
-      <ul class="source-list">
-        
+      <section id="sec-sources" class="article-section">
+        <h2 class="section-h2">
+          <span>5. 検証条件・一次情報ソース (Provenance)</span>
+        </h2>
+        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/NewMaxx および r/UsbCHardware に投稿された CrystalDiskMark ピーク値ではなく、500GB〜1TB単一イメージ連続書き込み試験（室温24〜26℃）のログ41件を集計。pSLCキャッシュ枯渇後のTLC/QLCネイティブ書き込み速度中央値を比較。</div>
+        <ul class="source-list">
+          
         <li class="source-item">
           <a href="https://www.reddit.com/r/NewMaxx/search/?q=ASM2464PD+sustained+thermal&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/NewMaxx - Search: USB4 ASM2464PD sustained write &amp; thermal throttling benchmarks</a>
-          <span class="source-meta">対象: N=26 SSD logs | 確認日: 2026-10-12</span>
+          <span class="source-meta">サンプル: N=26 SSD logs | 確認日: 2026-10-12</span>
         </li>
         
         <li class="source-item">
           <a href="https://www.reddit.com/r/UsbCHardware/search/?q=OWC+Express+1M2+thermal&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/UsbCHardware - Search: OWC Express 1M2 USB4 enclosure thermal test logs</a>
-          <span class="source-meta">対象: N=15 enclosure logs | 確認日: 2026-10-12</span>
+          <span class="source-meta">サンプル: N=15 enclosure logs | 確認日: 2026-10-12</span>
         </li>
         
-      </ul>
-    </section>
-  </main>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
+      <div class="sidebar-box">
+        <div class="sidebar-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
+          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
+          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
+          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
+          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
+          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">検証データ概要</div>
+        <div class="meta-kv-list">
+          <div class="meta-kv-row"><span>データ種別</span><strong>一次ログ集計</strong></div>
+          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 41</strong></div>
+          <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
+          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
+        </div>
+        <div class="card-takeaway-bar">
+          <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVをダウンロード</a>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   
 <footer class="site-footer">
@@ -297,14 +339,14 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
+          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
         </p>
         <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">トップページ</a>
-        <a href="../about.html">調査手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
         <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
@@ -312,7 +354,7 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
+      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
     </div>
   </div>
 </footer>
