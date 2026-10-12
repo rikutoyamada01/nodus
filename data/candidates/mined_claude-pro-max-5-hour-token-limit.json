@@ -1,0 +1,38 @@
+{
+  "query": "Claude Pro Max 5 hour token limit",
+  "subreddit": "ClaudeAI",
+  "mined_at": "2026-10-12T18:52:42.586661",
+  "status": "ok",
+  "total_quantitative_hits": 2,
+  "reddit_findings": [],
+  "hn_findings": [],
+  "github_findings": [
+    {
+      "source": "GitHub",
+      "title": "claude",
+      "url": "https://github.com/98kuwa036/Bushidan-Multi-Agent/issues/5",
+      "created_at": "2026-01-30",
+      "measurement_count": 6,
+      "extracted_numbers": [
+        "24GB",
+        "22GB",
+        "12GB",
+        "256GB",
+        "100GB",
+        "20 tok/s"
+      ]
+    },
+    {
+      "source": "GitHub",
+      "title": "Model comparisons: automate PR facts and Claude allowance collection",
+      "url": "https://github.com/onsager-ai/semon/issues/39",
+      "created_at": "2026-09-28",
+      "measurement_count": 2,
+      "extracted_numbers": [
+        "1.8 GB",
+        "99 °C"
+      ]
+    }
+  ],
+  "errors": []
+}

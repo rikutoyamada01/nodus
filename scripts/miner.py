@@ -5,13 +5,18 @@ Fetches community discussions and benchmark logs via official public APIs:
 1. Reddit OAuth API (when REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET are configured)
 2. Hacker News Algolia Search API (zero-auth, high-signal technical measurements)
 3. GitHub Issues & Discussions Benchmark Search API (zero-auth empirical test logs)
-Filters specifically for comments/posts containing empirical measurements (units, numbers, test conditions).
+
+Compliance & Quality Gates:
+- Extracts only non-copyrightable factual measurements (numbers + units + source URL + date).
+- Never stores verbatim comment prose snippets in repository files.
+- Enforces query keyword relevance filtering and separates API errors from valid hits.
 """
 
 from __future__ import annotations
 
 import argparse
 import base64
+import html
 import json
 import os
 import re
@@ -22,87 +27,121 @@ from pathlib import Path
 from typing import Any
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
+CONFIG_PATH = ROOT_DIR / "config" / "site_config.json"
 CANDIDATES_DIR = ROOT_DIR / "data" / "candidates"
 
-# Regex matching quantitative empirical measurements (Watts, Temps, Time, Tokens, Bandwidth, Price, Sample sizes)
+# Strict quantitative unit regex: longer/compound units ordered first so 'GB/s' and 'Wh' are not truncated to 'GB' or 'W'
 QUANT_PATTERN = re.compile(
-    r"\b\d+(?:\.\d+)?\s*(?:W|Wh|mWh|V|A|mVp-p|°C|C|dB|ms|fps|GB|TB|MB/s|GB/s|CU|CCU|tokens|tok/s|t/s|hrs?|hours?|mins?|%|USD|\$|円)\b",
+    r"\b\d+(?:\.\d+)?\s*(?:mVp-p|MB/s|GB/s|Gbps|tok/s|t/s|tokens|hours?|hrs?|mins?|degC|°C|mWh|CCU|USD|Wh|GB|TB|CU|ms|fps|dB|W|V|A|\$|円)(?![a-zA-Z/])",
     re.IGNORECASE,
 )
 
 
-def fetch_hn_quantitative(query: str, limit: int = 15) -> list[dict[str, Any]]:
-    """Query Hacker News Algolia API (zero-auth, fast, high-signal technical comments)."""
+def is_relevant(text: str, query: str) -> bool:
+    tokens = [t.lower() for t in re.findall(r"[a-zA-Z0-9]+", query) if len(t) >= 2]
+    if not tokens:
+        return True
+    lower_text = text.lower()
+    matched = sum(1 for t in tokens if t in lower_text)
+    return matched >= max(1, (len(tokens) + 1) // 2)
+
+
+def normalize_measurements(matches: list[str]) -> list[str]:
+    cleaned: list[str] = []
+    seen: set[str] = set()
+    for m in matches:
+        norm = re.sub(r"\s+", " ", m.strip())
+        key = norm.lower()
+        if key not in seen:
+            seen.add(key)
+            cleaned.append(norm)
+    return cleaned[:12]
+
+
+def fetch_hn_quantitative(query: str, limit: int = 15) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
+    """Query Hacker News Algolia API for comments with relevant quantitative measurements."""
     encoded = urllib.parse.quote(query)
     url = f"https://hn.algolia.com/api/v1/search?query={encoded}&tags=comment&hitsPerPage={limit}"
-    req = urllib.request.Request(url, headers={"User-Agent": "NodusQuantBot/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "NodusQuantBot/1.1"})
     findings: list[dict[str, Any]] = []
+    errors: list[dict[str, str]] = []
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             for hit in data.get("hits", []):
-                text = hit.get("comment_text") or ""
-                clean_text = re.sub(r"<[^>]+>", " ", text)
-                matches = QUANT_PATTERN.findall(clean_text)
+                raw_html = hit.get("comment_text") or ""
+                clean_text = html.unescape(re.sub(r"<[^>]+>", " ", raw_html))
+                if not is_relevant(clean_text, query):
+                    continue
+                matches = normalize_measurements(QUANT_PATTERN.findall(clean_text))
                 if len(matches) >= 2:
                     findings.append(
                         {
                             "source": "HackerNews",
                             "url": f"https://news.ycombinator.com/item?id={hit.get('objectID')}",
-                            "author": hit.get("author"),
-                            "created_at": hit.get("created_at", "")[:10],
-                            "extracted_numbers": list(dict.fromkeys(matches))[:10],
-                            "snippet": clean_text[:360].strip(),
+                            "author": hit.get("author") or "anonymous",
+                            "created_at": (hit.get("created_at") or "")[:10],
+                            "measurement_count": len(matches),
+                            "extracted_numbers": matches,
                         }
                     )
     except Exception as e:
-        findings.append({"source": "HackerNews", "error": str(e)})
-    return findings
+        errors.append({"source": "HackerNews", "error": str(e)})
+    return findings, errors
 
 
-def fetch_github_benchmarks(query: str, limit: int = 10) -> list[dict[str, Any]]:
+def fetch_github_benchmarks(query: str, limit: int = 10) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
     """Query GitHub Issues/Discussions for real-world benchmark numbers and empirical logs."""
     encoded = urllib.parse.quote(f"{query} benchmark")
     url = f"https://api.github.com/search/issues?q={encoded}&per_page={limit}"
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "NodusQuantBot/1.0",
-            "Accept": "application/vnd.github+json",
-        },
-    )
+    headers = {
+        "User-Agent": "NodusQuantBot/1.1",
+        "Accept": "application/vnd.github+json",
+    }
+    gh_token = os.environ.get("GITHUB_TOKEN", "")
+    if gh_token:
+        headers["Authorization"] = f"Bearer {gh_token}"
+
+    req = urllib.request.Request(url, headers=headers)
     findings: list[dict[str, Any]] = []
+    errors: list[dict[str, str]] = []
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             for item in data.get("items", []):
+                title = (item.get("title") or "").strip()[:140]
                 body = item.get("body") or ""
-                combined = f"{item.get('title', '')} {body}"
-                matches = QUANT_PATTERN.findall(combined)
+                combined = f"{title} {body}"
+                if not is_relevant(combined, query):
+                    continue
+                matches = normalize_measurements(QUANT_PATTERN.findall(combined))
                 if len(matches) >= 2:
                     findings.append(
                         {
                             "source": "GitHub",
-                            "title": item.get("title", ""),
+                            "title": title,
                             "url": item.get("html_url", ""),
                             "created_at": (item.get("created_at") or "")[:10],
-                            "extracted_numbers": list(dict.fromkeys(matches))[:12],
-                            "snippet": combined[:360].strip(),
+                            "measurement_count": len(matches),
+                            "extracted_numbers": matches,
                         }
                     )
     except Exception as e:
-        findings.append({"source": "GitHub", "error": str(e)})
-    return findings
+        errors.append({"source": "GitHub", "error": str(e)})
+    return findings, errors
 
 
-def fetch_reddit_oauth_quantitative(query: str, subreddit: str = "", limit: int = 15) -> list[dict[str, Any]]:
+def fetch_reddit_oauth_quantitative(
+    query: str, subreddit: str = "", limit: int = 15
+) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
     """Query official Reddit OAuth API when REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET are set."""
     client_id = os.environ.get("REDDIT_CLIENT_ID", "")
     client_secret = os.environ.get("REDDIT_CLIENT_SECRET", "")
     if not client_id or not client_secret:
-        return []
+        return [], []
 
     findings: list[dict[str, Any]] = []
+    errors: list[dict[str, str]] = []
     try:
         auth_bytes = f"{client_id}:{client_secret}".encode("utf-8")
         b64_auth = base64.b64encode(auth_bytes).decode("ascii")
@@ -111,7 +150,7 @@ def fetch_reddit_oauth_quantitative(query: str, subreddit: str = "", limit: int 
             data=b"grant_type=client_credentials",
             headers={
                 "Authorization": f"Basic {b64_auth}",
-                "User-Agent": "python:nodus.quant.research:v1.0",
+                "User-Agent": "python:nodus.quant.research:v1.1",
             },
         )
         with urllib.request.urlopen(token_req, timeout=10) as tresp:
@@ -124,57 +163,68 @@ def fetch_reddit_oauth_quantitative(query: str, subreddit: str = "", limit: int 
             url,
             headers={
                 "Authorization": f"Bearer {token}",
-                "User-Agent": "python:nodus.quant.research:v1.0",
+                "User-Agent": "python:nodus.quant.research:v1.1",
             },
         )
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             for child in data.get("data", {}).get("children", []):
                 post = child.get("data", {})
-                combined = f"{post.get('title', '')} {post.get('selftext', '')}"
-                matches = QUANT_PATTERN.findall(combined)
-                if matches:
+                title = (post.get("title") or "").strip()[:140]
+                combined = f"{title} {post.get('selftext', '')}"
+                if not is_relevant(combined, query):
+                    continue
+                matches = normalize_measurements(QUANT_PATTERN.findall(combined))
+                if len(matches) >= 2:
                     findings.append(
                         {
                             "source": f"r/{post.get('subreddit', 'all')}",
-                            "title": post.get("title", ""),
+                            "title": title,
                             "url": f"https://www.reddit.com{post.get('permalink', '')}",
-                            "score": post.get("score", 0),
-                            "extracted_numbers": list(dict.fromkeys(matches))[:12],
-                            "snippet": combined[:360].strip(),
+                            "score": int(post.get("score", 0)),
+                            "measurement_count": len(matches),
+                            "extracted_numbers": matches,
                         }
                     )
     except Exception as e:
-        findings.append({"source": "RedditOAuth", "error": str(e)})
-    return findings
+        errors.append({"source": "RedditOAuth", "error": str(e)})
+    return findings, errors
 
 
 def run_mine(query: str, subreddit: str = "", limit: int = 15) -> dict[str, Any]:
     CANDIDATES_DIR.mkdir(parents=True, exist_ok=True)
-    reddit_hits = fetch_reddit_oauth_quantitative(query=query, subreddit=subreddit, limit=limit)
-    hn_hits = fetch_hn_quantitative(query=query, limit=limit)
-    gh_hits = fetch_github_benchmarks(query=query, limit=min(limit, 10))
+    reddit_hits, reddit_errs = fetch_reddit_oauth_quantitative(query=query, subreddit=subreddit, limit=limit)
+    hn_hits, hn_errs = fetch_hn_quantitative(query=query, limit=limit)
+    gh_hits, gh_errs = fetch_github_benchmarks(query=query, limit=min(limit, 10))
+
+    all_errors = reddit_errs + hn_errs + gh_errs
+    total_hits = len(reddit_hits) + len(hn_hits) + len(gh_hits)
 
     slug = re.sub(r"[^a-z0-9]+", "-", query.lower()).strip("-")
     out_file = CANDIDATES_DIR / f"mined_{slug}.json"
+    tmp_file = CANDIDATES_DIR / f"mined_{slug}.json.tmp"
     payload = {
         "query": query,
         "subreddit": subreddit or "all",
         "mined_at": datetime.now().isoformat(),
-        "total_quantitative_hits": len(reddit_hits) + len(hn_hits) + len(gh_hits),
+        "status": "ok" if not all_errors or total_hits > 0 else "degraded",
+        "total_quantitative_hits": total_hits,
         "reddit_findings": reddit_hits,
         "hn_findings": hn_hits,
         "github_findings": gh_hits,
+        "errors": all_errors,
     }
-    out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_file.replace(out_file)
     print(
         json.dumps(
             {
-                "status": "ok",
+                "status": payload["status"],
                 "query": query,
                 "reddit_oauth_hits": len(reddit_hits),
                 "hn_hits": len(hn_hits),
                 "github_hits": len(gh_hits),
+                "errors_count": len(all_errors),
                 "saved_to": str(out_file),
             },
             ensure_ascii=False,
@@ -183,10 +233,35 @@ def run_mine(query: str, subreddit: str = "", limit: int = 15) -> dict[str, Any]
     return payload
 
 
+def run_all_configured(limit: int = 15) -> list[dict[str, Any]]:
+    with CONFIG_PATH.open("r", encoding="utf-8") as f:
+        config = json.load(f)
+    results = []
+    for topic in config.get("mining_topics", []):
+        results.append(
+            run_mine(
+                query=topic["query"],
+                subreddit=topic.get("subreddit", ""),
+                limit=limit,
+            )
+        )
+    return results
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Nodus Quantitative Community Miner")
-    parser.add_argument("--query", required=True, help="Search query (e.g., '100W GaN thermal throttling')")
+    parser.add_argument("--query", default="", help="Search query (e.g., '100W GaN thermal throttling')")
     parser.add_argument("--subreddit", default="", help="Optional subreddit name (e.g., 'UsbCHardware')")
     parser.add_argument("--limit", type=int, default=15, help="Max items per source")
+    parser.add_argument(
+        "--all-configured",
+        action="store_true",
+        help="Mine all topics configured in config/site_config.json",
+    )
     args = parser.parse_args()
-    run_mine(query=args.query, subreddit=args.subreddit, limit=args.limit)
+    if args.all_configured:
+        run_all_configured(limit=args.limit)
+    elif args.query:
+        run_mine(query=args.query, subreddit=args.subreddit, limit=args.limit)
+    else:
+        parser.error("Provide --query or --all-configured")

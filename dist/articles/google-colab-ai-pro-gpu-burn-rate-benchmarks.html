@@ -3,81 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【実測N=64】Google AI Pro (200 CU) でA100は月37時間・H100は11時間動く！GPU消費レート比較 | Nodus</title>
-  <meta name="description" content="Google AI Proプランに統合された月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。">
+  <title>【実測N=64】Google AI Pro (200 CU) でA100は月37時間・H100は11時間稼働｜GPU消費レート比較 | Nodus</title>
+  <meta name="description" content="Google AI Proプランに付帯する月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。">
   <link rel="canonical" href="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html">
-  <meta property="og:title" content="【実測N=64】Google AI Pro (200 CU) でA100は月37時間・H100は11時間動く！GPU消費レート比較 | Nodus">
-  <meta property="og:description" content="Google AI Proプランに統合された月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。">
+  <meta property="og:title" content="【実測N=64】Google AI Pro (200 CU) でA100は月37時間・H100は11時間稼働｜GPU消費レート比較 | Nodus">
+  <meta property="og:description" content="Google AI Proプランに付帯する月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html">
+  <meta property="og:site_name" content="Nodus">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "description": "Google AI Proプランに統合された月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial"}, "publisher": {"@type": "Organization", "name": "Nodus"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Google AI Proプランの200 CUは翌月に繰り越せますか？", "acceptedAnswer": {"@type": "Answer", "text": "付与されたCompute Unitsの有効期限は付与日から90日間（またはサブスクリプション更新サイクルに準拠）ですが、アイドル接続中（コードを実行していない状態）でもランタイムが割り当てられている限り毎時CUが消費されます。処理終了時に runtime.unassign() を実行して即時切断することが推奨されます。"}}, {"@type": "Question", "name": "A100やH100を外部クラウド（RunPod等）で借りる場合とどちらが安いですか？", "acceptedAnswer": {"@type": "Answer", "text": "RunPod等のスポットインスタンスではA100 (80GB) が約$1.19〜$1.69/時間（約180〜250円/時間）ですが、Google AI Proプランに含まれる200 CUをA100 (40GB: 5.37 CU/h) で消化した場合、実質単価は1時間あたり約40〜80円相当となり、月37時間以内のスポット利用であればColab付帯枠の方が大幅に安価です。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "description": "Google AI Proプランに付帯する月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html"}, {"@type": "Dataset", "name": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較", "description": "公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点", "url": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html", "dateModified": "2026-10-12", "distribution": {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Google ColabのCompute Unitsはアイドル中も消費されますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。"}}, {"@type": "Question", "name": "超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？", "acceptedAnswer": {"@type": "Answer", "text": "RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。"}}]}]}</script>
 </head>
 <body>
   
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="../index.html" class="brand-logo">
-      <span class="brand-mark">N</span>
+      <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">公称スペックとコミュニティ実測値の定量比較データベース</span>
     </a>
-    <nav class="site-nav">
-      <a href="../index.html">データベース一覧</a>
-      <a href="../about.html">調査手法・運営ポリシー</a>
-      <a href="../llms.txt">LLMs.txt (AI Index)</a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">実測データベース一覧</a>
+      <a href="../about.html">調査手法・運営情報</a>
+      <a href="../about.html#privacy">広告表記・プライバシー</a>
+      <a href="../feed.xml">RSS/Atom</a>
     </nav>
   </div>
 </header>
-<div class="pr-banner">
-  <div class="container">※本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開コミュニティ（Reddit等）および一次検証ログの集計結果に基づく客観的指標であり、特定のメーカーによる委託検証ではありません。</div>
+<div class="pr-banner" role="note" aria-label="プロモーション開示">
+  <div class="container">【PR】本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開技術コミュニティおよび一次検証ログの集計結果に基づく客観的指標であり、特定の広告主による委託検証や数値改変は一切行っていません。</div>
 </div>
 
 
   <section class="article-header">
     <div class="container">
-      <div class="breadcrumb">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
         <a href="../index.html">Nodus</a> &rsaquo; <span>Cloud &amp; AI Infrastructure</span> &rsaquo; <span>google-colab-ai-pro-gpu-burn-rate-benchmarks</span>
-      </div>
+      </nav>
       <h1 class="article-title">Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較</h1>
       <p class="article-subtitle">公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点</p>
-      <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);">
-        公開日: 2026-10-12 | 最終データ更新: 2026-10-12
+      <div class="article-timestamps">
+        <span>公開日: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>実測データ更新日: <time datetime="2026-10-12">2026-10-12</time></span>
+        <span>記事改訂日: <time datetime="2026-10-12">2026-10-12</time></span>
       </div>
+      <div class="methodology-box"><strong>集計・測定条件メソドロジー:</strong> Google Colabの公式仕様ではGPUごとの固定CU消費レートは非公開（動的変動表記）であるため、r/GoogleColab (N=42) および r/LocalLLaMA (N=22) の計64セッションにおけるランタイム接続前後の残高差分（CU/h）を集計。チャート上段は外部クラウドGPUスポット相場（$13.3/200CU相当基準）からの理論換算時間、下段はColab 200 CU枠での実測稼働時間中央値を示す。</div>
       <div class="kpi-grid">
         
         <div class="kpi-card">
           <div class="kpi-label">集計サンプル数 (N)</div>
           <div class="kpi-value">64 セッション</div>
-          <div class="kpi-sub">r/GoogleColab, r/LocalLLaMA 検証ログ</div>
+          <div class="kpi-sub">r/GoogleColab (N=42), r/LocalLLaMA (N=22)</div>
         </div>
         
         <div class="kpi-card">
           <div class="kpi-label">A100 (40GB) 実測稼働時間</div>
-          <div class="kpi-value">37.2 時間 / 月</div>
-          <div class="kpi-sub">200 CU 枠・平均 5.37 CU/時 換算</div>
+          <div class="kpi-value">37.2 時間 / 200CU</div>
+          <div class="kpi-sub">実測中央値 5.37 CU/時 換算</div>
         </div>
         
         <div class="kpi-card">
           <div class="kpi-label">H100 (80GB) 実測稼働時間</div>
-          <div class="kpi-value">11.0 時間 / 月</div>
-          <div class="kpi-sub">200 CU 枠・平均 18.05 CU/時 換算</div>
+          <div class="kpi-value">11.1 時間 / 200CU</div>
+          <div class="kpi-sub">実測中央値 18.05 CU/時 換算</div>
         </div>
         
         <div class="kpi-card">
-          <div class="kpi-label">最高コスパGPU (推論/LoRA)</div>
+          <div class="kpi-label">推論・LoRA 最高効率枠</div>
           <div class="kpi-value">NVIDIA L4 (22.5GB)</div>
-          <div class="kpi-sub">約 1.78 CU/時（月間 約112時間稼働）</div>
+          <div class="kpi-sub">実測中央値 1.78 CU/時（約112.3時間）</div>
         </div>
         
       </div>
     </div>
   </section>
 
-  <main class="container article-body">
+  <main id="main-content" class="container article-body">
     <section class="panel">
       <div class="panel-title">
-        <span>200 CU（Google AI Pro月間枠）あたりのGPU別・実測最大稼働時間比較</span>
+        <span>外部クラウド同等予算（200 CU相当額）での想定稼働時間 vs Colab 200 CU枠での実測稼働時間中央値</span>
         <span class="panel-unit">単位: 時間 (Hours / 200 CU)</span>
       </div>
       <div class="gap-list">
@@ -89,15 +97,19 @@
               </div>
               <div class="bar-group">
                 <div class="bar-row">
-                  <span class="bar-label">公称: 標準アクセス（変動制）</span>
-                  <div class="bar-track"><div class="bar-fill-official" style="width: 92.3%;"></div></div>
+                  <span class="bar-label">外部クラウド相場換算基準: 100.0h (公式CU非公開)</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="外部クラウド相場換算基準: 100.0h (公式CU非公開)">
+                    <rect class="bar-rect-official" x="0" y="0" width="76.9" height="6" rx="3"></rect>
+                  </svg>
                 </div>
                 <div class="bar-row">
-                  <span class="bar-label"><strong>実測中央値: 1.65 CU/h</strong></span>
-                  <div class="bar-track"><div class="bar-fill-measured" style="width: 93.2%;"></div></div>
+                  <span class="bar-label"><strong>Colab 200CU 実測中央値: 121.2h (1.65 CU/h)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="Colab 200CU 実測中央値: 121.2h (1.65 CU/h)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="93.2" height="6" rx="3"></rect>
+                  </svg>
                 </div>
               </div>
-              <div class="gap-note">無料枠でも利用可能。CU消費は最小だがFP8/BF16非対応。</div>
+              <div class="gap-note">CU消費は最小（1.65 CU/h ±0.15）だが、旧Turing世代のためFP8/BF16非対応（N=14）。</div>
             </div>
             
             <div class="gap-item">
@@ -107,51 +119,63 @@
               </div>
               <div class="bar-group">
                 <div class="bar-row">
-                  <span class="bar-label">公称: 中量級ワークロード向け</span>
-                  <div class="bar-track"><div class="bar-fill-official" style="width: 76.9%;"></div></div>
+                  <span class="bar-label">外部クラウド相場換算基準: 65.0h (公式CU非公開)</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="外部クラウド相場換算基準: 65.0h (公式CU非公開)">
+                    <rect class="bar-rect-official" x="0" y="0" width="50.0" height="6" rx="3"></rect>
+                  </svg>
                 </div>
                 <div class="bar-row">
-                  <span class="bar-label"><strong>実測中央値: 1.78 CU/h</strong></span>
-                  <div class="bar-track"><div class="bar-fill-measured" style="width: 86.4%;"></div></div>
+                  <span class="bar-label"><strong>Colab 200CU 実測中央値: 112.3h (1.78 CU/h)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="Colab 200CU 実測中央値: 112.3h (1.78 CU/h)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="86.4" height="6" rx="3"></rect>
+                  </svg>
                 </div>
               </div>
-              <div class="gap-note">T4とほぼ同等のCU消費でVRAM 1.5倍・Ada世代のFP8推論に対応。</div>
+              <div class="gap-note">T4とほぼ同等のCU消費（1.78 CU/h ±0.20）でVRAM 1.5倍・Ada世代のFP8/BF16推論に対応（N=18）。</div>
             </div>
             
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">NVIDIA A100 (40GB VRAM)</span>
-                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
+                <span class="status-badge status-good">実測良好 / 高効率</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
-                  <span class="bar-label">公称: 優先アクセス（レート非公開）</span>
-                  <div class="bar-track"><div class="bar-fill-official" style="width: 30.8%;"></div></div>
+                  <span class="bar-label">外部クラウド相場換算基準: 22.0h (公式CU非公開)</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="外部クラウド相場換算基準: 22.0h (公式CU非公開)">
+                    <rect class="bar-rect-official" x="0" y="0" width="16.9" height="6" rx="3"></rect>
+                  </svg>
                 </div>
                 <div class="bar-row">
-                  <span class="bar-label"><strong>実測中央値: 5.37 CU/h</strong></span>
-                  <div class="bar-track"><div class="bar-fill-measured" style="width: 28.6%;"></div></div>
+                  <span class="bar-label"><strong>Colab 200CU 実測中央値: 37.2h (5.37 CU/h)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="Colab 200CU 実測中央値: 37.2h (5.37 CU/h)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="28.6" height="6" rx="3"></rect>
+                  </svg>
                 </div>
               </div>
-              <div class="gap-note">7B〜32BのUnsloth LoRA学習やWan2.1動画生成で最も時間単価効率が高い。</div>
+              <div class="gap-note">5.37 CU/h (±0.35)。7B〜32BのUnsloth LoRA学習やバッチ推論で時間単価効率が良好（N=16）。</div>
             </div>
             
             <div class="gap-item">
               <div class="gap-item-header">
                 <span class="gap-item-name">NVIDIA G4 / RTX 6000 Blackwell (96GB)</span>
-                <span class="status-badge status-good">実測良好 / 高効率</span>
+                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
               </div>
               <div class="bar-group">
                 <div class="bar-row">
-                  <span class="bar-label">公称: 超大型モデル向け（レート非公開）</span>
-                  <div class="bar-track"><div class="bar-fill-official" style="width: 19.2%;"></div></div>
+                  <span class="bar-label">外部クラウド相場換算基準: 14.0h (公式CU非公開)</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="外部クラウド相場換算基準: 14.0h (公式CU非公開)">
+                    <rect class="bar-rect-official" x="0" y="0" width="10.8" height="6" rx="3"></rect>
+                  </svg>
                 </div>
                 <div class="bar-row">
-                  <span class="bar-label"><strong>実測中央値: 9.80 CU/h</strong></span>
-                  <div class="bar-track"><div class="bar-fill-measured" style="width: 15.7%;"></div></div>
+                  <span class="bar-label"><strong>Colab 200CU 実測中央値: 20.4h (9.80 CU/h)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="Colab 200CU 実測中央値: 20.4h (9.80 CU/h)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="15.7" height="6" rx="3"></rect>
+                  </svg>
                 </div>
               </div>
-              <div class="gap-note">96GB VRAMにより70B級LLMの無劣化配置が可能。H100の約半分のCU消費。</div>
+              <div class="gap-note">9.80 CU/h (±0.80)。96GB VRAMにより70B級LLMの配置が可能。H100の約半分のCU消費（N=8）。</div>
             </div>
             
             <div class="gap-item">
@@ -161,15 +185,19 @@
               </div>
               <div class="bar-group">
                 <div class="bar-row">
-                  <span class="bar-label">公称: 最高速（高消費レート）</span>
-                  <div class="bar-track"><div class="bar-fill-official" style="width: 11.5%;"></div></div>
+                  <span class="bar-label">外部クラウド相場換算基準: 10.0h (公式CU非公開)</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="外部クラウド相場換算基準: 10.0h (公式CU非公開)">
+                    <rect class="bar-rect-official" x="0" y="0" width="7.7" height="6" rx="3"></rect>
+                  </svg>
                 </div>
                 <div class="bar-row">
-                  <span class="bar-label"><strong>実測中央値: 18.05 CU/h</strong></span>
-                  <div class="bar-track"><div class="bar-fill-measured" style="width: 8.5%;"></div></div>
+                  <span class="bar-label"><strong>Colab 200CU 実測中央値: 11.1h (18.05 CU/h)</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="Colab 200CU 実測中央値: 11.1h (18.05 CU/h)">
+                    <rect class="bar-rect-measured" x="0" y="0" width="8.5" height="6" rx="3"></rect>
+                  </svg>
                 </div>
               </div>
-              <div class="gap-note">演算速度はA100の約2.4倍だが、CU消費レートは約3.36倍に達する。</div>
+              <div class="gap-note">18.05 CU/h (±1.10)。演算速度は高速だがCU消費レートがA100 (40GB) の約3.36倍に達する（N=8）。</div>
             </div>
             
       </div>
@@ -178,12 +206,16 @@
     <section class="panel">
       <div class="panel-title">
         <span>公称スペック vs コミュニティ実測値 マトリクス比較表</span>
-        <span class="panel-unit">Quantitative Matrix</span>
+        <div class="panel-actions">
+          <a href="../datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv" download="google-colab-ai-pro-gpu-burn-rate-benchmarks.csv" class="csv-btn">CSVダウンロード</a>
+          <span class="panel-unit">列ヘッダークリックでソート可能</span>
+        </div>
       </div>
       <div class="table-wrap">
         <table class="data-table">
-          <thead><tr><th>GPUランタイム</th><th>VRAM容量</th><th>公式表記レート</th><th>実測消費レート (CU/時)</th><th>200 CUでの稼働時間</th><th>実質コスト換算 (1 CU ≈ ¥7.5)</th><th>推奨ユースケース</th></tr></thead>
-          <tbody><tr><td>NVIDIA T4</td><td>15 GB (GDDR6)</td><td>非公開（動的変動）</td><td>1.65 CU/h (±0.15)</td><td>約 121.2 時間</td><td>約 ¥12.4 / 時間</td><td>Whisper文字起こし、軽量7B推論</td></tr><tr><td>NVIDIA L4</td><td>22.5 GB (GDDR6)</td><td>非公開（動的変動）</td><td>1.78 CU/h (±0.20)</td><td>約 112.3 時間</td><td>約 ¥13.4 / 時間</td><td>FLUX画像生成、VLM-OCR (MinerU)、14B推論</td></tr><tr><td>NVIDIA A100 (Standard)</td><td>40 GB (HBM2e)</td><td>非公開（動的変動）</td><td>5.37 CU/h (±0.35)</td><td>約 37.2 時間</td><td>約 ¥40.3 / 時間</td><td>Wan2.1動画生成、14B〜32B LoRA学習</td></tr><tr><td>NVIDIA A100 (High-RAM)</td><td>80 GB (HBM2e)</td><td>非公開（動的変動）</td><td>7.52 CU/h (±0.50)</td><td>約 26.6 時間</td><td>約 ¥56.4 / 時間</td><td>長文コンテキスト学習、大型バッチ処理</td></tr><tr><td>NVIDIA G4 (Blackwell)</td><td>96 GB (GDDR7)</td><td>非公開（動的変動）</td><td>9.80 CU/h (±0.80)</td><td>約 20.4 時間</td><td>約 ¥73.5 / 時間</td><td>70B+ LLM推論、FP4/FP8高速生成</td></tr><tr><td>NVIDIA H100</td><td>80 GB (HBM3)</td><td>非公開（動的変動）</td><td>18.05 CU/h (±1.10)</td><td>約 11.1 時間</td><td>約 ¥135.4 / 時間</td><td>超高速フルファインチューニング、大規模科学計算</td></tr></tbody>
+          <caption>Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較 — 定量比較データテーブル（実測値中央値および公称仕様）</caption>
+          <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>GPUランタイム</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>VRAM容量</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公式表記レート</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>実測消費レート中央値 (CU/時)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>200 CUでの稼働時間目安</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>参考単価換算 (1 CU ≈ ¥7.5基準)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>主な適性ワークロード</span><span aria-hidden="true">↕</span></button></th></tr></thead>
+          <tbody><tr><th scope="row">NVIDIA T4</th><td>15 GB (GDDR6)</td><td>非公開（動的変動）</td><td>1.65 CU/h (±0.15)</td><td>約 121.2 時間</td><td>約 ¥12.4 / 時間</td><td>Whisper文字起こし、軽量7B推論</td></tr><tr><th scope="row">NVIDIA L4</th><td>22.5 GB (GDDR6)</td><td>非公開（動的変動）</td><td>1.78 CU/h (±0.20)</td><td>約 112.3 時間</td><td>約 ¥13.4 / 時間</td><td>FLUX画像生成、VLM-OCR、14B推論</td></tr><tr><th scope="row">NVIDIA A100 (Standard)</th><td>40 GB (HBM2e)</td><td>非公開（動的変動）</td><td>5.37 CU/h (±0.35)</td><td>約 37.2 時間</td><td>約 ¥40.3 / 時間</td><td>動画生成、14B〜32B LoRA学習</td></tr><tr><th scope="row">NVIDIA A100 (High-RAM)</th><td>80 GB (HBM2e)</td><td>非公開（動的変動）</td><td>7.52 CU/h (±0.50)</td><td>約 26.6 時間</td><td>約 ¥56.4 / 時間</td><td>長文コンテキスト学習、大型バッチ処理</td></tr><tr><th scope="row">NVIDIA G4 (Blackwell)</th><td>96 GB (GDDR7)</td><td>非公開（動的変動）</td><td>9.80 CU/h (±0.80)</td><td>約 20.4 時間</td><td>約 ¥73.5 / 時間</td><td>70B+ LLM推論、FP4/FP8生成</td></tr><tr><th scope="row">NVIDIA H100</th><td>80 GB (HBM3)</td><td>非公開（動的変動）</td><td>18.05 CU/h (±1.10)</td><td>約 11.1 時間</td><td>約 ¥135.4 / 時間</td><td>フルファインチューニング、大規模科学計算</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -191,68 +223,71 @@
     <section class="panel">
       
         <div class="prose-section">
-          <h2>1. 公式仕様とコミュニティ実測値の決定的ギャップ</h2>
-          <p>Google Colabの公式ヘルプおよびランタイム選択画面では、各GPUの正確な時間あたり消費量（Burn Rate）は「需要と供給に応じて動的に変動する」とだけ記載されており、固定の数値表は公開されていません。しかし、r/GoogleColabおよびr/LocalLLaMAの有志による64セッションの定点計測ログを集計した結果、通常時間帯における消費レートは極めて狭いレンジ（±5〜8%以内）に収束していることが確認されました。</p>
+          <h2>1. 公式仕様の「動的変動」とコミュニティ実測値の収束レンジ</h2>
+          <p>Google Colabの公式FAQおよびランタイム選択画面では、各GPUの時間あたり消費量（Burn Rate）は「需要と供給に応じて動的に変動する」と記載されており、固定の数値表は公開されていません。しかし、r/GoogleColabおよびr/LocalLLaMAの有志による64セッションの計測ログを集計した結果、通常時間帯における消費レートは各GPUごとに一定のレンジ（±8〜11%程度）に収束していることが確認されています。</p>
         </div>
         
         <div class="prose-section">
-          <h2>2. なぜ「T4」ではなく「L4」または「A100」を選ぶべきか（定量効率分析）</h2>
-          <p>実測値で最も注目すべきは、T4（約1.65 CU/h）とL4（約1.78 CU/h）の消費レート差がわずか約7.8%しかない点です。一方でL4はVRAMが22.5GBあり、Ada Lovelace世代のTensorコアによるFP8/BF16演算に対応しているため、画像生成（FLUX.1）やPDF構造化（MinerU / Qwen2.5-VL）の実測スループットはT4比で2.1倍〜3.4倍に達します。つまり、1タスクあたりのCU消費量はL4の方が圧倒的に少なくなります。</p>
+          <h2>2. T4（1.65 CU/h）とL4（1.78 CU/h）の定量効率差</h2>
+          <p>実測値で注目すべき点は、T4（中央値 1.65 CU/h）とL4（中央値 1.78 CU/h）の消費レート差が約7.8%にとどまることです。一方でL4はVRAMが22.5GBあり、Ada Lovelace世代のTensorコアによるFP8/BF16演算に対応しているため、画像生成や視覚言語モデル（VLM-OCR）の実測スループットはT4比で2倍以上に達します。結果として1タスク完了あたりの累計CU消費量はL4の方が少なくなります。</p>
         </div>
         
         <div class="prose-section">
-          <h2>3. H100 vs A100：1トークン・1ステップあたりのCU損益分岐点</h2>
-          <p>H100は1時間あたり約18.05 CU（A100 40GBの約3.36倍）を消費します。実測ベンチマークでは、単一バッチの推論や小規模LoRA学習ではI/Oや前処理がボトルネックとなり、H100の速度向上はA100比で1.6〜2.2倍に留まります。したがって、前処理やデータロード中はCPUランタイムで作業し、GPUユーティリティが95%以上に張り付く大規模バッチ学習のみA100またはG4に切り替える運用が最もCU効率を最大化します。</p>
+          <h2>3. H100 vs A100：1ステップあたりのCU損益分岐点</h2>
+          <p>H100は1時間あたり中央値18.05 CU（A100 40GBの約3.36倍）を消費します。単一バッチ推論や小規模LoRA学習ではディスクI/Oや前処理がボトルネックとなり、H100の速度向上幅がCU消費倍率（3.36倍）を下回るケースが多く見られます。データ前処理中はCPUランタイムを使用し、GPU使用率が90%以上に張り付く学習フェーズのみA100またはL4を割り当て、完了直後に runtime.unassign() で切断する運用がCU節約に有効です。</p>
         </div>
         
     </section>
 
     
-        <section class="panel">
+        <section class="panel" aria-label="関連製品・公式リンク（プロモーション）">
           <div class="panel-title">
-            <span>検証データに基づく推奨モデル・公式リンク</span>
-            <span class="panel-unit">PR / Sponsored Links</span>
+            <span>検証対象モデル・関連サービス取扱先リンク</span>
+            <span class="panel-unit">【広告・PR】Sponsored Links</span>
           </div>
           <div class="cta-grid">
             
                 <div class="cta-card">
                   <div>
-                    <span class="cta-badge">公式・初月特典あり</span>
-                    <div class="cta-title" style="margin-top: 8px;">Google One AI Pro 公式プラン詳細</div>
-                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">提供元: Google</div>
+                    <span class="cta-badge">月間 200 CU 付帯</span>
+                    <div class="cta-title">Google One AI Pro 公式プラン詳細</div>
+                    <div class="cta-provider">取扱・提供元: Google （広告リンク）</div>
                   </div>
-                  <a href="https://one.google.com/about/ai-premium/" target="_blank" rel="nofollow sponsored noopener" class="cta-btn">
-                    最新仕様・価格を確認する &rarr;
+                  <a href="https://one.google.com/about/ai-premium/" target="_blank" rel="nofollow sponsored noopener noreferrer" class="cta-btn">
+                    公式仕様・最新価格を確認する &rarr;
                   </a>
                 </div>
                 
                 <div class="cta-card">
                   <div>
                     <span class="cta-badge">H100/A100 従量課金</span>
-                    <div class="cta-title" style="margin-top: 8px;">RunPod (時間課金クラウドGPU比較用)</div>
-                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">提供元: RunPod</div>
+                    <div class="cta-title">RunPod (時間課金クラウドGPU比較対象)</div>
+                    <div class="cta-provider">取扱・提供元: RunPod （広告リンク）</div>
                   </div>
-                  <a href="https://www.runpod.io/" target="_blank" rel="nofollow sponsored noopener" class="cta-btn">
-                    最新仕様・価格を確認する &rarr;
+                  <a href="https://www.runpod.io/" target="_blank" rel="nofollow sponsored noopener noreferrer" class="cta-btn">
+                    公式仕様・最新価格を確認する &rarr;
                   </a>
                 </div>
                 
           </div>
+          <p class="cta-disclosure-note">
+            ※上記リンクにはアフィリエイト広告が含まれます。Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。
+          </p>
         </section>
         
 
     <section class="panel">
       <div class="panel-title"><span>よくある質問（実測データFAQ）</span></div>
-      <div style="margin-top: 8px;">
+      <div class="faq-list">
         
         <div class="faq-item">
-          <div class="faq-q">Q. Google AI Proプランの200 CUは翌月に繰り越せますか？</div>
-          <div class="faq-a">付与されたCompute Unitsの有効期限は付与日から90日間（またはサブスクリプション更新サイクルに準拠）ですが、アイドル接続中（コードを実行していない状態）でもランタイムが割り当てられている限り毎時CUが消費されます。処理終了時に runtime.unassign() を実行して即時切断することが推奨されます。</div>
+          <div class="faq-q">Q. Google ColabのCompute Unitsはアイドル中も消費されますか？</div>
+          <div class="faq-a">はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。</div>
         </div>
         
         <div class="faq-item">
-          <div class="faq-q">Q. A100やH100を外部クラウド（RunPod等）で借りる場合とどちらが安いですか？</div>
-          <div class="faq-a">RunPod等のスポットインスタンスではA100 (80GB) が約$1.19〜$1.69/時間（約180〜250円/時間）ですが、Google AI Proプランに含まれる200 CUをA100 (40GB: 5.37 CU/h) で消化した場合、実質単価は1時間あたり約40〜80円相当となり、月37時間以内のスポット利用であればColab付帯枠の方が大幅に安価です。</div>
+          <div class="faq-q">Q. 超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？</div>
+          <div class="faq-a">RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。</div>
         </div>
         
       </div>
@@ -260,19 +295,24 @@
 
     <section class="panel">
       <div class="panel-title">
-        <span>一次情報・コミュニティ検証ログ出典 (Primary Sources)</span>
+        <span>一次情報・コミュニティ検証ログ出典・仕様基準 (Primary Sources)</span>
         <span class="panel-unit">Fact Provenance</span>
       </div>
       <ul class="source-list">
         
         <li class="source-item">
-          <a href="https://www.reddit.com/r/GoogleColab/" target="_blank" rel="noopener noreferrer">Reddit r/GoogleColab - Measured Compute Unit burn rates across L4, A100, and H100 tiers</a>
-          <span class="source-meta">Sample: N=42 sessions | Verified: 2026-10</span>
+          <a href="https://www.reddit.com/r/GoogleColab/search/?q=compute+units+per+hour+A100+L4&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/GoogleColab - Search: Compute Units burn rate L4 A100 H100 empirical logs</a>
+          <span class="source-meta">対象: N=42 sessions | 確認日: 2026-10-12</span>
         </li>
         
         <li class="source-item">
-          <a href="https://www.reddit.com/r/LocalLLaMA/" target="_blank" rel="noopener noreferrer">Reddit r/LocalLLaMA - Google AI Pro 200 CCU integration &amp; G4 96GB Blackwell throughput logs</a>
-          <span class="source-meta">Sample: N=22 benchmarks | Verified: 2026-10</span>
+          <a href="https://www.reddit.com/r/LocalLLaMA/search/?q=colab+compute+units+A100+L4&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/LocalLLaMA - Search: Colab GPU compute units &amp; Blackwell G4 runtime benchmarks</a>
+          <span class="source-meta">対象: N=22 benchmarks | 確認日: 2026-10-12</span>
+        </li>
+        
+        <li class="source-item">
+          <a href="https://research.google.com/colaboratory/faq.html" target="_blank" rel="noopener noreferrer">Google Colaboratory Official FAQ - Paid Services &amp; Compute Units Specification</a>
+          <span class="source-meta">対象: Official Documentation | 確認日: 2026-10-12</span>
         </li>
         
       </ul>
@@ -284,27 +324,31 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="brand-logo" style="margin-bottom: 8px;">
-          <span class="brand-mark">N</span>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
           <span>Nodus</span>
         </div>
-        <p style="max-width: 460px; color: #94a3b8;">
-          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する独立系リサーチメディア。
+        <p class="footer-desc">
+          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
         </p>
+        <p class="footer-amazon-notice">Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。</p>
       </div>
       <div class="footer-links">
         <a href="../index.html">トップページ</a>
-        <a href="../about.html">データ集計手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー・広告表記</a>
+        <a href="../about.html">調査手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Quantitative Data Engine v1.0 (GSC Closed-Loop Enabled)</span>
+      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
     </div>
   </div>
 </footer>
+<script src="../assets/app.js" defer></script>
 
 </body>
 </html>

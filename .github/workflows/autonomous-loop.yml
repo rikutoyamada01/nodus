@@ -1,0 +1,71 @@
+name: Autonomous Mining & Closed-Loop SEO Engine
+
+on:
+  schedule:
+    # Runs every Monday at 06:00 JST (Sunday 21:00 UTC)
+    - cron: "0 21 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nodus-autonomous-loop
+  cancel-in-progress: false
+
+jobs:
+  autonomous-loop:
+    name: Mine Quantitative Logs & Optimize SEO
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (main branch only)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+
+      - name: Mine community empirical benchmarks
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+        run: python scripts/miner.py --all-configured
+
+      - name: Execute Closed-Loop SEO Optimizer (Live GSC when configured)
+        env:
+          GSC_ACCESS_TOKEN: ${{ secrets.GSC_ACCESS_TOKEN }}
+          GSC_CLIENT_ID: ${{ secrets.GSC_CLIENT_ID }}
+          GSC_CLIENT_SECRET: ${{ secrets.GSC_CLIENT_SECRET }}
+          GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
+        run: python scripts/seo_loop.py --apply
+
+      - name: Rebuild static site & CSV datasets
+        run: python scripts/build_site.py
+
+      - name: Enforce Enterprise Validation Gate before commit
+        run: python scripts/validate_site.py
+
+      - name: Commit and push verified updates
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nodus-autonomous-bot[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ content/ dist/
+          if git diff --cached --quiet; then
+            echo "No verified data or SEO changes to commit."
+          else
+            git commit -m "chore(autonomous): update mined quantitative logs and rebuild dist"
+            git push origin HEAD:main
+          fi
+
+      - name: Deploy updated dist to Cloudflare Pages (if token configured)
+        if: github.ref == 'refs/heads/main' && env.CLOUDFLARE_API_TOKEN != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 pages deploy dist --project-name=nodus-lab --branch=main

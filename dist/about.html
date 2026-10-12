@@ -3,62 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>調査手法・編集ポリシー・免責事項 | Nodus</title>
-  <meta name="description" content="Nodusのデータ集計メソドロジー、出典明記ポリシー、ステルスマーケティング規制対応、および免責事項。">
+  <title>調査手法・運営情報・プライバシーポリシー・免責事項 | Nodus</title>
+  <meta name="description" content="Nodusのデータ集計メソドロジー、出典明記ポリシー、ステルスマーケティング規制対応、プライバシーポリシー、および運営者情報。">
+  <link rel="canonical" href="https://nodus-lab.pages.dev/about.html">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html" class="brand-logo">
-      <span class="brand-mark">N</span>
+      <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">公称スペックとコミュニティ実測値の定量比較データベース</span>
     </a>
-    <nav class="site-nav">
-      <a href="index.html">データベース一覧</a>
-      <a href="about.html">調査手法・運営ポリシー</a>
-      <a href="llms.txt">LLMs.txt (AI Index)</a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="index.html">実測データベース一覧</a>
+      <a href="about.html">調査手法・運営情報</a>
+      <a href="about.html#privacy">広告表記・プライバシー</a>
+      <a href="feed.xml">RSS/Atom</a>
     </nav>
   </div>
 </header>
-<div class="pr-banner">
-  <div class="container">※本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開コミュニティ（Reddit等）および一次検証ログの集計結果に基づく客観的指標であり、特定のメーカーによる委託検証ではありません。</div>
+<div class="pr-banner" role="note" aria-label="プロモーション開示">
+  <div class="container">【PR】本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開技術コミュニティおよび一次検証ログの集計結果に基づく客観的指標であり、特定の広告主による委託検証や数値改変は一切行っていません。</div>
 </div>
 
 
   <section class="article-header">
     <div class="container">
-      <h1 class="article-title">データ集計手法・運営ポリシー・免責事項</h1>
-      <p class="article-subtitle">Nodus (Nodus Research Editorial) における定量データの抽出基準と法的コンプライアンスについて</p>
+      <h1 class="article-title">データ集計手法・運営情報・法的コンプライアンス</h1>
+      <p class="article-subtitle">Nodus (Nodus Research Editorial) における定量データの抽出基準、広告開示、プライバシー保護方針について</p>
     </div>
   </section>
 
-  <main class="container article-body">
+  <main id="main-content" class="container article-body">
     <section class="panel">
       <div class="prose-section">
-        <h2>1. 定量データの収集・正規化メソドロジー</h2>
+        <h2>1. 定量データの収集・正規化メソドロジーと統計的限界</h2>
         <p>
-          当サイト（Nodus）は、製品やクラウドサービスの「メーカー公称値（カタログスペック）」と「実運用環境における実測パフォーマンス」の乖離を可視化することを目的としたデータインデックスです。英語圏の技術コミュニティ（Redditの各専門Subreddit、Hacker News、GitHub Discussions等）で公開されている有志の計測ログから、測定条件（室温、負荷時間、バージョン等）が明記された数値データのみを抽出し、中央値および分散を算出して独自の比較表・チャートを再構築しています。
+          当サイト（Nodus）は、ハードウェア製品やクラウド・SaaSサービスの「メーカー公称仕様（カタログ値）」と「実運用環境における実測パフォーマンス」の乖離を可視化することを目的とした定量データベースメディアです。英語圏の技術コミュニティ（Redditの各専門Subreddit、Hacker News、GitHub Discussions等）で公開されている計測報告から、測定条件（室温、負荷時間、バージョン等）が確認可能な数値データを抽出し、外れ値を除外した中央値（Median）およびレンジを算出して独自の比較表・CSVデータセットを構築しています。個体差やファームウェア更新、測定機器の誤差により実測値は変動するため、各記事にサンプル数（N）と測定条件メソドロジーを明記しています。
         </p>
       </div>
       <div class="prose-section">
-        <h2>2. 著作権および一次情報へのリスペクト</h2>
+        <h2>2. 知的財産権の尊重および一次情報源への参照方針</h2>
         <p>
-          当サイトは日本の著作権法第30条の4（情報解析目的の利用）および国際的なフェアユース原則を遵守しています。第三者が撮影した画像や長文コメントの無断転載・直訳は一切行わず、客観的な「事実・計測数値」のみを統計処理した上で、すべての記事末尾に一次情報源（スレッドURL）への参照リンクを明記しています。
+          当サイトは、他者の創作的表現（投稿本文の文章や撮影画像・図表）の無断転載や翻案を行いません。著作権法上の保護対象とならない客観的な「計測事実・数値・条件データ」のみを抽出し、当サイト独自の比較体系および解説文として再構成しています。また、データの検証可能性（トレーサビリティ）を担保するため、すべての記事末尾に一次情報源および公式仕様書への参照リンクを明記しています。
         </p>
       </div>
       <div class="prose-section" id="privacy">
-        <h2>3. 広告配信（アフィリエイトプログラム）および景品表示法への対応</h2>
+        <h2>3. 広告配信（アフィリエイトプログラム）および景品表示法（ステマ規制）への対応</h2>
         <p>
-          当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである「Amazonアソシエイト・プログラム」をはじめ、各種ASPおよびSaaSパートナープログラムに参加しています。すべてのページ上部にプロモーションを含む旨を明記しており、広告報酬の有無によって実測データの数値を改変することはありません。
+          <strong>【Amazonアソシエイト・プログラム等の開示】</strong><br>
+          Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。 また、当サイトは各種ASPおよびSaaSパートナープログラムに参加しており、記事内の「広告・PR（Sponsored Links）」セクションのリンクを経由して適格な購入や契約が行われた場合、紹介料を受領することがあります。<br><br>
+          <strong>【編集の独立性と不当表示の防止】</strong><br>
+          日本の景品表示法（令和5年10月施行のステルスマーケティング告示）に準拠し、全ページ上部およびリンク周辺に「【PR】プロモーションを含みます」等の明瞭な広告表示を行っています。特定のメーカーや広告主からの金銭的対価によって実測データの数値を改変したり、根拠のない順位付けを行うことは一切ありません。
         </p>
       </div>
       <div class="prose-section">
-        <h2>4. 免責事項</h2>
+        <h2>4. プライバシーポリシーおよび外部送信規律に関する公表事項</h2>
         <p>
-          掲載されている実測値はコミュニティの特定環境下における計測統計であり、すべての個体やアップデート後の環境で同一の結果を保証するものではありません。製品購入やサービス契約の最終判断は、各メーカーの最新公式仕様をご確認の上、ご自身の責任において行っていただくようお願いいたします。
+          当サイトはCloudflare Pages上で静的HTMLとして配信されており、当サイト自身が訪問者の氏名・メールアドレス等の個人情報を自動的に収集・保存することはありません。ただし、インフラ提供元であるCloudflare社のセキュリティ・CDN機能により、アクセス時のIPアドレスやリクエストヘッダが不正アクセス防止および配信最適化の目的で処理されます。また、記事内の外部リンク（Amazon.co.jp、各SaaS公式サイト等）をクリックして遷移する際、遷移先サイトにてアフィリエイト成果計測のためのCookieやパラメータが利用される場合があります。
+        </p>
+      </div>
+      <div class="prose-section">
+        <h2>5. 免責事項・訂正ポリシー・運営者情報およびお問い合わせ窓口</h2>
+        <p>
+          掲載されている実測統計はコミュニティの特定環境下における観測値であり、すべての個体や最新アップデート後の環境で同一の結果を保証するものではありません。製品購入やサービス契約の最終判断は、各メーカーの最新公式仕様をご確認の上、ご自身の責任において行ってください。<br><br>
+          <strong>運営主体:</strong> Nodus Research Editorial<br>
+          <strong>公開リポジトリ・データ監査履歴:</strong> <a href="https://github.com/rikutoyamada01/nodus" target="_blank" rel="noopener noreferrer">https://github.com/rikutoyamada01/nodus</a><br>
+          <strong>お問い合わせ・データ訂正申請窓口:</strong> 記事内の数値データの誤り、最新ファームウェアでの再計測データ提供、または権利関係に関するご連絡は、<a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">公式GitHub Issue窓口 (https://github.com/rikutoyamada01/nodus/issues)</a> よりお願いいたします。確認の上、速やかにデータセットの検証・改訂を行います。
         </p>
       </div>
     </section>
@@ -69,27 +84,31 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="brand-logo" style="margin-bottom: 8px;">
-          <span class="brand-mark">N</span>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
           <span>Nodus</span>
         </div>
-        <p style="max-width: 460px; color: #94a3b8;">
-          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する独立系リサーチメディア。
+        <p class="footer-desc">
+          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
         </p>
+        <p class="footer-amazon-notice">Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。</p>
       </div>
       <div class="footer-links">
         <a href="index.html">トップページ</a>
-        <a href="about.html">データ集計手法・免責事項</a>
-        <a href="about.html#privacy">プライバシーポリシー・広告表記</a>
+        <a href="about.html">調査手法・免責事項</a>
+        <a href="about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="sitemap.xml">Sitemap</a>
+        <a href="llms.txt">LLMs.txt</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Quantitative Data Engine v1.0 (GSC Closed-Loop Enabled)</span>
+      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
     </div>
   </div>
 </footer>
+<script src="assets/app.js" defer></script>
 
 </body>
 </html>

@@ -6,26 +6,33 @@
   <title>Nodus | 公称スペックとコミュニティ実測値の定量比較データベース</title>
   <meta name="description" content="カタログ公称スペックには記載されない実測出力・非公開レート制限・持続性能を、Reddit等の海外一次検証ログから定量集計・比較するデータベースメディア。">
   <link rel="canonical" href="https://nodus-lab.pages.dev/">
+  <meta property="og:title" content="Nodus | 公称スペックとコミュニティ実測値の定量比較データベース">
+  <meta property="og:description" content="カタログ公称スペックとコミュニティ実測値のギャップを数値とCSVで公開する定量比較データベース。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nodus-lab.pages.dev/">
+  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="feed.xml">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html" class="brand-logo">
-      <span class="brand-mark">N</span>
+      <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">公称スペックとコミュニティ実測値の定量比較データベース</span>
     </a>
-    <nav class="site-nav">
-      <a href="index.html">データベース一覧</a>
-      <a href="about.html">調査手法・運営ポリシー</a>
-      <a href="llms.txt">LLMs.txt (AI Index)</a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="index.html">実測データベース一覧</a>
+      <a href="about.html">調査手法・運営情報</a>
+      <a href="about.html#privacy">広告表記・プライバシー</a>
+      <a href="feed.xml">RSS/Atom</a>
     </nav>
   </div>
 </header>
-<div class="pr-banner">
-  <div class="container">※本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開コミュニティ（Reddit等）および一次検証ログの集計結果に基づく客観的指標であり、特定のメーカーによる委託検証ではありません。</div>
+<div class="pr-banner" role="note" aria-label="プロモーション開示">
+  <div class="container">【PR】本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開技術コミュニティおよび一次検証ログの集計結果に基づく客観的指標であり、特定の広告主による委託検証や数値改変は一切行っていません。</div>
 </div>
 
 
@@ -34,30 +41,36 @@
       <div class="hero-badge">QUANTITATIVE SPEC INTELLIGENCE // NODUS</div>
       <h1>カタログ値の裏にある「実測値」を、数字で比較する。</h1>
       <p>
-        メーカー公式ページの「最大〇〇W」「高速アクセス」といった定性的な宣伝文句ではなく、グローバル開発者・ハードウェア検証コミュニティ（Reddit等）の一次計測ログを集計し、再現性のある定量比較テーブルとして公開しています。
+        メーカー公式ページの「最大〇〇W」「高速アクセス」といった定性的な宣伝文句ではなく、グローバル開発者・ハードウェア検証コミュニティの一次計測ログを集計し、測定条件付きの中央値テーブルおよびCSVデータセットとして公開しています。
       </p>
       <div class="hero-stats">
         <div class="hero-stat-item">
-          <div class="hero-stat-num">3 Datasets</div>
-          <div class="hero-stat-label">公開中の実測比較レポート</div>
+          <div class="hero-stat-num">4 Datasets</div>
+          <div class="hero-stat-label">公開中の実測比較レポート（CSV付）</div>
         </div>
         <div class="hero-stat-item">
-          <div class="hero-stat-num">N = 187+</div>
-          <div class="hero-stat-label">累計集計コミュニティ検証ログ数</div>
+          <div class="hero-stat-num">N = 228</div>
+          <div class="hero-stat-label">累計集計コミュニティ検証ログ・セッション</div>
         </div>
         <div class="hero-stat-item">
-          <div class="hero-stat-num">100% Citation</div>
-          <div class="hero-stat-label">全データに一次情報スレッド出典を明記</div>
+          <div class="hero-stat-num">18 Models</div>
+          <div class="hero-stat-label">横断比較済みハードウェア・SaaSプラン数</div>
         </div>
       </div>
     </div>
   </section>
 
-  <main class="container">
+  <main id="main-content" class="container">
     <div class="section-header">
       <h2 class="section-title">最新の実測比較・定量検証レポート</h2>
-      <div class="filter-bar">
-        <button class="filter-btn active" onclick="filterCategory('all', this)">すべて表示</button><button class="filter-btn" onclick="filterCategory('Cloud &amp; AI Infrastructure', this)">Cloud &amp; AI Infrastructure</button><button class="filter-btn" onclick="filterCategory('Hardware &amp; Power Electronics', this)">Hardware &amp; Power Electronics</button><button class="filter-btn" onclick="filterCategory('Software &amp; SaaS Economics', this)">Software &amp; SaaS Economics</button>
+    </div>
+    <div class="controls-wrap">
+      <div class="filter-bar" role="group" aria-label="カテゴリ絞り込み">
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて表示</button><button type="button" class="filter-btn" data-filter="Cloud &amp; AI Infrastructure" aria-pressed="false">Cloud &amp; AI Infrastructure</button><button type="button" class="filter-btn" data-filter="Hardware &amp; Power Electronics" aria-pressed="false">Hardware &amp; Power Electronics</button><button type="button" class="filter-btn" data-filter="Software &amp; SaaS Economics" aria-pressed="false">Software &amp; SaaS Economics</button>
+      </div>
+      <div>
+        <label for="datasetSearch" class="mini-metric-label">キーワード検索: </label>
+        <input type="search" id="datasetSearch" class="search-input" placeholder="例: 100W, A100, Claude, USB4...">
       </div>
     </div>
 
@@ -67,26 +80,26 @@
               <div>
                 <div class="card-meta">
                   <span class="category-pill">Hardware &amp; Power Electronics</span>
-                  <span class="date-text">2026-10-12</span>
+                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
                 </div>
-                <h2><a href="articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html" style="color: inherit;">100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</a></h2>
-                <p>公称ピーク出力には書かれない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）</p>
+                <h2><a href="articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html" class="card-title-link">100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</a></h2>
+                <p>公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）</p>
               </div>
               <div>
                 <div class="card-metrics-preview">
                   <div>
                     <div class="mini-metric-label">検証対象モデル・報告数</div>
-                    <div class="mini-metric-val">5 機種 / N=38</div>
+                    <div class="mini-metric-val">4 機種 / N=38</div>
                   </div>
                   <div>
-                    <div class="mini-metric-label">小型100W機の平均熱ダレ時間</div>
+                    <div class="mini-metric-label">高密度100W機の熱ダレ中央値</div>
                     <div class="mini-metric-val">22.5 分</div>
                   </div>
                 </div>
                 <div class="card-footer">
                   <a href="articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html">実測比較データを見る &rarr;</a>
-                  <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
-                    4 Models Compared
+                  <span class="card-count-meta">
+                    4 Models / N=38
                   </span>
                 </div>
               </div>
@@ -96,10 +109,10 @@
               <div>
                 <div class="card-meta">
                   <span class="category-pill">Software &amp; SaaS Economics</span>
-                  <span class="date-text">2026-10-12</span>
+                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
                 </div>
-                <h2><a href="articles/ai-coding-subscriptions-real-rate-limits-token-economics.html" style="color: inherit;">AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</a></h2>
-                <p>公式表記「5倍のメッセージ枠」「無制限リクエスト」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）</p>
+                <h2><a href="articles/ai-coding-subscriptions-real-rate-limits-token-economics.html" class="card-title-link">AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</a></h2>
+                <p>公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）</p>
               </div>
               <div>
                 <div class="card-metrics-preview">
@@ -108,14 +121,43 @@
                     <div class="mini-metric-val">85 アカウント</div>
                   </div>
                   <div>
-                    <div class="mini-metric-label">Claude Pro 5時間枠の実測上限</div>
+                    <div class="mini-metric-label">Claude Pro 5時間枠の実測中央値</div>
                     <div class="mini-metric-val">約 180万〜240万 Tokens</div>
                   </div>
                 </div>
                 <div class="card-footer">
                   <a href="articles/ai-coding-subscriptions-real-rate-limits-token-economics.html">実測比較データを見る &rarr;</a>
-                  <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
-                    4 Models Compared
+                  <span class="card-count-meta">
+                    4 Models / N=85
+                  </span>
+                </div>
+              </div>
+            </article>
+            
+            <article class="article-card" data-category="Hardware &amp; Power Electronics">
+              <div>
+                <div class="card-meta">
+                  <span class="category-pill">Hardware &amp; Power Electronics</span>
+                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
+                </div>
+                <h2><a href="articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html" class="card-title-link">USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース</a></h2>
+                <p>カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）</p>
+              </div>
+              <div>
+                <div class="card-metrics-preview">
+                  <div>
+                    <div class="mini-metric-label">集計連続書込テスト数</div>
+                    <div class="mini-metric-val">41 ログ</div>
+                  </div>
+                  <div>
+                    <div class="mini-metric-label">QLC採用機のキャッシュ後速度</div>
+                    <div class="mini-metric-val">180 〜 320 MB/s</div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a href="articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html">実測比較データを見る &rarr;</a>
+                  <span class="card-count-meta">
+                    4 Models / N=41
                   </span>
                 </div>
               </div>
@@ -125,9 +167,9 @@
               <div>
                 <div class="card-meta">
                   <span class="category-pill">Cloud &amp; AI Infrastructure</span>
-                  <span class="date-text">2026-10-12</span>
+                  <time class="date-text" datetime="2026-10-12">実測更新: 2026-10-12</time>
                 </div>
-                <h2><a href="articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html" style="color: inherit;">Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較</a></h2>
+                <h2><a href="articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html" class="card-title-link">Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較</a></h2>
                 <p>公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点</p>
               </div>
               <div>
@@ -138,13 +180,13 @@
                   </div>
                   <div>
                     <div class="mini-metric-label">A100 (40GB) 実測稼働時間</div>
-                    <div class="mini-metric-val">37.2 時間 / 月</div>
+                    <div class="mini-metric-val">37.2 時間 / 200CU</div>
                   </div>
                 </div>
                 <div class="card-footer">
                   <a href="articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html">実測比較データを見る &rarr;</a>
-                  <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
-                    6 Models Compared
+                  <span class="card-count-meta">
+                    6 Models / N=64
                   </span>
                 </div>
               </div>
@@ -153,46 +195,36 @@
     </div>
   </main>
 
-  <script>
-    function filterCategory(cat, btn) {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.article-card').forEach(card => {
-        if (cat === 'all' || card.dataset.category === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-  </script>
-
   
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="brand-logo" style="margin-bottom: 8px;">
-          <span class="brand-mark">N</span>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
           <span>Nodus</span>
         </div>
-        <p style="max-width: 460px; color: #94a3b8;">
-          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する独立系リサーチメディア。
+        <p class="footer-desc">
+          Quantitative Spec &amp; Real-World Benchmark Intelligence — カタログ公称値とグローバル技術コミュニティの一次検証ログ・実測統計データを突合する定量リサーチメディア。
         </p>
+        <p class="footer-amazon-notice">Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。</p>
       </div>
       <div class="footer-links">
         <a href="index.html">トップページ</a>
-        <a href="about.html">データ集計手法・免責事項</a>
-        <a href="about.html#privacy">プライバシーポリシー・広告表記</a>
+        <a href="about.html">調査手法・免責事項</a>
+        <a href="about.html#privacy">プライバシーポリシー・外部送信規律</a>
+        <a href="https://github.com/rikutoyamada01/nodus/issues" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
         <a href="sitemap.xml">Sitemap</a>
+        <a href="llms.txt">LLMs.txt</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Quantitative Data Engine v1.0 (GSC Closed-Loop Enabled)</span>
+      <span>Quantitative Data Engine (Verified Schema &amp; CSP Enforced)</span>
     </div>
   </div>
 </footer>
+<script src="assets/app.js" defer></script>
 
 </body>
 </html>

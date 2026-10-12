@@ -6,13 +6,20 @@
     "base_url": "https://nodus-lab.pages.dev",
     "language": "ja",
     "organization": "Nodus Research Editorial",
-    "contact_email": "editorial@nodus-lab.example.com",
+    "contact_url": "https://github.com/rikutoyamada01/nodus/issues",
+    "repository_url": "https://github.com/rikutoyamada01/nodus",
     "copyright_year": 2026
   },
   "compliance": {
-    "pr_disclosure_text": "※本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開コミュニティ（Reddit等）および一次検証ログの集計結果に基づく客観的指標であり、特定のメーカーによる委託検証ではありません。",
+    "pr_disclosure_text": "【PR】本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開技術コミュニティおよび一次検証ログの集計結果に基づく客観的指標であり、特定の広告主による委託検証や数値改変は一切行っていません。",
+    "amazon_disclosure_text": "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
     "require_source_links": true,
-    "excluded_categories": ["medical", "supplements", "pharmaceuticals", "unverified_health"]
+    "excluded_categories": [
+      "medical",
+      "supplements",
+      "pharmaceuticals",
+      "unverified_health"
+    ]
   },
   "seo_loop": {
     "gsc_property_url": "sc-domain:nodus-lab.pages.dev",
@@ -25,6 +32,28 @@
       "prune_days_without_clicks": 90
     }
   },
+  "mining_topics": [
+    {
+      "query": "100W GaN thermal throttling",
+      "subreddit": "UsbCHardware",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "query": "Colab A100 L4 compute units burn rate",
+      "subreddit": "GoogleColab",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "query": "Claude Pro Max 5 hour token limit",
+      "subreddit": "ClaudeAI",
+      "category": "Software & SaaS Economics"
+    },
+    {
+      "query": "USB4 SSD sustained write speed thermal",
+      "subreddit": "NewMaxx",
+      "category": "Hardware & Power Electronics"
+    }
+  ],
   "affiliates": {
     "amazon_associate_tag": "nodus-stealth-22",
     "rakuten_affiliate_id": "",
@@ -33,11 +62,11 @@
       "google-ai-pro": {
         "label": "Google One AI Pro 公式プラン詳細",
         "url": "https://one.google.com/about/ai-premium/",
-        "badge": "公式・初月特典あり",
+        "badge": "月間 200 CU 付帯",
         "provider": "Google"
       },
       "runpod-gpu": {
-        "label": "RunPod (時間課金クラウドGPU比較用)",
+        "label": "RunPod (時間課金クラウドGPU比較対象)",
         "url": "https://www.runpod.io/",
         "badge": "H100/A100 従量課金",
         "provider": "RunPod"
@@ -45,32 +74,44 @@
       "anker-prime-100w": {
         "label": "Anker Prime Wall Charger (100W, 3 ports, GaN)",
         "url": "https://www.amazon.co.jp/s?k=Anker+Prime+Wall+Charger+100W&tag=nodus-stealth-22",
-        "badge": "連続負荷安定性 1位",
+        "badge": "60分100W完走確認",
         "provider": "Amazon.co.jp"
       },
       "ugreen-nexode-pro-100w": {
         "label": "UGREEN Nexode Pro 100W GaN充電器",
         "url": "https://www.amazon.co.jp/s?k=UGREEN+Nexode+Pro+100W&tag=nodus-stealth-22",
-        "badge": "コスパ・薄型設計",
+        "badge": "高密度・薄型設計",
         "provider": "Amazon.co.jp"
       },
       "shargeek-140w": {
         "label": "SHARGEEK 140W PD3.1 ディスプレイ搭載充電器",
         "url": "https://www.amazon.co.jp/s?k=SHARGEEK+140W&tag=nodus-stealth-22",
-        "badge": "実測W数表示対応",
+        "badge": "出力W数モニタ搭載",
         "provider": "Amazon.co.jp"
       },
       "claude-pro": {
         "label": "Anthropic Claude Pro / Max プラン",
         "url": "https://claude.ai/",
-        "badge": "コーディング実測1位",
+        "badge": "Claude Code 対応",
         "provider": "Anthropic"
       },
       "cursor-pro": {
         "label": "Cursor Pro (AI Code Editor)",
         "url": "https://www.cursor.com/",
-        "badge": "開発者利用率 No.1",
+        "badge": "IDE統合型エディタ",
         "provider": "Anysphere"
+      },
+      "samsung-t9-ssd": {
+        "label": "Samsung T9 Portable SSD (USB 3.2 Gen 2x2)",
+        "url": "https://www.amazon.co.jp/s?k=Samsung+T9+Portable+SSD&tag=nodus-stealth-22",
+        "badge": "連続書込維持 高水準",
+        "provider": "Amazon.co.jp"
+      },
+      "owc-express-1m2": {
+        "label": "OWC Express 1M2 (USB4 40Gbps 大型ヒートシンク筐体)",
+        "url": "https://www.amazon.co.jp/s?k=OWC+Express+1M2+USB4&tag=nodus-stealth-22",
+        "badge": "ファンレス放熱設計",
+        "provider": "Amazon.co.jp"
       }
     }
   }
