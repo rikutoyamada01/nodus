@@ -50,3 +50,14 @@ jobs:
           else
             echo "Cloudflare secrets not set; skipping deploy."
           fi
+
+      - name: Ping IndexNow & Search Console for instant indexing
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GSC_ACCESS_TOKEN: ${{ secrets.GSC_ACCESS_TOKEN }}
+          GSC_CLIENT_ID: ${{ secrets.GSC_CLIENT_ID }}
+          GSC_CLIENT_SECRET: ${{ secrets.GSC_CLIENT_SECRET }}
+          GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
+        run: |
+          sleep 3
+          python scripts/ping_index.py || true

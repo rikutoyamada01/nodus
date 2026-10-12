@@ -36,6 +36,9 @@ jobs:
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: python scripts/miner.py --all-configured
 
+      - name: Refresh real-time search word trends & intent radar
+        run: python scripts/trend_radar.py --fast
+
       - name: Execute Closed-Loop SEO Optimizer (Live GSC when configured)
         env:
           GSC_ACCESS_TOKEN: ${{ secrets.GSC_ACCESS_TOKEN }}
@@ -74,3 +77,14 @@ jobs:
           else
             echo "Cloudflare secrets not set; skipping deploy."
           fi
+
+      - name: Ping IndexNow & Search Console for instant indexing
+        if: github.ref == 'refs/heads/main'
+        env:
+          GSC_ACCESS_TOKEN: ${{ secrets.GSC_ACCESS_TOKEN }}
+          GSC_CLIENT_ID: ${{ secrets.GSC_CLIENT_ID }}
+          GSC_CLIENT_SECRET: ${{ secrets.GSC_CLIENT_SECRET }}
+          GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
+        run: |
+          sleep 3
+          python scripts/ping_index.py || true

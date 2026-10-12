@@ -23,8 +23,11 @@
     ]
   },
   "seo_loop": {
-    "gsc_property_url": "sc-domain:nodus-lab.pages.dev",
+    "gsc_property_url": "https://nodus-lab.pages.dev/",
     "ga4_property_id": "",
+    "indexnow_key": "8f4b2e9c1d7a6e3f5b0c8d2e4a6f9b1c",
+    "google_site_verification": "",
+    "bing_site_verification": "",
     "thresholds": {
       "high_impression_min": 100,
       "low_ctr_threshold": 0.025,

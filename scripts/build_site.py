@@ -2511,6 +2511,12 @@ def build_all() -> dict[str, Any]:
         encoding="utf-8",
     )
 
+    indexnow_key = str(config.get("seo_loop", {}).get("indexnow_key", "")).strip()
+    extra_files: list[str] = []
+    if indexnow_key and re.match(r"^[a-fA-F0-9]{16,64}$", indexnow_key):
+        (DIST_DIR / f"{indexnow_key}.txt").write_text(indexnow_key + "\n", encoding="utf-8")
+        extra_files.append(f"{indexnow_key}.txt")
+
     summary = {
         "status": "ok",
         "articles_built": len(articles),
@@ -2527,6 +2533,7 @@ def build_all() -> dict[str, Any]:
             "llms.txt",
             "llms-full.txt",
         ]
+        + extra_files
         + [f"articles/{a['slug']}.html" for a in articles]
         + [f"articles/{a['slug']}.md" for a in articles]
         + [f"datasets/{a['slug']}.csv" for a in articles]
