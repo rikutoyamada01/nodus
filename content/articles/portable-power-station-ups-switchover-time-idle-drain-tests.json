@@ -1,6 +1,6 @@
 {
   "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
-  "title": "1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース",
+  "title": "1000Whポータブル電源のUPS機能・パススルー比較：Anker・EcoFlowの10ms切替時間と待機消費電力実測",
   "subtitle": "カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）",
   "category": "Hardware & Power Electronics",
   "tags": [
@@ -17,13 +17,13 @@
   "sample_size_n": 46,
   "methodology_note": "r/SolarDIY、r/Ecoflow、および独立系電力検証ログ（N=46）より、（1）0.2C〜0.3C（200W〜300W）定電力AC負荷時の積算電力計による実効放電容量（Wh）、（2）AC出力ON・無負荷放置時の1時間あたりバッテリー減少率から算出したインバータ待機電力（W）、（3）商用電源遮断時のオシロスコープ電圧ゼロクロス停止時間（ms）を集計。",
   "seo": {
-    "meta_title": "【実測N=46】1000Whポータブル電源の実効容量・AC待機電力・UPS切替時間比較 | Nodus",
-    "meta_description": "公称1000Whクラスのリン酸鉄（LiFePO4）ポータブル電源は、ACコンセントから実質何Wh取り出せるのか？インバータ待機消費電力（15〜32W）とデスクトップPCが落ちないUPS切替時間（ms）を実測比較。",
+    "meta_title": "【実測N=46】ポータブル電源のUPS機能・パススルー比較｜Anker・EcoFlow 10ms切替と待機電力 | Nodus",
+    "meta_description": "ポータブル電源をパソコンのUPS代わりにパススルー常時接続すると待機電力は何Wかかるのか？Anker SolixやEcoFlow等の10ms〜20ms切替時間・UPS機能の違い・実効容量を実測比較。",
     "target_keywords": [
-      "ポータブル電源 実効容量 変換効率 実測",
-      "ポータブル電源 UPS 切替時間 PC 落ちる",
+      "ポータブル電源 UPS パススルー 実測",
+      "ポータブル電源 UPS 10ms Anker EcoFlow",
       "ポータブル電源 待機電力 インバータ",
-      "EcoFlow Anker 1000Wh 比較 実測"
+      "ポータブル電源 UPS代わり パソコン"
     ],
     "primary_seed": "ポータブル電源 UPS"
   },

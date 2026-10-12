@@ -1,6 +1,6 @@
 {
   "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-  "title": "ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較",
+  "title": "ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較",
   "subtitle": "llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -17,13 +17,13 @@
   "sample_size_n": 74,
   "methodology_note": "r/LocalLLaMA および ggml-org/llama.cpp 公式ディスカッションの llama-bench 計測スレッド（N=74）より、Qwen2.5-32B-Instruct (Q4_K_M, 約19.8GB) および Llama-3.3-70B-Instruct (Q4_K_M, 約42.5GB) のトークン生成速度（tg128, tok/s）とプロンプト処理速度（pp512, tok/s）、およびシステム全体の壁コンセント消費電力（W）を集計。",
   "seo": {
-    "meta_title": "【llama-bench実測N=74】Mac M4 Max / M2 Ultra vs RTX 4090 ローカルLLM速度・電力効率比較 | Nodus",
-    "meta_description": "ローカルLLM（32B/70B Q4_K_M）を動かすならMac Studio/MacBook Proの統合メモリとNVIDIA RTX 4090/3090 2枚刺しのどちらが速くて省電力か？llama.cpp実測データ(N=74)からtok/sとワット効率を比較。",
+    "meta_title": "【llama-bench実測N=74】ローカルLLM Mac Studio / MacBook Pro vs RTX 4090 モデル別速度比較 | Nodus",
+    "meta_description": "ローカルLLM（32B/70Bモデル）を動かすならMac Studio・MacBook Pro（M4 Max/M2 Ultra）とWindows RTX 4090/3090のどっちが速いか？llama.cpp実測データ(N=74)からスペック別tok/sと電力効率を比較。",
     "target_keywords": [
-      "ローカルLLM Mac RTX 4090 比較 実測",
+      "ローカルLLM Mac Studio MacBook Pro 比較",
+      "ローカルLLM モデル 比較 Mac RTX 4090",
       "M4 Max Local LLM token/s 実測",
-      "70B LLM RTX 3090 2枚 消費電力",
-      "llama.cpp メモリ帯域 実測"
+      "70B LLM RTX 3090 2枚 消費電力"
     ],
     "primary_seed": "ローカルLLM Mac"
   },

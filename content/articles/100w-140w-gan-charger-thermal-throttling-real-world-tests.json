@@ -1,6 +1,6 @@
 {
   "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
-  "title": "100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース",
+  "title": "100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較",
   "subtitle": "公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）",
   "category": "Hardware & Power Electronics",
   "tags": [
@@ -17,12 +17,12 @@
   "sample_size_n": 38,
   "methodology_note": "室温24〜26℃環境におけるUSB-C PD電子負荷試験（定電力20V/5A=100Wおよび28V/5A=140W、60分間連続通電）の公開計測ログ38件を集計。数値は中央値（四分位範囲 ±4.5℃ / ±3分）を記載。",
   "seo": {
-    "meta_title": "【熱ダレ実測】100W/140W GaN充電器の連続出力維持率・発熱比較データ | Nodus",
-    "meta_description": "公称100W・140WのUSB-C GaN充電器は、実際に何分間フル出力を維持できるのか？r/UsbCHardware等のオシロスコープ・電子負荷試験データ(N=38)から、サーマルスロットリング（出力低下）と待機電力を定量比較。",
+    "meta_title": "【熱ダレ実測】100W/140W GaN充電器（Anker Prime・UGREEN Nexode）連続出力・発熱比較 | Nodus",
+    "meta_description": "Anker PrimeやUGREEN Nexode等の100W・140W USB-C GaN充電器は、実際に何分間フル出力を維持できるのか？オシロスコープ・電子負荷試験データ(N=38)から熱ダレ（出力低下）と温度を定量比較。",
     "target_keywords": [
-      "100W 充電器 熱ダレ 実測",
-      "GaN 充電器 連続出力 比較",
-      "Anker UGREEN 100W 発熱 比較",
+      "Anker Prime 100W GaN 充電器 実測",
+      "UGREEN Nexode 100W 充電器 発熱",
+      "GaN 充電器 100W 連続出力 比較",
       "USB-C 140W 持続時間"
     ],
     "primary_seed": "GaN 充電器 100W"

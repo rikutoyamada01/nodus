@@ -1,6 +1,6 @@
 {
   "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
-  "title": "Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較",
+  "title": "Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測",
   "subtitle": "公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -17,13 +17,13 @@
   "sample_size_n": 64,
   "methodology_note": "Google Colabの公式仕様ではGPUごとの固定CU消費レートは非公開（動的変動表記）であるため、r/GoogleColab (N=42) および r/LocalLLaMA (N=22) の計64セッションにおけるランタイム接続前後の残高差分（CU/h）を集計。チャート上段は外部クラウドGPUスポット相場（$13.3/200CU相当基準）からの理論換算時間、下段はColab 200 CU枠での実測稼働時間中央値を示す。",
   "seo": {
-    "meta_title": "【実測N=64】Google AI Pro (200 CU) でA100は月37時間・H100は11時間稼働｜GPU消費レート比較 | Nodus",
-    "meta_description": "Google AI Proプランに付帯する月200 Compute Units (CU) でL4・A100・G4(96GB)・H100が何時間動くのか？公式非公開のバーンレート（CU/時）をReddit等の実測ログ(N=64)から定量比較。",
+    "meta_title": "【実測N=64】Google Colab GPU 制限・料金比較｜AI Pro (200 CU) でA100は37時間稼働 | Nodus",
+    "meta_description": "Google ColabのGPU使用制限と料金（AI Pro 月200 Compute Units）でL4・A100・G4(96GB)・H100が何時間使えるのか？無料枠やローカルGPUとの比較、公式非公開のCU消費レートを実測ログ(N=64)から定量比較。",
     "target_keywords": [
-      "Google Colab Compute Units 消費量",
+      "Google Colab GPU 制限 料金 比較",
       "Google AI Pro Colab A100 時間",
-      "Colab H100 CU 実測",
-      "Colab L4 A100 比較"
+      "Colab H100 CU 消費量 実測",
+      "Colab L4 A100 スペック 比較"
     ],
     "primary_seed": "Google Colab GPU"
   },

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T22:32:05.257218",
+  "generated_at": "2026-10-12T22:37:44.672093",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -19,31 +19,7 @@
         "100w gan 充電器 (mgan100-4)",
         "asus 100w gan 充電器"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "anker prime 100w gan 充電器",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "anker",
-            "prime"
-          ]
-        },
-        {
-          "query": "anker 100w gan 充電器",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "anker"
-          ]
-        },
-        {
-          "query": "ugreen nexode 100w gan 充電器",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ugreen",
-            "nexode"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "gan 充電器 100w 推薦",
@@ -98,78 +74,118 @@
         "claude code トークン比較",
         "codex claude code トークン 比較"
       ],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "claude code トークン節約",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code",
-            "節約"
-          ]
-        },
-        {
-          "query": "claude code トークン",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code"
-          ]
-        },
-        {
-          "query": "claude code トークン使用量 確認",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code",
-            "使用量",
-            "確認"
-          ]
-        },
-        {
-          "query": "claude code トークン使用量",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code",
-            "使用量"
-          ]
-        },
-        {
-          "query": "claude code トークン 上限",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code",
-            "上限"
-          ]
-        },
+      "title_optimization_opportunities": [
         {
           "query": "claude code トークン数",
           "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code"
+          "missing_in_title": [
+            "数"
           ]
         },
         {
           "query": "claude code トークン数 確認",
           "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "claude",
-            "code",
-            "確認"
+          "missing_in_title": [
+            "数"
           ]
         },
         {
           "query": "claude code トークン節約 プラグ イン",
           "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "プラグ",
+            "イン"
+          ]
+        },
+        {
+          "query": "codex claude code トークン 比較",
+          "intent": "comparison",
+          "missing_in_title": [
+            "codex"
+          ]
+        },
+        {
+          "query": "claude code トークン 制限",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "制限"
+          ]
+        },
+        {
+          "query": "claude code トークン 制限 pro",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "制限",
+            "pro"
+          ]
+        },
+        {
+          "query": "claude code トークン 数 制限",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "数",
+            "制限"
+          ]
+        },
+        {
+          "query": "claude code 5 時間 制限 トークン 数",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "時間",
+            "制限",
+            "数"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "claude code トークン 料金",
+          "intent": "metric_cost_spec",
           "missing_in_body": [
-            "claude",
-            "code",
-            "節約",
-            "プラグ"
+            "料金"
+          ]
+        },
+        {
+          "query": "claude code 料金 トークン 数",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "料金"
+          ]
+        },
+        {
+          "query": "claude code トークン 使用 量 料金",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "料金"
+          ]
+        },
+        {
+          "query": "claude code 残り トークン 確認 vscode",
+          "intent": "comparison",
+          "missing_in_body": [
+            "残",
+            "vscode"
+          ]
+        },
+        {
+          "query": "claude code vscode トークン 確認",
+          "intent": "comparison",
+          "missing_in_body": [
+            "vscode"
+          ]
+        },
+        {
+          "query": "claude code vscode トークン",
+          "intent": "comparison",
+          "missing_in_body": [
+            "vscode"
+          ]
+        },
+        {
+          "query": "claude code vscode トークン 節約",
+          "intent": "comparison",
+          "missing_in_body": [
+            "vscode"
           ]
         }
       ]
@@ -199,64 +215,10 @@
       ],
       "title_optimization_opportunities": [
         {
-          "query": "claude code cursor",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "code"
-          ]
-        },
-        {
-          "query": "claude code cursor 比較",
-          "intent": "comparison",
-          "missing_in_title": [
-            "code"
-          ]
-        },
-        {
-          "query": "claude code cursor 併用",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "code",
-            "併用"
-          ]
-        },
-        {
           "query": "claude code cursorで使う",
           "intent": "metric_cost_spec",
           "missing_in_title": [
-            "code",
             "使"
-          ]
-        },
-        {
-          "query": "claude code cursor どっち",
-          "intent": "comparison",
-          "missing_in_title": [
-            "code"
-          ]
-        },
-        {
-          "query": "claude code cursor 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "code",
-            "料金"
-          ]
-        },
-        {
-          "query": "claude code cursor 料金 比較",
-          "intent": "comparison",
-          "missing_in_title": [
-            "code",
-            "料金"
-          ]
-        },
-        {
-          "query": "claude code cursor 料金比較",
-          "intent": "comparison",
-          "missing_in_title": [
-            "code",
-            "料金"
           ]
         }
       ],
@@ -341,69 +303,52 @@
         "ai コードレビュー github copilot",
         "vscode ai コードレビュー"
       ],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "ai コードレビュー",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コードレビュー"
-          ]
-        },
-        {
-          "query": "ai コードレビュー プロンプト",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コードレビュー"
-          ]
-        },
+      "title_optimization_opportunities": [
         {
           "query": "ai コードレビュー 無料",
           "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コードレビュー",
+          "missing_in_title": [
             "無料"
-          ]
-        },
-        {
-          "query": "ai コードレビュー 観点",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コードレビュー",
-            "観点"
           ]
         },
         {
           "query": "ai コードレビュー ツール",
           "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コードレビュー",
+          "missing_in_title": [
             "ツール"
-          ]
-        },
-        {
-          "query": "ai コードレビュー おすすめ",
-          "intent": "comparison",
-          "missing_in_body": [
-            "コードレビュー"
           ]
         },
         {
           "query": "ai コードレビュー github",
           "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コードレビュー",
+          "missing_in_title": [
             "github"
           ]
         },
         {
-          "query": "ai コードレビュー 比較",
+          "query": "ai コードレビュー ローカル",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ローカル"
+          ]
+        },
+        {
+          "query": "ai コードレビュー github copilot",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "github",
+            "copilot"
+          ]
+        },
+        {
+          "query": "vscode ai コードレビュー",
           "intent": "comparison",
-          "missing_in_body": [
-            "コードレビュー"
+          "missing_in_title": [
+            "vscode"
           ]
         }
-      ]
+      ],
+      "uncovered_content_gaps": []
     },
     {
       "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
@@ -471,13 +416,6 @@
       ],
       "title_optimization_opportunities": [
         {
-          "query": "google colab gpu 制限",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "制限"
-          ]
-        },
-        {
           "query": "google colab gpu 使い方",
           "intent": "question_troubleshoot",
           "missing_in_title": [
@@ -489,8 +427,7 @@
           "query": "google colab gpu 使用 制限",
           "intent": "metric_cost_spec",
           "missing_in_title": [
-            "使用",
-            "制限"
+            "使用"
           ]
         },
         {
@@ -511,13 +448,6 @@
         }
       ],
       "uncovered_content_gaps": [
-        {
-          "query": "google colab gpu 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
-          ]
-        },
         {
           "query": "google colab gpu 無料枠",
           "intent": "metric_cost_spec",
@@ -565,6 +495,13 @@
           "intent": "comparison",
           "missing_in_body": [
             "性能"
+          ]
+        },
+        {
+          "query": "google colab gpu 制限 解除",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "解除"
           ]
         }
       ]
@@ -676,37 +613,7 @@
         "ローカルllm mac おすすめ",
         "ローカルllm モデル 比較 mac"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "ローカルllm mac studio",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "studio"
-          ]
-        },
-        {
-          "query": "ローカルllm macbook",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "macbook"
-          ]
-        },
-        {
-          "query": "ローカルllm macbook pro",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "macbook",
-            "pro"
-          ]
-        },
-        {
-          "query": "ローカルllm モデル 比較 mac",
-          "intent": "comparison",
-          "missing_in_title": [
-            "モデル"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "ローカルllm mac mini",
@@ -928,36 +835,7 @@
         "ポータブル電源 ups パソコン",
         "ポータブル電源 ups 比較"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "ポータブル電源 ups機能",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "機能"
-          ]
-        },
-        {
-          "query": "ポータブル電源 ups パススルー",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "パススルー"
-          ]
-        },
-        {
-          "query": "ポータブル電源 ups anker",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "anker"
-          ]
-        },
-        {
-          "query": "ポータブル電源 ups 10ms",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "10ms"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "ポータブル電源 ups代わり",
@@ -1064,7 +942,7 @@
     },
     {
       "title": "2025 年 10 月から 2026 年 10 月までの Mozc に対する主な変更",
-      "liked_count": 27,
+      "liked_count": 28,
       "comments_count": 0,
       "url": "https://zenn.dev/komatsuh/articles/komatsuh_mozc_updates_from_2025_10",
       "published_at": "2026-10-10"
@@ -1085,7 +963,7 @@
     },
     {
       "title": "【速報】Claude の新機能 Claude Motion 早速使ってみた",
-      "liked_count": 35,
+      "liked_count": 36,
       "comments_count": 0,
       "url": "https://zenn.dev/branbran/articles/047821d64590f0",
       "published_at": "2026-10-10"
@@ -1101,63 +979,63 @@
   "hackernews_frontpage": [
     {
       "title": "Passkeys are a trap",
-      "points": 761,
+      "points": 766,
       "num_comments": 426,
       "url": "https://nonfunctional.substack.com/p/passkeys-are-a-trap-do-not-use-them"
     },
     {
       "title": "Total Annihilation, rebuilt for modern computers",
-      "points": 572,
-      "num_comments": 218,
+      "points": 574,
+      "num_comments": 219,
       "url": "https://nanolathe.gg"
     },
     {
       "title": "The gap in shared understanding of LLM capability is widening",
       "points": 530,
-      "num_comments": 774,
+      "num_comments": 778,
       "url": "https://twitter.com/karpathy/status/2109361546505966046"
     },
     {
-      "title": "NYC's \"Click to Cancel\" rule is now in effect",
-      "points": 519,
-      "num_comments": 254,
-      "url": "https://www.nyc.gov/main/click-to-cancel"
-    },
-    {
       "title": "Fingerprints are the new cookies",
-      "points": 494,
+      "points": 495,
       "num_comments": 242,
       "url": "https://royfish.dev/fingerprints-are-the-new-cookies"
     },
     {
       "title": "Terence Tao: Math 2.0 [pdf]",
-      "points": 438,
+      "points": 439,
       "num_comments": 450,
       "url": "https://teorth.github.io/tao-web/slides/math-2-0-caltech-2026.pdf"
     },
     {
       "title": "Deloitte falsified documents to evade tax on Abramovich's wealth",
-      "points": 380,
-      "num_comments": 112,
+      "points": 389,
+      "num_comments": 114,
       "url": "https://www.bbc.com/news/articles/c64g1l5389kvo"
     },
     {
       "title": "So, you’d like to sell your print issues of The Onion?",
-      "points": 355,
+      "points": 357,
       "num_comments": 56,
       "url": "https://theonion.com/archivehunt/"
     },
     {
       "title": "Cartographers of North Korea (2019)",
-      "points": 288,
+      "points": 289,
       "num_comments": 57,
       "url": "https://cartographers-nk.wonyoung.so/"
     },
     {
       "title": "Will Linux phones become a viable alternative to the Android/iOS duopoly?",
-      "points": 204,
-      "num_comments": 223,
+      "points": 206,
+      "num_comments": 224,
       "url": "https://amosbbatto.wordpress.com/2026/10/05/linux-phones-alternative/"
+    },
+    {
+      "title": "QGIS bans AI assisted contributions",
+      "points": 184,
+      "num_comments": 146,
+      "url": "https://github.com/qgis/QGIS-Enhancement-Proposals/pull/387"
     }
   ]
 }

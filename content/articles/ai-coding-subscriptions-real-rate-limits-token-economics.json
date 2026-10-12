@@ -1,6 +1,6 @@
 {
   "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-  "title": "AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較",
+  "title": "Claude Code vs Cursor 料金・レート制限比較：Claude Pro / Cursor Pro の実質トークン単価と併用実測",
   "subtitle": "公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）",
   "category": "Software & SaaS Economics",
   "tags": [
@@ -16,13 +16,13 @@
   "sample_size_n": 85,
   "methodology_note": "r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。",
   "seo": {
-    "meta_title": "【実測検証】Claude Pro / Cursor Pro の非公開レート制限とAPI換算コスパ比較 | Nodus",
-    "meta_description": "公式には具体的なトークン数が公開されていないClaude Pro/MaxやCursor Proのレートリミット・クレジット消費を、開発者コミュニティの実測ログ(N=85)から定量化。月額定額とAPI従量課金の損益分岐点を算出。",
+    "meta_title": "【実測比較】Claude Code vs Cursor 料金・制限はどっちが得？併用とAPI換算コスパ | Nodus",
+    "meta_description": "Claude Code（Claude Pro/Max）とCursor Proの料金・レート制限・違いを実測ログ(N=85)から定量比較。CursorでClaude Codeを使う併用・連携時のトークン消費とAPI従量課金の損益分岐点を算出。",
     "target_keywords": [
+      "Claude Code Cursor 比較 料金",
       "Claude Pro 制限 実測 トークン",
       "Cursor Pro クレジット 消費 実測",
-      "Claude Code API 定額 どっちが得",
-      "AI サブスク トークン単価 比較"
+      "Claude Code Cursor 併用 どっち"
     ],
     "primary_seed": "Claude Code Cursor"
   },
