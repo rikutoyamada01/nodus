@@ -1402,7 +1402,6 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
             "現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。",
         )
     )
-    contact_url = validate_url(site.get("contact_url", "https://github.com/rikutoyamada01/nodus/issues"))
     return f"""
 <footer class="site-footer">
   <div class="container">
@@ -1421,7 +1420,7 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
         <a href="{root_prefix}index.html">記事一覧</a>
         <a href="{root_prefix}about.html">検証手法・免責事項</a>
         <a href="{root_prefix}about.html#privacy">プライバシーポリシー</a>
-        <a href="{esc(contact_url)}" target="_blank" rel="noopener noreferrer">お問い合わせ・訂正申請</a>
+        <a href="{root_prefix}about.html#contact">運営者情報・訂正ポリシー</a>
         <a href="{root_prefix}sitemap.xml">Sitemap</a>
         <a href="{root_prefix}llms.txt">LLMs.txt</a>
       </div>
@@ -1952,8 +1951,6 @@ def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) ->
 def render_about_page(config: dict[str, Any]) -> str:
     site = config["site"]
     base_url = validate_url(site["base_url"]).rstrip("/")
-    contact_url = validate_url(site.get("contact_url", "https://github.com/rikutoyamada01/nodus/issues"))
-    repo_url = validate_url(site.get("repository_url", "https://github.com/rikutoyamada01/nodus"))
     amazon_notice = config["compliance"].get(
         "amazon_disclosure_text",
         "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
@@ -1971,52 +1968,47 @@ def render_about_page(config: dict[str, Any]) -> str:
 <body>
   {render_header(config, root_prefix="")}
 
-  <section class="article-header">
-    <div class="container">
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
       <h1 class="article-title">データ集計手法・運営情報・法的コンプライアンス</h1>
       <p class="article-subtitle">{esc(site["name"])} ({esc(site["organization"])}) における定量データの抽出基準、広告開示、プライバシー保護方針について</p>
-    </div>
-  </section>
 
-  <main id="main-content" class="container article-body">
-    <section class="panel">
       <div class="prose-section">
-        <h2>1. 定量データの収集・正規化メソドロジーと統計的限界</h2>
+        <h3>1. 定量データの収集・正規化メソドロジーと統計的限界</h3>
         <p>
-          当サイト（{esc(site["name"])}）は、ハードウェア製品やクラウド・SaaSサービスの「メーカー公称仕様（カタログ値）」と「実運用環境における実測パフォーマンス」の乖離を可視化することを目的とした定量データベースメディアです。英語圏の技術コミュニティ（Redditの各専門Subreddit、Hacker News、GitHub Discussions等）で公開されている計測報告から、測定条件（室温、負荷時間、バージョン等）が確認可能な数値データを抽出し、外れ値を除外した中央値（Median）およびレンジを算出して独自の比較表・CSVデータセットを構築しています。個体差やファームウェア更新、測定機器の誤差により実測値は変動するため、各記事にサンプル数（N）と測定条件メソドロジーを明記しています。
+          当サイト（{esc(site["name"])}）は、ハードウェア製品やクラウド・SaaSサービスの「メーカー公称仕様（カタログ値）」と「実運用環境における実測パフォーマンス」の乖離、および独自環境での実機・AI検証結果を可視化する技術検証メディアです。測定条件（室温、負荷時間、バージョン、トークン数等）が確認可能な数値データを抽出し、中央値（Median）およびレンジを算出して比較表・CSVデータセットとして公開しています。個体差やアップデートにより実測値は変動するため、各記事にサンプル数（N）と測定条件メソドロジーを明記しています。
         </p>
       </div>
       <div class="prose-section">
-        <h2>2. 知的財産権の尊重および一次情報源への参照方針</h2>
+        <h3>2. 知的財産権の尊重および一次情報源への参照方針</h3>
         <p>
-          当サイトは、他者の創作的表現（投稿本文の文章や撮影画像・図表）の無断転載や翻案を行いません。著作権法上の保護対象とならない客観的な「計測事実・数値・条件データ」のみを抽出し、当サイト独自の比較体系および解説文として再構成しています。また、データの検証可能性（トレーサビリティ）を担保するため、すべての記事末尾に一次情報源および公式仕様書への参照リンクを明記しています。
+          当サイトは、他者の創作的表現（投稿本文の文章や撮影画像・図表）の無断転載や翻案を行いません。著作権法上の保護対象とならない客観的な「計測事実・数値・条件データ」および当サイト独自の実験ログのみを基に、独自の比較体系および解説文として構成しています。また、データの検証可能性（トレーサビリティ）を担保するため、すべての記事末尾に一次情報源および公式仕様書への参照リンクを明記しています。
         </p>
       </div>
       <div class="prose-section" id="privacy">
-        <h2>3. 編集独立性・広告配信方針および景品表示法（ステマ規制）への対応</h2>
+        <h3>3. 編集独立性・広告配信方針および景品表示法（ステマ規制）への対応</h3>
         <p>
-          {f"<strong>【Amazonアソシエイト・プログラム等の開示】</strong><br>{esc(amazon_notice)} また、当サイトは各種ASPおよびSaaSパートナープログラムに参加しており、記事内の「広告・PR（Sponsored Links）」セクションのリンクを経由して適格な購入や契約が行われた場合、紹介料を受領することがあります。" if is_monetized(config) else "<strong>【現在の運営ステータス（非商用・広告なし）】</strong><br>現在、当サイトはアフィリエイト広告やプロモーションリンクを一切掲載していない独立リサーチメディアとして運営されています。記事内の外部製品・サービスへのリンクはすべて読者の検証・参照利便性のための純粋な参考リンクであり、金銭的報酬やトラッキングタグは含まれていません。将来、審査通過後にアフィリエイトプログラムを導入する際は、日本の景品表示法（ステルスマーケティング告示）および各プログラム規約に準拠し、全ページ上部およびリンク周辺に明瞭な「【PR】」開示および必須文言を表示します。"}<br><br>
+          {f"<strong>【Amazonアソシエイト・プログラム等の開示】</strong><br>{esc(amazon_notice)} また、当サイトは各種ASPおよびSaaSパートナープログラムに参加しており、記事内の「広告・PR（Sponsored）」セクションのリンクを経由して適格な購入や契約が行われた場合、紹介料を受領することがあります。" if is_monetized(config) else "<strong>【現在の運営ステータス（非商用・広告なし）】</strong><br>現在、当サイトはアフィリエイト広告やプロモーションリンクを一切掲載していない独立リサーチメディアとして運営されています。記事内の外部製品・サービスへのリンクはすべて読者の検証・参照利便性のための純粋な参考リンクであり、金銭的報酬やトラッキングタグは含まれていません。将来、審査通過後にアフィリエイトプログラムを導入する際は、日本の景品表示法（ステルスマーケティング告示）および各プログラム規約に準拠し、全ページ上部およびリンク周辺に明瞭な「【PR】」開示および必須文言を表示します。"}<br><br>
           <strong>【編集の独立性と不当表示の防止】</strong><br>
           特定のメーカーや外部事業者からの対価によって実測データの数値を改変したり、根拠のない順位付けを行うことは一切ありません。
         </p>
       </div>
       <div class="prose-section">
-        <h2>4. プライバシーポリシーおよび外部送信規律に関する公表事項</h2>
+        <h3>4. プライバシーポリシーおよび外部送信規律に関する公表事項</h3>
         <p>
-          当サイトはCloudflare Pages上で静的HTMLとして配信されており、当サイト自身が訪問者の氏名・メールアドレス等の個人情報を自動的に収集・保存することはありません。ただし、インフラ提供元であるCloudflare社のセキュリティ・CDN機能により、アクセス時のIPアドレスやリクエストヘッダが不正アクセス防止および配信最適化の目的で処理されます。また、記事内の外部リンク（Amazon.co.jp、各SaaS公式サイト等）をクリックして遷移する際、遷移先サイトにてアフィリエイト成果計測のためのCookieやパラメータが利用される場合があります。
+          当サイトはCloudflare Pages上で静的HTMLとして配信されており、当サイト自身が訪問者の氏名・メールアドレス等の個人情報を自動的に収集・保存することはありません。ただし、インフラ提供元であるCloudflare社のセキュリティ・CDN機能により、アクセス時のIPアドレスやリクエストヘッダが不正アクセス防止および配信最適化の目的で処理されます。また、記事内の外部リンク（Amazon.co.jp、各SaaS公式サイト等）をクリックして遷移する際、遷移先サイトにて成果計測のためのCookieやパラメータが利用される場合があります。
         </p>
       </div>
-      <div class="prose-section">
-        <h2>5. 免責事項・訂正ポリシー・運営者情報およびお問い合わせ窓口</h2>
+      <div class="prose-section" id="contact">
+        <h3>5. 免責事項・訂正ポリシーおよび運営主体情報</h3>
         <p>
-          掲載されている実測統計はコミュニティの特定環境下における観測値であり、すべての個体や最新アップデート後の環境で同一の結果を保証するものではありません。製品購入やサービス契約の最終判断は、各メーカーの最新公式仕様をご確認の上、ご自身の責任において行ってください。<br><br>
+          掲載されている実測統計は特定環境下における観測値であり、すべての個体や最新アップデート後の環境で同一の結果を保証するものではありません。製品購入やサービス契約の最終判断は、各メーカーの最新公式仕様をご確認の上、ご自身の責任において行ってください。<br><br>
           <strong>運営主体:</strong> {esc(site["organization"])}<br>
-          <strong>公開リポジトリ・データ監査履歴:</strong> <a href="{esc(repo_url)}" target="_blank" rel="noopener noreferrer">{esc(repo_url)}</a><br>
-          <strong>お問い合わせ・データ訂正申請窓口:</strong> 記事内の数値データの誤り、最新ファームウェアでの再計測データ提供、または権利関係に関するご連絡は、<a href="{esc(contact_url)}" target="_blank" rel="noopener noreferrer">公式GitHub Issue窓口 ({esc(contact_url)})</a> よりお願いいたします。確認の上、速やかにデータセットの検証・改訂を行います。
+          <strong>データ更新・訂正ポリシー:</strong> 掲載データの定期監査および最新仕様との突合を継続的に実施し、仕様改定や新ファームウェアによる数値変動が確認された場合は速やかにデータセット（CSV・本文）を改訂いたします。
         </p>
       </div>
-    </section>
-  </main>
+    </main>
+  </div>
 
   {render_footer(config, root_prefix="")}
 </body>

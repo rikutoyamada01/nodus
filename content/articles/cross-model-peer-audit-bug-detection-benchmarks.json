@@ -159,9 +159,15 @@
   ],
   "sources": [
     {
-      "title": "Nodus First-Party Lab: Cross-Model Peer-Audit Empirical Logs (runs/peer-audit)",
-      "url": "https://github.com/rikutoyamada01/nodus",
+      "title": "Nodus First-Party Lab: Cross-Model Peer-Audit Empirical Dataset (CSV)",
+      "url": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv",
       "sample_size": "N=28 static audit runs",
+      "verified_date": "2026-10-12"
+    },
+    {
+      "title": "Model Context Protocol (MCP) Official Specification",
+      "url": "https://modelcontextprotocol.io/",
+      "sample_size": "Official Protocol Spec",
       "verified_date": "2026-10-12"
     }
   ],

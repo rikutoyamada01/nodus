@@ -170,8 +170,8 @@
   ],
   "sources": [
     {
-      "title": "Nodus First-Party Lab: Local AI Coding Agent Session Transcripts (JSONL Quantitative Audit)",
-      "url": "https://github.com/rikutoyamada01/nodus",
+      "title": "Nodus First-Party Lab: AI Coding Agent Session Transcripts Quantitative Dataset (CSV)",
+      "url": "https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv",
       "sample_size": "N=42 real agent coding sessions",
       "verified_date": "2026-10-12"
     },
