@@ -95,16 +95,24 @@ def validate_all() -> dict[str, object]:
     if not article_files:
         raise ValueError("No article JSON files found in content/articles/")
 
+    base_url = config["site"]["base_url"].rstrip("/")
+    expected_slugs: list[str] = []
+
     for path in article_files:
         article = load_json(path)
         validate_article(article, config)
+        slug = article["slug"]
+        expected_slugs.append(slug)
         if int(article.get("sample_size_n", 0)) <= 0:
             raise ValueError(f"{path.name}: sample_size_n must be > 0")
         if not article.get("methodology_note"):
             raise ValueError(f"{path.name}: methodology_note is required")
         if not article.get("data_updated_at"):
             raise ValueError(f"{path.name}: data_updated_at is required")
-        csv_file = DIST_DIR / "datasets" / f"{article['slug']}.csv"
+        html_out = DIST_DIR / "articles" / f"{slug}.html"
+        if not html_out.exists() or html_out.stat().st_size < 500:
+            raise ValueError(f"Missing or incomplete article HTML output: {html_out}")
+        csv_file = DIST_DIR / "datasets" / f"{slug}.csv"
         if not csv_file.exists() or csv_file.stat().st_size < 20:
             raise ValueError(f"Missing or empty CSV dataset: {csv_file}")
         raw_article_str = path.read_text(encoding="utf-8")
@@ -122,9 +130,9 @@ def validate_all() -> dict[str, object]:
             if bad_term in raw_article_str:
                 raise ValueError(f"{path.name}: contains legally high-risk or defamatory term {bad_term!r}")
         if article.get("origin") == "first_party":
-            log_file = DIST_DIR / "logs" / f"{article['slug']}.json"
+            log_file = DIST_DIR / "logs" / f"{slug}.json"
             if not log_file.exists() or log_file.stat().st_size < 20:
-                raise ValueError(f"First-party article {article['slug']} is missing site-hosted raw log: {log_file}")
+                raise ValueError(f"First-party article {slug} is missing site-hosted raw log: {log_file}")
             log_raw = log_file.read_text(encoding="utf-8")
             json.loads(log_raw)
             if "rikutoyamada" in log_raw.lower() or "yamadarikuto" in log_raw.lower() or "c:\\users\\" in log_raw.lower():
@@ -154,6 +162,40 @@ def validate_all() -> dict[str, object]:
         p = DIST_DIR / rel
         if not p.exists() or p.stat().st_size == 0:
             raise ValueError(f"Missing required build output: dist/{rel}")
+
+    # Deep SEO & AEO verification of sitemap.xml, feed.xml, robots.txt, and llms.txt
+    import xml.etree.ElementTree as ET
+
+    sitemap_raw = (DIST_DIR / "sitemap.xml").read_text(encoding="utf-8")
+    sitemap_root = ET.fromstring(sitemap_raw)
+    sitemap_locs = {el.text.strip() for el in sitemap_root.iter() if el.tag.endswith("loc") and el.text}
+
+    feed_raw = (DIST_DIR / "feed.xml").read_text(encoding="utf-8")
+    feed_root = ET.fromstring(feed_raw)
+    has_feed_author = any(
+        el.tag.endswith("name") and (el.text or "").strip()
+        for author in feed_root
+        if author.tag.endswith("author")
+        for el in author
+    )
+    if not has_feed_author:
+        raise ValueError("dist/feed.xml is missing required Atom <author><name> element")
+    feed_ids = {el.text.strip() for el in feed_root.iter() if el.tag.endswith("id") and el.text}
+
+    robots_raw = (DIST_DIR / "robots.txt").read_text(encoding="utf-8")
+    if f"Sitemap: {base_url}/sitemap.xml" not in robots_raw:
+        raise ValueError("dist/robots.txt is missing exact Sitemap declaration")
+
+    llms_raw = (DIST_DIR / "llms.txt").read_text(encoding="utf-8")
+    for slug in expected_slugs:
+        art_url = f"{base_url}/articles/{slug}.html"
+        csv_url = f"{base_url}/datasets/{slug}.csv"
+        if art_url not in sitemap_locs:
+            raise ValueError(f"dist/sitemap.xml is missing article URL: {art_url}")
+        if art_url not in feed_ids:
+            raise ValueError(f"dist/feed.xml is missing article entry: {art_url}")
+        if art_url not in llms_raw or csv_url not in llms_raw:
+            raise ValueError(f"dist/llms.txt is missing article or dataset citation for {slug}")
 
     # Verify Cloudflare Pages _headers CSP rules
     headers_content = (DIST_DIR / "_headers").read_text(encoding="utf-8")

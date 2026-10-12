@@ -1,109 +1,818 @@
 {
-  "generated_at": "2026-10-12T20:32:58.170259",
+  "generated_at": "2026-10-12T20:49:35.454198",
   "google_suggest_analysis": [
     {
-      "seed": "Claude Code",
-      "total_suggestions": 59,
+      "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
+      "seed": "GaN Charger USB-C PD",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
       "top_suggestions": [
-        "claude code",
-        "claude code 使い方",
-        "claude code 料金",
-        "claude code とは",
-        "claude code インストール",
-        "claude code できること",
-        "claude code 始め方",
-        "claude code cli",
-        "claude code 無料",
-        "claude codeとclaudeの違い",
-        "claude code 比較",
-        "claude code 比較 codex",
-        "claude code 比較 cursor",
-        "claude code 比較 gemini",
-        "claude code 比較 対象"
+        "30w usb c pd gan charger",
+        "usb c 4 port pd gan charger",
+        "usb-c power delivery (pd) gan charger",
+        "usb c pd gan fast charger",
+        "100w usb-c pd gan charger",
+        "102w pro gan usb-c pd charger",
+        "satechi 100w usb c pd gan charger",
+        "satechi 165w pd gan usb c charger",
+        "45w usb c pd gan charger",
+        "140w usb c pd gan charger"
       ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
-        "claude code 使い方",
-        "claude code 料金",
-        "claude code とは",
-        "claude code インストール",
-        "claude code できること",
-        "claude code 始め方",
-        "claude code cli",
-        "claude code 無料",
-        "claude codeとclaudeの違い",
-        "claude code 比較 gemini",
-        "claude code 比較 対象",
-        "github copilot claude code 比較"
+        {
+          "query": "30w usb c pd gan charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "30w",
+            "charger"
+          ]
+        },
+        {
+          "query": "usb c 4 port pd gan charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "port",
+            "charger"
+          ]
+        },
+        {
+          "query": "usb-c power delivery (pd) gan charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "delivery",
+            "charger"
+          ]
+        },
+        {
+          "query": "usb c pd gan fast charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "fast",
+            "charger"
+          ]
+        },
+        {
+          "query": "100w usb-c pd gan charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "charger"
+          ]
+        },
+        {
+          "query": "102w pro gan usb-c pd charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "102w",
+            "charger"
+          ]
+        },
+        {
+          "query": "satechi 100w usb c pd gan charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "satechi",
+            "charger"
+          ]
+        },
+        {
+          "query": "satechi 165w pd gan usb c charger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "satechi",
+            "165w",
+            "charger"
+          ]
+        }
       ]
     },
     {
-      "seed": "Google Colab",
-      "total_suggestions": 50,
+      "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
+      "seed": "Claude Code AI Agent",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
       "top_suggestions": [
-        "google colab",
-        "google colaboratory",
-        "google colab a100",
-        "google colab 使い方",
-        "google colab 料金",
-        "google colaboratory python",
-        "google colab とは",
-        "google colab python",
-        "google colaboratory 使い方",
-        "google colab 何ができる",
-        "google colab 比較",
-        "google colab gpu 性能 比較",
-        "google colab gpu 比較",
-        "google colab aws 比較",
-        "google colab プラン 比較"
+        "claude code ai agent",
+        "claude code ai agent pricing",
+        "claude code ai agents github",
+        "claude code ai agent tutorial",
+        "claude code ai agent free",
+        "claude code ai agent download",
+        "claude code ai agent course",
+        "claude code ai agent skills",
+        "claude code ai agent team",
+        "claude code ai agent setup /"
       ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
-        "google colaboratory",
-        "google colab 使い方",
-        "google colab 料金",
-        "google colaboratory python",
-        "google colab とは",
-        "google colab python",
-        "google colaboratory 使い方",
-        "google colab 何ができる",
-        "google colab aws 比較",
-        "jupyter notebook google colab 比較",
-        "google colab 制限時間",
-        "google colab 無料 制限"
+        {
+          "query": "claude code ai agent",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent"
+          ]
+        },
+        {
+          "query": "claude code ai agent pricing",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent",
+            "pricing"
+          ]
+        },
+        {
+          "query": "claude code ai agents github",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agents",
+            "github"
+          ]
+        },
+        {
+          "query": "claude code ai agent tutorial",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent",
+            "tutorial"
+          ]
+        },
+        {
+          "query": "claude code ai agent free",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent",
+            "free"
+          ]
+        },
+        {
+          "query": "claude code ai agent download",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent",
+            "download"
+          ]
+        },
+        {
+          "query": "claude code ai agent course",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent",
+            "course"
+          ]
+        },
+        {
+          "query": "claude code ai agent skills",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "agent",
+            "skills"
+          ]
+        }
       ]
     },
     {
-      "seed": "ローカルLLM",
-      "total_suggestions": 39,
+      "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
+      "seed": "Claude Code Cursor",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 5,
+        "comparison": 5
+      },
+      "total_suggestions": 10,
       "top_suggestions": [
-        "ローカルllm",
-        "ローカルllmとは",
-        "ローカルllm おすすめ",
-        "ローカルllm 画像生成",
-        "ローカルllm スペック",
-        "ローカルllm できること",
-        "ローカルllm 作り方",
-        "ローカルllmモデル比較",
-        "ローカルllm コーディング",
-        "ローカルllm 検閲なし 日本語",
-        "ローカルllm 比較",
-        "ローカルllm 比較 2026",
-        "ローカルllm 比較 コーディング",
-        "ローカルllm 比較(2025)",
-        "ローカルllm 比較 日本語"
+        "claude code cursor",
+        "claude code cursor 比較",
+        "claude code cursor 連携",
+        "claude code cursor 違い",
+        "claude code cursor 併用",
+        "claude code cursorで使う",
+        "claude code cursor vscode",
+        "claude code cursor codex 比較",
+        "claude code cursor どっち",
+        "claude code cursor 料金"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "claude code cursor",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "code"
+          ]
+        },
+        {
+          "query": "claude code cursor 比較",
+          "intent": "comparison",
+          "missing_in_title": [
+            "code"
+          ]
+        },
+        {
+          "query": "claude code cursor 併用",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "code",
+            "併用"
+          ]
+        },
+        {
+          "query": "claude code cursorで使う",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "code",
+            "使"
+          ]
+        },
+        {
+          "query": "claude code cursor どっち",
+          "intent": "comparison",
+          "missing_in_title": [
+            "code"
+          ]
+        },
+        {
+          "query": "claude code cursor 料金",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "code",
+            "料金"
+          ]
+        }
       ],
       "uncovered_content_gaps": [
-        "ローカルllmとは",
-        "ローカルllm おすすめ",
-        "ローカルllm 画像生成",
-        "ローカルllm スペック",
-        "ローカルllm できること",
-        "ローカルllm 作り方",
-        "ローカルllmモデル比較",
-        "ローカルllm 検閲なし 日本語",
-        "ローカルllm 比較 2026",
-        "ローカルllm 比較(2025)",
-        "ローカルllm 比較 日本語",
-        "ローカルllm 比較サイト"
+        {
+          "query": "claude code cursor 連携",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "連携"
+          ]
+        },
+        {
+          "query": "claude code cursor 違い",
+          "intent": "comparison",
+          "missing_in_body": [
+            "違"
+          ]
+        },
+        {
+          "query": "claude code cursor vscode",
+          "intent": "comparison",
+          "missing_in_body": [
+            "vscode"
+          ]
+        },
+        {
+          "query": "claude code cursor codex 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "codex"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "cross-model-peer-audit-bug-detection-benchmarks",
+      "seed": "AI Coding Code Review",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "ai coding code review"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": [
+        {
+          "query": "ai coding code review",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "coding",
+            "review"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
+      "seed": "USB4 SSD Thunderbolt 4",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 3
+      },
+      "total_suggestions": 3,
+      "top_suggestions": [
+        "thunderbolt 4 / usb4 external ssd",
+        "thunderbolt 4 / usb4 ssd",
+        "thunderbolt 4 usb4 nvme ssd"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "thunderbolt 4 / usb4 ssd",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "thunderbolt"
+          ]
+        },
+        {
+          "query": "thunderbolt 4 usb4 nvme ssd",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "thunderbolt",
+            "nvme"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "thunderbolt 4 / usb4 external ssd",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "external"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
+      "seed": "Google Colab Google AI Pro",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "google colab google ai pro"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
+      "seed": "LLM API TTFT Latency",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
+      "seed": "Local LLM llama.cpp",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 4,
+        "comparison": 2
+      },
+      "total_suggestions": 6,
+      "top_suggestions": [
+        "local llm llama.cpp",
+        "local llm ollama vs llama cpp",
+        "claude code local llm llama cpp",
+        "opencode local llm llama cpp",
+        "openclaw local llm llama cpp",
+        "vscode local llm llama cpp"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": [
+        {
+          "query": "local llm llama.cpp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "local"
+          ]
+        },
+        {
+          "query": "local llm ollama vs llama cpp",
+          "intent": "comparison",
+          "missing_in_body": [
+            "local",
+            "ollama"
+          ]
+        },
+        {
+          "query": "claude code local llm llama cpp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "claude",
+            "code",
+            "local"
+          ]
+        },
+        {
+          "query": "opencode local llm llama cpp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "opencode",
+            "local"
+          ]
+        },
+        {
+          "query": "openclaw local llm llama cpp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "openclaw",
+            "local"
+          ]
+        },
+        {
+          "query": "vscode local llm llama cpp",
+          "intent": "comparison",
+          "missing_in_body": [
+            "vscode",
+            "local"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests",
+      "seed": "Hall Effect Keyboard Rapid Trigger",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 9,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "hall effect keyboard rapid trigger",
+        "hall effect keyboard rapid trigger settings",
+        "hall effect keyboard vs rapid trigger",
+        "hall effect rapid trigger socd keyboard",
+        "best hall effect rapid trigger keyboard",
+        "best budget hall effect rapid trigger keyboard",
+        "o3c rapid trigger hall effect keyboard",
+        "rapid trigger hall effect magnetic keyboard",
+        "sayodevice o3c rapid trigger hall effect keyboard",
+        "budget hall effect rapid trigger keyboard"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": [
+        {
+          "query": "hall effect keyboard rapid trigger",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "keyboard",
+            "rapid",
+            "trigger"
+          ]
+        },
+        {
+          "query": "hall effect keyboard rapid trigger settings",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "keyboard",
+            "rapid",
+            "trigger",
+            "settings"
+          ]
+        },
+        {
+          "query": "hall effect keyboard vs rapid trigger",
+          "intent": "comparison",
+          "missing_in_body": [
+            "keyboard",
+            "vs",
+            "rapid",
+            "trigger"
+          ]
+        },
+        {
+          "query": "hall effect rapid trigger socd keyboard",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "rapid",
+            "trigger",
+            "socd",
+            "keyboard"
+          ]
+        },
+        {
+          "query": "best hall effect rapid trigger keyboard",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "best",
+            "rapid",
+            "trigger",
+            "keyboard"
+          ]
+        },
+        {
+          "query": "best budget hall effect rapid trigger keyboard",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "best",
+            "budget",
+            "rapid",
+            "trigger",
+            "keyboard"
+          ]
+        },
+        {
+          "query": "o3c rapid trigger hall effect keyboard",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "o3c",
+            "rapid",
+            "trigger",
+            "keyboard"
+          ]
+        },
+        {
+          "query": "rapid trigger hall effect magnetic keyboard",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "rapid",
+            "trigger",
+            "magnetic",
+            "keyboard"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
+      "seed": "Mini PC Ryzen AI 9 HX 370",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "mini pc ryzen ai 9 hx 370",
+        "mini pc ryzen ai 9 hx 370 radeon 890m",
+        "ミニ pc ryzen ai 9 hx 370",
+        "ryzen ai 9 hx 370 mini pc oculink",
+        "thdeukoty mini pc ryzen ai 9 hx 370",
+        "asus mini pc ryzen ai 9 hx 370",
+        "gmktec ai mini pc ryzen ai 9 hx 370",
+        "sapphire edge ai mini pc ryzen ai 9 hx 370",
+        "peladn mini pc ryzen ai 9 hx 370",
+        "amd ryzen ai 9 hx 370 ミニ pc"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "mini pc ryzen ai 9 hx 370",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "mini"
+          ]
+        },
+        {
+          "query": "ryzen ai 9 hx 370 mini pc oculink",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "mini",
+            "oculink"
+          ]
+        },
+        {
+          "query": "gmktec ai mini pc ryzen ai 9 hx 370",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "gmktec",
+            "mini"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "mini pc ryzen ai 9 hx 370 radeon 890m",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "radeon",
+            "890m"
+          ]
+        },
+        {
+          "query": "thdeukoty mini pc ryzen ai 9 hx 370",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "thdeukoty"
+          ]
+        },
+        {
+          "query": "asus mini pc ryzen ai 9 hx 370",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "asus"
+          ]
+        },
+        {
+          "query": "sapphire edge ai mini pc ryzen ai 9 hx 370",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "sapphire",
+            "edge"
+          ]
+        },
+        {
+          "query": "peladn mini pc ryzen ai 9 hx 370",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "peladn"
+          ]
+        },
+        {
+          "query": "amd ryzen ai 9 hx 370 ミニ pc",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "amd"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
+      "seed": "Portable Power Station LiFePO4",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "portable power station lifepo4 battery",
+        "ebl 2400w portable power station lifepo4 battery",
+        "ebl 2400w portable power station lifepo4",
+        "ebl 2400w portable power station lifepo4 battery review",
+        "best portable power station lifepo4",
+        "bluetti portable power station lifepo4",
+        "bluetti ac2p portable power station lifepo4",
+        "bluetti portable power station lifepo4 battery",
+        "100ah portable power station lifepo4",
+        "2688wh 3000w portable power station lifepo4 battery"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": [
+        {
+          "query": "portable power station lifepo4 battery",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "portable",
+            "power",
+            "station",
+            "battery"
+          ]
+        },
+        {
+          "query": "ebl 2400w portable power station lifepo4 battery",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ebl",
+            "2400w",
+            "portable",
+            "power",
+            "station",
+            "battery"
+          ]
+        },
+        {
+          "query": "ebl 2400w portable power station lifepo4",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ebl",
+            "2400w",
+            "portable",
+            "power",
+            "station"
+          ]
+        },
+        {
+          "query": "ebl 2400w portable power station lifepo4 battery review",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ebl",
+            "2400w",
+            "portable",
+            "power",
+            "station",
+            "battery",
+            "review"
+          ]
+        },
+        {
+          "query": "best portable power station lifepo4",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "best",
+            "portable",
+            "power",
+            "station"
+          ]
+        },
+        {
+          "query": "bluetti portable power station lifepo4",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "bluetti",
+            "portable",
+            "power",
+            "station"
+          ]
+        },
+        {
+          "query": "bluetti ac2p portable power station lifepo4",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "bluetti",
+            "ac2p",
+            "portable",
+            "power",
+            "station"
+          ]
+        },
+        {
+          "query": "bluetti portable power station lifepo4 battery",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "bluetti",
+            "portable",
+            "power",
+            "station",
+            "battery"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation",
+      "seed": "Wi-Fi 7 802.11be",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 5
+      },
+      "total_suggestions": 5,
+      "top_suggestions": [
+        "wi-fi 7 802.11be",
+        "wi-fi 7 be201 2x2 802.11be",
+        "ieee 802.11be (wi-fi 7)",
+        "ieee 802.11be(wi-fi 7)の導入について",
+        "802.11be 2x2 wi-fi 7 モジュール"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": [
+        {
+          "query": "wi-fi 7 802.11be",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "802.11be"
+          ]
+        },
+        {
+          "query": "wi-fi 7 be201 2x2 802.11be",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "be201",
+            "802.11be"
+          ]
+        },
+        {
+          "query": "ieee 802.11be (wi-fi 7)",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ieee",
+            "802.11be"
+          ]
+        },
+        {
+          "query": "ieee 802.11be(wi-fi 7)の導入について",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ieee",
+            "802.11be",
+            "導入"
+          ]
+        },
+        {
+          "query": "802.11be 2x2 wi-fi 7 モジュール",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "802.11be",
+            "モジュール"
+          ]
+        }
       ]
     }
   ],
@@ -124,7 +833,7 @@
     },
     {
       "title": "若手エンジニアに必要だと感じた「AIを使う力」",
-      "liked_count": 58,
+      "liked_count": 59,
       "comments_count": 0,
       "url": "https://zenn.dev/muit_techblog/articles/6ea28887c79457",
       "published_at": "2026-10-08"
@@ -182,63 +891,63 @@
   "hackernews_frontpage": [
     {
       "title": "Passkeys are a trap",
-      "points": 678,
-      "num_comments": 388,
+      "points": 693,
+      "num_comments": 399,
       "url": "https://nonfunctional.substack.com/p/passkeys-are-a-trap-do-not-use-them"
     },
     {
       "title": "Total Annihilation, rebuilt for modern computers",
-      "points": 545,
-      "num_comments": 207,
+      "points": 547,
+      "num_comments": 210,
       "url": "https://nanolathe.gg"
     },
     {
       "title": "The gap in shared understanding of LLM capability is widening",
-      "points": 490,
-      "num_comments": 725,
+      "points": 497,
+      "num_comments": 730,
       "url": "https://twitter.com/karpathy/status/2109361546505966046"
     },
     {
       "title": "NYC's \"Click to Cancel\" rule is now in effect",
-      "points": 490,
-      "num_comments": 244,
+      "points": 495,
+      "num_comments": 245,
       "url": "https://www.nyc.gov/main/click-to-cancel"
     },
     {
       "title": "Fingerprints are the new cookies",
-      "points": 422,
-      "num_comments": 217,
+      "points": 433,
+      "num_comments": 221,
       "url": "https://royfish.dev/fingerprints-are-the-new-cookies"
     },
     {
       "title": "Terence Tao: Math 2.0 [pdf]",
-      "points": 420,
+      "points": 424,
       "num_comments": 440,
       "url": "https://teorth.github.io/tao-web/slides/math-2-0-caltech-2026.pdf"
     },
     {
       "title": "So, you’d like to sell your print issues of The Onion?",
-      "points": 333,
-      "num_comments": 50,
+      "points": 336,
+      "num_comments": 51,
       "url": "https://theonion.com/archivehunt/"
     },
     {
       "title": "Cartographers of North Korea (2019)",
-      "points": 271,
-      "num_comments": 51,
+      "points": 272,
+      "num_comments": 52,
       "url": "https://cartographers-nk.wonyoung.so/"
     },
     {
       "title": "Will Linux phones become a viable alternative to the Android/iOS duopoly?",
-      "points": 168,
-      "num_comments": 188,
+      "points": 175,
+      "num_comments": 193,
       "url": "https://amosbbatto.wordpress.com/2026/10/05/linux-phones-alternative/"
     },
     {
-      "title": "Calculus with Julia",
-      "points": 144,
-      "num_comments": 15,
-      "url": "https://jverzani.github.io/CalculusWithJuliaNotes.jl/"
+      "title": "Deloitte falsified documents to evade tax on Abramovich's wealth",
+      "points": 166,
+      "num_comments": 33,
+      "url": "https://www.bbc.com/news/articles/c64g1l5389kvo"
     }
   ]
 }

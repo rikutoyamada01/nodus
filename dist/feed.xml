@@ -5,6 +5,9 @@
   <link href="https://nodus-lab.pages.dev/" />
   <updated>2026-10-12T00:00:00Z</updated>
   <id>https://nodus-lab.pages.dev/</id>
+  <author>
+    <name>Nodus Research Editorial</name>
+  </author>
   <entry>
     <title>AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証</title>
     <link href="https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html" />

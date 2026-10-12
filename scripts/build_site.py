@@ -2185,6 +2185,7 @@ def render_atom_feed(articles: list[dict[str, Any]], config: dict[str, Any]) -> 
         f'  <link href="{esc(base_url)}/" />\n'
         f"  <updated>{esc(updated)}T00:00:00Z</updated>\n"
         f"  <id>{esc(base_url)}/</id>\n"
+        f"  <author>\n    <name>{esc(site['organization'])}</name>\n  </author>\n"
         + "\n".join(entries)
         + "\n</feed>\n"
     )
