@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
+  "origin": "first_party_lab",
+  "recorded_at": "2026-10-12",
+  "environment": {
+    "os": "Windows 11 Pro (x64)",
+    "runtime": "Python 3.11 / Node.js 22",
+    "agent_harness": "AST Skeleton Peek (ast.parse + regex fallback) + CLI Exec Output Squasher",
+    "sample_sessions_n": 42
+  },
+  "aggregate_telemetry": {
+    "baseline_duplicate_view_file_ratio_pct": 58.7,
+    "max_single_file_rereads_in_one_session": 33,
+    "tool_result_token_reduction_pct": -46.9,
+    "cumulative_input_token_reduction_pct": -30.5,
+    "mean_cumulative_tokens_saved_per_long_session": 5400000,
+    "session_wall_time_reduction_pct": -32.0,
+    "median_task_input_tokens_baseline": 148000,
+    "median_task_input_tokens_harness": 32000,
+    "median_task_token_reduction_pct": -78.4
+  },
+  "representative_runs": [
+    {
+      "run_id": "run-01",
+      "task_type": "multi_file_bugfix_python",
+      "repo_files_count": 68,
+      "mode": "baseline_full_read",
+      "files_opened": 7,
+      "duplicate_reads": 4,
+      "raw_tool_output_tokens": 92400,
+      "cumulative_session_input_tokens": 154200,
+      "turn_15_ttft_sec": 7.1
+    },
+    {
+      "run_id": "run-02",
+      "task_type": "multi_file_bugfix_python",
+      "repo_files_count": 68,
+      "mode": "ast_peek_plus_slice_read",
+      "files_peeked": 7,
+      "slices_read": 5,
+      "duplicate_reads": 0,
+      "raw_tool_output_tokens": 15800,
+      "cumulative_session_input_tokens": 31400,
+      "turn_15_ttft_sec": 3.8
+    },
+    {
+      "run_id": "run-03",
+      "task_type": "test_suite_debug_loop_3_retries",
+      "repo_files_count": 112,
+      "mode": "baseline_unfiltered_stdout",
+      "files_opened": 5,
+      "duplicate_reads": 3,
+      "raw_tool_output_tokens": 46000,
+      "cumulative_session_input_tokens": 142800,
+      "turn_15_ttft_sec": 6.6
+    },
+    {
+      "run_id": "run-04",
+      "task_type": "test_suite_debug_loop_3_retries",
+      "repo_files_count": 112,
+      "mode": "exec_squasher_traceback_only",
+      "files_peeked": 5,
+      "slices_read": 4,
+      "duplicate_reads": 0,
+      "raw_tool_output_tokens": 8200,
+      "cumulative_session_input_tokens": 32600,
+      "turn_15_ttft_sec": 3.9
+    },
+    {
+      "run_id": "run-05",
+      "task_type": "large_1900_line_builder_refactor",
+      "repo_files_count": 45,
+      "mode": "baseline_full_read",
+      "files_opened": 4,
+      "duplicate_reads": 6,
+      "raw_tool_output_tokens": 104500,
+      "cumulative_session_input_tokens": 168900,
+      "turn_15_ttft_sec": 7.4
+    },
+    {
+      "run_id": "run-06",
+      "task_type": "large_1900_line_builder_refactor",
+      "repo_files_count": 45,
+      "mode": "ast_peek_plus_chunk_replace",
+      "files_peeked": 4,
+      "slices_read": 3,
+      "duplicate_reads": 0,
+      "raw_tool_output_tokens": 12400,
+      "cumulative_session_input_tokens": 24000,
+      "turn_15_ttft_sec": 3.6
+    }
+  ]
+}

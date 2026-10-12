@@ -14,7 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "公称最大3,800MB/sを謳うUSB4(40Gbps)外付けSSDで数百GBの動画データを連続転送すると実測何MB/sまで落ちるのか？SLCキャッシュ枯渇後の持続書き込み速度と筐体温度(N=41)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"}, {"@type": "Dataset", "name": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）", "url": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html", "dateModified": "2026-10-12", "distribution": {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？", "acceptedAnswer": {"@type": "Answer", "text": "Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。"}}, {"@type": "Question", "name": "外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "公称最大3,800MB/sを謳うUSB4(40Gbps)外付けSSDで数百GBの動画データを連続転送すると実測何MB/sまで落ちるのか？SLCキャッシュ枯渇後の持続書き込み速度と筐体温度(N=41)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"}, {"@type": "Dataset", "name": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース", "description": "カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）", "url": "https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？", "acceptedAnswer": {"@type": "Answer", "text": "Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。"}}, {"@type": "Question", "name": "外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。"}}]}]}</script>
 </head>
 <body>
   
@@ -66,7 +66,10 @@
       <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
         <div class="tldr-title">
           <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVデータを取得</a>
+          <div class="card-metrics-inline">
+            
+            <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVデータを取得</a>
+          </div>
         </div>
         <ul class="tldr-list">
           <li>集計連続書込テスト数は「41 ログ」（r/NewMaxx 500GB連続転送計測）。</li><li>QLC採用機のキャッシュ後速度は「180 〜 320 MB/s」（公称ピーク比 約8〜10%まで急落）。</li><li>DRAM搭載TLC機の持続速度は「1,450 〜 1,820 MB/s」（放熱筐体との組み合わせ時の中央値）。</li><li>OWC Express 1M2 + DRAM搭載TLC (2TB)：大型フィン付きアルミ筐体によりコントローラ温度が62℃前後に抑えられ、キャッシュ枯渇後も約1.78GB/sを維持（N=14）。</li>
@@ -321,8 +324,10 @@
           <div class="meta-kv-row"><span>サンプル数</span><strong>N = 41</strong></div>
           <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
           <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
+          
         </div>
         <div class="card-takeaway-bar">
+          
           <a href="../datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" download="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv" class="csv-btn">CSVをダウンロード</a>
         </div>
       </div>

@@ -107,6 +107,14 @@ def validate_all() -> dict[str, object]:
         csv_file = DIST_DIR / "datasets" / f"{article['slug']}.csv"
         if not csv_file.exists() or csv_file.stat().st_size < 20:
             raise ValueError(f"Missing or empty CSV dataset: {csv_file}")
+        if article.get("origin") == "first_party":
+            log_file = DIST_DIR / "logs" / f"{article['slug']}.json"
+            if not log_file.exists() or log_file.stat().st_size < 20:
+                raise ValueError(f"First-party article {article['slug']} is missing site-hosted raw log: {log_file}")
+            log_raw = log_file.read_text(encoding="utf-8")
+            json.loads(log_raw)
+            if "rikutoyamada" in log_raw.lower() or "yamadarikuto" in log_raw.lower() or "c:\\users\\" in log_raw.lower():
+                raise ValueError(f"{log_file.name}: raw log contains personal username or local path")
 
     # Check candidate files for copyright compliance (no verbatim snippet field)
     if CANDIDATES_DIR.exists():

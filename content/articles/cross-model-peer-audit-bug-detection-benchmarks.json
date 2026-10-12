@@ -159,8 +159,8 @@
   ],
   "sources": [
     {
-      "title": "Nodus First-Party Lab: Cross-Model Peer-Audit Empirical Dataset (CSV)",
-      "url": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv",
+      "title": "Nodus First-Party Lab: 異種モデル静的監査 生計測ログ (Raw Empirical Log JSON)",
+      "url": "https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json",
       "sample_size": "N=28 static audit runs",
       "verified_date": "2026-10-12"
     },

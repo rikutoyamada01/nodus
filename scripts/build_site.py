@@ -9,6 +9,7 @@ from structured quantitative datasets in content/articles/*.json.
 from __future__ import annotations
 
 import csv
+import hashlib
 import html
 import io
 import json
@@ -22,6 +23,7 @@ from urllib.parse import urlparse
 ROOT_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT_DIR / "config" / "site_config.json"
 ARTICLES_DIR = ROOT_DIR / "content" / "articles"
+RAW_LOGS_DIR = ROOT_DIR / "content" / "raw_logs"
 DIST_DIR = ROOT_DIR / "dist"
 
 SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{1,120}$")
@@ -1483,6 +1485,28 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
         "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
     )
 
+    raw_log_file = RAW_LOGS_DIR / f"{slug}.json"
+    has_raw_log = raw_log_file.exists()
+    raw_log_sha = ""
+    if has_raw_log:
+        raw_log_sha = hashlib.sha256(raw_log_file.read_bytes()).hexdigest()[:16]
+
+    distributions: list[dict[str, str]] = [
+        {
+            "@type": "DataDownload",
+            "encodingFormat": "text/csv",
+            "contentUrl": f"{base_url}/datasets/{slug}.csv",
+        }
+    ]
+    if has_raw_log:
+        distributions.append(
+            {
+                "@type": "DataDownload",
+                "encodingFormat": "application/json",
+                "contentUrl": f"{base_url}/logs/{slug}.json",
+            }
+        )
+
     faq_entities = [
         {
             "@type": "Question",
@@ -1518,11 +1542,7 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
                 "description": article["subtitle"],
                 "url": canonical_url,
                 "dateModified": data_updated_at,
-                "distribution": {
-                    "@type": "DataDownload",
-                    "encodingFormat": "text/csv",
-                    "contentUrl": f"{base_url}/datasets/{slug}.csv",
-                },
+                "distribution": distributions,
             },
             {
                 "@type": "FAQPage",
@@ -1692,6 +1712,17 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
     if methodology_note:
         methodology_html = f'<div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> {esc(methodology_note)}</div>'
 
+    raw_log_btn_html = (
+        f'<a href="../logs/{esc(slug)}.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>'
+        if has_raw_log
+        else ""
+    )
+    raw_log_meta_row = (
+        f'<div class="meta-kv-row"><span>生ログ SHA-256</span><strong>{esc(raw_log_sha[:10])}...</strong></div>'
+        if has_raw_log
+        else ""
+    )
+
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1740,7 +1771,10 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
       <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
         <div class="tldr-title">
           <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVデータを取得</a>
+          <div class="card-metrics-inline">
+            {raw_log_btn_html}
+            <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVデータを取得</a>
+          </div>
         </div>
         <ul class="tldr-list">
           {tldr_bullets_html}
@@ -1820,8 +1854,10 @@ def render_article_page(article: dict[str, Any], config: dict[str, Any]) -> str:
           <div class="meta-kv-row"><span>サンプル数</span><strong>N = {int(article.get("sample_size_n", 0))}</strong></div>
           <div class="meta-kv-row"><span>比較行数</span><strong>{len(table["rows"])} 件</strong></div>
           <div class="meta-kv-row"><span>最終検証日</span><strong>{esc(data_updated_at)}</strong></div>
+          {raw_log_meta_row}
         </div>
         <div class="card-takeaway-bar">
+          {raw_log_btn_html}
           <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVをダウンロード</a>
         </div>
       </div>
@@ -2082,6 +2118,9 @@ def build_cloudflare_headers() -> str:
 
 /datasets/*.csv
   Content-Type: text/csv; charset=utf-8
+
+/logs/*.json
+  Content-Type: application/json; charset=utf-8
 """
 
 
@@ -2093,9 +2132,11 @@ def build_all() -> dict[str, Any]:
     assets_dir = DIST_DIR / "assets"
     articles_out_dir = DIST_DIR / "articles"
     datasets_out_dir = DIST_DIR / "datasets"
+    logs_out_dir = DIST_DIR / "logs"
     assets_dir.mkdir(parents=True, exist_ok=True)
     articles_out_dir.mkdir(parents=True, exist_ok=True)
     datasets_out_dir.mkdir(parents=True, exist_ok=True)
+    logs_out_dir.mkdir(parents=True, exist_ok=True)
 
     # Write CSS and external JS
     (assets_dir / "style.css").write_text(build_css(), encoding="utf-8")
@@ -2121,15 +2162,20 @@ def build_all() -> dict[str, Any]:
         reverse=True,
     )
 
-    # Remove stale generated articles and CSV datasets
+    # Remove stale generated articles, CSV datasets, and raw logs
     for old_html in articles_out_dir.glob("*.html"):
         if old_html.stem not in seen_slugs:
             old_html.unlink()
     for old_csv in datasets_out_dir.glob("*.csv"):
         if old_csv.stem not in seen_slugs:
             old_csv.unlink()
+    for old_log in logs_out_dir.glob("*.json"):
+        if old_log.stem not in seen_slugs:
+            old_log.unlink()
 
-    # Render each article & CSV dataset
+    published_logs: list[str] = []
+
+    # Render each article, CSV dataset, and optional site-hosted raw log
     for article in articles:
         slug = validate_slug(article["slug"])
         out_path = (articles_out_dir / f"{slug}.html").resolve()
@@ -2139,6 +2185,13 @@ def build_all() -> dict[str, Any]:
 
         csv_path = (datasets_out_dir / f"{slug}.csv").resolve()
         csv_path.write_text(build_article_csv(article), encoding="utf-8")
+
+        raw_log_src = RAW_LOGS_DIR / f"{slug}.json"
+        if raw_log_src.exists():
+            raw_obj = load_json(raw_log_src)
+            log_out_path = (logs_out_dir / f"{slug}.json").resolve()
+            log_out_path.write_text(json.dumps(raw_obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            published_logs.append(f"logs/{slug}.json")
 
     # Render index, about, 404, feed, and _headers
     (DIST_DIR / "index.html").write_text(render_index_page(articles, config), encoding="utf-8")
@@ -2177,14 +2230,17 @@ def build_all() -> dict[str, Any]:
         "## Datasets & Quantitative Benchmark Reports",
     ]
     for a in articles:
+        slug = a["slug"]
+        raw_suffix = f" ([Raw Log JSON]({site_url}/logs/{slug}.json))" if (RAW_LOGS_DIR / f"{slug}.json").exists() else ""
         llms_lines.append(
-            f"- [{a['title']}]({site_url}/articles/{a['slug']}.html) ([CSV Dataset]({site_url}/datasets/{a['slug']}.csv)): {a['subtitle']}"
+            f"- [{a['title']}]({site_url}/articles/{slug}.html) ([CSV Dataset]({site_url}/datasets/{slug}.csv)){raw_suffix}: {a['subtitle']}"
         )
     (DIST_DIR / "llms.txt").write_text("\n".join(llms_lines) + "\n", encoding="utf-8")
 
     summary = {
         "status": "ok",
         "articles_built": len(articles),
+        "raw_logs_published": len(published_logs),
         "output_dir": str(DIST_DIR),
         "files": [
             "index.html",
@@ -2197,7 +2253,8 @@ def build_all() -> dict[str, Any]:
             "llms.txt",
         ]
         + [f"articles/{a['slug']}.html" for a in articles]
-        + [f"datasets/{a['slug']}.csv" for a in articles],
+        + [f"datasets/{a['slug']}.csv" for a in articles]
+        + published_logs,
     }
     print(json.dumps(summary, ensure_ascii=False))
     return summary

@@ -14,7 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証", "description": "Claude CodeやAIエージェントで「すぐ5時間制限に達する」「後半になると回答が鈍る」原因を42セッションのチャットログから定量解明。全文ReadとAST Peek・CLI出力圧縮のトークン消費量・TTFT比較データを公開。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html"}, {"@type": "Dataset", "name": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証", "description": "Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化", "url": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html", "dateModified": "2026-10-12", "distribution": {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Prompt Caching（プロンプトキャッシュ）が効いていれば、履歴が長くても問題ないのでは？", "acceptedAnswer": {"@type": "Answer", "text": "API課金上の単価はキャッシュヒットで割引されますが、定額プランのクオータ計算やモデルのAttention機構（文脈のどこに注目するか）においては、無関係なコードが数万トークン挟まっていること自体が『指示忘れ（Attention Dilution）』や応答遅延（TTFT悪化）の直接原因になります。そもそも不要なテキストを履歴に入れない方が、速度・精度・枠のすべてで有利です。"}}, {"@type": "Question", "name": "調査用のサブエージェントを使うのとAST Peekはどちらが効果的ですか？", "acceptedAnswer": {"@type": "Answer", "text": "両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。"}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証", "description": "Claude CodeやAIエージェントで「すぐ5時間制限に達する」「後半になると回答が鈍る」原因を42セッションのチャットログから定量解明。全文ReadとAST Peek・CLI出力圧縮のトークン消費量・TTFT比較データを公開。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html"}, {"@type": "Dataset", "name": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証", "description": "Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化", "url": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html", "dateModified": "2026-10-12", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Prompt Caching（プロンプトキャッシュ）が効いていれば、履歴が長くても問題ないのでは？", "acceptedAnswer": {"@type": "Answer", "text": "API課金上の単価はキャッシュヒットで割引されますが、定額プランのクオータ計算やモデルのAttention機構（文脈のどこに注目するか）においては、無関係なコードが数万トークン挟まっていること自体が『指示忘れ（Attention Dilution）』や応答遅延（TTFT悪化）の直接原因になります。そもそも不要なテキストを履歴に入れない方が、速度・精度・枠のすべてで有利です。"}}, {"@type": "Question", "name": "調査用のサブエージェントを使うのとAST Peekはどちらが効果的ですか？", "acceptedAnswer": {"@type": "Answer", "text": "両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。"}}]}]}</script>
 </head>
 <body>
   
@@ -66,7 +66,10 @@
       <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
         <div class="tldr-title">
           <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <a href="../datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" download="ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" class="csv-btn">CSVデータを取得</a>
+          <div class="card-metrics-inline">
+            <a href="../logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
+            <a href="../datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" download="ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" class="csv-btn">CSVデータを取得</a>
+          </div>
         </div>
         <ul class="tldr-list">
           <li>2,000行クラスのソースコードをそのままReadツールで全文投入すると1ファイルあたり約16,500〜22,000トークンを消費し、以降の全ターンで履歴課金（累積コンテキスト）として雪だるま式に枠を圧迫する。</li><li>関数シグネチャ・クラス定義・行番号だけを抜き出す「AST骨格抽出（Peek）」を挟んで必要な30〜80行だけを部分参照すると、探索フェーズのトークン消費が実測中央値で 78.4% 削減（1タスクあたり平均 148K → 32K Tokens）される。</li><li>pytest / npm build 等の標準出力をそのままエージェントに返さず「失敗箇所＋前後5行」に要約圧縮（execハーネス）することで、5時間ローリング制限あたりの完走タスク数が 2.9倍 に伸び、TTFT（初回応答遅延）も平均 41% 短縮された。</li>
@@ -294,7 +297,7 @@
         <ul class="source-list">
           
         <li class="source-item">
-          <a href="https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" target="_blank" rel="noopener noreferrer">Nodus First-Party Lab: AI Coding Agent Session Transcripts Quantitative Dataset (CSV)</a>
+          <a href="https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json" target="_blank" rel="noopener noreferrer">Nodus First-Party Lab: AIエージェント検証 生計測ログ (Raw Empirical Log JSON)</a>
           <span class="source-meta">サンプル: N=42 real agent coding sessions | 確認日: 2026-10-12</span>
         </li>
         
@@ -326,8 +329,10 @@
           <div class="meta-kv-row"><span>サンプル数</span><strong>N = 42</strong></div>
           <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
           <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
+          <div class="meta-kv-row"><span>生ログ SHA-256</span><strong>2d3e765de8...</strong></div>
         </div>
         <div class="card-takeaway-bar">
+          <a href="../logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
           <a href="../datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" download="ai-coding-agent-ast-peek-token-reduction-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
         </div>
       </div>

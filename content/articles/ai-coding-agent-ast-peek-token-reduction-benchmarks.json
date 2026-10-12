@@ -170,8 +170,8 @@
   ],
   "sources": [
     {
-      "title": "Nodus First-Party Lab: AI Coding Agent Session Transcripts Quantitative Dataset (CSV)",
-      "url": "https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv",
+      "title": "Nodus First-Party Lab: AIエージェント検証 生計測ログ (Raw Empirical Log JSON)",
+      "url": "https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json",
       "sample_size": "N=42 real agent coding sessions",
       "verified_date": "2026-10-12"
     },
