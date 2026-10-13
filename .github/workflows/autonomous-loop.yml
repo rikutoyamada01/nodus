@@ -2,8 +2,8 @@ name: Autonomous Mining & Closed-Loop SEO Engine
 
 on:
   schedule:
-    # Runs every Monday at 06:00 JST (Sunday 21:00 UTC)
-    - cron: "0 21 * * 0"
+    # Runs daily at 06:00 JST (21:00 UTC)
+    - cron: "0 21 * * *"
   workflow_dispatch:
 
 permissions:
