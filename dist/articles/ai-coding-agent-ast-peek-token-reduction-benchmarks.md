@@ -1,6 +1,6 @@
-# AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証
+# Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証
 
-> Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化
+> Note・Zenn・Qiitaでもまだ体系化されていない「Claude Code / Codex 等のトークン使用量肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化
 
 - **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html
 - **CSV Dataset**: https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv
@@ -44,6 +44,9 @@ A. API課金上の単価はキャッシュヒットで割引されますが、�
 
 ### Q. 調査用のサブエージェントを使うのとAST Peekはどちらが効果的ですか？
 A. 両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。
+
+### Q. Claude Codeのトークン使用量・トークン数の確認方法と、上限に達しないためのプラグイン・Codex比較はどうなっていますか？
+A. Claude Codeではセッション内の `/cost` や `/status` コマンド（または JSONL トランスクリプト集計）で現在のトークン使用量・トークン数を確認でき、5時間ローリング上限に達する前に `/compact` やトークン節約プラグイン（Skillハーネス）を挟むのが有効です。Codex と Claude Code のトークン比較でも、全文Readを避けて行範囲指定とテスト出力圧縮を徹底することで両者とも約70〜80%のトークン節約が可能です。
 
 ## 検証環境・集計メソドロジー
 実際の開発リポジトリ（Python / TypeScript混在、総ファイル数60〜180規模）において、AIコーディングエージェントのチャットセッション42回分のトランスクリプト（JSONL）を集計。(A) デフォルトの全文Read＋生テスト出力、(B) 行範囲指定Readのみ、(C) AST骨格抽出（Peek）＋行範囲ピンポイントRead＋テスト出力圧縮ハーネス適用の3条件で、1イシュー解決あたりの累計投入トークン数・TTFT・5時間枠消費率を計測。

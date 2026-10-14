@@ -1,4 +1,4 @@
-# ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較
+# ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較
 
 > llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）
 

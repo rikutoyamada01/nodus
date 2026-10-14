@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T22:37:44.672093",
+  "generated_at": "2026-10-14T00:09:10.843641",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -56,10 +56,9 @@
       "seed": "Claude Code トークン",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 18,
-        "comparison": 6
+        "metric_cost_spec": 10
       },
-      "total_suggestions": 24,
+      "total_suggestions": 10,
       "top_suggestions": [
         "claude code トークン節約",
         "claude code トークン",
@@ -70,9 +69,7 @@
         "claude code トークン数 確認",
         "claude code トークン節約 プラグ イン",
         "claude code トークンとは",
-        "claude code トークン 確認",
-        "claude code トークン比較",
-        "codex claude code トークン 比較"
+        "claude code トークン 確認"
       ],
       "title_optimization_opportunities": [
         {
@@ -96,109 +93,19 @@
             "プラグ",
             "イン"
           ]
-        },
-        {
-          "query": "codex claude code トークン 比較",
-          "intent": "comparison",
-          "missing_in_title": [
-            "codex"
-          ]
-        },
-        {
-          "query": "claude code トークン 制限",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "制限"
-          ]
-        },
-        {
-          "query": "claude code トークン 制限 pro",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "制限",
-            "pro"
-          ]
-        },
-        {
-          "query": "claude code トークン 数 制限",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "数",
-            "制限"
-          ]
-        },
-        {
-          "query": "claude code 5 時間 制限 トークン 数",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "時間",
-            "制限",
-            "数"
-          ]
         }
       ],
-      "uncovered_content_gaps": [
-        {
-          "query": "claude code トークン 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
-          ]
-        },
-        {
-          "query": "claude code 料金 トークン 数",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
-          ]
-        },
-        {
-          "query": "claude code トークン 使用 量 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
-          ]
-        },
-        {
-          "query": "claude code 残り トークン 確認 vscode",
-          "intent": "comparison",
-          "missing_in_body": [
-            "残",
-            "vscode"
-          ]
-        },
-        {
-          "query": "claude code vscode トークン 確認",
-          "intent": "comparison",
-          "missing_in_body": [
-            "vscode"
-          ]
-        },
-        {
-          "query": "claude code vscode トークン",
-          "intent": "comparison",
-          "missing_in_body": [
-            "vscode"
-          ]
-        },
-        {
-          "query": "claude code vscode トークン 節約",
-          "intent": "comparison",
-          "missing_in_body": [
-            "vscode"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     },
     {
       "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
       "seed": "Claude Code Cursor",
-      "dominant_market_intent": "comparison",
+      "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 6,
-        "comparison": 24
+        "metric_cost_spec": 5,
+        "comparison": 5
       },
-      "total_suggestions": 30,
+      "total_suggestions": 10,
       "top_suggestions": [
         "claude code cursor",
         "claude code cursor 比較",
@@ -209,9 +116,7 @@
         "claude code cursor vscode",
         "claude code cursor codex 比較",
         "claude code cursor どっち",
-        "claude code cursor 料金",
-        "claude code cursor 料金 比較",
-        "claude code cline cursor 比較"
+        "claude code cursor 料金"
       ],
       "title_optimization_opportunities": [
         {
@@ -250,34 +155,6 @@
           "missing_in_body": [
             "codex"
           ]
-        },
-        {
-          "query": "claude code cline cursor 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "cline"
-          ]
-        },
-        {
-          "query": "claude code cursor、copilot 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "copilot"
-          ]
-        },
-        {
-          "query": "claude code 與 cursor 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "與"
-          ]
-        },
-        {
-          "query": "codex claude code cursor 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "codex"
-          ]
         }
       ]
     },
@@ -287,9 +164,9 @@
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
         "metric_cost_spec": 8,
-        "comparison": 3
+        "comparison": 2
       },
-      "total_suggestions": 11,
+      "total_suggestions": 10,
       "top_suggestions": [
         "ai コードレビュー",
         "ai コードレビュー プロンプト",
@@ -300,8 +177,7 @@
         "ai コードレビュー github",
         "ai コードレビュー 比較",
         "ai コードレビュー ローカル",
-        "ai コードレビュー github copilot",
-        "vscode ai コードレビュー"
+        "ai コードレビュー github copilot"
       ],
       "title_optimization_opportunities": [
         {
@@ -338,13 +214,6 @@
           "missing_in_title": [
             "github",
             "copilot"
-          ]
-        },
-        {
-          "query": "vscode ai コードレビュー",
-          "intent": "comparison",
-          "missing_in_title": [
-            "vscode"
           ]
         }
       ],
@@ -395,11 +264,10 @@
       "seed": "Google Colab GPU",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 12,
-        "question_troubleshoot": 1,
-        "comparison": 12
+        "metric_cost_spec": 9,
+        "question_troubleshoot": 1
       },
-      "total_suggestions": 25,
+      "total_suggestions": 10,
       "top_suggestions": [
         "google colab gpu",
         "google colab gpu 料金",
@@ -410,9 +278,7 @@
         "google colab gpu スペック",
         "google colab gpu 使い方",
         "google colab gpu 性能",
-        "google colab gpu 無料",
-        "google colab gpu 比較",
-        "google colab gpu 性能 比較"
+        "google colab gpu 無料"
       ],
       "title_optimization_opportunities": [
         {
@@ -421,29 +287,6 @@
           "missing_in_title": [
             "使",
             "方"
-          ]
-        },
-        {
-          "query": "google colab gpu 使用 制限",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "使用"
-          ]
-        },
-        {
-          "query": "google colab gpu vs cpu",
-          "intent": "comparison",
-          "missing_in_title": [
-            "vs",
-            "cpu"
-          ]
-        },
-        {
-          "query": "google colab vs local gpu",
-          "intent": "comparison",
-          "missing_in_title": [
-            "vs",
-            "local"
           ]
         }
       ],
@@ -489,33 +332,19 @@
           "missing_in_body": [
             "無料"
           ]
-        },
-        {
-          "query": "google colab gpu 性能 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "性能"
-          ]
-        },
-        {
-          "query": "google colab gpu 制限 解除",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "解除"
-          ]
         }
       ]
     },
     {
       "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
       "seed": "LLM API",
-      "dominant_market_intent": "comparison",
+      "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 10,
+        "metric_cost_spec": 8,
         "question_troubleshoot": 1,
-        "comparison": 17
+        "comparison": 1
       },
-      "total_suggestions": 28,
+      "total_suggestions": 10,
       "top_suggestions": [
         "llm api",
         "llm api 無料",
@@ -526,9 +355,7 @@
         "llm api コスパ",
         "llm apiキー",
         "llm api 安い",
-        "llm api サブスク",
-        "llm api 比較",
-        "llm api 性能 比較"
+        "llm api サブスク"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -597,9 +424,9 @@
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
         "metric_cost_spec": 8,
-        "comparison": 3
+        "comparison": 2
       },
-      "total_suggestions": 11,
+      "total_suggestions": 10,
       "top_suggestions": [
         "ローカルllm mac",
         "ローカルllm mac mini",
@@ -610,8 +437,7 @@
         "ローカルllm macbook pro",
         "ローカルllm mac windows どっち",
         "ローカルllm mac windows",
-        "ローカルllm mac おすすめ",
-        "ローカルllm モデル 比較 mac"
+        "ローカルllm mac おすすめ"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -657,10 +483,10 @@
       "seed": "ラピッドトリガー キーボード",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 10,
-        "comparison": 2
+        "metric_cost_spec": 9,
+        "comparison": 1
       },
-      "total_suggestions": 12,
+      "total_suggestions": 10,
       "top_suggestions": [
         "ラピッドトリガー キーボード",
         "ラピッドトリガー キーボード おすすめ",
@@ -671,9 +497,7 @@
         "ラピッドトリガー キーボード 日本語配列",
         "ラピッドトリガー キーボード 白",
         "ラピッドトリガー キーボード valorant",
-        "ラピッドトリガー キーボード テンキー付き",
-        "ラピッドトリガー キーボード 比較",
-        "vスポ キーボード ラピッドトリガー"
+        "ラピッドトリガー キーボード テンキー付き"
       ],
       "title_optimization_opportunities": [
         {
@@ -734,13 +558,6 @@
             "テンキー",
             "付"
           ]
-        },
-        {
-          "query": "vスポ キーボード ラピッドトリガー",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "スポ"
-          ]
         }
       ]
     },
@@ -750,9 +567,9 @@
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
         "metric_cost_spec": 7,
-        "comparison": 3
+        "comparison": 2
       },
-      "total_suggestions": 10,
+      "total_suggestions": 9,
       "top_suggestions": [
         "ミニpc ryzen",
         "ミニpc ryzen7",
@@ -762,18 +579,9 @@
         "ミニpc ryzen 中古",
         "ミニpc ryzen7 32gb",
         "ミニpc ryzen おすすめ",
-        "ミニpc ryzen 比較",
-        "ミニpc ryzen cpu 比較"
+        "ミニpc ryzen 比較"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "ミニpc ryzen cpu 比較",
-          "intent": "comparison",
-          "missing_in_title": [
-            "cpu"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "ミニpc ryzen7",
@@ -819,9 +627,9 @@
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
         "metric_cost_spec": 8,
-        "comparison": 3
+        "comparison": 2
       },
-      "total_suggestions": 11,
+      "total_suggestions": 10,
       "top_suggestions": [
         "ポータブル電源 ups",
         "ポータブル電源 ups代わり",
@@ -832,8 +640,7 @@
         "ポータブル電源 ups おすすめ",
         "ポータブル電源 ups anker",
         "ポータブル電源 ups 10ms",
-        "ポータブル電源 ups パソコン",
-        "ポータブル電源 ups 比較"
+        "ポータブル電源 ups パソコン"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -874,16 +681,15 @@
       "intent_distribution": {
         "metric_cost_spec": 3,
         "question_troubleshoot": 1,
-        "comparison": 2
+        "comparison": 1
       },
-      "total_suggestions": 6,
+      "total_suggestions": 5,
       "top_suggestions": [
         "wi-fi 7 ルーター",
         "wi-fi 7 ルーター バッファロー",
         "wi-fi 7 ルーター 価格",
         "wi-fi 7 ルーターとは",
-        "wi-fi 7 ルーター おすすめ",
-        "wi fi 7 ルーター 比較"
+        "wi-fi 7 ルーター おすすめ"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -907,135 +713,135 @@
   "zenn_daily_trending": [
     {
       "title": "SQLite 本体にベクトル検索拡張 vec1 がやってきた",
-      "liked_count": 99,
+      "liked_count": 128,
       "comments_count": 0,
       "url": "https://zenn.dev/mattn/articles/6e9996319ac099",
       "published_at": "2026-10-11"
     },
     {
-      "title": "Haiku 5.5 を機に Sonnet 以下で動かしていたサブエージェントを見直した",
-      "liked_count": 60,
-      "comments_count": 1,
-      "url": "https://zenn.dev/genda_jp/articles/haiku-5-5-subagent-roles",
-      "published_at": "2026-10-08"
+      "title": "GitHub Pages の証明書失効で Error 526 になったので Cloudflare Pages へ移行した",
+      "liked_count": 15,
+      "comments_count": 0,
+      "url": "https://zenn.dev/unsoluble_sugar/articles/6a3fd085a60ec6",
+      "published_at": "2026-10-12"
     },
     {
-      "title": "若手エンジニアに必要だと感じた「AIを使う力」",
-      "liked_count": 61,
+      "title": "モバイルアプリ開発でノートPCを持ち歩かなくなった話",
+      "liked_count": 15,
       "comments_count": 0,
-      "url": "https://zenn.dev/muit_techblog/articles/6ea28887c79457",
-      "published_at": "2026-10-08"
+      "url": "https://zenn.dev/yasi/articles/mobile-dev-from-phone-with-claude",
+      "published_at": "2026-10-12"
     },
     {
-      "title": "AIで浮いた時間を「もっと作る」に使っていませんか",
-      "liked_count": 31,
+      "title": "良いテストを書き、良いテストを見分ける ─『単体テストの考え方/使い方』のエッセンス",
+      "liked_count": 32,
       "comments_count": 0,
-      "url": "https://zenn.dev/idealog/articles/a3e9cf4299b1cf",
-      "published_at": "2026-10-09"
+      "url": "https://zenn.dev/nexta_/articles/unit-testing-principles-essence",
+      "published_at": "2026-10-13"
     },
     {
-      "title": "嫌われるデザインの歴史",
-      "liked_count": 449,
+      "title": "Amazon Bedrock の利用料金をユーザーごとに確認するダッシュボードを CUR 2.0 と Amazon Quick で作る",
+      "liked_count": 7,
       "comments_count": 0,
-      "url": "https://zenn.dev/blackmose/articles/de0170a13be930",
-      "published_at": "2026-10-06"
+      "url": "https://zenn.dev/aws_japan/articles/aws-bedrock-cur2-user-cost-dashboard",
+      "published_at": "2026-10-12"
     },
     {
-      "title": "2025 年 10 月から 2026 年 10 月までの Mozc に対する主な変更",
-      "liked_count": 28,
+      "title": "GitLabを月500円で自社運用する 退役PCと「出島サーバ」の構成",
+      "liked_count": 25,
       "comments_count": 0,
-      "url": "https://zenn.dev/komatsuh/articles/komatsuh_mozc_updates_from_2025_10",
-      "published_at": "2026-10-10"
+      "url": "https://zenn.dev/miyanaga/articles/zenn-2026-10-11",
+      "published_at": "2026-10-11"
     },
     {
-      "title": "レビューの口伝を40ルールに棚卸ししてAIレビューに載せた",
-      "liked_count": 43,
+      "title": "LLM-jp-4 の公開CPT・SFTデータを読んでみた",
+      "liked_count": 4,
       "comments_count": 0,
-      "url": "https://zenn.dev/edash_tech_blog/articles/c52409a3d6fa12",
-      "published_at": "2026-10-07"
+      "url": "https://zenn.dev/yukito_lmlab/articles/llmjp4-public-data",
+      "published_at": "2026-10-13"
     },
     {
-      "title": "CSSの`text-box`で文字を上下中央に揃えたい",
-      "liked_count": 57,
+      "title": "Raspberry Pi 4でMCPサーバを構築する(3)",
+      "liked_count": 9,
       "comments_count": 0,
-      "url": "https://zenn.dev/chot/articles/be424332489e7a",
-      "published_at": "2026-10-08"
+      "url": "https://zenn.dev/drbobt1122/articles/blog26101101",
+      "published_at": "2026-10-12"
     },
     {
-      "title": "【速報】Claude の新機能 Claude Motion 早速使ってみた",
-      "liked_count": 36,
+      "title": "話題の逆解析 MCP「REA」を Claude Code に隔離してつないだ——静的解析の A/B 試験と安全設計",
+      "liked_count": 1,
       "comments_count": 0,
-      "url": "https://zenn.dev/branbran/articles/047821d64590f0",
-      "published_at": "2026-10-10"
+      "url": "https://zenn.dev/keigoly/articles/8738d8d241b5a1",
+      "published_at": "2026-10-14"
     },
     {
-      "title": "React習熟度ベンチマークでHaiku 5.5が見せた底力",
-      "liked_count": 14,
+      "title": "見えない原因に、統計学は何を言えるようになったか：交絡の歴史",
+      "liked_count": 0,
       "comments_count": 0,
-      "url": "https://zenn.dev/uhyo/articles/react-profession-bench-20",
-      "published_at": "2026-10-10"
+      "url": "https://zenn.dev/takyas/articles/dd6bef15d2d5f0",
+      "published_at": "2026-10-13"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Passkeys are a trap",
-      "points": 766,
-      "num_comments": 426,
-      "url": "https://nonfunctional.substack.com/p/passkeys-are-a-trap-do-not-use-them"
+      "title": "Gemini 4 Argon",
+      "points": 926,
+      "num_comments": 712,
+      "url": "https://deepmind.google/models/gemini/"
     },
     {
-      "title": "Total Annihilation, rebuilt for modern computers",
-      "points": 574,
-      "num_comments": 219,
-      "url": "https://nanolathe.gg"
+      "title": "11 year old unsoundness bugs found in Rust borrow checker",
+      "points": 657,
+      "num_comments": 366,
+      "url": "https://github.com/rust-lang/rust/issues/164250"
     },
     {
-      "title": "The gap in shared understanding of LLM capability is widening",
-      "points": 530,
-      "num_comments": 778,
-      "url": "https://twitter.com/karpathy/status/2109361546505966046"
+      "title": "Apple HomeView",
+      "points": 638,
+      "num_comments": 760,
+      "url": "https://www.apple.com/apple-homeview/"
     },
     {
-      "title": "Fingerprints are the new cookies",
-      "points": 495,
-      "num_comments": 242,
-      "url": "https://royfish.dev/fingerprints-are-the-new-cookies"
+      "title": "Firefox Enterprise",
+      "points": 619,
+      "num_comments": 256,
+      "url": "https://www.firefox.com/en-US/enterprise/"
     },
     {
-      "title": "Terence Tao: Math 2.0 [pdf]",
-      "points": 439,
-      "num_comments": 450,
-      "url": "https://teorth.github.io/tao-web/slides/math-2-0-caltech-2026.pdf"
+      "title": "Redesigning source control at Anthropic",
+      "points": 485,
+      "num_comments": 484,
+      "url": "https://www.anthropic.com/engineering/redesigning-source-control"
     },
     {
-      "title": "Deloitte falsified documents to evade tax on Abramovich's wealth",
-      "points": 389,
-      "num_comments": 114,
-      "url": "https://www.bbc.com/news/articles/c64g1l5389kvo"
+      "title": "We turned EmbeddingGemma 2 into a speech-to-text model",
+      "points": 382,
+      "num_comments": 85,
+      "url": "https://eg2.haku.sh/"
     },
     {
-      "title": "So, you’d like to sell your print issues of The Onion?",
-      "points": 357,
-      "num_comments": 56,
-      "url": "https://theonion.com/archivehunt/"
+      "title": "Ledger confirms spy chip implant behind wallet crypto thefts",
+      "points": 381,
+      "num_comments": 299,
+      "url": "https://www.bleepingcomputer.com/news/security/ledger-confirms-hardware-wallet-spy-implant-behind-crypto-thefts/"
     },
     {
-      "title": "Cartographers of North Korea (2019)",
-      "points": 289,
-      "num_comments": 57,
-      "url": "https://cartographers-nk.wonyoung.so/"
+      "title": "OpenAI engineer arrested in bugging of executive conference room",
+      "points": 351,
+      "num_comments": 319,
+      "url": "https://sfstandard.com/2026/10/13/openai-engineer-arrested-alleged-bugging-executive-conference-room/"
     },
     {
-      "title": "Will Linux phones become a viable alternative to the Android/iOS duopoly?",
-      "points": 206,
-      "num_comments": 224,
-      "url": "https://amosbbatto.wordpress.com/2026/10/05/linux-phones-alternative/"
+      "title": "Thunderbird for iOS",
+      "points": 317,
+      "num_comments": 131,
+      "url": "https://blog.thunderbird.net/2026/10/thunderbird-for-ios-a-first-look-at-the-native-iphone-email-app-in-development/"
     },
     {
-      "title": "QGIS bans AI assisted contributions",
-      "points": 184,
-      "num_comments": 146,
-      "url": "https://github.com/qgis/QGIS-Enhancement-Proposals/pull/387"
+      "title": "Character.ai has initiated voluntary Chapter 11 bankruptcy",
+      "points": 275,
+      "num_comments": 262,
+      "url": "https://blog.character.ai/an-update-on-character-ai/"
     }
   ]
 }

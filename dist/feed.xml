@@ -9,28 +9,28 @@
     <name>Nodus Research Editorial</name>
   </author>
   <entry>
-    <title>AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証</title>
+    <title>Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証</title>
     <link href="https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html" />
     <id>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
-    <summary>Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化</summary>
+    <summary>Note・Zenn・Qiitaでもまだ体系化されていない「Claude Code / Codex 等のトークン使用量肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化</summary>
   </entry>
   <entry>
-    <title>同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証</title>
+    <title>AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測</title>
     <link href="https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html" />
     <id>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
-    <summary>実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</summary>
+    <summary>AIコードレビューのプロンプト・観点の工夫と、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</summary>
   </entry>
   <entry>
-    <title>100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</title>
+    <title>100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較</title>
     <link href="https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html" />
     <id>https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
     <summary>公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）</summary>
   </entry>
   <entry>
-    <title>AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</title>
+    <title>Claude Code vs Cursor 料金・レート制限比較：Claude Pro / Cursor Pro の実質トークン単価と併用実測</title>
     <link href="https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html" />
     <id>https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
@@ -44,7 +44,7 @@
     <summary>カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）</summary>
   </entry>
   <entry>
-    <title>Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較</title>
+    <title>Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測</title>
     <link href="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html" />
     <id>https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
@@ -58,7 +58,7 @@
     <summary>公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）</summary>
   </entry>
   <entry>
-    <title>ローカルLLM推論（Mac統合メモリ vs RTX 4090/3090）「生成速度 (tok/s)・電力効率 (tok/J)」実測比較</title>
+    <title>ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較</title>
     <link href="https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html" />
     <id>https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html</id>
     <updated>2026-10-12T00:00:00Z</updated>
@@ -79,7 +79,7 @@
     <summary>公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）</summary>
   </entry>
   <entry>
-    <title>1000Wh級ポータブル電源「UPS切替時間 (ms)・AC待機消費電力・実効容量」実測比較データベース</title>
+    <title>1000Whポータブル電源のUPS機能・パススルー比較：Anker・EcoFlowの10ms切替時間と待機消費電力実測</title>
     <link href="https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html" />
     <id>https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html</id>
     <updated>2026-10-12T00:00:00Z</updated>

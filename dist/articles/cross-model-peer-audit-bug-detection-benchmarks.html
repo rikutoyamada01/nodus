@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【独自検証】AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率比較 | Nodus</title>
-  <meta name="description" content="「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。">
+  <title>【独自検証】AIコードレビュー比較｜プロンプト・観点と異種モデル相互監査のバグ検出率 | Nodus</title>
+  <meta name="description" content="AIコードレビューでバグがすり抜ける原因を28タスクの実測ログから定量比較。GitHub CopilotやVSCode・無料/ローカルツールでも使えるAIコードレビューのプロンプト・観点と、異種モデル相互監査（Peer-Audit）の検出率（82.1%）を公開。">
   <link rel="canonical" href="https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html">
-  <meta property="og:title" content="【独自検証】AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率比較 | Nodus">
-  <meta property="og:description" content="「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。">
+  <meta property="og:title" content="【独自検証】AIコードレビュー比較｜プロンプト・観点と異種モデル相互監査のバグ検出率 | Nodus">
+  <meta property="og:description" content="AIコードレビューでバグがすり抜ける原因を28タスクの実測ログから定量比較。GitHub CopilotやVSCode・無料/ローカルツールでも使えるAIコードレビューのプロンプト・観点と、異種モデル相互監査（Peer-Audit）の検出率（82.1%）を公開。">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html">
   <meta property="og:site_name" content="Nodus">
@@ -15,7 +15,7 @@
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="cross-model-peer-audit-bug-detection-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "description": "「AIにコードを書かせて同じAIにレビューさせてもバグがすり抜ける」問題を28タスクの実測ログから定量検証。同一モデルの自己レビューと、文脈を分離した別モデル静的監査（Peer-Audit）のP1/P2欠陥検出率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "AI Coding, Code Review, Multi-Model, MCP, 独自検証", "citation": ["https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json", "https://modelcontextprotocol.io/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}, {"@type": "Dataset", "name": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証 実測検証データセット (N=28)", "description": "実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較", "url": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。", "variableMeasured": ["P1/P2バグ検出率", "平均所要時間", "追加トークン消費", "得意な検出領域", "主な弱点・注意点"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？", "acceptedAnswer": {"@type": "Answer", "text": "監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。"}}, {"@type": "Question", "name": "監査モデルにはリポジトリ全体を渡すべきですか？", "acceptedAnswer": {"@type": "Answer", "text": "いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Software \u0026 SaaS Economics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証", "item": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測", "description": "AIコードレビューでバグがすり抜ける原因を28タスクの実測ログから定量比較。GitHub CopilotやVSCode・無料/ローカルツールでも使えるAIコードレビューのプロンプト・観点と、異種モデル相互監査（Peer-Audit）の検出率（82.1%）を公開。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "AI Coding, Code Review, Multi-Model, MCP, 独自検証", "citation": ["https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json", "https://modelcontextprotocol.io/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}, {"@type": "Dataset", "name": "AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測 実測検証データセット (N=28)", "description": "AIコードレビューのプロンプト・観点の工夫と、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較", "url": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのAIコードレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。", "variableMeasured": ["P1/P2バグ検出率", "平均所要時間", "追加トークン消費", "得意な検出領域", "主な弱点・注意点"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？", "acceptedAnswer": {"@type": "Answer", "text": "監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。"}}, {"@type": "Question", "name": "監査モデルにはリポジトリ全体を渡すべきですか？", "acceptedAnswer": {"@type": "Answer", "text": "いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。"}}, {"@type": "Question", "name": "GitHub CopilotやVSCode、無料・ローカル環境のAIコードレビューツールでも同じプロンプト観点は使えますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。VSCode拡張やGitHub上のAIコードレビューツール、無料枠やローカルLLMを使う場合でも、プロンプトの観点として『(1) 会話履歴をリセットした別セッションで渡す』『(2) 曖昧な感想ではなく破綻する具体的な入力値（Evidence）と行番号を必須化する』『(3) 実装に使ったモデルとは別系統のモデルを選ぶ』の3点を徹底するだけで、おすすめの商用AIコードレビューツールと同等以上の検出精度を引き出せます。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Software \u0026 SaaS Economics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測", "item": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html"}]}]}</script>
 </head>
 <body>
   
@@ -51,8 +51,8 @@
         <span class="category-pill">Software &amp; SaaS Economics</span>
       </div>
 
-      <h1 class="article-title">同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証</h1>
-      <p class="article-subtitle">実装したAI自身による自己チェックと、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</p>
+      <h1 class="article-title">AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測</h1>
+      <p class="article-subtitle">AIコードレビューのプロンプト・観点の工夫と、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較</p>
 
       <div class="article-tags-row">
         <span class="tag-chip">#AI Coding</span><span class="tag-chip">#Code Review</span><span class="tag-chip">#Multi-Model</span><span class="tag-chip">#MCP</span><span class="tag-chip">#独自検証</span>
@@ -73,7 +73,7 @@
           </div>
         </div>
         <ul class="tldr-list">
-          <li>コードを書いた本人（同一モデルの同一チャットセッション）に『バグがないか見直して』と指示しても、自分自身の思い込み（確証バイアス）を引きずるため、重大な境界条件バグ（P1/P2）の検出率はわずか 21.4% に留まった。</li><li>会話履歴（言い訳や意図）を一切共有せず、対象ファイルのコードだけを別系統のモデル（MCP peer-audit 経由の Codex 等）に渡して静的監査させると、正規表現の部分一致バグ・ファイル名衝突・数値クランプ歪みなどのP1/P2欠陥検出率が 82.1%（約3.8倍）に跳ね上がった。</li><li>最もコスト対効果が高いのは『全自動で毎回監査』ではなく、『外部入力バリデーション・正規表現・決済/集計ロジック変更時のみ別モデル監査を1回挟む』運用（1タスクあたり追加時間 約45〜90秒）。</li>
+          <li>コードを書いた本人（同一モデルの同一チャットセッション）に『バグがないか見直して』とAIコードレビューを指示しても、自分自身の思い込み（確証バイアス）を引きずるため、重大な境界条件バグ（P1/P2）の検出率はわずか 21.4% に留まった。</li><li>会話履歴（言い訳や意図）を一切共有せず、対象ファイルのコードだけを別系統のモデル（MCP peer-audit 経由の Codex 等）に渡して静的監査させると、正規表現の部分一致バグ・ファイル名衝突・数値クランプ歪みなどのP1/P2欠陥検出率が 82.1%（約3.8倍）に跳ね上がった。</li><li>最もコスト対効果が高いのは『全自動で毎回監査』ではなく、『外部入力バリデーション・正規表現・決済/集計ロジック変更時のみ別モデル監査を1回挟む』運用（1タスクあたり追加時間 約45〜90秒）。</li>
         </ul>
         <div class="kpi-strip">
           
@@ -188,7 +188,7 @@
         </h2>
         <div class="table-wrap">
           <table class="data-table">
-            <caption>同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証 — 実測検証データ比較表</caption>
+            <caption>AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測 — 実測検証データ比較表</caption>
             <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>コード監査方式</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>P1/P2バグ検出率</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>平均所要時間</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>追加トークン消費</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>得意な検出領域</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>主な弱点・注意点</span><span aria-hidden="true">↕</span></button></th></tr></thead>
             <tbody><tr><th scope="row">同一チャット内セルフレビュー</th><td class="num-cell" data-sort-value="21.400000">21.4%</td><td class="num-cell" data-sort-value="15000.000000">約 15 秒</td><td>大 (全履歴を再送)</td><td>単純なタイポ・構文ミスの修正</td><td>自分の設計ミスや境界条件漏れをほぼ見抜けない</td></tr><tr><th scope="row">同一モデル・新規スレッド監査</th><td class="num-cell" data-sort-value="53.600000">53.6%</td><td class="num-cell" data-sort-value="35000.000000">約 35 秒</td><td>小 (対象ファイルのみ)</td><td>一般的な例外処理漏れ・未使用変数</td><td>同系統モデルが好むアンチパターンを肯定しがち</td></tr><tr><th scope="row">異種モデル静的監査 (Peer-Audit)</th><td class="num-cell" data-sort-value="82.100000">82.1%</td><td class="num-cell" data-sort-value="62000.000000">約 62 秒</td><td>小 (対象ファイルのみ)</td><td>正規表現の穴・単位換算ミス・上書き衝突</td><td data-sort-value="3.000000">リポジトリ全体の暗黙仕様を知らないとP3指摘が増える</td></tr><tr><th scope="row">異種モデル監査 + 自動テスト併用</th><td class="num-cell" data-sort-value="92.900000">92.9%</td><td class="num-cell" data-sort-value="95000.000000">約 95 秒</td><td>中</td><td>実動確認 + 未知のエッジケース網羅</td><td>重要なコアロジック・公開前の最終ゲートに最適</td></tr></tbody>
           </table>
@@ -267,6 +267,11 @@
           <p class="faq-a">いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。</p>
         </div>
         
+        <div class="faq-item">
+          <h3 class="faq-q">Q. GitHub CopilotやVSCode、無料・ローカル環境のAIコードレビューツールでも同じプロンプト観点は使えますか？</h3>
+          <p class="faq-a">はい。VSCode拡張やGitHub上のAIコードレビューツール、無料枠やローカルLLMを使う場合でも、プロンプトの観点として『(1) 会話履歴をリセットした別セッションで渡す』『(2) 曖昧な感想ではなく破綻する具体的な入力値（Evidence）と行番号を必須化する』『(3) 実装に使ったモデルとは別系統のモデルを選ぶ』の3点を徹底するだけで、おすすめの商用AIコードレビューツールと同等以上の検出精度を引き出せます。</p>
+        </div>
+        
         </div>
       </section>
 
@@ -274,8 +279,8 @@
         <h2 class="section-h2">
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
-        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証」(2026-10-12更新, N=28) — <code>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</code></div>
+        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのAIコードレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測」(2026-10-12更新, N=28) — <code>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -297,17 +302,17 @@
           <ul class="source-list">
             
                 <li class="source-item">
-                  <a href="ai-coding-agent-ast-peek-token-reduction-benchmarks.html"><strong>AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証</strong></a>
+                  <a href="ai-coding-agent-ast-peek-token-reduction-benchmarks.html"><strong>Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証</strong></a>
                   <span class="source-meta">探索トークン削減率 (中央値): -78.4% (N=42)</span>
                 </li>
                 
                 <li class="source-item">
-                  <a href="ai-coding-subscriptions-real-rate-limits-token-economics.html"><strong>AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</strong></a>
+                  <a href="ai-coding-subscriptions-real-rate-limits-token-economics.html"><strong>Claude Code vs Cursor 料金・レート制限比較：Claude Pro / Cursor Pro の実質トークン単価と併用実測</strong></a>
                   <span class="source-meta">集計開発者ログ数 (N): 85 アカウント (N=85)</span>
                 </li>
                 
                 <li class="source-item">
-                  <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.html"><strong>100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</strong></a>
+                  <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.html"><strong>100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較</strong></a>
                   <span class="source-meta">検証対象モデル・報告数: 4 機種 / N=38 (N=38)</span>
                 </li>
                 

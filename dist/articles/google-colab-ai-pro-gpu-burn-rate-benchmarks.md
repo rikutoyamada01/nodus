@@ -1,4 +1,4 @@
-# Google Colab (AI Pro 200 CU) GPU消費レート実測値とVRAM別コスパ比較
+# Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測
 
 > 公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点
 

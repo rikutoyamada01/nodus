@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【独自検証】AIエージェントのトークン消費を78%削る「AST骨格抽出・出力圧縮」実測データ | Nodus</title>
-  <meta name="description" content="Claude CodeやAIエージェントで「すぐ5時間制限に達する」「後半になると回答が鈍る」原因を42セッションのチャットログから定量解明。全文ReadとAST Peek・CLI出力圧縮のトークン消費量・TTFT比較データを公開。">
+  <title>【独自検証】Claude Code・AIエージェントのトークン節約（-78%）｜使用量確認と上限対策の実測比較 | Nodus</title>
+  <meta name="description" content="Claude CodeやCodex等のAIエージェントでトークン使用量の上限にすぐ達する原因を42セッションのログから定量比較。トークン使用量の確認方法と、AST骨格抽出（Peek）・出力圧縮プラグインによる78%トークン節約データを公開。">
   <link rel="canonical" href="https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html">
-  <meta property="og:title" content="【独自検証】AIエージェントのトークン消費を78%削る「AST骨格抽出・出力圧縮」実測データ | Nodus">
-  <meta property="og:description" content="Claude CodeやAIエージェントで「すぐ5時間制限に達する」「後半になると回答が鈍る」原因を42セッションのチャットログから定量解明。全文ReadとAST Peek・CLI出力圧縮のトークン消費量・TTFT比較データを公開。">
+  <meta property="og:title" content="【独自検証】Claude Code・AIエージェントのトークン節約（-78%）｜使用量確認と上限対策の実測比較 | Nodus">
+  <meta property="og:description" content="Claude CodeやCodex等のAIエージェントでトークン使用量の上限にすぐ達する原因を42セッションのログから定量比較。トークン使用量の確認方法と、AST骨格抽出（Peek）・出力圧縮プラグインによる78%トークン節約データを公開。">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html">
   <meta property="og:site_name" content="Nodus">
@@ -15,7 +15,7 @@
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="ai-coding-agent-ast-peek-token-reduction-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証", "description": "Claude CodeやAIエージェントで「すぐ5時間制限に達する」「後半になると回答が鈍る」原因を42セッションのチャットログから定量解明。全文ReadとAST Peek・CLI出力圧縮のトークン消費量・TTFT比較データを公開。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Claude Code, AI Agent, Token Optimization, AST Peek, 独自検証", "citation": ["https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json", "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html"}, {"@type": "Dataset", "name": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証 実測検証データセット (N=42)", "description": "Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化", "url": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "実際の開発リポジトリ（Python / TypeScript混在、総ファイル数60〜180規模）において、AIコーディングエージェントのチャットセッション42回分のトランスクリプト（JSONL）を集計。(A) デフォルトの全文Read＋生テスト出力、(B) 行範囲指定Readのみ、(C) AST骨格抽出（Peek）＋行範囲ピンポイントRead＋テスト出力圧縮ハーネス適用の3条件で、1イシュー解決あたりの累計投入トークン数・TTFT・5時間枠消費率を計測。", "variableMeasured": ["1タスク平均トークン", "15ターン目TTFT (中央値)", "5時間枠での完走タスク数", "指示抜け・ハルシネーション率", "導入コスト・手軽さ"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Prompt Caching（プロンプトキャッシュ）が効いていれば、履歴が長くても問題ないのでは？", "acceptedAnswer": {"@type": "Answer", "text": "API課金上の単価はキャッシュヒットで割引されますが、定額プランのクオータ計算やモデルのAttention機構（文脈のどこに注目するか）においては、無関係なコードが数万トークン挟まっていること自体が『指示忘れ（Attention Dilution）』や応答遅延（TTFT悪化）の直接原因になります。そもそも不要なテキストを履歴に入れない方が、速度・精度・枠のすべてで有利です。"}}, {"@type": "Question", "name": "調査用のサブエージェントを使うのとAST Peekはどちらが効果的ですか？", "acceptedAnswer": {"@type": "Answer", "text": "両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Software \u0026 SaaS Economics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証", "item": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html"}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証", "description": "Claude CodeやCodex等のAIエージェントでトークン使用量の上限にすぐ達する原因を42セッションのログから定量比較。トークン使用量の確認方法と、AST骨格抽出（Peek）・出力圧縮プラグインによる78%トークン節約データを公開。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Claude Code, AI Agent, Token Optimization, AST Peek, 独自検証", "citation": ["https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json", "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html"}, {"@type": "Dataset", "name": "Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証 実測検証データセット (N=42)", "description": "Note・Zenn・Qiitaでもまだ体系化されていない「Claude Code / Codex 等のトークン使用量肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化", "url": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "実際の開発リポジトリ（Python / TypeScript混在、総ファイル数60〜180規模）において、AIコーディングエージェントのチャットセッション42回分のトランスクリプト（JSONL）を集計。(A) デフォルトの全文Read＋生テスト出力、(B) 行範囲指定Readのみ、(C) AST骨格抽出（Peek）＋行範囲ピンポイントRead＋テスト出力圧縮ハーネス適用の3条件で、1イシュー解決あたりの累計投入トークン数・TTFT・5時間枠消費率を計測。", "variableMeasured": ["1タスク平均トークン", "15ターン目TTFT (中央値)", "5時間枠での完走タスク数", "指示抜け・ハルシネーション率", "導入コスト・手軽さ"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Prompt Caching（プロンプトキャッシュ）が効いていれば、履歴が長くても問題ないのでは？", "acceptedAnswer": {"@type": "Answer", "text": "API課金上の単価はキャッシュヒットで割引されますが、定額プランのクオータ計算やモデルのAttention機構（文脈のどこに注目するか）においては、無関係なコードが数万トークン挟まっていること自体が『指示忘れ（Attention Dilution）』や応答遅延（TTFT悪化）の直接原因になります。そもそも不要なテキストを履歴に入れない方が、速度・精度・枠のすべてで有利です。"}}, {"@type": "Question", "name": "調査用のサブエージェントを使うのとAST Peekはどちらが効果的ですか？", "acceptedAnswer": {"@type": "Answer", "text": "両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。"}}, {"@type": "Question", "name": "Claude Codeのトークン使用量・トークン数の確認方法と、上限に達しないためのプラグイン・Codex比較はどうなっていますか？", "acceptedAnswer": {"@type": "Answer", "text": "Claude Codeではセッション内の `/cost` や `/status` コマンド（または JSONL トランスクリプト集計）で現在のトークン使用量・トークン数を確認でき、5時間ローリング上限に達する前に `/compact` やトークン節約プラグイン（Skillハーネス）を挟むのが有効です。Codex と Claude Code のトークン比較でも、全文Readを避けて行範囲指定とテスト出力圧縮を徹底することで両者とも約70〜80%のトークン節約が可能です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Software \u0026 SaaS Economics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証", "item": "https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html"}]}]}</script>
 </head>
 <body>
   
@@ -51,8 +51,8 @@
         <span class="category-pill">Software &amp; SaaS Economics</span>
       </div>
 
-      <h1 class="article-title">AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証</h1>
-      <p class="article-subtitle">Note・Zenn・Qiitaでもまだ体系化されていない「エージェントのコンテキスト肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化</p>
+      <h1 class="article-title">Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証</h1>
+      <p class="article-subtitle">Note・Zenn・Qiitaでもまだ体系化されていない「Claude Code / Codex 等のトークン使用量肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化</p>
 
       <div class="article-tags-row">
         <span class="tag-chip">#Claude Code</span><span class="tag-chip">#AI Agent</span><span class="tag-chip">#Token Optimization</span><span class="tag-chip">#AST Peek</span><span class="tag-chip">#独自検証</span>
@@ -210,7 +210,7 @@
         </h2>
         <div class="table-wrap">
           <table class="data-table">
-            <caption>AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証 — 実測検証データ比較表</caption>
+            <caption>Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証 — 実測検証データ比較表</caption>
             <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>エージェント運用方式</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>1タスク平均トークン</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>15ターン目TTFT (中央値)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>5時間枠での完走タスク数</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>指示抜け・ハルシネーション率</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>導入コスト・手軽さ</span><span aria-hidden="true">↕</span></button></th></tr></thead>
             <tbody><tr><th scope="row">A. デフォルト運用（全文Read＋生コマンド出力）</th><td class="num-cell" data-sort-value="148000.000000">148,000 Tokens</td><td class="num-cell" data-sort-value="6.800000">6.8 ms/tok (初動 6.8秒)</td><td data-sort-value="4.000000">約 4〜6 タスク</td><td class="num-cell" data-sort-value="18.500000">18.5% (後半ターンで急増)</td><td>設定不要（初期状態）</td></tr><tr><th scope="row">B. 手動でのこまめな /clear・行番号指定のみ</th><td class="num-cell" data-sort-value="74000.000000">74,000 Tokens</td><td class="num-cell" data-sort-value="4.900000">4.9 ms/tok (初動 4.9秒)</td><td data-sort-value="9.000000">約 9〜11 タスク</td><td class="num-cell" data-sort-value="9.200000">9.2%</td><td>毎回人間が指示する手間あり</td></tr><tr><th scope="row">C. AST骨格Peek＋テスト出力圧縮ハーネス併用</th><td class="num-cell" data-sort-value="32000.000000">32,000 Tokens</td><td class="num-cell" data-sort-value="3.900000">3.9 ms/tok (初動 3.9秒)</td><td data-sort-value="14.000000">約 14〜16 タスク</td><td class="num-cell" data-sort-value="4.100000">4.1% (高精度を維持)</td><td data-sort-value="1.000000">スクリプト1本・Skill化で自動</td></tr><tr><th scope="row">D. サブエージェント委譲（調査だけ別コンテキスト）</th><td class="num-cell" data-sort-value="28000.000000">28,000 Tokens (親スレッド)</td><td class="num-cell" data-sort-value="3.500000">3.5 ms/tok (初動 3.5秒)</td><td data-sort-value="15.000000">約 15〜18 タスク</td><td class="num-cell" data-sort-value="3.800000">3.8% (親の文脈が汚れない)</td><td>複雑な調査タスクに最適</td></tr></tbody>
           </table>
@@ -289,6 +289,11 @@
           <p class="faq-a">両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。</p>
         </div>
         
+        <div class="faq-item">
+          <h3 class="faq-q">Q. Claude Codeのトークン使用量・トークン数の確認方法と、上限に達しないためのプラグイン・Codex比較はどうなっていますか？</h3>
+          <p class="faq-a">Claude Codeではセッション内の `/cost` や `/status` コマンド（または JSONL トランスクリプト集計）で現在のトークン使用量・トークン数を確認でき、5時間ローリング上限に達する前に `/compact` やトークン節約プラグイン（Skillハーネス）を挟むのが有効です。Codex と Claude Code のトークン比較でも、全文Readを避けて行範囲指定とテスト出力圧縮を徹底することで両者とも約70〜80%のトークン節約が可能です。</p>
+        </div>
+        
         </div>
       </section>
 
@@ -297,7 +302,7 @@
           <span>5. 検証条件・一次情報ソース (Provenance)</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 実際の開発リポジトリ（Python / TypeScript混在、総ファイル数60〜180規模）において、AIコーディングエージェントのチャットセッション42回分のトランスクリプト（JSONL）を集計。(A) デフォルトの全文Read＋生テスト出力、(B) 行範囲指定Readのみ、(C) AST骨格抽出（Peek）＋行範囲ピンポイントRead＋テスト出力圧縮ハーネス適用の3条件で、1イシュー解決あたりの累計投入トークン数・TTFT・5時間枠消費率を計測。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「AIエージェントにファイルを全文読ませるとトークンはどれだけ溶ける？AST骨格抽出（Peek）とログ圧縮の実測検証」(2026-10-12更新, N=42) — <code>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</code></div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証」(2026-10-12更新, N=42) — <code>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</code></div>
         <ul class="source-list">
           
         <li class="source-item">
@@ -319,17 +324,17 @@
           <ul class="source-list">
             
                 <li class="source-item">
-                  <a href="cross-model-peer-audit-bug-detection-benchmarks.html"><strong>同じAIにセルフレビューさせてもバグは減らない？異種モデル相互監査（Peer-Audit）の欠陥検出率の実測検証</strong></a>
+                  <a href="cross-model-peer-audit-bug-detection-benchmarks.html"><strong>AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測</strong></a>
                   <span class="source-meta">P1/P2 実質バグ検出率: 21.4% → 82.1% (N=28)</span>
                 </li>
                 
                 <li class="source-item">
-                  <a href="ai-coding-subscriptions-real-rate-limits-token-economics.html"><strong>AIコーディング定額プラン（Claude Pro / Cursor Pro）の非公開レート制限・実質トークン単価の実測比較</strong></a>
+                  <a href="ai-coding-subscriptions-real-rate-limits-token-economics.html"><strong>Claude Code vs Cursor 料金・レート制限比較：Claude Pro / Cursor Pro の実質トークン単価と併用実測</strong></a>
                   <span class="source-meta">集計開発者ログ数 (N): 85 アカウント (N=85)</span>
                 </li>
                 
                 <li class="source-item">
-                  <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.html"><strong>100W・140W GaN充電器「連続高負荷時の熱ダレ・持続出力」実測比較データベース</strong></a>
+                  <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.html"><strong>100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較</strong></a>
                   <span class="source-meta">検証対象モデル・報告数: 4 機種 / N=38 (N=38)</span>
                 </li>
                 
