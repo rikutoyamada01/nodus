@@ -2253,6 +2253,7 @@ def render_about_page(config: dict[str, Any]) -> str:
         </p>
       </div>
       <div class="prose-section" id="contact">
+        <h3>アクセス解析</h3><p>ページ閲覧と表示性能の統計にCloudflare Web Analyticsを利用します。<a href="https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/" target="_blank" rel="noopener noreferrer">計測の仕組み</a>はCloudflareの公式説明をご覧ください。</p>
         <h3>5. 免責事項・訂正ポリシーおよび運営主体情報</h3>
         <p>
           掲載されている実測統計は特定環境下における観測値であり、すべての個体や最新アップデート後の環境で同一の結果を保証するものではありません。製品購入やサービス契約の最終判断は、各メーカーの最新公式仕様をご確認の上、ご自身の責任において行ってください。<br><br>
@@ -2332,7 +2333,7 @@ def build_cloudflare_headers() -> str:
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 /datasets/*.csv
   Content-Type: text/csv; charset=utf-8

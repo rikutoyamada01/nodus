@@ -285,7 +285,7 @@ def is_fresh_live_snapshot(data: dict[str, Any], expected_property: str) -> bool
     return 0 <= age_days <= MAX_LIVE_SNAPSHOT_AGE_DAYS
 
 
-def load_telemetry(config: dict[str, Any]) -> tuple[dict[str, Any], bool, str]:
+def load_telemetry(config: dict[str, Any], allow_sample: bool = False) -> tuple[dict[str, Any], bool, str]:
     """Return `(telemetry_dict, is_verified_fresh_live_data, access_token)`."""
     prop_url = config["seo_loop"]["gsc_property_url"]
     access_token = ""
@@ -303,12 +303,12 @@ def load_telemetry(config: dict[str, Any]) -> tuple[dict[str, Any], bool, str]:
         data["source_mode"] = "STALE_LIVE_GSC_CACHE"
         return data, False, ""
 
-    if SAMPLE_GSC_PATH.exists():
+    if allow_sample and SAMPLE_GSC_PATH.exists():
         sample = load_json(SAMPLE_GSC_PATH)
         sample["source_mode"] = "SAMPLE_TELEMETRY"
         return sample, False, ""
 
-    return {"source_mode": "EMPTY", "pages": {}}, False, ""
+    return {"source_mode": "GSC_NOT_CONFIGURED", "message": "Configure GSC OAuth credentials. Samples require --allow-sample.", "pages": {}}, False, ""
 
 
 def strip_generated_prefixes(text: str) -> str:
@@ -842,7 +842,7 @@ def run_seo_loop(apply_changes: bool = False, allow_sample: bool = False) -> dic
     site_name = config["site"]["name"]
     prop_url = rules.get("gsc_property_url", "")
 
-    telemetry, is_live, access_token = load_telemetry(config)
+    telemetry, is_live, access_token = load_telemetry(config, allow_sample=allow_sample)
     source_mode = telemetry.get("source_mode", "UNKNOWN")
 
     if apply_changes and not is_live and not allow_sample:
@@ -1038,4 +1038,6 @@ if __name__ == "__main__":
         help="Allow running against local sample telemetry (for CI dry-run verification)",
     )
     args = parser.parse_args()
-    run_seo_loop(apply_changes=args.apply, allow_sample=args.allow_sample)
+    result = run_seo_loop(apply_changes=args.apply, allow_sample=args.allow_sample)
+    if result.get("status") == "blocked_non_live_telemetry":
+        sys.exit(2)
