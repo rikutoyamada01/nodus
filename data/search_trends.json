@@ -1,855 +1,463 @@
 {
-  "generated_at": "2026-10-14T23:42:04.613026",
+  "generated_at": "2026-10-15T23:33:09.566262",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
-      "seed": "GaN 充電器 100W",
+      "seed": "USB-C 充電器 100W 140W 比較",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
+      "seed": "AIエージェント トークン 節約",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8
+        "metric_cost_spec": 1
       },
-      "total_suggestions": 8,
+      "total_suggestions": 1,
       "top_suggestions": [
-        "gan 充電器 100w",
-        "gan 充電器 100w 推薦",
-        "anker prime 100w gan 充電器",
-        "anker 100w gan 充電器",
-        "ugreen nexode 100w gan 充電器",
-        "verbatim 100w gan 充電器",
-        "100w gan 充電器 (mgan100-4)",
-        "asus 100w gan 充電器"
+        "aiエージェント トークン 節約"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
-          "query": "gan 充電器 100w 推薦",
+          "query": "aiエージェント トークン 節約",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "推薦"
-          ]
-        },
-        {
-          "query": "verbatim 100w gan 充電器",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "verbatim"
-          ]
-        },
-        {
-          "query": "100w gan 充電器 (mgan100-4)",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mgan100-4"
-          ]
-        },
-        {
-          "query": "asus 100w gan 充電器",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "asus"
-          ]
-        }
-      ]
-    },
-    {
-      "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
-      "seed": "Claude Code トークン",
-      "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 10
-      },
-      "total_suggestions": 10,
-      "top_suggestions": [
-        "claude code トークン節約",
-        "claude code トークン",
-        "claude code トークン使用量 確認",
-        "claude code トークン使用量",
-        "claude code トークン 上限",
-        "claude code トークン数 確認",
-        "claude code トークン数",
-        "claude code トークン節約 プラグ イン",
-        "claude code トークン 料金",
-        "claude code トークン pro"
-      ],
-      "title_optimization_opportunities": [
-        {
-          "query": "claude code トークン数 確認",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "数"
-          ]
-        },
-        {
-          "query": "claude code トークン数",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "数"
-          ]
-        },
-        {
-          "query": "claude code トークン節約 プラグ イン",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "プラグ",
-            "イン"
-          ]
-        },
-        {
-          "query": "claude code トークン pro",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "pro"
-          ]
-        }
-      ],
-      "uncovered_content_gaps": [
-        {
-          "query": "claude code トークン 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
+            "節約"
           ]
         }
       ]
     },
     {
       "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-      "seed": "Claude Code Cursor",
+      "seed": "AIコーディング サブスク API 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 5,
-        "comparison": 5
-      },
-      "total_suggestions": 10,
-      "top_suggestions": [
-        "claude code cursor",
-        "claude code cursor 比較",
-        "claude code cursor 連携",
-        "claude code cursor 違い",
-        "claude code cursor 併用",
-        "claude code cursor vscode",
-        "claude code cursor どっち",
-        "claude code cursorで使う",
-        "claude code cursor codex 比較",
-        "claude code cursor 料金"
-      ],
-      "title_optimization_opportunities": [
-        {
-          "query": "claude code cursorで使う",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "使"
-          ]
-        }
-      ],
-      "uncovered_content_gaps": [
-        {
-          "query": "claude code cursor 連携",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "連携"
-          ]
-        },
-        {
-          "query": "claude code cursor 違い",
-          "intent": "comparison",
-          "missing_in_body": [
-            "違"
-          ]
-        },
-        {
-          "query": "claude code cursor vscode",
-          "intent": "comparison",
-          "missing_in_body": [
-            "vscode"
-          ]
-        },
-        {
-          "query": "claude code cursor codex 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "codex"
-          ]
-        }
-      ]
-    },
-    {
-      "slug": "cross-model-peer-audit-bug-detection-benchmarks",
-      "seed": "AI コードレビュー",
-      "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 8,
-        "comparison": 2
-      },
-      "total_suggestions": 10,
-      "top_suggestions": [
-        "ai コードレビュー",
-        "ai コードレビュー プロンプト",
-        "ai コードレビュー 観点",
-        "ai コードレビュー 無料",
-        "ai コードレビュー ツール",
-        "ai コードレビュー おすすめ",
-        "ai コードレビュー github",
-        "ai コードレビュー 比較",
-        "ai コードレビュー ローカル",
-        "ai コードレビュー github copilot"
-      ],
-      "title_optimization_opportunities": [
-        {
-          "query": "ai コードレビュー 無料",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "無料"
-          ]
-        },
-        {
-          "query": "ai コードレビュー ツール",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ツール"
-          ]
-        },
-        {
-          "query": "ai コードレビュー github",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "github"
-          ]
-        },
-        {
-          "query": "ai コードレビュー ローカル",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ローカル"
-          ]
-        },
-        {
-          "query": "ai コードレビュー github copilot",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "github",
-            "copilot"
-          ]
-        }
-      ],
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": []
     },
     {
-      "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
-      "seed": "USB4 外付けSSD",
-      "dominant_market_intent": "metric_cost_spec",
+      "slug": "cross-model-peer-audit-bug-detection-benchmarks",
+      "seed": "AI コードレビュー 比較",
+      "dominant_market_intent": "comparison",
       "intent_distribution": {
-        "metric_cost_spec": 4
+        "comparison": 1
       },
-      "total_suggestions": 4,
+      "total_suggestions": 1,
       "top_suggestions": [
-        "usb4 外付けssd",
-        "usb4 外付けssdケース",
-        "外付けssd 2tb usb4",
-        "外付けssd 1tb usb4"
+        "ai コードレビュー 比較"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": [
+        {
+          "query": "ai コードレビュー 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "比較"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "diy-or-ready-made-total-cost",
+      "seed": "自作 既製品 コスパ",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "esp32-c3-s3-c6-which-board-to-choose",
+      "seed": "ESP32 比較",
+      "dominant_market_intent": "comparison",
+      "intent_distribution": {
+        "comparison": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "esp32 比較",
+        "esp32 比較表",
+        "esp8266 esp32 比較",
+        "stm32 esp32 比較",
+        "rp2040 esp32 比較",
+        "rp2350 esp32 比較",
+        "ラズパイ pico esp32 比較",
+        "xiao esp32 比較",
+        "pico esp32 比較",
+        "arduino esp32 比較"
       ],
       "title_optimization_opportunities": [
         {
-          "query": "usb4 外付けssdケース",
-          "intent": "metric_cost_spec",
+          "query": "esp32 比較",
+          "intent": "comparison",
           "missing_in_title": [
-            "ケース"
-          ]
-        },
-        {
-          "query": "外付けssd 2tb usb4",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "2tb"
+            "比較"
           ]
         }
       ],
       "uncovered_content_gaps": [
         {
-          "query": "外付けssd 1tb usb4",
-          "intent": "metric_cost_spec",
+          "query": "esp32 比較表",
+          "intent": "comparison",
           "missing_in_body": [
-            "1tb"
+            "表"
+          ]
+        },
+        {
+          "query": "esp8266 esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "esp8266"
+          ]
+        },
+        {
+          "query": "stm32 esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "stm32"
+          ]
+        },
+        {
+          "query": "rp2040 esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "rp2040"
+          ]
+        },
+        {
+          "query": "rp2350 esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "rp2350"
+          ]
+        },
+        {
+          "query": "ラズパイ pico esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "ラズパイ",
+            "pico"
+          ]
+        },
+        {
+          "query": "xiao esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "xiao"
+          ]
+        },
+        {
+          "query": "pico esp32 比較",
+          "intent": "comparison",
+          "missing_in_body": [
+            "pico"
           ]
         }
       ]
+    },
+    {
+      "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
+      "seed": "外付けSSD 自作 完成品 比較",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "gemini-4-argon-google-ai-pro-ultra",
+      "seed": "Gemini 4 Argon Pro Ultra 違い",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
     },
     {
       "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
-      "seed": "Google Colab GPU",
+      "seed": "Colab GPU CU 何時間",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 9,
-        "question_troubleshoot": 1
-      },
-      "total_suggestions": 10,
-      "top_suggestions": [
-        "google colab gpu",
-        "google colab gpu 料金",
-        "google colab gpu 無料枠",
-        "google colab gpu 制限",
-        "google colab gpuガチャ",
-        "google colab gpu スペック",
-        "google colab gpu 種類",
-        "google colab gpu 無料",
-        "google colab gpu 使い方",
-        "google colab gpu 性能"
-      ],
-      "title_optimization_opportunities": [
-        {
-          "query": "google colab gpu 使い方",
-          "intent": "question_troubleshoot",
-          "missing_in_title": [
-            "使",
-            "方"
-          ]
-        }
-      ],
-      "uncovered_content_gaps": [
-        {
-          "query": "google colab gpu 無料枠",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "無料"
-          ]
-        },
-        {
-          "query": "google colab gpuガチャ",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ガチャ"
-          ]
-        },
-        {
-          "query": "google colab gpu スペック",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "スペック"
-          ]
-        },
-        {
-          "query": "google colab gpu 種類",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "種類"
-          ]
-        },
-        {
-          "query": "google colab gpu 無料",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "無料"
-          ]
-        },
-        {
-          "query": "google colab gpu 性能",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "性能"
-          ]
-        }
-      ]
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
     },
     {
       "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
-      "seed": "LLM API",
+      "seed": "LLM API 速度 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 7,
-        "comparison": 2,
-        "question_troubleshoot": 1
-      },
-      "total_suggestions": 10,
-      "top_suggestions": [
-        "llm api",
-        "llm api 無料",
-        "llm api 料金 比較",
-        "llm apiとは",
-        "llm api 料金",
-        "llm api 無料枠",
-        "llm api 定額",
-        "llm api コスパ",
-        "llm apiキー",
-        "llm api 比較"
-      ],
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "llm api 無料",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "無料"
-          ]
-        },
-        {
-          "query": "llm api 料金 比較",
-          "intent": "comparison",
-          "missing_in_body": [
-            "料金"
-          ]
-        },
-        {
-          "query": "llm api 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
-          ]
-        },
-        {
-          "query": "llm api 無料枠",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "無料",
-            "枠"
-          ]
-        },
-        {
-          "query": "llm api 定額",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "定額"
-          ]
-        },
-        {
-          "query": "llm api コスパ",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "コスパ"
-          ]
-        },
-        {
-          "query": "llm apiキー",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "キー"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "seed": "ローカルLLM Mac",
+      "seed": "Mac ローカルLLM",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
         "metric_cost_spec": 8,
-        "comparison": 2
+        "comparison": 1
       },
-      "total_suggestions": 10,
+      "total_suggestions": 9,
       "top_suggestions": [
-        "ローカルllm mac",
-        "ローカルllm mac mini",
-        "ローカルllm macbook air",
-        "ローカルllm mac studio",
-        "ローカルllm mac スペック",
-        "ローカルllm macbook pro",
-        "ローカルllm macbook",
-        "ローカルllm mac windows",
-        "ローカルllm mac おすすめ",
-        "ローカルllm mac windows どっち"
+        "mac ローカルllm",
+        "mac ローカルllm おすすめ",
+        "mac ローカルllm 画像生成",
+        "mac ローカルllm メモリ",
+        "mac ローカルllm スペック",
+        "mac ローカルllm ollama",
+        "mac ローカルllm mlx",
+        "mac ローカルllm 構築",
+        "mac ローカルllm コーディング"
       ],
-      "title_optimization_opportunities": [],
+      "title_optimization_opportunities": [
+        {
+          "query": "mac ローカルllm ollama",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ollama"
+          ]
+        }
+      ],
       "uncovered_content_gaps": [
         {
-          "query": "ローカルllm mac mini",
+          "query": "mac ローカルllm 画像生成",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "mini"
+            "画像生成"
           ]
         },
         {
-          "query": "ローカルllm macbook air",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "air"
-          ]
-        },
-        {
-          "query": "ローカルllm mac スペック",
+          "query": "mac ローカルllm スペック",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "スペック"
           ]
         },
         {
-          "query": "ローカルllm mac windows",
+          "query": "mac ローカルllm mlx",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "windows"
+            "mlx"
           ]
         },
         {
-          "query": "ローカルllm mac windows どっち",
-          "intent": "comparison",
+          "query": "mac ローカルllm 構築",
+          "intent": "metric_cost_spec",
           "missing_in_body": [
-            "windows"
+            "構築"
+          ]
+        },
+        {
+          "query": "mac ローカルllm コーディング",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "コーディング"
           ]
         }
       ]
     },
     {
       "slug": "mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests",
-      "seed": "ラピッドトリガー キーボード",
+      "seed": "磁気式 キーボード 必要",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 9,
-        "comparison": 1
-      },
-      "total_suggestions": 10,
-      "top_suggestions": [
-        "ラピッドトリガー キーボード",
-        "ラピッドトリガー キーボード おすすめ",
-        "ラピッドトリガー キーボード 安い",
-        "ラピッドトリガー キーボード 無線",
-        "ラピッドトリガー キーボード tier",
-        "ラピッドトリガー キーボード 設定",
-        "ラピッドトリガー キーボード 日本語配列",
-        "ラピッドトリガー キーボード 白",
-        "ラピッドトリガー キーボード valorant",
-        "ラピッドトリガー キーボード テンキー付き"
-      ],
-      "title_optimization_opportunities": [
-        {
-          "query": "ラピッドトリガー キーボード 安い",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "安"
-          ]
-        },
-        {
-          "query": "ラピッドトリガー キーボード 設定",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "設定"
-          ]
-        },
-        {
-          "query": "ラピッドトリガー キーボード valorant",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "valorant"
-          ]
-        }
-      ],
-      "uncovered_content_gaps": [
-        {
-          "query": "ラピッドトリガー キーボード 無線",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "無線"
-          ]
-        },
-        {
-          "query": "ラピッドトリガー キーボード tier",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "tier"
-          ]
-        },
-        {
-          "query": "ラピッドトリガー キーボード 日本語配列",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "日本語配列"
-          ]
-        },
-        {
-          "query": "ラピッドトリガー キーボード 白",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "白"
-          ]
-        },
-        {
-          "query": "ラピッドトリガー キーボード テンキー付き",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "テンキー",
-            "付"
-          ]
-        }
-      ]
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
     },
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-      "seed": "ミニPC Ryzen",
+      "seed": "自宅サーバー ミニPC 選び方",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 7,
-        "comparison": 2
-      },
-      "total_suggestions": 9,
-      "top_suggestions": [
-        "ミニpc ryzen",
-        "ミニpc ryzen7",
-        "ミニpc ryzen5",
-        "ミニpc ryzen9",
-        "ミニpc ryzen ai",
-        "ミニpc ryzen 中古",
-        "ミニpc ryzen7 32gb",
-        "ミニpc ryzen おすすめ",
-        "ミニpc ryzen 比較"
-      ],
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "ミニpc ryzen7",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ryzen7"
-          ]
-        },
-        {
-          "query": "ミニpc ryzen5",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ryzen5"
-          ]
-        },
-        {
-          "query": "ミニpc ryzen9",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ryzen9"
-          ]
-        },
-        {
-          "query": "ミニpc ryzen 中古",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "中古"
-          ]
-        },
-        {
-          "query": "ミニpc ryzen7 32gb",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ryzen7",
-            "32gb"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "seed": "パーソナルAI VPS 自宅サーバー",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
     },
     {
       "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
-      "seed": "ポータブル電源 UPS",
+      "seed": "ポータブル電源 UPS 代わり",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
-        "comparison": 2
+        "metric_cost_spec": 1
       },
-      "total_suggestions": 10,
+      "total_suggestions": 1,
       "top_suggestions": [
-        "ポータブル電源 ups",
-        "ポータブル電源 ups代わり",
-        "ポータブル電源 ups機能付き",
-        "ポータブル電源 ups機能",
-        "ポータブル電源 ups パススルー",
-        "ポータブル電源 ups 違い",
-        "ポータブル電源 ups おすすめ",
-        "ポータブル電源 ups anker",
-        "ポータブル電源 ups 10ms",
-        "ポータブル電源 ups パソコン"
+        "ポータブル電源 ups 代わり"
       ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "ポータブル電源 ups代わり",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "代"
-          ]
-        },
-        {
-          "query": "ポータブル電源 ups機能付き",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "機能付"
-          ]
-        },
-        {
-          "query": "ポータブル電源 ups 違い",
-          "intent": "comparison",
-          "missing_in_body": [
-            "違"
-          ]
-        },
-        {
-          "query": "ポータブル電源 ups パソコン",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "パソコン"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     },
     {
       "slug": "wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation",
-      "seed": "Wi-Fi 7 ルーター",
+      "seed": "Wi-Fi 7 買い替え 必要",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 3,
-        "question_troubleshoot": 1,
-        "comparison": 1
-      },
-      "total_suggestions": 5,
-      "top_suggestions": [
-        "wi-fi 7 ルーター",
-        "wi-fi 7 ルーター バッファロー",
-        "wi-fi 7 ルーター 価格",
-        "wi-fi 7 ルーターとは",
-        "wi-fi 7 ルーター おすすめ"
-      ],
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "wi-fi 7 ルーター バッファロー",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "バッファロー"
-          ]
-        },
-        {
-          "query": "wi-fi 7 ルーター 価格",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "価格"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     }
   ],
   "zenn_daily_trending": [
     {
       "title": "良いテストを書き、良いテストを見分ける ─『単体テストの考え方/使い方』のエッセンス",
-      "liked_count": 70,
+      "liked_count": 109,
       "comments_count": 0,
       "url": "https://zenn.dev/nexta_/articles/unit-testing-principles-essence",
       "published_at": "2026-10-13"
     },
     {
-      "title": "SQLite 本体にベクトル検索拡張 vec1 がやってきた",
-      "liked_count": 137,
-      "comments_count": 0,
-      "url": "https://zenn.dev/mattn/articles/6e9996319ac099",
-      "published_at": "2026-10-11"
+      "title": "改めて考える、AIエンジニアリングの今",
+      "liked_count": 31,
+      "comments_count": 1,
+      "url": "https://zenn.dev/r_kaga/articles/2fd185c50cea7c",
+      "published_at": "2026-10-15"
     },
     {
-      "title": "話題の逆解析 MCP「REA」を Claude Code に隔離してつないだ——静的解析の A/B 試験と安全設計",
-      "liked_count": 9,
-      "comments_count": 2,
-      "url": "https://zenn.dev/keigoly/articles/8738d8d241b5a1",
-      "published_at": "2026-10-14"
-    },
-    {
-      "title": "モバイルアプリ開発でノートPCを持ち歩かなくなった話",
-      "liked_count": 27,
+      "title": "レポ：mixi2のインターンに参加しました！",
+      "liked_count": 25,
       "comments_count": 0,
-      "url": "https://zenn.dev/yasi/articles/mobile-dev-from-phone-with-claude",
-      "published_at": "2026-10-12"
-    },
-    {
-      "title": "開発しながら同じPCでローカルLLMを動かしてみた話",
-      "liked_count": 5,
-      "comments_count": 0,
-      "url": "https://zenn.dev/sumasate_tec/articles/test-local-llm",
-      "published_at": "2026-10-14"
-    },
-    {
-      "title": "Amazon BedrockとSageMakerのAIエージェントでOpenTelemetryの自動計装が行われる範囲",
-      "liked_count": 3,
-      "comments_count": 0,
-      "url": "https://zenn.dev/ymotongpoo/articles/20261014-bedrock-sagemaker-otel",
-      "published_at": "2026-10-14"
+      "url": "https://zenn.dev/riochin/articles/mixi2-intern-2026",
+      "published_at": "2026-10-15"
     },
     {
       "title": "『現場で役立つシステム設計の原則』を読んで学んだこと、実践したこと、これからやりたいこと",
-      "liked_count": 5,
+      "liked_count": 29,
       "comments_count": 0,
       "url": "https://zenn.dev/wwwave/articles/38b8284f96bd9e",
       "published_at": "2026-10-14"
     },
     {
-      "title": "【SWTT 2026】Snowflake Well-Architected Frameworkで実現する実践的なデータマネジメント",
-      "liked_count": 4,
+      "title": "ICFPC2026 参加記",
+      "liked_count": 8,
       "comments_count": 0,
-      "url": "https://zenn.dev/finatext/articles/swtt2026-snow-waf-datamanagement",
-      "published_at": "2026-10-14"
+      "url": "https://zenn.dev/algoartis/articles/b5dd3c401d5dd4",
+      "published_at": "2026-10-15"
     },
     {
       "title": "Gemini 4 Argonの日本語性能を検証してみた",
-      "liked_count": 11,
+      "liked_count": 26,
       "comments_count": 0,
       "url": "https://zenn.dev/algoartis/articles/19bb1705ea4b16",
       "published_at": "2026-10-14"
     },
     {
-      "title": "【備忘録】CSSのstickyで作る、せり上がりながら背景が見える演出",
-      "liked_count": 8,
+      "title": "WAF でブロックする前に確かめていること",
+      "liked_count": 66,
       "comments_count": 0,
-      "url": "https://zenn.dev/crayfisher_zari/articles/75619d5860f885",
-      "published_at": "2026-10-14"
+      "url": "https://zenn.dev/azunyan/articles/7a105969d7d16c",
+      "published_at": "2026-10-10"
+    },
+    {
+      "title": "SQLite 本体にベクトル検索拡張 vec1 がやってきた",
+      "liked_count": 149,
+      "comments_count": 0,
+      "url": "https://zenn.dev/mattn/articles/6e9996319ac099",
+      "published_at": "2026-10-11"
+    },
+    {
+      "title": "国産モデル sarashina3-mini は日本語の推敲で何を変えるのか？",
+      "liked_count": 5,
+      "comments_count": 0,
+      "url": "https://zenn.dev/algoartis/articles/03ca12150ccbee",
+      "published_at": "2026-10-15"
+    },
+    {
+      "title": "Akinatorで始めるAgentic RL ー タスク設計と初期検証  ー",
+      "liked_count": 3,
+      "comments_count": 0,
+      "url": "https://zenn.dev/mkj/articles/8e1da67da67f98",
+      "published_at": "2026-10-15"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Containment and monitoring failures are to blame for AI hacking reports: experts",
-      "points": 809,
-      "num_comments": 433,
-      "url": "https://www.csoonline.com/article/4234854/ai-agents-arent-going-rogue-frontier-labs-are-skipping-security-basics.html"
+      "title": "Muse Spark Open",
+      "points": 560,
+      "num_comments": 319,
+      "url": "https://research.meta.ai/blog/muse-spark-open"
     },
     {
-      "title": "How Amazon pushes up prices all across the Internet",
-      "points": 690,
-      "num_comments": 584,
-      "url": "https://www.not-ship.com/how-amazon-pushes-up-prices-all-across-the-internet/"
+      "title": "Wayland desktop for Linux with skeuomorphic design",
+      "points": 467,
+      "num_comments": 184,
+      "url": "https://github.com/fyzugx/DEsk"
     },
     {
-      "title": "Iosevka is an open-source, sans-serif and slab-serif monospace font",
-      "points": 690,
-      "num_comments": 285,
-      "url": "https://typeof.net/Iosevka/"
+      "title": "Neural networks are clean",
+      "points": 453,
+      "num_comments": 170,
+      "url": "https://already-clean.goodfire.com/"
     },
     {
-      "title": "Things to know when you get cancer – 2026 Edition",
-      "points": 608,
-      "num_comments": 161,
-      "url": "https://jjmaxwell4.com/writing/things-to-know-when-you-get-cancer/"
+      "title": "AdFection: Targeted ads turned into a pipeline for zero-click mercenary spyware",
+      "points": 357,
+      "num_comments": 525,
+      "url": "https://citizenlab.ca/research/how-discover-tech-turned-targeted-ads-into-a-pipeline-for-spyware/"
     },
     {
-      "title": "Passkeys are not a trap",
-      "points": 420,
-      "num_comments": 597,
-      "url": "https://scotthelme.co.uk/passkeys-are-not-a-trap/"
+      "title": "Wanted to download an ISO, ended up writing a kernel exploit",
+      "points": 340,
+      "num_comments": 167,
+      "url": "https://blog.dfb.sh/blog/eap770-root-for-two-zeros/"
     },
     {
-      "title": "Google is silently linking your phone number across all signed-in accounts",
-      "points": 336,
-      "num_comments": 88,
-      "url": "https://www.androidauthority.com/google-auto-phone-number-verification-android-3723117/"
+      "title": "I know why the mathematicians weep",
+      "points": 328,
+      "num_comments": 535,
+      "url": "https://www.derekthompson.org/p/i-know-why-the-mathematicians-weep"
     },
     {
-      "title": "Do dentists know what they're doing?",
-      "points": 334,
-      "num_comments": 251,
-      "url": "https://mapwriting.substack.com/p/dentists"
+      "title": "Steam Client is now faster than Epic's new vibe coded launcher",
+      "points": 259,
+      "num_comments": 267,
+      "url": "https://respawnfirst.com/steam-client-is-now-faster-than-epics-new-vibe-coded-launcher/"
     },
     {
-      "title": "Fire at Starlink site in Bulgaria after suspected sabotage in Poland",
-      "points": 258,
-      "num_comments": 189,
-      "url": "https://dpa-international.com/politics/urn:newsml:dpa.com:20090101:261014-930-839530/"
+      "title": "Jev meets the Trolley Problem",
+      "points": 252,
+      "num_comments": 115,
+      "url": "https://zachlandes.com/trolley-problem/"
     },
     {
-      "title": "Banks are now trying to offload the AI data center debt they just underwrote",
-      "points": 243,
-      "num_comments": 193,
-      "url": "https://startupfortune.com/banks-are-now-trying-to-offload-the-ai-data-center-debt-they-just-underwrote/"
+      "title": "Libreboot 26.10 \"Ominous Olive\" released with UEFI, Chromebook support",
+      "points": 245,
+      "num_comments": 142,
+      "url": "https://libreboot.org/news/libreboot2610.html"
     },
     {
-      "title": "OpenCode 2.0",
-      "points": 208,
-      "num_comments": 76,
-      "url": "https://anoma.ly/notes/opencode-2-0/"
+      "title": "Show HN: Unfenced – Land for sale that borders public land",
+      "points": 244,
+      "num_comments": 166,
+      "url": "https://unfenced.land/"
     }
   ]
 }
