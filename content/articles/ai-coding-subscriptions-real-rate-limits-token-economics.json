@@ -1,197 +1,131 @@
 {
   "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-  "title": "Claude Code vs Cursor 料金・レート制限比較：Claude Pro / Cursor Pro の実質トークン単価と併用実測",
-  "subtitle": "公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）",
+  "title": "AIコーディングのサブスクとAPI、費用をどう比べる？",
+  "display_title": "AIコーディングのサブスクとAPI、費用をどう比べる？",
+  "subtitle": "Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。",
   "category": "Software & SaaS Economics",
   "tags": [
-    "Claude Code",
-    "Cursor",
-    "Rate Limits",
-    "Token Economics",
-    "LLM Benchmark"
+    "AIコーディング サブスク API 比較",
+    "Claude Code Cursor 費用",
+    "AI 利用制限"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 85,
-  "methodology_note": "r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の85アカウント集計、固定トークン上限、API比の倍率および損益分岐点は、採用ログを確認できないため撤回しました。変動する契約条件と、読者自身の作業費用を比較する内容へ改訂しています。",
   "seo": {
-    "meta_title": "【実測比較】Claude Code vs Cursor 料金・制限はどっちが得？併用とAPI換算コスパ | Nodus",
-    "meta_description": "Claude Code（Claude Pro/Max）とCursor Proの料金・レート制限・違いを実測ログ(N=85)から定量比較。CursorでClaude Codeを使う併用・連携時のトークン消費とAPI従量課金の損益分岐点を算出。",
+    "meta_title": "AIコーディングのサブスクとAPI、費用をどう比べる？ | Nodus",
+    "meta_description": "Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。",
     "target_keywords": [
-      "Claude Code Cursor 比較 料金",
-      "Claude Pro 制限 実測 トークン",
-      "Cursor Pro クレジット 消費 実測",
-      "Claude Code Cursor 併用 どっち"
+      "AIコーディング サブスク API 比較",
+      "Claude Code Cursor 費用",
+      "AI 利用制限"
     ],
-    "primary_seed": "Claude Code Cursor"
+    "primary_seed": "AIコーディング サブスク API 比較"
   },
-  "summary_metrics": [
-    {
-      "label": "集計開発者ログ数 (N)",
-      "value": "85 アカウント",
-      "subtext": "r/ClaudeAI (N=54), r/cursor (N=31)"
-    },
-    {
-      "label": "Claude Pro 5時間枠の実測中央値",
-      "value": "約 180万〜240万 Tokens",
-      "subtext": "キャッシュ込み入力＋出力換算（Sonnet系）"
-    },
-    {
-      "label": "定額プランのAPI換算倍率",
-      "value": "約 2.8倍 〜 4.2倍",
-      "subtext": "月20営業日・通常利用時のAPI単価比"
-    },
-    {
-      "label": "Max 5x ($100) 損益分岐点",
-      "value": "API換算 $280/月 以上",
-      "subtext": "Claude Code連続稼働ユーザーの分岐目安"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "定額プランを「固定のトークン数を買う契約」と見なさない。上限や計算方法は契約ごとに確認する。",
+    "API換算で何倍お得かを決める前に、同じ作業の完了品質と総費用を比べる。",
+    "利用量の多い1週間を記録してから、追加契約や上位プランを検討する。"
   ],
-  "spec_gap_chart": {
-    "title": "月額定額料金 ($ USD) vs コミュニティ実測に基づく月間API従量換算額中央値 ($ USD換算)",
-    "unit": "USD ($ 相当額 / 月)",
-    "max_scale": 450,
-    "items": [
-      {
-        "name": "Claude Pro ($20/月)",
-        "official_label": "公式月額料金: $20.0",
-        "official_value": 20.0,
-        "measured_label": "API従量換算 実測中央値: $85.0相当/月",
-        "measured_value": 85.0,
-        "status": "good",
-        "note": "5時間ごとのリセット枠を月20営業日・1日1.5回消化した場合、API従量課金で約$85〜$110相当のトークンを消化可能（N=34）。"
-      },
-      {
-        "name": "Cursor Pro ($20/月・現行クレジット制)",
-        "official_label": "公式月額料金: $20.0 ($20使用枠+ボーナス枠)",
-        "official_value": 20.0,
-        "measured_label": "API従量換算 実測中央値: $56.0相当/月",
-        "measured_value": 56.0,
-        "status": "good",
-        "note": "現行プランではAPI単価ベースの使用量クレジット（$20分＋Autoルーティングやキャッシュ軽減分）として計算され、長文参照時はコンテキスト圧縮が併用される（N=31）。"
-      },
-      {
-        "name": "Claude Max 5x ($100/月)",
-        "official_label": "公式月額料金: $100.0",
-        "official_value": 100.0,
-        "measured_label": "API従量換算 実測中央値: $410.0相当/月",
-        "measured_value": 410.0,
-        "status": "good",
-        "note": "Claude Codeで自律実装を行う開発者のccusage実測ログ（N=20）では、月$350〜$480相当のAPI利用量に到達。"
-      },
-      {
-        "name": "Anthropic API 直接従量課金 ($100利用時基準)",
-        "official_label": "API支払額基準: $100.0",
-        "official_value": 100.0,
-        "measured_label": "API従量換算: $100.0 (1.0x 基準値)",
-        "measured_value": 100.0,
-        "status": "warning",
-        "note": "5時間ロックはないが、Prompt Cachingが効かない新規ファイル探索タスクでは急速に予算を消化。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "プラン名",
-      "月額料金",
-      "公式表記の課金・上限仕様",
-      "コミュニティ実測上限 (中央値)",
-      "実質コンテキストウィンドウ",
-      "API従量比のコスト効率",
-      "主な適性用途"
+      "使い方",
+      "比較する単位",
+      "確認する契約条件",
+      "費用以外の判断"
     ],
     "rows": [
       [
-        "Claude Pro",
-        "$20 / 月",
-        "無料版の5倍以上（5時間ローリング制）",
-        "5時間あたり 約45メッセージ (長文時 15〜20回)",
-        "200K Tokens (フル保持)",
-        "約 4.2x 相当",
-        "日常の設計相談・中規模コード生成"
+        "対話しながら開発",
+        "普段の作業を完了する月額合計",
+        "対応モデル、含まれる枠、上限到達時の動作",
+        "編集環境との相性、修正の手戻り"
       ],
       [
-        "Claude Max (5x)",
-        "$100 / 月",
-        "Proの5倍の利用枠（5時間ローリング制）",
-        "5時間あたり 約225メッセージ相当 (Claude Code対応)",
-        "200K Tokens (キャッシュ最適化)",
-        "約 4.1x 相当",
-        "Claude Codeによる自律実装・長時間リファクタ"
+        "複数のAIを併用",
+        "主契約と補助契約の総額",
+        "枠が余る契約、重複する機能",
+        "切替の手間と文脈の引き継ぎ"
       ],
       [
-        "Cursor Pro",
-        "$20 / 月",
-        "月$20相当の使用量枠 + 従量課金オプション (Auto軽減あり)",
-        "前沿モデル直指定で約220〜350回 / Auto併用で約550回相当",
-        "通常約32K〜60K (Max Mode時は拡張・消費増)",
-        "約 2.8x 相当",
-        "IDE内でのTab補完・ピンポイント改修"
+        "独自アプリ・バッチ",
+        "成功した1タスクあたりのAPI費用",
+        "API料金、速度制限、実行基盤代",
+        "再試行、監視、結果の検証"
       ],
       [
-        "Anthropic API (Tier 2+)",
-        "完全従量制",
-        "RPM/TPM上限のみ (残高限り)",
-        "上限なし (Sonnet: $3/1M In, $15/1M Out)",
-        "200K〜1M Tokens",
-        "1.0x (基準値)",
-        "GitHub Actions等の完全無人バッチ・CIパイプライン"
+        "チームで利用",
+        "利用者数と実際の請求額",
+        "管理機能、共有枠、追加課金設定",
+        "権限管理、データの扱い"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. 「残りメッセージ数」は回数ではなく「累計コンテキスト長」で減算される",
-      "body": "r/ClaudeAIの有志によるトークンカウンタおよびccusage検証（N=54）により、5時間ごとの利用枠は単純な「送信回数」ではなく、「送信時点のスレッド全体のトークン数 × モデル重み係数」で計算されていることが裏付けられています。たとえば10万トークンの長大なチャット履歴を維持したまま1回質問を送ると、新規スレッドで短い質問を25回送るのと同じだけのクオータを消費します。"
+      "heading": "月額と、使える量を分ける",
+      "body": "月額が同じサービスでも、含まれるモデル、補完、対話、エージェント、レビューの範囲は同じではありません。まず契約画面と公式資料で、どの利用がどの枠を消費するかを書き出します。料金や利用枠の設計は変わるため、この記事では固定のメッセージ回数やトークン数に置き換えていません。",
+      "source_indices": []
     },
     {
-      "heading": "2. IDE組み込み型（Cursor Pro現行クレジット制）における「コンテキスト切り詰め閾値」",
-      "body": "Cursor Proは従来の回数制からAPI単価ベースの使用量プール（$20枠＋Autoモードやキャッシュによる消費軽減）へ移行しています。通常モードでは1リクエストあたりのクレジット消費を抑えるため、ファイル全体をそのまま送らず関連スニペット抽出や要約によって実効コンテキストを32K〜60Kトークン前後に圧縮していることが開発者ログ（N=31）から確認されています。Max Modeを有効にするとフルコンテキストを扱えますが、クレジット消化速度も比例して増加します。"
+      "heading": "Cursorは、現在の利用枠を画面で確認する",
+      "body": "確認時点のCursor公式資料は、モデルの利用プールと使用量をダッシュボードで確認する仕組みを説明しています。モデルによって消費の仕方が違うため、「1回の質問」という単位だけでは比較できません。旧記事の固定的な実効コンテキスト長や回数目安を前提にせず、自分の契約と実際の使用状況を照らし合わせてください。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "heading": "3. 定額プランとAPI従量課金のハイブリッド構成",
-      "body": "定量比較の結論として、人間がターミナルやブラウザで対話的に開発・分析する用途では定額プラン（Pro / Max）がAPI従量比で約2.8〜4.2倍のトークン消化効率を発揮します。一方、GitHub Actions等から無人で定期実行するスクリプトには公式APIキー（Prompt Caching併用）を割り当てるハイブリッド構成が、規約遵守とコスト管理の両面で合理的です。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？",
-      "answer": "トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。"
+      "heading": "Claude Codeでは、何の制限かを見分ける",
+      "body": "Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管理を分けて説明しています。会話が長くなった警告、契約上の利用制限、API経由の支出は同じ問題ではありません。上限に達した日時、選択モデル、実行内容、表示された説明を記録すると、契約を上げるべきか使い方を変えるべきか判断しやすくなります。",
+      "source_indices": [
+        1
+      ]
     },
     {
-      "question": "バックグラウンドの自動バッチ処理に定額プランのアカウントを使えますか？",
-      "answer": "利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。"
+      "heading": "損益分岐点は、自分の作業から計算する",
+      "body": "月の総費用 = サブスク料金 + 追加使用料 + API料金 + 実行基盤代。これを完了したタスク数で割ると、1件あたり費用を比較できます。ただし同じ難易度と品質で比べることが前提です。仮に月3,000円で10件なら300円/件、APIで同じ10件を2,000円で完了すれば200円/件。いずれも仮定例で、現行価格や性能の推定ではありません。",
+      "source_indices": []
+    },
+    {
+      "heading": "併用するなら、役割の重複を減らす",
+      "body": "毎日使う編集環境を主契約にし、独自連携や不定期の処理だけAPIにする、といった分け方を検討できます。ただしサブスクの認証を自動処理で利用できるかは、公式の対応方法と契約条件によります。APIだけが唯一の選択とも、サブスクにAPI利用が含まれるとも決めつけず、目的の実行方法が提供されているかを確認します。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/ClaudeAI - Search: 5-hour rolling token quota & ccusage empirical measurements",
-      "url": "https://www.reddit.com/r/ClaudeAI/search/?q=ccusage+rate+limit+tokens&restrict_sr=1",
-      "sample_size": "N=54 account logs",
-      "verified_date": "2026-10-12"
+      "title": "Cursor：Models & Pricing",
+      "url": "https://cursor.com/docs/models-and-pricing",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "現行の利用枠と課金構造。契約ごとの実際の利用可能量は別途確認が必要です。"
     },
     {
-      "title": "Reddit r/cursor - Search: Usage-based pricing credit consumption & context window logs",
-      "url": "https://www.reddit.com/r/cursor/search/?q=context+window+limit+tokens&restrict_sr=1",
-      "sample_size": "N=31 developer logs",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Cursor Official Documentation - Plans, Usage Pricing & Auto Routing",
-      "url": "https://docs.cursor.com/account/plans-and-usage",
-      "sample_size": "Official Pricing Spec",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Anthropic Official Documentation - Models & API Pricing Baseline",
-      "url": "https://docs.anthropic.com/en/docs/about-claude/models",
-      "sample_size": "Official Pricing Spec",
-      "verified_date": "2026-10-12"
+      "title": "Claude Code：Manage costs effectively",
+      "url": "https://code.claude.com/docs/en/costs",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "利用量の追跡とコスト管理。各利用者の上限を保証するものではありません。"
     }
   ],
-  "affiliate_keys": [
-    "claude-pro",
-    "cursor-pro"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
+      "title": "AIエージェントのトークンを減らすには？"
+    },
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "title": "パーソナルAIは、どこに置く？"
+    }
   ]
 }

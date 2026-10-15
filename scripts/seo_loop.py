@@ -308,7 +308,11 @@ def load_telemetry(config: dict[str, Any], allow_sample: bool = False) -> tuple[
         sample["source_mode"] = "SAMPLE_TELEMETRY"
         return sample, False, ""
 
-    return {"source_mode": "GSC_NOT_CONFIGURED", "message": "Configure GSC OAuth credentials. Samples require --allow-sample.", "pages": {}}, False, ""
+    return {
+        "source_mode": "GSC_NOT_CONFIGURED",
+        "message": "Set GSC_CLIENT_ID, GSC_CLIENT_SECRET and GSC_REFRESH_TOKEN, or a valid GSC_ACCESS_TOKEN. Sample data is disabled unless --allow-sample is explicit.",
+        "pages": {},
+    }, False, ""
 
 
 def strip_generated_prefixes(text: str) -> str:
@@ -889,6 +893,9 @@ def run_seo_loop(apply_changes: bool = False, allow_sample: bool = False) -> dic
             continue
 
         article = load_json(article_path)
+        # Guide copy must not inherit the benchmark-only title/description variants.
+        if article.get("kind") == "guide":
+            continue
         seo = article.setdefault("seo", {})
         ensure_immutable_originals(article)
 

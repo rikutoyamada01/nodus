@@ -1,371 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【持続TDP・騒音実測】高性能ミニPC（HX 370 / 8845HS / M4）の熱ダレ・dBA比較データ | Nodus</title>
-  <meta name="description" content="最大54W〜65W TDPを謳う小型ミニPCで30分間連続負荷をかけると実測何Wまで低下し、ファン騒音は何dBAに達するのか？CPU持続電力・50cm騒音値・背面NVMe SSD温度(N=36)を定量比較。">
-  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">
-  <meta property="og:title" content="【持続TDP・騒音実測】高性能ミニPC（HX 370 / 8845HS / M4）の熱ダレ・dBA比較データ | Nodus">
-  <meta property="og:description" content="最大54W〜65W TDPを謳う小型ミニPCで30分間連続負荷をかけると実測何Wまで低下し、ファン騒音は何dBAに達するのか？CPU持続電力・50cm騒音値・背面NVMe SSD温度(N=36)を定量比較。">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">
-  <meta property="og:site_name" content="Nodus">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
-  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md">
-  <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース", "description": "最大54W〜65W TDPを謳う小型ミニPCで30分間連続負荷をかけると実測何Wまで低下し、ファン騒音は何dBAに達するのか？CPU持続電力・50cm騒音値・背面NVMe SSD温度(N=36)を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Mini PC, Ryzen AI 9 HX 370, Ryzen 7 8845HS, Mac mini M4, Sustained TDP, r/MiniPCs", "citation": ["https://www.reddit.com/r/MiniPCs/search/?q=8845HS+sustained+TDP+noise+dBA\u0026restrict_sr=1", "https://www.reddit.com/r/macmini/search/?q=M4+powermetrics+watt+noise\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html"}, {"@type": "Dataset", "name": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース 実測検証データセット (N=36)", "description": "公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）", "url": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/MiniPCs および SFF技術フォーラムに投稿された HWiNFO64 / powermetrics 30分連続負荷ログ（Cinebench R23 Multi + NVMe fio 同時負荷、室温23〜25℃、筐体前方50cmでのIEC Class 2騒音計計測）計36件を集計。短時間ブースト（PL2）ではなく20分経過後の定常パッケージ電力（Sustained Package Power）中央値を比較。", "variableMeasured": ["公称最大TDP", "30分持続電力 (中央値)", "50cm騒音値 (Idle / Load)", "CPUピーク温度", "NVMe SSD温度 (同時負荷)", "常時稼働・静音評価"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？", "acceptedAnswer": {"@type": "Answer", "text": "Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。"}}, {"@type": "Question", "name": "ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？", "acceptedAnswer": {"@type": "Answer", "text": "多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html"}]}]}</script>
-</head>
-<body>
-  
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>自宅サーバー用ミニPC、CPU名だけで選んでいい？ | Nodus</title><meta name="description" content="RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">
+      <meta property="og:title" content="自宅サーバー用ミニPC、CPU名だけで選んでいい？"><meta property="og:description" content="RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "自宅サーバー用ミニPC、CPU名だけで選んでいい？", "description": "RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。", "datePublished": "2026-10-12", "dateModified": "2026-10-13", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html", "citation": ["https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="../index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">一次検証・定量技術ノート</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">検証記事一覧</a>
-      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
       <a href="../about.html#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
 </header>
 <div class="pr-banner" role="note" aria-label="運営ステータス表示">
-  <div class="container">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</div>
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
 </div>
 
-
-  <div class="container article-layout">
-    <main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>Hardware &amp; Power Electronics</span>
-      </nav>
-
-      <div class="article-meta-top">
-        <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
-        <span class="category-pill">Hardware &amp; Power Electronics</span>
-      </div>
-
-      <h1 class="article-title">高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース</h1>
-      <p class="article-subtitle">公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）</p>
-
-      <div class="article-tags-row">
-        <span class="tag-chip">#Mini PC</span><span class="tag-chip">#Ryzen AI 9 HX 370</span><span class="tag-chip">#Ryzen 7 8845HS</span><span class="tag-chip">#Mac mini M4</span><span class="tag-chip">#Sustained TDP</span><span class="tag-chip">#r/MiniPCs</span>
-      </div>
-
-      <div class="article-timestamps">
-        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>サンプル数: <strong>N = 36</strong></span>
-      </div>
-
-      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
-        <div class="tldr-title">
-          <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <div class="card-metrics-inline">
-            
-            <a href="../datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" download="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" class="csv-btn">CSVデータを取得</a>
-          </div>
-        </div>
-        <ul class="tldr-list">
-          <li>集計連続負荷ログ数は「36 台」（r/MiniPCs 30分HWiNFO64計測）。</li><li>0.8L級65W機の持続電力は「46.5 〜 54.0 W」（公称ピーク65W比 約72〜83%に収束）。</li><li>高負荷時50cm騒音中央値は「31.2 〜 45.8 dBA」（42dBA超でデスク上の静音性が損なわれる）。</li><li>Beelink SER9 (Ryzen AI 9 HX 370 / ベイパーチャンバー搭載)：大型ベイパーチャンバーと低回転ブロワーにより、38.4dBAの静音性を保ったまま54Wを30分間スロットリングなしで維持（N=9）。</li>
-        </ul>
-        <div class="kpi-strip">
-          
-        <div class="kpi-item">
-          <div class="kpi-label">集計連続負荷ログ数</div>
-          <div class="kpi-value">36 台</div>
-          <div class="kpi-sub">r/MiniPCs 30分HWiNFO64計測</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">0.8L級65W機の持続電力</div>
-          <div class="kpi-value">46.5 〜 54.0 W</div>
-          <div class="kpi-sub">公称ピーク65W比 約72〜83%に収束</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">高負荷時50cm騒音中央値</div>
-          <div class="kpi-value">31.2 〜 45.8 dBA</div>
-          <div class="kpi-sub">42dBA超でデスク上の静音性が損なわれる</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">背面M.2スロットピーク温度</div>
-          <div class="kpi-value">52.0 〜 74.5 ℃</div>
-          <div class="kpi-sub">サブファン非搭載機は70℃超でSSD減速</div>
-        </div>
-        
-        </div>
-      </section>
-
-      
-      <section id="sec-chart" class="article-section">
-        <h2 class="section-h2">
-          <span>1. 公称最大パッケージ電力（Peak TDP W）vs 30分連続高負荷時の持続パッケージ電力中央値（Sustained W）</span>
-          <span class="section-subnote">単位: W</span>
-        </h2>
-        <div class="gap-list">
-          
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Beelink SER9 (Ryzen AI 9 HX 370 / ベイパーチャンバー搭載)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">公称ピークTDP設定: 65.0 W</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピークTDP設定: 65.0 W">
-                    <rect class="bar-rect-official" x="0" y="0" width="92.86" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>30分持続実測中央値: 54.0 W (騒音 38.4 dBA)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="30分持続実測中央値: 54.0 W (騒音 38.4 dBA)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="77.14" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">大型ベイパーチャンバーと低回転ブロワーにより、38.4dBAの静音性を保ったまま54Wを30分間スロットリングなしで維持（N=9）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">GMKtec NucBox K8 Plus (Ryzen 7 8845HS / デュアルファン)</span>
-                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">公称ピークTDP設定: 65.0 W</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピークTDP設定: 65.0 W">
-                    <rect class="bar-rect-official" x="0" y="0" width="92.86" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>30分持続実測中央値: 52.0 W (騒音 45.8 dBA)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="30分持続実測中央値: 52.0 W (騒音 45.8 dBA)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="74.29" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">DDR5/SSD専用サブファンによりSSD温度は54℃と低いが、フル負荷時の風切り音が45.8dBAに達する（N=8）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Minisforum UM880 Pro (Ryzen 7 8845HS / Performance Mode)</span>
-                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">公称ピークTDP設定: 65.0 W</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称ピークTDP設定: 65.0 W">
-                    <rect class="bar-rect-official" x="0" y="0" width="92.86" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>30分持続実測中央値: 48.5 W (騒音 43.2 dBA)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="30分持続実測中央値: 48.5 W (騒音 43.2 dBA)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="69.29" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">開始11分前後でVRM・コア温度保護により48.5WへPL1遷移。BIOSでBalanced(45W)設定時は37.8dBAで安定（N=10）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Apple Mac mini (M4 10-Core / 2024刷新筐体)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">最大SoC Package電力目安: 38.0 W</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="最大SoC Package電力目安: 38.0 W">
-                    <rect class="bar-rect-official" x="0" y="0" width="54.29" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>30分持続実測中央値: 36.8 W (騒音 31.2 dBA)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="30分持続実測中央値: 36.8 W (騒音 31.2 dBA)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="52.57" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">30分連続レンダリングでも性能維持率99.4%、50cm騒音31.2dBA（暗騒音+4.7dBA）と事実上の無音稼働を達成（N=9）。</div>
-            </div>
-            
-        </div>
-      </section>
-    
-      <section id="sec-table" class="article-section">
-        <h2 class="section-h2">
-          <span>2. 条件別・実測比較データテーブル</span>
-          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
-        </h2>
-        <div class="table-wrap">
-          <table class="data-table">
-            <caption>高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース — 実測検証データ比較表</caption>
-            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>モデル / SoC構成</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公称最大TDP</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>30分持続電力 (中央値)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>50cm騒音値 (Idle / Load)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>CPUピーク温度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>NVMe SSD温度 (同時負荷)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>常時稼働・静音評価</span><span aria-hidden="true">↕</span></button></th></tr></thead>
-            <tbody><tr><th scope="row">Beelink SER9 (HX 370)</th><td class="num-cell" data-sort-value="54.000000">54W 〜 65W</td><td class="num-cell" data-sort-value="54.000000">54.0 W</td><td data-sort-value="28.000000">28.0 / 38.4 dBA</td><td class="num-cell" data-sort-value="81.500000">81.5 ℃</td><td class="num-cell" data-sort-value="58.000000">58.0 ℃</td><td>高負荷でも静か・最良</td></tr><tr><th scope="row">Apple Mac mini (M4)</th><td class="num-cell" data-sort-value="38.000000">約 38W (SoC)</td><td class="num-cell" data-sort-value="36.800000">36.8 W</td><td data-sort-value="26.800000">26.8 / 31.2 dBA</td><td class="num-cell" data-sort-value="84.000000">84.0 ℃</td><td class="num-cell" data-sort-value="52.000000">52.0 ℃</td><td>極静音・ワット効率最高</td></tr><tr><th scope="row">Minisforum UM880 Pro</th><td class="num-cell" data-sort-value="65.000000">65W (Perf)</td><td class="num-cell" data-sort-value="48.500000">48.5 W (Balanced時 45W)</td><td data-sort-value="29.200000">29.2 / 43.2 dBA (45W時 37.8)</td><td class="num-cell" data-sort-value="89.000000">89.0 ℃</td><td class="num-cell" data-sort-value="64.000000">64.0 ℃</td><td class="num-cell" data-sort-value="45.000000">45W運用なら高コスパ</td></tr><tr><th scope="row">GMKtec K8 Plus (8845HS)</th><td class="num-cell" data-sort-value="65.000000">65W (Perf)</td><td class="num-cell" data-sort-value="52.000000">52.0 W</td><td data-sort-value="30.500000">30.5 / 45.8 dBA</td><td class="num-cell" data-sort-value="87.200000">87.2 ℃</td><td class="num-cell" data-sort-value="54.000000">54.0 ℃ (サブファン有)</td><td>OCuLink重視向け・騒音大</td></tr></tbody>
-          </table>
-        </div>
-      </section>
-    
-
-      <section id="sec-analysis" class="article-section">
-        <h2 class="section-h2">
-          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
-        </h2>
-        
-        <div class="prose-section">
-          <h3>1. 「最大65W TDP」と「30分持続TDP」の乖離メカニズム</h3>
-          <p>x86系ミニPCの製品ページで強調される「最大65W TDP」は、多くの場合PL2（数分間の短時間ブースト電力制限）を指しています。筐体体積が0.7L〜0.9Lの小型ヒートシンク構造では、放熱能力の物理的限界が45W〜54W前後に存在するため、連続コンパイルやローカルLLM推論を10分以上継続すると、VRM（電源回路）温度またはCPUジャンクション温度（TjMax 95℃〜100℃）が閾値に達し、自動的に48W前後へ電力制限が引き下げられます。</p>
-        </div>
-        
-        <div class="prose-section">
-          <h3>2. 騒音値（dBA）だけでなく周波数特性と背面SSD温度に注目</h3>
-          <p>騒音計の数値上は同じ43dBA〜45dBAであっても、40mm径の小径サブファンを高回転させる構造では1.5kHz〜3kHz帯の高周波風切り音が目立ち、体感ノイズが大きくなります。一方、底面吸気・背面排気の大口径ブロワーとベイパーチャンバーを組み合わせた機種（Beelink SER9、Mac mini M4）は、ファン回転数の急激なハンチング（上下動）が少なく、書斎やオフィス環境での作業阻害度が大幅に低く抑えられています。</p>
-        </div>
-        
-      </section>
-
-      
-        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
-          <h2 class="section-h2">
-            <span>検証対象モデル・関連サービス公式リンク</span>
-            <span class="section-subnote">公式・参考リンク (広告なし)</span>
-          </h2>
-          <div class="cta-grid">
-            
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">OCuLink / デュアル冷却</span>
-                    <div class="cta-title">MINISFORUM Ryzen 8845HS / HX370 ミニPC シリーズ</div>
-                    <div class="cta-provider">提供元: Amazon.co.jp （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://www.amazon.co.jp/s?k=MINISFORUM+Ryzen+Mini+PC" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">ファンレス放熱設計</span>
-                    <div class="cta-title">OWC Express 1M2 (USB4 40Gbps 大型ヒートシンク筐体)</div>
-                    <div class="cta-provider">提供元: Amazon.co.jp （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://www.amazon.co.jp/s?k=OWC+Express+1M2+USB4" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-          </div>
-          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
-        </section>
-        
-
-      <section id="sec-faq" class="article-section">
-        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
-        <div class="faq-list">
-          
-        <div class="faq-item">
-          <h3 class="faq-q">Q. ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？</h3>
-          <p class="faq-a">Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3 class="faq-q">Q. ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？</h3>
-          <p class="faq-a">多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。</p>
-        </div>
-        
-        </div>
-      </section>
-
-      <section id="sec-sources" class="article-section">
-        <h2 class="section-h2">
-          <span>5. 検証条件・一次情報ソース (Provenance)</span>
-        </h2>
-        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/MiniPCs および SFF技術フォーラムに投稿された HWiNFO64 / powermetrics 30分連続負荷ログ（Cinebench R23 Multi + NVMe fio 同時負荷、室温23〜25℃、筐体前方50cmでのIEC Class 2騒音計計測）計36件を集計。短時間ブースト（PL2）ではなく20分経過後の定常パッケージ電力（Sustained Package Power）中央値を比較。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース」(2026-10-12更新, N=36) — <code>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</code></div>
-        <ul class="source-list">
-          
-        <li class="source-item">
-          <a href="https://www.reddit.com/r/MiniPCs/search/?q=8845HS+sustained+TDP+noise+dBA&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/MiniPCs - Search: Ryzen 8845HS HX370 sustained TDP HWiNFO64 &amp; fan noise dBA logs</a>
-          <span class="source-meta">サンプル: N=27 Mini PC thermal logs | 確認日: 2026-10-12</span>
-        </li>
-        
-        <li class="source-item">
-          <a href="https://www.reddit.com/r/macmini/search/?q=M4+powermetrics+watt+noise&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/macmini - Search: M4 Mac mini powermetrics package power &amp; acoustic benchmarks</a>
-          <span class="source-meta">サンプル: N=9 M4 thermal logs | 確認日: 2026-10-12</span>
-        </li>
-        
-        </ul>
-      </section>
-
-      
-        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
-          <h2 class="section-h2"><span>6. あわせて読みたい関連検証データ</span></h2>
-          <ul class="source-list">
-            
-                <li class="source-item">
-                  <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.html"><strong>100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較</strong></a>
-                  <span class="source-meta">検証対象モデル・報告数: 4 機種 / N=38 (N=38)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"><strong>USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース</strong></a>
-                  <span class="source-meta">集計連続書込テスト数: 41 ログ (N=41)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html"><strong>磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース</strong></a>
-                  <span class="source-meta">集計ハードウェア遅延ログ数: 38 件 (N=38)</span>
-                </li>
-                
-          </ul>
-        </section>
-        
-    </main>
-
-    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
-      <div class="sidebar-box">
-        <div class="sidebar-title">目次</div>
-        <ul class="toc-list">
-          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
-          
-          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
-          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
-        
-          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
-          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
-          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
-        </ul>
-      </div>
-      <div class="sidebar-box">
-        <div class="sidebar-title">検証データ概要</div>
-        <div class="meta-kv-list">
-          <div class="meta-kv-row"><span>データ種別</span><strong>一次ログ集計</strong></div>
-          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 36</strong></div>
-          <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
-          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
-          
-        </div>
-        <div class="card-takeaway-bar">
-          
-          <a href="../datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" download="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" class="csv-btn">CSVをダウンロード</a>
-          <a href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / 道具と電子工作</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">自宅サーバー用ミニPC、CPU名だけで選んでいい？</h1><p class="article-subtitle">RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-12">2026-10-12</time></span><span>更新 <time datetime="2026-10-13">2026-10-13</time></span><span>公式資料に基づく整理。独自の比較実測値は掲載していません。</span></div>
+      <aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>旧版の36件集計と機種別の持続電力・温度・騒音順位は、採用ログを追跡できないため撤回しました。CPUのTDPとPC全体の消費電力を区別し、性能を落とさず静かになるとした一律の設定推奨も外しました。</p></aside>
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>CPUのTDPは、PC全体のコンセント消費電力ではない。</li><li>同じCPU名でも、筐体、設定、メモリ、冷却が違えば使い勝手は変わる。</li><li>24時間動かす用途では、ピーク性能よりアイドル電力と保守の手間を先に見る。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>用途と確認事項の比較表。製品ごとの実測ランキングではありません。</caption><thead><tr><th scope="col">用途</th><th scope="col">優先して確認すること</th><th scope="col">測って比べたいこと</th><th scope="col">追加費用</th></tr></thead><tbody><tr><th scope="row">常時動く小さなサービス</th><td>メモリ、LAN、復旧方法、OS対応</td><td>アイドル電力と利用中の安定性</td><td>保存領域、バックアップ、電気代</td></tr><tr><th scope="row">コンパイル・長い計算</th><td>メモリ容量、冷却、電力設定</td><td>同じ仕事の所要時間と経過後の変化</td><td>必要なRAM・SSDと作業時間</td></tr><tr><th scope="row">ローカルAI</th><td>推論ソフト、メモリ、GPU/NPUの対応</td><td>希望するモデルでの品質と待ち時間</td><td>機器全体と利用頻度</td></tr><tr><th scope="row">書斎で普段も使う</th><td>端子、画面、騒音、修理・保証</td><td>設置場所での音と操作感</td><td>周辺機器と保証条件</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">どの仕事を、何時間動かすか</h2><p>小さな自動化を常時動かすPCと、夜だけ重い計算を行うPCでは選び方が違います。前者は低負荷時の電力と復旧のしやすさ、後者は同じ仕事を終える時間を比べます。用途が決まらないまま、CPUの上位モデルだけで選ばないようにします。</p></section><section class="prose-section" id="part-1"><h2 class="section-h2">TDPと電気代を混同しない</h2><p>AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています。これらはCPUの仕様であり、メモリ、SSD、変換損失などを含めたPC全体の実測電力ではありません。また、異なるメーカーの制御用語をひとまとめにして「最大TDPは短時間のブースト」と断定することは避けます。</p><p class="source-meta">参照: <a href="https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html" target="_blank" rel="noopener noreferrer">AMD：Ryzen 7 8845HS公式仕様</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">24時間の電力差は、式で見積もる</h2><p>月の差額 = 平均電力の差(W) ÷ 1000 × 稼働時間(h) × 電気料金(円/kWh)。仮に差が10W、月720時間、31円/kWhなら約223円/月です。これは料金と電力を仮定した例で、実際の機種差ではありません。購入額の差や、VPS・バックアップの費用も加えて比べます。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">長時間性能と静かさは、別々に確認する</h2><p>同じ処理を続けたときの所要時間、消費電力、温度とファンの変化を記録します。騒音の数値は距離と暗騒音の条件がないと比べにくく、音の高さや回転の上下も使い心地に関係します。メーカー名だけで静かさを決めつけず、設置する場所で確認できることを重視します。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">増設と運用まで含めて、VPSと比べる</h2><p>ベアボーンならRAMとSSD、必要ならOS、バックアップ先も費用に含めます。SSDの実装面や厚み、メモリ容量は正確な型番の説明書で確認してください。NPU搭載だけで目的のAIソフトが動くとは限りません。機器を買う価値は、メモリや端子の要件を満たすことと、障害・更新の運用を引き受けたいかで変わります。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html" target="_blank" rel="noopener noreferrer">AMD：Ryzen 7 8845HS公式仕様</a><span class="source-meta">確認日: 2026-10-13 / CPUのTDP・cTDPなど。個別ミニPCの実測電力や騒音を示しません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="personal-ai-vps-home-server-subscription.html">パーソナルAIは、どこに置く？</a></li><li class="source-item"><a href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">MacでローカルLLMは動く？必要メモリとGPUとの選び方</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">どの仕事を、何時間動かすか</a></li><li><a href="#part-1">TDPと電気代を混同しない</a></li><li><a href="#part-2">24時間の電力差は、式で見積もる</a></li><li><a href="#part-3">長時間性能と静かさは、別々に確認する</a></li><li><a href="#part-4">増設と運用まで含めて、VPSと比べる</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -375,9 +42,9 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
         </p>
-        <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
         <a href="../index.html">記事一覧</a>
@@ -390,11 +57,9 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
     </div>
   </div>
 </footer>
 <script src="../assets/app.js" defer></script>
-
-</body>
-</html>
+</body></html>

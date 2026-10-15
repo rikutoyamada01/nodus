@@ -26,6 +26,8 @@
           card.setAttribute("hidden", "hidden");
         }
       });
+      var empty = document.getElementById("searchEmpty");
+      if (empty) empty.hidden = Array.prototype.some.call(cards, function (card) { return !card.hidden; });
     }
 
     filterBtns.forEach(function (btn) {
@@ -63,7 +65,8 @@
       if (!tbody) return;
 
       headers.forEach(function (th, colIdx) {
-        var btn = th.querySelector(".th-sort-btn") || th;
+        var btn = th.querySelector(".th-sort-btn");
+        if (!btn) return;
         btn.addEventListener("click", function () {
           var rows = Array.prototype.slice.call(tbody.querySelectorAll("tr"));
           var asc = th.getAttribute("aria-sort") !== "ascending";

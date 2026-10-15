@@ -1,200 +1,130 @@
 {
   "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
-  "title": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース",
-  "subtitle": "公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）",
+  "title": "LLM APIの速さは、何を測って比べればいい？",
+  "display_title": "LLM APIの速さは、何を測って比べればいい？",
+  "subtitle": "最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
-    "LLM API",
-    "TTFT Latency",
-    "Prompt Caching",
-    "OpenAI API",
-    "Anthropic Claude",
-    "Groq LPU"
+    "LLM API 速度 比較",
+    "TTFT p95 レイテンシ",
+    "API ストリーミング"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 672,
-  "methodology_note": "東京リージョン（ap-northeast-1）から15分間隔×7日間（計672リクエスト/エンドポイント）、入力4,096 tokens・出力512 tokensの構造化JSON生成ストリーミングを実行した公開ベンチマークおよびr/LocalLLaMA運用テレメトリを集計。JST昼間帯（10:00〜18:00）のp50出力速度と、北米営業時間重複帯（JST 22:00〜04:00）の実効スループット（TTFT待ち時間込み）を比較。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の672リクエスト集計、プロバイダー別のp50・p95、夜間の悪化率、キャッシュの短縮率は、計測記録を確認できないため撤回しました。待ち時間と品質を分けて比較する手順へ改訂しています。",
   "seo": {
-    "meta_title": "【TTFT遅延・速度実測】主要LLM API 5社の時間帯別レイテンシ分散・キャッシュ比較 | Nodus",
-    "meta_description": "OpenAI、Anthropic、Google Vertex AI、Groq、Together AIの5社を対象に、日本時間の昼間と深夜ピーク帯における初回応答遅延(TTFT p50/p95)と出力速度(tok/s)を672回計測比較。",
+    "meta_title": "LLM APIの速さは、何を測って比べればいい？ | Nodus",
+    "meta_description": "最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。",
     "target_keywords": [
-      "LLM API レイテンシ 比較 実測",
-      "OpenAI Anthropic TTFT 速度 遅い",
-      "Groq Vertex AI スループット 比較",
-      "Prompt Caching レイテンシ 短縮"
+      "LLM API 速度 比較",
+      "TTFT p95 レイテンシ",
+      "API ストリーミング"
     ],
-    "primary_seed": "LLM API"
+    "primary_seed": "LLM API 速度 比較"
   },
-  "summary_metrics": [
-    {
-      "label": "集計API計測リクエスト数",
-      "value": "672 回/社",
-      "subtext": "15分周期×7日間 4k入力ストリーミング"
-    },
-    {
-      "label": "夜間ピーク時のp95 TTFT倍率",
-      "value": "2.1x 〜 3.4x",
-      "subtext": "JST 22:00〜03:00（北米日中帯と重複）"
-    },
-    {
-      "label": "Prompt Cachingヒット時短縮率",
-      "value": "-46% 〜 -74%",
-      "subtext": "32k長文コンテキスト時のPrefill削減効果"
-    },
-    {
-      "label": "最低遅延プロバイダ (p95 TTFT)",
-      "value": "0.48 秒",
-      "subtext": "Groq LPU / 次点 Gemini Flash 0.89秒"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "同じ仕事を、同じ品質で完了できる条件をそろえてから速さを比べる。",
+    "ストリーミングで早く見せることと、モデルが早く生成を終えることは区別する。",
+    "特定の時間帯やプロバイダーが必ず遅いという順位は、測定なしに付けない。"
   ],
-  "spec_gap_chart": {
-    "title": "公称・日中ピーク出力速度（Peak tok/s）vs 北米ピーク時間帯のTTFT待ち時間込み実効速度（Effective tok/s at p95）",
-    "unit": "tok/s",
-    "max_scale": 280,
-    "items": [
-      {
-        "name": "Groq Cloud API (Llama-3.3-70B-Versatile)",
-        "official_label": "公称・最良時出力速度: 275.0 tok/s",
-        "official_value": 275.0,
-        "measured_label": "夜間p95 TTFT(0.48s)込み実効速度: 201.5 tok/s",
-        "measured_value": 201.5,
-        "status": "good",
-        "note": "専用LPUアーキテクチャにより北米ピーク時間帯でもp95 TTFTが0.48秒にとどまり、リアルタイム音声・対話用途で圧倒的安定性（N=672）。"
-      },
-      {
-        "name": "Google Vertex AI (Gemini 2.5 Flash / Global)",
-        "official_label": "日中p50純粋出力速度: 155.0 tok/s",
-        "official_value": 155.0,
-        "measured_label": "夜間p95 TTFT(0.89s)込み実効速度: 114.0 tok/s",
-        "measured_value": 114.0,
-        "status": "good",
-        "note": "東京からのエッジルーティングが安定しており、夜間でもTTFT p95が1秒未満。高スループット・低単価の両立で最優秀（N=672）。"
-      },
-      {
-        "name": "Together AI (Llama-3.3-70B-Instruct-Turbo FP8)",
-        "official_label": "公称FP8ピーク出力速度: 135.0 tok/s",
-        "official_value": 135.0,
-        "measured_label": "夜間p95 TTFT(1.78s)込み実効速度: 80.8 tok/s",
-        "measured_value": 80.8,
-        "status": "warning",
-        "note": "昼間は高速だが、JST深夜帯にPrefillキュー待ちが発生しやすくp95 TTFTが1.78秒まで拡大（N=672）。"
-      },
-      {
-        "name": "OpenAI API (GPT-4o / Standard Tier 5・キャッシュ未ヒット時)",
-        "official_label": "日中p50純粋出力速度: 92.0 tok/s",
-        "official_value": 92.0,
-        "measured_label": "夜間p95 TTFT(1.62s)込み実効速度: 66.5 tok/s",
-        "measured_value": 66.5,
-        "status": "good",
-        "note": "自動Prompt Cachingヒット時は夜間でもTTFTが0.31秒〜0.55秒へ大幅短縮されるため、共通プレフィックス設計が鍵（N=672）。"
-      },
-      {
-        "name": "Anthropic API (Claude 3.7 Sonnet / Tier 4・キャッシュ未ヒット時)",
-        "official_label": "日中p50純粋出力速度: 74.0 tok/s",
-        "official_value": 74.0,
-        "measured_label": "夜間p95 TTFT(2.45s)込み実効速度: 51.5 tok/s",
-        "measured_value": 51.5,
-        "status": "warning",
-        "note": "コーディング・複雑推論の品質は最高水準だが、北米ピーク時の非キャッシュTTFT変動が大きいためcache_control指定が必須（N=672）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "APIプロバイダ / モデル",
-      "日中 TTFT (p50)",
-      "北米ピーク TTFT (p95)",
-      "純粋出力速度 (p50)",
-      "夜間p95実効速度 (512tok)",
-      "Prompt Caching短縮効果",
-      "推奨ワークロード"
+      "指標",
+      "答える疑問",
+      "記録する条件",
+      "読み違えやすい点"
     ],
     "rows": [
       [
-        "Groq Cloud (Llama-3.3-70B)",
-        "0.24 秒",
-        "0.48 秒",
-        "248.5 tok/s",
-        "201.5 tok/s",
-        "ベースが極小遅延",
-        "音声対話・リアルタイムUI"
+        "初回表示までの時間",
+        "ユーザーが待つ時間は長いか",
+        "計測の開始点、最初のイベントか表示文字か",
+        "接続完了や空のイベントを回答開始と混同しない"
       ],
       [
-        "Vertex AI (Gemini 2.5 Flash)",
-        "0.41 秒",
-        "0.89 秒",
-        "142.0 tok/s",
-        "114.0 tok/s",
-        "Context Caching対応",
-        "大規模構造化抽出・分類"
+        "全文の完了時間",
+        "1つの仕事を何秒で終えるか",
+        "入力、出力長、ツール呼び出し、再試行",
+        "出力が短いだけの回答を速いと評価しない"
       ],
       [
-        "Together AI (70B Turbo)",
-        "0.52 秒",
-        "1.78 秒",
-        "112.4 tok/s",
-        "80.8 tok/s",
-        "限定的",
-        "オープン重みモデルの低単価実行"
+        "生成速度",
+        "生成中にどれくらい出力するか",
+        "トークナイザー、出力数、時間範囲",
+        "モデルが違うtok/sを同じ文章量として比べない"
       ],
       [
-        "OpenAI API (GPT-4o)",
-        "0.58 秒",
-        "1.62 秒 (Cache時 0.52s)",
-        "84.2 tok/s",
-        "66.5 tok/s",
-        "自動適用 (TTFT -46%)",
-        "汎用プロダクション・マルチモーダル"
-      ],
-      [
-        "Anthropic (Claude 3.7 Sonnet)",
-        "0.82 秒",
-        "2.45 秒 (Cache時 0.85s)",
-        "68.4 tok/s",
-        "51.5 tok/s",
-        "明示指定 (32k時 -74%)",
-        "高度なコード生成・エージェント監査"
+        "遅い側の分布",
+        "普段より待つケースはどれくらいか",
+        "件数、測定期間、エラーとタイムアウト",
+        "p95だけを足して直列処理全体のp95にしない"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. 平均値（Mean）ではなく「北米ピーク帯のp95 TTFT」で設計すべき理由",
-      "body": "1回のユーザー操作の裏で3回〜5回のLLM呼び出しを直列実行するエージェント型アプリケーションでは、1ステップあたりp95で2.0秒のTTFT（初回トークン到達遅延）が発生すると、チェーン全体の待ち時間が10秒を超えます。特にJST 22:00〜03:00は米国西海岸・東海岸のコア業務時間と重なるため、共有エンドポイントではPrefill（入力プロンプトのKVキャッシュ計算）フェーズのキュー待ちが昼間比で2倍〜3倍以上に増加します。"
+      "heading": "どの待ち時間を短くしたいか",
+      "body": "対話画面なら最初の意味のある表示、帳票生成なら最後まで正しく作れた時間、複数段の処理ならアプリ全体の完了時間を測ります。送信開始から測るのか、接続後から測るのかも決めてください。別の測定範囲の秒数を同じ列で比較しないことが出発点です。",
+      "source_indices": []
     },
     {
-      "heading": "2. Prompt CachingによるPrefillボトルネックの解消効果",
-      "body": "システムプロンプトやFew-shot例、リポジトリ構造など共通プレフィックスを先頭4,096 tokens以上に固定してPrompt Cachingを有効化した場合、OpenAI（自動キャッシュ）ではTTFT p50が0.58秒から0.31秒へ46%短縮、Anthropic（cache_control指定）では32k tokens入力時のTTFTが3.8秒から0.98秒へ74%短縮されました。同時にキャッシュ読み取りトークン単価も50%〜90%割引されるため、本番環境では必須の設計パターンです。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？",
-      "answer": "最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。"
+      "heading": "同じプロンプトでも、比較条件はまだ足りない",
+      "body": "モデルのバージョン、入力の長さ、最大出力、思考設定、実行元、同時実行数を記録します。モデルごとにトークンへの分割方法が違うため、tok/sだけでは同じ量の日本語を処理したか分かりません。JSONの形式や必要な情報がそろったかを判定し、失敗と再試行を含めて比べます。",
+      "source_indices": []
     },
     {
-      "question": "夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？",
-      "answer": "単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。"
+      "heading": "キャッシュとストリーミングは、分けて測る",
+      "body": "OpenAIの公式資料は、ストリーミングによる早い表示や、入力・出力・呼び出し回数を見直す方法を説明しています。Prompt Cachingにはモデルや設定ごとの条件があり、毎回同じ短縮率になるものではありません。キャッシュがない最初の呼び出しと、ヒットした呼び出しを混ぜず、使用量の情報も保存します。",
+      "source_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "heading": "p95を足せば、全体のp95になるわけではない",
+      "body": "複数のAPI呼び出しを直列に行うと待ち時間は積み上がりますが、各段のp95を足した数値は処理全体のp95とは一般に一致しません。ユーザー操作から完了までの時間を直接記録します。エラーやタイムアウトを速いリクエストだけの集計から除外すると、運用上の待ち時間を過小評価するので、成功率と別々に示します。",
+      "source_indices": []
+    },
+    {
+      "heading": "別のAPIへ切り替える前に",
+      "body": "まず長すぎる出力、不要な直列呼び出し、データ読み込み、アプリ側のバッファリングを確認します。別モデルへの切替は品質・対応機能・料金・データの送信先も変えます。障害時の代替構成も、同じ結果を出せるかと二重実行を防げるかを検証してから導入します。切替先を増やすだけで速さや可用性が保証されるわけではありません。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/LocalLLaMA - Search: LLM API provider TTFT latency & throughput benchmarks",
-      "url": "https://www.reddit.com/r/LocalLLaMA/search/?q=API+TTFT+latency+throughput+benchmark&restrict_sr=1",
-      "sample_size": "N=672 API latency probes",
-      "verified_date": "2026-10-12"
+      "title": "OpenAI：Latency optimization",
+      "url": "https://developers.openai.com/api/docs/guides/latency-optimization",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "APIの遅延を減らす設計。プロバイダー間の測定順位ではありません。"
     },
     {
-      "title": "Hacker News Algolia Search: Prompt Caching TTFT latency reduction benchmarks",
-      "url": "https://hn.algolia.com/?q=prompt+caching+TTFT+latency",
-      "sample_size": "Production telemetry threads",
-      "verified_date": "2026-10-12"
+      "title": "OpenAI：Prompt caching",
+      "url": "https://developers.openai.com/api/docs/guides/prompt-caching",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "キャッシュ条件と使用量の確認。一定の短縮率を保証しません。"
     }
   ],
-  "affiliate_keys": [
-    "claude-pro",
-    "google-ai-pro"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "title": "パーソナルAIは、どこに置く？"
+    },
+    {
+      "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
+      "title": "AIコーディングのサブスクとAPI、費用をどう比べる？"
+    }
   ]
 }

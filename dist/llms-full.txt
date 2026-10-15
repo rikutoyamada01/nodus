@@ -1,630 +1,1035 @@
-# Nodus — Complete Empirical Benchmark Corpus (llms-full.txt)
+# Nodus — Complete Article Corpus (llms-full.txt)
 
-> 公称スペックとコミュニティ実測値の定量比較データベース
-
----
-
-# Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証
-
-> Note・Zenn・Qiitaでもまだ体系化されていない「Claude Code / Codex 等のトークン使用量肥大化（Attention Dilution）」を、実際のAIチャット42セッションの計測ログから定量化
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv
-- **Raw Verification Log (JSON)**: https://nodus-lab.pages.dev/logs/ai-coding-agent-ast-peek-token-reduction-benchmarks.json
-- **Category**: Software & SaaS Economics
-- **Sample Size (N)**: 42
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- 2,000行クラスのソースコードをそのままReadツールで全文投入すると1ファイルあたり約16,500〜22,000トークンを消費し、以降の全ターンで履歴課金（累積コンテキスト）として雪だるま式に枠を圧迫する。
-- 関数シグネチャ・クラス定義・行番号だけを抜き出す「AST骨格抽出（Peek）」を挟んで必要な30〜80行だけを部分参照すると、探索フェーズのトークン消費が実測中央値で 78.4% 削減（1タスクあたり平均 148K → 32K Tokens）される。
-- pytest / npm build 等の標準出力をそのままエージェントに返さず「失敗箇所＋前後5行」に要約圧縮（execハーネス）することで、5時間ローリング制限あたりの完走タスク数が 2.9倍 に伸び、TTFT（初回応答遅延）も平均 41% 短縮された。
-
-## 主要実測指標 (Key Metrics)
-- **探索トークン削減率 (中央値)**: -78.4% (全文Read (148K) → AST Peek併用 (32K))
-- **5時間枠あたり完走タスク数**: 2.9倍 (5件 → 14.5件) (中規模バグ修正・機能追加タスク基準)
-- **後半ターンの初回応答 (TTFT)**: 6.8秒 → 3.9秒 (-42%) (15ターン目時点のプロンプト処理時間)
-- **検証セッション数 (N)**: N = 42 セッション (独自チャットトランスクリプト実測集計)
-
-## 条件別・実測比較データテーブル
-| エージェント運用方式 | 1タスク平均トークン | 15ターン目TTFT (中央値) | 5時間枠での完走タスク数 | 指示抜け・ハルシネーション率 | 導入コスト・手軽さ |
-| --- | --- | --- | --- | --- | --- |
-| A. デフォルト運用（全文Read＋生コマンド出力） | 148,000 Tokens | 6.8 ms/tok (初動 6.8秒) | 約 4〜6 タスク | 18.5% (後半ターンで急増) | 設定不要（初期状態） |
-| B. 手動でのこまめな /clear・行番号指定のみ | 74,000 Tokens | 4.9 ms/tok (初動 4.9秒) | 約 9〜11 タスク | 9.2% | 毎回人間が指示する手間あり |
-| C. AST骨格Peek＋テスト出力圧縮ハーネス併用 | 32,000 Tokens | 3.9 ms/tok (初動 3.9秒) | 約 14〜16 タスク | 4.1% (高精度を維持) | スクリプト1本・Skill化で自動 |
-| D. サブエージェント委譲（調査だけ別コンテキスト） | 28,000 Tokens (親スレッド) | 3.5 ms/tok (初動 3.5秒) | 約 15〜18 タスク | 3.8% (親の文脈が汚れない) | 複雑な調査タスクに最適 |
-
-## 詳細解説・原因分析
-### 1. なぜ「普通にチャットしているだけ」で制限に引っかかり、回答の質が落ちるのか？
-ZennやQiitaでは「/clearをこまめに使おう」といった定性的なTipsは紹介されていますが、「実際に何が何万トークンを食っているのか」の内訳はあまり知られていません。実際のエージェントのトランスクリプト（JSONL）を解析すると、最大の原因は人間の質問文ではなく「ツールが返したファイル全文とコマンド標準出力が、以降の毎ターンで毎回再送信され続ける構造」にあります。たとえば1,800行のPythonファイル（約18,000トークン）を序盤に1回全文Readすると、その後10回やり取りするだけで 18,000 × 10 = 18万トークン分の枠を消費します。
-
-### 2. 解決策①：いきなりファイルを開かず「AST骨格（クラス・関数名と行番号）」だけを覗く
-人間がコードを読むときも、2,000行のファイルを1行目からすべて音読したりはせず、まずアウトライン（関数一覧）を見て該当箇所にジャンプします。これと同じことをPythonの ast モジュールや正規表現の軽量スクリプト（Peekハーネス）で自動化すると、1,800行のファイルが「クラス名・関数シグネチャ・開始〜終了行番号」だけの約450〜700トークン（約96%減）に圧縮されます。エージェントはその行番号を見て必要な50行だけをピンポイントにReadするため、コンテキストが一切汚れません。
-
-### 3. 解決策②：テスト・ビルドの標準出力を「エラー箇所だけ」に自動トリミングする
-もう一つの隠れたトークン泥棒が pytest や npm run build、git diff などの大量のコンソール出力です。テストが100件中99件通って1件だけ落ちた場合でも、通常のコマンド実行では成功した99件分のログや進捗バーまで全てコンテキストに流れ込みます。ラッパースクリプトで「終了コード0なら最終3行のみ、非0ならTraceback/Error行の前後5行のみを出力」に絞った結果、デバッグループ時のトークン消費が 46.0 kTokens → 8.2 kTokens（-82.2%）まで劇的に低下し、モデルの推論精度も向上しました。
-
-## よくある疑問と回答 (FAQ)
-### Q. Prompt Caching（プロンプトキャッシュ）が効いていれば、履歴が長くても問題ないのでは？
-A. API課金上の単価はキャッシュヒットで割引されますが、定額プランのクオータ計算やモデルのAttention機構（文脈のどこに注目するか）においては、無関係なコードが数万トークン挟まっていること自体が『指示忘れ（Attention Dilution）』や応答遅延（TTFT悪化）の直接原因になります。そもそも不要なテキストを履歴に入れない方が、速度・精度・枠のすべてで有利です。
-
-### Q. 調査用のサブエージェントを使うのとAST Peekはどちらが効果的ですか？
-A. 両方組み合わせるのが最も効果的です。1〜3ファイルの特定ならAST Peek＋部分Readが最速（オーバーヘッドゼロ）で、10ファイル以上にまたがる広範囲な仕様調査はサブエージェントに委譲して『結論の要約だけ』を親チャットに返させると、メインの会話コンテキストを最小限に保てます。
-
-### Q. Claude Codeのトークン使用量・トークン数の確認方法と、上限に達しないためのプラグイン・Codex比較はどうなっていますか？
-A. Claude Codeではセッション内の `/cost` や `/status` コマンド（または JSONL トランスクリプト集計）で現在のトークン使用量・トークン数を確認でき、5時間ローリング上限に達する前に `/compact` やトークン節約プラグイン（Skillハーネス）を挟むのが有効です。Codex と Claude Code のトークン比較でも、全文Readを避けて行範囲指定とテスト出力圧縮を徹底することで両者とも約70〜80%のトークン節約が可能です。
-
-## 検証環境・集計メソドロジー
-実際の開発リポジトリ（Python / TypeScript混在、総ファイル数60〜180規模）において、AIコーディングエージェントのチャットセッション42回分のトランスクリプト（JSONL）を集計。(A) デフォルトの全文Read＋生テスト出力、(B) 行範囲指定Readのみ、(C) AST骨格抽出（Peek）＋行範囲ピンポイントRead＋テスト出力圧縮ハーネス適用の3条件で、1イシュー解決あたりの累計投入トークン数・TTFT・5時間枠消費率を計測。
-
+> 買う、作る、その前に。費用と使い道から考える技術ノート
 
 ---
 
-# AIコードレビューの精度比較：同一AIのセルフレビュー vs 異種モデル相互監査（Peer-Audit）のバグ検出率実測
+# MacでローカルLLMは動く？必要メモリとGPUとの選び方
 
-> AIコードレビューのプロンプト・観点の工夫と、文脈を持たない別系統モデル（Codex等）による静的コード監査（N=28回）のバグ・境界条件漏れ検出数を比較
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv
-- **Raw Verification Log (JSON)**: https://nodus-lab.pages.dev/logs/cross-model-peer-audit-bug-detection-benchmarks.json
-- **Category**: Software & SaaS Economics
-- **Sample Size (N)**: 28
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- コードを書いた本人（同一モデルの同一チャットセッション）に『バグがないか見直して』とAIコードレビューを指示しても、自分自身の思い込み（確証バイアス）を引きずるため、重大な境界条件バグ（P1/P2）の検出率はわずか 21.4% に留まった。
-- 会話履歴（言い訳や意図）を一切共有せず、対象ファイルのコードだけを別系統のモデル（MCP peer-audit 経由の Codex 等）に渡して静的監査させると、正規表現の部分一致バグ・ファイル名衝突・数値クランプ歪みなどのP1/P2欠陥検出率が 82.1%（約3.8倍）に跳ね上がった。
-- 最もコスト対効果が高いのは『全自動で毎回監査』ではなく、『外部入力バリデーション・正規表現・決済/集計ロジック変更時のみ別モデル監査を1回挟む』運用（1タスクあたり追加時間 約45〜90秒）。
-
-## 主要実測指標 (Key Metrics)
-- **P1/P2 実質バグ検出率**: 21.4% → 82.1% (同一スレッド自己見直し vs 異種モデル分離監査)
-- **境界条件・正規表現バグ発見数**: 3.8倍 (符号欠落・ゼロ除算・同名上書き等の検出)
-- **誤検知 (False Positive) 率**: 14.2% (プロンプトで「具体的な再現入力例」を必須化時)
-- **1回あたり平均監査所要時間**: 約 62 秒 (2〜3ファイル対象の静的コード監査中央値)
-
-## 条件別・実測比較データテーブル
-| コード監査方式 | P1/P2バグ検出率 | 平均所要時間 | 追加トークン消費 | 得意な検出領域 | 主な弱点・注意点 |
-| --- | --- | --- | --- | --- | --- |
-| 同一チャット内セルフレビュー | 21.4% | 約 15 秒 | 大 (全履歴を再送) | 単純なタイポ・構文ミスの修正 | 自分の設計ミスや境界条件漏れをほぼ見抜けない |
-| 同一モデル・新規スレッド監査 | 53.6% | 約 35 秒 | 小 (対象ファイルのみ) | 一般的な例外処理漏れ・未使用変数 | 同系統モデルが好むアンチパターンを肯定しがち |
-| 異種モデル静的監査 (Peer-Audit) | 82.1% | 約 62 秒 | 小 (対象ファイルのみ) | 正規表現の穴・単位換算ミス・上書き衝突 | リポジトリ全体の暗黙仕様を知らないとP3指摘が増える |
-| 異種モデル監査 + 自動テスト併用 | 92.9% | 約 95 秒 | 中 | 実動確認 + 未知のエッジケース網羅 | 重要なコアロジック・公開前の最終ゲートに最適 |
-
-## 詳細解説・原因分析
-### 1. なぜAIに「自分のコードを見直して」と言ってもバグが見つからないのか？
-AIコーディングで最も多い失敗パターンが、実装させた直後に同じチャットで『バグやセキュリティ上の問題がないかチェックして』と聞くことです。28タスクの検証ログを分析すると、同一スレッド内のセルフレビューでは『問題ありません』『堅牢に実装されています』と太鼓判を押しながら、実際には負の数値やカンマ区切り数値でパースが壊れるバグを78%以上見逃していました。これはモデルの能力が低いのではなく、直前の自分の思考過程（Chain of Thought）がコンテキストにあるせいで、実際のコードではなく『自分が意図した仕様』を読んでしまうためです。
-
-### 2. 解決策：会話履歴を遮断し、別系統のモデルに「反証入力例」を出させる
-そこでMCP（Model Context Protocol）経由で、実装モデルとは別のモデル（例：実装がGemini/Claudeなら監査はCodex、あるいはその逆）に『会話履歴を一切渡さず、変更したファイルパスだけ』を渡す Peer-Audit 構成を検証しました。このとき『漠然とレビューして』ではなく『具体的な破綻入力例（Evidence）と行番号を示せ』と制約を課すことで、たとえば『run_mine("USB4", subreddit="A") の後に subreddit="B" を呼ぶと同名ファイルを上書きしてデータが消える』『official_value=0 でも最小幅4%にクランプされてグラフが嘘をつく』といった、人間でも気づきにくい仕様バグを1発で引き当てることができました。
-
-### 3. 実践ワークフロー：いつ別モデル監査を呼ぶべきか？
-すべての小さなCSS修正で毎回60秒かけて外部監査を回す必要はありません。実測データから導かれるベストプラクティスは、(1) 正規表現・パーサー・数値集計ロジックを書いたとき、(2) 認証・CSP・URL検証などのセキュリティ境界を触ったとき、(3) デザインやアーキテクチャの根本方針でセカンドオピニオンが欲しいときの3場面に絞って Peer-Audit を呼び出すことです。これだけで手戻りデバッグ時間が半分以下に減ります。
-
-## よくある疑問と回答 (FAQ)
-### Q. 別モデルに監査させると、細かすぎる指摘（重箱の隅つつき）ばかりになりませんか？
-A. 監査プロンプトで Severity（P1: データ消失・脆弱性、P2: 特定入力でのロジック破綻、P3: スタイル・改善案）を明確に分離させ、『修正は勝手に適用せずレポートのみ返せ』と制限するのがコツです。P1/P2だけを無条件で直し、P3は人間の判断で取捨選択するとオーバーエンジニアリングを防げます。
-
-### Q. 監査モデルにはリポジトリ全体を渡すべきですか？
-A. いいえ、変更した2〜4ファイルだけに絞って渡す方が、監査の精度も速度も高くなります。ファイルを絞り込むことで、モデルが1行ずつのデータフローや境界条件に集中して静的解析を行えるためです。
-
-### Q. GitHub CopilotやVSCode、無料・ローカル環境のAIコードレビューツールでも同じプロンプト観点は使えますか？
-A. はい。VSCode拡張やGitHub上のAIコードレビューツール、無料枠やローカルLLMを使う場合でも、プロンプトの観点として『(1) 会話履歴をリセットした別セッションで渡す』『(2) 曖昧な感想ではなく破綻する具体的な入力値（Evidence）と行番号を必須化する』『(3) 実装に使ったモデルとは別系統のモデルを選ぶ』の3点を徹底するだけで、おすすめの商用AIコードレビューツールと同等以上の検出精度を引き出せます。
-
-## 検証環境・集計メソドロジー
-実際のPython / TypeScriptプロジェクト開発28タスクにおいて、(1) 実装担当モデル自身による同一スレッド内セルフレビュー、(2) 同一モデルの新規スレッド（履歴リセット）でのAIコードレビュー、(3) 異種モデル（MCP peer-audit 経由で対象ファイルのみを渡す完全分離型の静的監査）の3方式を実行し、テストスイートまたは人間が後から確認した実バグ（P1: データ破損・例外、P2: 境界条件・ロジック不整合、P3: 設計・保守性）の検出数を集計。
-
-
----
-
-# 100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較
-
-> 公称ピーク出力には記載されない「60分連続負荷時の出力維持率・表面温度・リップル電圧」コミュニティ計測値集計（N=38）
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/100w-140w-gan-charger-thermal-throttling-real-world-tests.csv
-- **Category**: Hardware & Power Electronics
-- **Sample Size (N)**: 38
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- 検証対象モデル・報告数は「4 機種 / N=38」（電子負荷60分連続試験ログ集計）。
-- 高密度100W機の熱ダレ中央値は「22.5 分」（室温25℃環境で100W→65Wへ出力制限）。
-- 60分完走の電力密度目安は「≤ 0.92 W/cm³」（1.1 W/cm³ 超の超小型機で制限多発）。
-- Anker Prime Wall Charger (100W / A2343)：60分間100Wフル出力を完走（N=12）。筐体表面温度中央値64.2℃（IEC 62368-1 プラスチック表面上限77℃未満）。
-
-## 主要実測指標 (Key Metrics)
-- **検証対象モデル・報告数**: 4 機種 / N=38 (電子負荷60分連続試験ログ集計)
-- **高密度100W機の熱ダレ中央値**: 22.5 分 (室温25℃環境で100W→65Wへ出力制限)
-- **60分完走の電力密度目安**: ≤ 0.92 W/cm³ (1.1 W/cm³ 超の超小型機で制限多発)
-- **60分100W維持 確認モデル**: Anker Prime 100W (60分連続100W完走・表面中央値 64.2℃)
-
-## 条件別・実測比較データテーブル
-| モデル名 | 公称最大出力 | 60分連続出力実測 (中央値) | スロットリング開始時間 | 最大表面温度 (室温25℃) | リップル電圧 (mVp-p) | 無負荷待機電力 |
-| --- | --- | --- | --- | --- | --- | --- |
-| Anker Prime 100W (A2343) | 100W (20V/5A) | 100W 維持 (100%) | 制限なし (>60分) | 64.2 ℃ | 42 mVp-p | 0.18 W |
-| UGREEN Nexode Pro 100W | 100W (20V/5A) | 65W へ低下 (65%) | 約 26 分 | 71.8 ℃ | 68 mVp-p | 0.24 W |
-| SHARGEEK 140W PD3.1 | 140W (28V/5A) | 100W へ低下 (71%) | 約 31 分 (140W時) | 69.5 ℃ | 55 mVp-p | 0.45 W (液晶常時表示) |
-| Apple 140W USB-C電源アダプタ | 140W (28V/5A) | 140W 維持 (100%) | 制限なし (>60分) | 58.4 ℃ | 28 mVp-p | 0.11 W |
-
-## 詳細解説・原因分析
-### 1. カタログの「最大100W」と実際の「連続100W」は別物
-USB-C充電器の製品仕様に記載されている「最大100W」「最大140W」という数値は、冷えた状態から出力を開始した直後のピーク出力（Peak Power）です。r/UsbCHardwareおよび電源解析コミュニティによる電子負荷試験（定電力モード・室温25℃）の集計では、体積を極限まで小さくした高密度GaN充電器の多くが、18分〜30分の間に内部温度閾値に達し、65Wまたは45Wへ出力を落とす（サーマルスロットリング）挙動が確認されています。
-
-### 2. 物理特性としての「電力密度 0.95 W/cm³ の境界線」
-分解・熱画像測定ログをクロス集計すると、自然空冷の樹脂筐体において60分間100Wを熱ダレなしで維持できるかどうかの境界は、電力密度（公称W数 ÷ 筐体体積cm³）が「約 0.90〜0.95 W/cm³ 以下」であるかどうかに強く相関しています。1.1 W/cm³以上の超小型モデルは、スマートフォンの短時間急速充電には適していますが、ワークステーションやMacBook Proの連続高負荷レンダー用途では途中から出力制限に入るケースがあります。
-
-### 3. リップル電圧と複数ポート再ネゴシエーションの注意点
-高負荷時に出力リップル電圧が150〜200 mVp-pを超える個体では、ノートPCのトラックパッド誤作動やコイル鳴きの原因となることが報告されています。一方、Anker PrimeシリーズやApple純正140Wアダプタは実測50 mVp-p以下に抑えられており、連続高負荷時の電圧安定性に優れています。
-
-## よくある疑問と回答 (FAQ)
-### Q. MacBook Pro (14インチ/16インチ) の通常作業でも熱ダレの影響はありますか？
-A. 通常のWebブラウジングやオフィス作業では消費電力が15W〜35W程度のため、超小型モデルでも熱ダレは発生しません。ただし、バッテリー残量10%以下からの急速充電中に動画書き出しやローカルLLM推論を同時に行う場合、30分以上90W前後の要求が続くため、持続出力の高いモデルを選ぶメリットが大きくなります。
-
-### Q. ケーブルによっても実測出力は変わりますか？
-A. はい。60W（20V/3A）を超える出力には、eMarkerチップを内蔵した100W（5A）または240W（EPR 5A）対応ケーブルが必須です。eMarker非搭載ケーブルを接続した場合、充電器側が100W対応であっても自動的に最大60Wに制限されます。
-
-### Q. 超小型100W充電器が途中で65Wに落ちる（瞬断する）のは故障ですか？
-A. 故障ではなく、内部基板温度が規定値（約90〜105℃）に達した際に働くサーマルスロットリング（過熱保護制御）です。実測ログ（N=38）では、電力密度1.1 W/cm³以上の超小型モデルにおいて連続負荷20〜26分前後で100Wから65Wへの再ネゴシエーションが発生しています。
-
-## 検証環境・集計メソドロジー
-室温24〜26℃環境におけるUSB-C PD電子負荷試験（定電力20V/5A=100Wおよび28V/5A=140W、60分間連続通電）の公開計測ログ38件を集計。数値は中央値（四分位範囲 ±4.5℃ / ±3分）を記載。
-
-
----
-
-# Claude Code vs Cursor 料金・レート制限比較：Claude Pro / Cursor Pro の実質トークン単価と併用実測
-
-> 公式表記「5倍の利用枠」「月間$20クレジット枠」の裏にある5時間ローリング上限・コンテキスト圧縮閾値の有志検証まとめ（N=85）
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv
-- **Category**: Software & SaaS Economics
-- **Sample Size (N)**: 85
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- 集計開発者ログ数 (N)は「85 アカウント」（r/ClaudeAI (N=54), r/cursor (N=31)）。
-- Claude Pro 5時間枠の実測中央値は「約 180万〜240万 Tokens」（キャッシュ込み入力＋出力換算（Sonnet系））。
-- 定額プランのAPI換算倍率は「約 2.8倍 〜 4.2倍」（月20営業日・通常利用時のAPI単価比）。
-- Claude Pro ($20/月)：5時間ごとのリセット枠を月20営業日・1日1.5回消化した場合、API従量課金で約$85〜$110相当のトークンを消化可能（N=34）。
-
-## 主要実測指標 (Key Metrics)
-- **集計開発者ログ数 (N)**: 85 アカウント (r/ClaudeAI (N=54), r/cursor (N=31))
-- **Claude Pro 5時間枠の実測中央値**: 約 180万〜240万 Tokens (キャッシュ込み入力＋出力換算（Sonnet系）)
-- **定額プランのAPI換算倍率**: 約 2.8倍 〜 4.2倍 (月20営業日・通常利用時のAPI単価比)
-- **Max 5x ($100) 損益分岐点**: API換算 $280/月 以上 (Claude Code連続稼働ユーザーの分岐目安)
-
-## 条件別・実測比較データテーブル
-| プラン名 | 月額料金 | 公式表記の課金・上限仕様 | コミュニティ実測上限 (中央値) | 実質コンテキストウィンドウ | API従量比のコスト効率 | 主な適性用途 |
-| --- | --- | --- | --- | --- | --- | --- |
-| Claude Pro | $20 / 月 | 無料版の5倍以上（5時間ローリング制） | 5時間あたり 約45メッセージ (長文時 15〜20回) | 200K Tokens (フル保持) | 約 4.2x 相当 | 日常の設計相談・中規模コード生成 |
-| Claude Max (5x) | $100 / 月 | Proの5倍の利用枠（5時間ローリング制） | 5時間あたり 約225メッセージ相当 (Claude Code対応) | 200K Tokens (キャッシュ最適化) | 約 4.1x 相当 | Claude Codeによる自律実装・長時間リファクタ |
-| Cursor Pro | $20 / 月 | 月$20相当の使用量枠 + 従量課金オプション (Auto軽減あり) | 前沿モデル直指定で約220〜350回 / Auto併用で約550回相当 | 通常約32K〜60K (Max Mode時は拡張・消費増) | 約 2.8x 相当 | IDE内でのTab補完・ピンポイント改修 |
-| Anthropic API (Tier 2+) | 完全従量制 | RPM/TPM上限のみ (残高限り) | 上限なし (Sonnet: $3/1M In, $15/1M Out) | 200K〜1M Tokens | 1.0x (基準値) | GitHub Actions等の完全無人バッチ・CIパイプライン |
-
-## 詳細解説・原因分析
-### 1. 「残りメッセージ数」は回数ではなく「累計コンテキスト長」で減算される
-r/ClaudeAIの有志によるトークンカウンタおよびccusage検証（N=54）により、5時間ごとの利用枠は単純な「送信回数」ではなく、「送信時点のスレッド全体のトークン数 × モデル重み係数」で計算されていることが裏付けられています。たとえば10万トークンの長大なチャット履歴を維持したまま1回質問を送ると、新規スレッドで短い質問を25回送るのと同じだけのクオータを消費します。
-
-### 2. IDE組み込み型（Cursor Pro現行クレジット制）における「コンテキスト切り詰め閾値」
-Cursor Proは従来の回数制からAPI単価ベースの使用量プール（$20枠＋Autoモードやキャッシュによる消費軽減）へ移行しています。通常モードでは1リクエストあたりのクレジット消費を抑えるため、ファイル全体をそのまま送らず関連スニペット抽出や要約によって実効コンテキストを32K〜60Kトークン前後に圧縮していることが開発者ログ（N=31）から確認されています。Max Modeを有効にするとフルコンテキストを扱えますが、クレジット消化速度も比例して増加します。
-
-### 3. 定額プランとAPI従量課金のハイブリッド構成
-定量比較の結論として、人間がターミナルやブラウザで対話的に開発・分析する用途では定額プラン（Pro / Max）がAPI従量比で約2.8〜4.2倍のトークン消化効率を発揮します。一方、GitHub Actions等から無人で定期実行するスクリプトには公式APIキー（Prompt Caching併用）を割り当てるハイブリッド構成が、規約遵守とコスト管理の両面で合理的です。
-
-## よくある疑問と回答 (FAQ)
-### Q. Claudeの5時間制限を最も長持ちさせる運用方法は何ですか？
-A. トピックが変わるごとに必ず「新規チャット（または /clear /compact）」を行い、過去の不要な会話履歴を毎回再送信しないことです。実測では、1スレッドを長く続ける場合と比較して、こまめにスレッドを分けるだけで5時間あたりの実行可能タスク数が約3.2倍に増加します。
-
-### Q. バックグラウンドの自動バッチ処理に定額プランのアカウントを使えますか？
-A. 利用規約および認証安定性の観点から、消費者向け定額プランの非公式スクレイピング自動化は推奨されません。完全無人バッチ（週次のSEO改善ループ等）には公式APIキーまたは対象ツールで許可されたワークフローを利用してください。
-
-## 検証環境・集計メソドロジー
-r/ClaudeAI (N=54) および r/cursor (N=31) においてステータスバー・APIトークンカウンタ・ccusageログを用いて計測された5時間ローリング消費量および月間クレジット枠消化報告（2026年時点の現行料金体系）を集計。API換算額はAnthropic Sonnet系公式API単価（Input $3/1M, Output $15/1M, Prompt Cache考慮）を基準に算出。
-
-
----
-
-# USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース
-
-> カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv
-- **Category**: Hardware & Power Electronics
-- **Sample Size (N)**: 41
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- 集計連続書込テスト数は「41 ログ」（r/NewMaxx 500GB連続転送計測）。
-- QLC採用機のキャッシュ後速度は「180 〜 320 MB/s」（公称ピーク比 約8〜10%まで急落）。
-- DRAM搭載TLC機の持続速度は「1,450 〜 1,820 MB/s」（放熱筐体との組み合わせ時の中央値）。
-- OWC Express 1M2 + DRAM搭載TLC (2TB)：大型フィン付きアルミ筐体によりコントローラ温度が62℃前後に抑えられ、キャッシュ枯渇後も約1.78GB/sを維持（N=14）。
-
-## 主要実測指標 (Key Metrics)
-- **集計連続書込テスト数**: 41 ログ (r/NewMaxx 500GB連続転送計測)
-- **QLC採用機のキャッシュ後速度**: 180 〜 320 MB/s (公称ピーク比 約8〜10%まで急落)
-- **DRAM搭載TLC機の持続速度**: 1,450 〜 1,820 MB/s (放熱筐体との組み合わせ時の中央値)
-- **熱切断を防ぐ筐体熱設計目安**: アルミ総重量 ≥ 180g (薄型エンクロージャは72℃超で減速)
-
-## 条件別・実測比較データテーブル
-| 構成 / モデル | インターフェース | 公称最大書込速度 | pSLCキャッシュ容量目安 | キャッシュ枯渇後の持続速度 | 500GB転送時の最高表面温度 | 瞬断・熱ダレ傾向 |
-| --- | --- | --- | --- | --- | --- | --- |
-| OWC Express 1M2 + TLC (SN850X等) | USB4 (40Gbps) | 3,150〜3,600 MB/s | 約 280〜350 GB | 1,650 〜 1,850 MB/s | 54.5 ℃ (大型ヒートシンク) | 熱ダレなし・安定 |
-| Samsung T9 (2TB) | USB 3.2 Gen2x2 (20Gbps) | 1,950 MB/s | 約 180 GB | 980 〜 1,120 MB/s | 58.2 ℃ (ラバー外装) | 熱ダレ軽微・安定 |
-| 薄型USB4エンクロージャ + TLC | USB4 (40Gbps) | 3,600 MB/s | 約 200 GB | 650 〜 820 MB/s | 71.4 ℃ (過熱減速発生) | 10〜15分で速度制限 |
-| 一般的なQLC採用ポータブルSSD | USB 3.2 Gen2 / Gen2x2 | 1,050〜2,000 MB/s | 約 100〜160 GB (空き依存) | 180 〜 310 MB/s | 63.0 ℃ | キャッシュ枯渇後に大幅低下 |
-
-## 詳細解説・原因分析
-### 1. CrystalDiskMarkの数値（1GiB〜4GiB）が連続転送で当てにならない理由
-一般的なレビュー記事で掲載されるCrystalDiskMarkのデフォルト計測（1GiB×5回）は、SSD全体の数%にあたる高速pSLCキャッシュ領域の中だけで完結します。しかし、ProRes動画素材やLLMの重みファイル（100GB〜500GB）を一括コピーする場合、pSLCキャッシュ領域を超過した時点からNANDフラッシュ本来の書き込み速度（TLCまたはQLCの素の速度）とキャッシュ解放処理が同時に発生し、実効速度が1/3〜1/10に低下します。
-
-### 2. USB4ブリッジチップ（ASM2464PD）の発熱と電力要求
-USB4 (40Gbps) 外付けケースの多くに採用されているASMedia製ASM2464PDコントローラは、単体で2.5W〜3.5W前後を発熱します。NVMe SSD自体の発熱（4W〜7W）と合わさると合計7W〜10Wの熱源となるため、サーマルパッドで筐体へ確実に熱伝導できない小型・薄型ケースでは、NANDのキャッシュが切れる前にコントローラ温度が上限に達し、スロットリングやバス再接続（瞬断）を引き起こす事例が報告されています。
-
-## よくある疑問と回答 (FAQ)
-### Q. Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？
-A. Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。
-
-### Q. 外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？
-A. 主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。
-
-## 検証環境・集計メソドロジー
-r/NewMaxx および r/UsbCHardware に投稿された CrystalDiskMark ピーク値ではなく、500GB〜1TB単一イメージ連続書き込み試験（室温24〜26℃）のログ41件を集計。pSLCキャッシュ枯渇後のTLC/QLCネイティブ書き込み速度中央値を比較。
-
-
----
-
-# Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測
-
-> 公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv
-- **Category**: Cloud & AI Infrastructure
-- **Sample Size (N)**: 64
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- 集計サンプル数 (N)は「64 セッション」（r/GoogleColab (N=42), r/LocalLLaMA (N=22)）。
-- A100 (40GB) 実測稼働時間は「37.2 時間 / 200CU」（実測中央値 5.37 CU/時 換算）。
-- H100 (80GB) 実測稼働時間は「11.1 時間 / 200CU」（実測中央値 18.05 CU/時 換算）。
-- NVIDIA T4 (15GB VRAM)：CU消費は最小（1.65 CU/h ±0.15）だが、旧Turing世代のためFP8/BF16非対応（N=14）。
-
-## 主要実測指標 (Key Metrics)
-- **集計サンプル数 (N)**: 64 セッション (r/GoogleColab (N=42), r/LocalLLaMA (N=22))
-- **A100 (40GB) 実測稼働時間**: 37.2 時間 / 200CU (実測中央値 5.37 CU/時 換算)
-- **H100 (80GB) 実測稼働時間**: 11.1 時間 / 200CU (実測中央値 18.05 CU/時 換算)
-- **推論・LoRA 最高効率枠**: NVIDIA L4 (22.5GB) (実測中央値 1.78 CU/時（約112.3時間）)
-
-## 条件別・実測比較データテーブル
-| GPUランタイム | VRAM容量 | 公式表記レート | 実測消費レート中央値 (CU/時) | 200 CUでの稼働時間目安 | 参考単価換算 (1 CU ≈ ¥7.5基準) | 主な適性ワークロード |
-| --- | --- | --- | --- | --- | --- | --- |
-| NVIDIA T4 | 15 GB (GDDR6) | 非公開（動的変動） | 1.65 CU/h (±0.15) | 約 121.2 時間 | 約 ¥12.4 / 時間 | Whisper文字起こし、軽量7B推論 |
-| NVIDIA L4 | 22.5 GB (GDDR6) | 非公開（動的変動） | 1.78 CU/h (±0.20) | 約 112.3 時間 | 約 ¥13.4 / 時間 | FLUX画像生成、VLM-OCR、14B推論 |
-| NVIDIA A100 (Standard) | 40 GB (HBM2e) | 非公開（動的変動） | 5.37 CU/h (±0.35) | 約 37.2 時間 | 約 ¥40.3 / 時間 | 動画生成、14B〜32B LoRA学習 |
-| NVIDIA A100 (High-RAM) | 80 GB (HBM2e) | 非公開（動的変動） | 7.52 CU/h (±0.50) | 約 26.6 時間 | 約 ¥56.4 / 時間 | 長文コンテキスト学習、大型バッチ処理 |
-| NVIDIA G4 (Blackwell) | 96 GB (GDDR7) | 非公開（動的変動） | 9.80 CU/h (±0.80) | 約 20.4 時間 | 約 ¥73.5 / 時間 | 70B+ LLM推論、FP4/FP8生成 |
-| NVIDIA H100 | 80 GB (HBM3) | 非公開（動的変動） | 18.05 CU/h (±1.10) | 約 11.1 時間 | 約 ¥135.4 / 時間 | フルファインチューニング、大規模科学計算 |
-
-## 詳細解説・原因分析
-### 1. 公式仕様の「動的変動」とコミュニティ実測値の収束レンジ
-Google Colabの公式FAQおよびランタイム選択画面では、各GPUの時間あたり消費量（Burn Rate）は「需要と供給に応じて動的に変動する」と記載されており、固定の数値表は公開されていません。しかし、r/GoogleColabおよびr/LocalLLaMAの有志による64セッションの計測ログを集計した結果、通常時間帯における消費レートは各GPUごとに一定のレンジ（±8〜11%程度）に収束していることが確認されています。
-
-### 2. T4（1.65 CU/h）とL4（1.78 CU/h）の定量効率差
-実測値で注目すべき点は、T4（中央値 1.65 CU/h）とL4（中央値 1.78 CU/h）の消費レート差が約7.8%にとどまることです。一方でL4はVRAMが22.5GBあり、Ada Lovelace世代のTensorコアによるFP8/BF16演算に対応しているため、画像生成や視覚言語モデル（VLM-OCR）の実測スループットはT4比で2倍以上に達します。結果として1タスク完了あたりの累計CU消費量はL4の方が少なくなります。
-
-### 3. H100 vs A100：1ステップあたりのCU損益分岐点
-H100は1時間あたり中央値18.05 CU（A100 40GBの約3.36倍）を消費します。単一バッチ推論や小規模LoRA学習ではディスクI/Oや前処理がボトルネックとなり、H100の速度向上幅がCU消費倍率（3.36倍）を下回るケースが多く見られます。データ前処理中はCPUランタイムを使用し、GPU使用率が90%以上に張り付く学習フェーズのみA100またはL4を割り当て、完了直後に runtime.unassign() で切断する運用がCU節約に有効です。
-
-## よくある疑問と回答 (FAQ)
-### Q. Google ColabのCompute Unitsはアイドル中も消費されますか？
-A. はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。
-
-### Q. 超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？
-A. RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。
-
-## 検証環境・集計メソドロジー
-Google Colabの公式仕様ではGPUごとの固定CU消費レートは非公開（動的変動表記）であるため、r/GoogleColab (N=42) および r/LocalLLaMA (N=22) の計64セッションにおけるランタイム接続前後の残高差分（CU/h）を集計。チャート上段は外部クラウドGPUスポット相場（$13.3/200CU相当基準）からの理論換算時間、下段はColab 200 CU枠での実測稼働時間中央値を示す。
-
-
----
-
-# 主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース
-
-> 公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）
-
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv
-- **Category**: Cloud & AI Infrastructure
-- **Sample Size (N)**: 672
-- **Data Updated**: 2026-10-12
-
-## 結論・実測サマリー (TL;DR)
-- 集計API計測リクエスト数は「672 回/社」（15分周期×7日間 4k入力ストリーミング）。
-- 夜間ピーク時のp95 TTFT倍率は「2.1x 〜 3.4x」（JST 22:00〜03:00（北米日中帯と重複））。
-- Prompt Cachingヒット時短縮率は「-46% 〜 -74%」（32k長文コンテキスト時のPrefill削減効果）。
-- Groq Cloud API (Llama-3.3-70B-Versatile)：専用LPUアーキテクチャにより北米ピーク時間帯でもp95 TTFTが0.48秒にとどまり、リアルタイム音声・対話用途で圧倒的安定性（N=672）。
-
-## 主要実測指標 (Key Metrics)
-- **集計API計測リクエスト数**: 672 回/社 (15分周期×7日間 4k入力ストリーミング)
-- **夜間ピーク時のp95 TTFT倍率**: 2.1x 〜 3.4x (JST 22:00〜03:00（北米日中帯と重複）)
-- **Prompt Cachingヒット時短縮率**: -46% 〜 -74% (32k長文コンテキスト時のPrefill削減効果)
-- **最低遅延プロバイダ (p95 TTFT)**: 0.48 秒 (Groq LPU / 次点 Gemini Flash 0.89秒)
-
-## 条件別・実測比較データテーブル
-| APIプロバイダ / モデル | 日中 TTFT (p50) | 北米ピーク TTFT (p95) | 純粋出力速度 (p50) | 夜間p95実効速度 (512tok) | Prompt Caching短縮効果 | 推奨ワークロード |
-| --- | --- | --- | --- | --- | --- | --- |
-| Groq Cloud (Llama-3.3-70B) | 0.24 秒 | 0.48 秒 | 248.5 tok/s | 201.5 tok/s | ベースが極小遅延 | 音声対話・リアルタイムUI |
-| Vertex AI (Gemini 2.5 Flash) | 0.41 秒 | 0.89 秒 | 142.0 tok/s | 114.0 tok/s | Context Caching対応 | 大規模構造化抽出・分類 |
-| Together AI (70B Turbo) | 0.52 秒 | 1.78 秒 | 112.4 tok/s | 80.8 tok/s | 限定的 | オープン重みモデルの低単価実行 |
-| OpenAI API (GPT-4o) | 0.58 秒 | 1.62 秒 (Cache時 0.52s) | 84.2 tok/s | 66.5 tok/s | 自動適用 (TTFT -46%) | 汎用プロダクション・マルチモーダル |
-| Anthropic (Claude 3.7 Sonnet) | 0.82 秒 | 2.45 秒 (Cache時 0.85s) | 68.4 tok/s | 51.5 tok/s | 明示指定 (32k時 -74%) | 高度なコード生成・エージェント監査 |
-
-## 詳細解説・原因分析
-### 1. 平均値（Mean）ではなく「北米ピーク帯のp95 TTFT」で設計すべき理由
-1回のユーザー操作の裏で3回〜5回のLLM呼び出しを直列実行するエージェント型アプリケーションでは、1ステップあたりp95で2.0秒のTTFT（初回トークン到達遅延）が発生すると、チェーン全体の待ち時間が10秒を超えます。特にJST 22:00〜03:00は米国西海岸・東海岸のコア業務時間と重なるため、共有エンドポイントではPrefill（入力プロンプトのKVキャッシュ計算）フェーズのキュー待ちが昼間比で2倍〜3倍以上に増加します。
-
-### 2. Prompt CachingによるPrefillボトルネックの解消効果
-システムプロンプトやFew-shot例、リポジトリ構造など共通プレフィックスを先頭4,096 tokens以上に固定してPrompt Cachingを有効化した場合、OpenAI（自動キャッシュ）ではTTFT p50が0.58秒から0.31秒へ46%短縮、Anthropic（cache_control指定）では32k tokens入力時のTTFTが3.8秒から0.98秒へ74%短縮されました。同時にキャッシュ読み取りトークン単価も50%〜90%割引されるため、本番環境では必須の設計パターンです。
-
-## よくある疑問と回答 (FAQ)
-### Q. ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？
-A. 最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。
-
-### Q. 夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？
-A. 単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。
-
-## 検証環境・集計メソドロジー
-東京リージョン（ap-northeast-1）から15分間隔×7日間（計672リクエスト/エンドポイント）、入力4,096 tokens・出力512 tokensの構造化JSON生成ストリーミングを実行した公開ベンチマークおよびr/LocalLLaMA運用テレメトリを集計。JST昼間帯（10:00〜18:00）のp50出力速度と、北米営業時間重複帯（JST 22:00〜04:00）の実効スループット（TTFT待ち時間込み）を比較。
-
-
----
-
-# ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較
-
-> llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）
+> 手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。
 
 - **Canonical URL**: https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv
+
+## 訂正について
+旧版の74環境集計、機種別tok/s、ワット効率、VRAMに収まる条件の断定は、採用した測定と集計手順を再現できないため撤回しました。必要なメモリと測定条件を確認する選び方へ改訂しました。
+
+---
+
 - **Category**: Cloud & AI Infrastructure
-- **Sample Size (N)**: 74
-- **Data Updated**: 2026-10-12
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-15
 
-## 結論・実測サマリー (TL;DR)
-- 集計llama-benchログ数は「74 環境」（ggml-org/llama.cpp & r/LocalLLaMA）。
-- 32B (Q4_K_M) 最高速構成は「RTX 4090 (61.5 tok/s)」（24GB VRAM内に全層配置・消費約340W）。
-- 70B (Q4_K_M) 最高電力効率は「M4 Max 128GB (0.19 tok/J)」（約18.5 tok/s・システム全体わずか約98W）。
-- NVIDIA RTX 4090 (24GB VRAM / 1,008 GB/s)：24GB VRAMに19.8GBの重みが完全収容され、Prompt Processing (pp512) も約2,850 tok/sと圧倒的。ただし70B (42.5GB) は単体では収まらない（N=24）。
+## 選び方の要点
+- 対応するMacならOllamaでローカルLLMを試せる。まずOS、チップ、メモリを確認する。
+- 必要メモリはモデルと文脈長で変わる。搭載容量だけで判断せず、実行中の使用量を見る。
+- MacやGPUを買い足す前に、同じ日本語の課題で品質と待ち時間を比べる。
 
-## 主要実測指標 (Key Metrics)
-- **集計llama-benchログ数**: 74 環境 (ggml-org/llama.cpp & r/LocalLLaMA)
-- **32B (Q4_K_M) 最高速構成**: RTX 4090 (61.5 tok/s) (24GB VRAM内に全層配置・消費約340W)
-- **70B (Q4_K_M) 最高電力効率**: M4 Max 128GB (0.19 tok/J) (約18.5 tok/s・システム全体わずか約98W)
-- **長文プロンプト処理 (pp512) 差**: CUDAが Metal比 3.2〜4.8倍 (RAGや長文コード読込ではNVIDIAが圧倒)
 
-## 条件別・実測比較データテーブル
-| ハードウェア構成 | 利用可能VRAM / 統合メモリ | 公称メモリ帯域 | 32B (Q4_K_M) 生成速度 | 70B (Q4_K_M) 生成速度 | 推論時システム消費電力 | 70B時の電力効率 (tok/kJ) |
-| --- | --- | --- | --- | --- | --- | --- |
-| RTX 4090 (24GB 単体) | 24 GB (GDDR6X) | 1,008 GB/s | 61.5 tok/s | VRAM超過 (CPUオフロード時 3.8 tok/s) | 約 340 W | 11.2 tok/kJ (オフロード時) |
-| RTX 3090 × 2枚 (48GB) | 48 GB (GDDR6X) | 936 GB/s | 44.2 tok/s | 23.8 tok/s | 約 610 W | 39.0 tok/kJ |
-| Mac Studio (M2 Ultra 192GB) | 192 GB (Unified) | 800 GB/s | 28.4 tok/s | 14.8 tok/s | 約 115 W | 128.7 tok/kJ |
-| MacBook Pro / Studio (M4 Max 128GB) | 128 GB (Unified) | 546 GB/s | 22.6 tok/s | 11.4 tok/s | 約 95 W | 120.0 tok/kJ |
+## 選択肢の比較表
+| 候補 | 検討する理由 | 確認すること | 費用の範囲 |
+| --- | --- | --- | --- |
+| 手元のPCで試す | 初期支出を増やさず用途を確かめる | モデル、量子化、メモリ、待ち時間 | 追加電力と必要な保存領域 |
+| Apple SiliconのMac | 統合メモリ構成や普段の作業も含めて選ぶ | 推論ソフトの対応、利用可能メモリ、性能 | 本体の構成、保存領域、他用途との共用 |
+| GPU搭載PC・増設 | 対応ソフトや既存PCを活かしたい | VRAM、電源、冷却、実行バックエンド | GPUだけでなく電源やケースの増設 |
+| API・クラウド併用 | 大きな処理を不定期に行う | 品質、送信データ、料金、利用条件 | 利用量に応じた料金と運用費 |
 
 ## 詳細解説・原因分析
-### 1. ローカルLLMの生成速度（tg）は「GPU演算性能」ではなく「メモリ帯域幅」で決まる
-バッチサイズ1のローカルLLM推論では、1トークンを生成するたびにモデルの全パラメータ（32B Q4_K_Mなら約20GB、70B Q4_K_Mなら約43GB）をメモリから演算ユニットへ読み出す必要があります。そのため、理論上の最大生成速度（tok/s）は「実効メモリ帯域幅（GB/s）÷ モデルサイズ（GB）」にほぼ比例します。llama-benchの集計では、各ハードウェアとも公称メモリ帯域の約68%〜78%の実効効率に綺麗に収束しています。
+### 手持ちのMacで動く？OSとチップを確認する
+Macでも、対応する実行ソフトとモデルを選べばローカルLLMを試せます。この記事ではOllamaを例にします。2026年10月15日確認の公式要件はmacOS Sonoma 14以降で、Apple MシリーズはCPUとGPU、Intelのx86 MacはCPUのみの対応です。Appleメニューの「このMacについて」でチップまたはプロセッサ、macOSの版、搭載メモリを確認し、モデルを保存するディスクの空き容量も用意します。これはOllamaの要件で、すべての推論ソフトに共通する条件ではありません。
+参照: [Ollama：macOSの要件とインストール](https://docs.ollama.com/macos)
+参照: [Apple：Appleシリコン搭載Macの確認方法](https://support.apple.com/en-us/116943)
 
-### 2. 見落とされがちな「プロンプト処理速度（Prompt Processing / TTFT）」の格差
-Apple Silicon（統合メモリ）は128GB〜192GBの大容量を低消費電力（約100W前後）で扱えるため、70Bモデルのトークン生成（tg）におけるワット効率はRTX 3090 2枚構成の約3倍に達します。一方で、1万〜3万トークンの長文ドキュメントやコードベースを一気に読み込む「Prompt Processing（pp）」は純粋な行列演算（TFLOPS）律速となるため、NVIDIA CUDA環境の方がApple Metal環境より3倍〜5倍高速（初動の待ち時間が短い）という明確なトレードオフが存在します。
+### OllamaでローカルLLMを試す手順
+①Ollama公式サイトのmacOS版をインストールしてアプリを起動します。②ターミナルで ollama run gemma3:1b を実行します。初回はモデルをダウンロードするため通信と保存領域が必要です。③短い日本語の質問を入力し、回答が返ることを確認します。このモデルは導入確認の例で、日本語の品質を保証する推奨モデルではありません。④別のターミナルで ollama ps を実行し、PROCESSOR欄でCPU・GPUの使用状況を確認します。会話は /bye で終了し、モデルをメモリから外す場合は ollama stop gemma3:1b を実行します。
+参照: [Ollama：macOSの要件とインストール](https://docs.ollama.com/macos)
+参照: [Ollama：CLIリファレンス](https://docs.ollama.com/cli)
+参照: [Ollama：Gemma 3 1Bの配布ページ](https://ollama.com/library/gemma3:1b)
+参照: [Ollama：文脈長と必要メモリ](https://docs.ollama.com/context-length)
+参照: [Ollama：FAQ](https://docs.ollama.com/faq)
+参照: [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
 
-## よくある疑問と回答 (FAQ)
-### Q. RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？
-A. 32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。
+### 最初に決めるのは、モデルではなく仕事
+日本語の相談、文書検索、コード補助など、毎週行いたい仕事を選びます。求める品質と待てる時間を決めて、手元のPCやAPIで試します。大きなモデルを動かせたという事実だけでは、その機器に購入額を払う価値があるかは分かりません。
 
-### Q. メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？
-A. 動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。
+### 必要メモリは何GB？重みの容量だけで決めない
+8GB・16GBなどの搭載容量だけでは、使いたいモデルが快適に動くかは決まりません。モデルの保存ファイルのほかに、実行時のキャッシュや作業領域が必要です。文脈長、量子化、同時利用数、実行ソフトの設定でも使用量が変わり、macOSやほかのアプリにもメモリが必要です。Ollamaの公式資料も文脈長を大きくすると必要メモリが増えると説明しています。旧版のように特定のパラメータ数なら必ず一定容量に収まるとは断定せず、使うファイルと設定で実行中の使用量を確認します。
+参照: [Ollama：文脈長と必要メモリ](https://docs.ollama.com/context-length)
+参照: [Apple：アクティビティモニタでメモリ使用状況を表示](https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac)
+参照: [Ollama：FAQ](https://docs.ollama.com/faq)
 
-## 検証環境・集計メソドロジー
-r/LocalLLaMA および ggml-org/llama.cpp 公式ディスカッションの llama-bench 計測スレッド（N=74）より、Qwen2.5-32B-Instruct (Q4_K_M, 約19.8GB) および Llama-3.3-70B-Instruct (Q4_K_M, 約42.5GB) のトークン生成速度（tg128, tok/s）とプロンプト処理速度（pp512, tok/s）、およびシステム全体の壁コンセント消費電力（W）を集計。
+### メモリ不足や遅さを感じたら、条件を一つずつ変える
+アクティビティモニタの「メモリ」でメモリプレッシャーとスワップ使用領域を見て、実行前後を比較します。Ollamaでは ollama ps で実際の文脈長とCPU・GPUの使用状況も確認します。負荷が大きい場合は、不要なアプリやほかのモデルを終了し、短い会話と小さいモデルで再確認します。文脈長を大きく設定していたならOllamaの設定で下げ、必要な文書が収まる範囲を探します。文脈を減らすと扱える情報も減るため、回答の品質も確かめます。スワップの値だけで原因を断定せず、変えた条件と待ち時間を一緒に記録します。
+参照: [Ollama：CLIリファレンス](https://docs.ollama.com/cli)
+参照: [Ollama：文脈長と必要メモリ](https://docs.ollama.com/context-length)
+参照: [Apple：アクティビティモニタでメモリ使用状況を表示](https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac)
+
+### 入力処理と生成を別に比べる
+llama-benchの公式READMEでは、プロンプト処理のppと生成のtgを分けた測定例が示されています。長い文書を読み込む用途と短い会話を続ける用途では、注目する項目が違います。同じモデルファイル、ソフトの版、バックエンド、文脈条件を記録して比較し、異なる条件のログから機種の順位を作らないようにします。
+参照: [llama.cpp：llama-bench README](https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md)
+
+### 公開ログは、同じ条件かを確かめる
+llama.cppのApple Silicon向けディスカッションには利用者の報告があります。ただし投稿の機器、モデル、ソフトの版、設定は一定ではありません。個別の構成の参考として読めても、そのまま最近のすべてのMacやGPUの性能に一般化することはできません。今回も、その投稿群から比較中央値を再計算したわけではありません。
+参照: [llama.cpp：Apple Siliconの性能報告](https://github.com/ggml-org/llama.cpp/discussions/4167)
+
+### 本体価格と、使い続ける費用
+GPUの増設では、必要な電源、ケース、冷却、騒音も含めます。電力効率を比較するならGPU単体の表示値と、PC全体のコンセントでの消費を混ぜず、同じ仕事の完了までに使った電力量を見る方法があります。不定期にしか使わないならAPIやクラウドも候補にし、手元で動かす目的と費用を照らし合わせます。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [llama.cpp：llama-bench README](https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md)
+- [llama.cpp：Apple Siliconの性能報告](https://github.com/ggml-org/llama.cpp/discussions/4167)
+- [Ollama：macOSの要件とインストール](https://docs.ollama.com/macos)
+- [Ollama：CLIリファレンス](https://docs.ollama.com/cli)
+- [Ollama：Gemma 3 1Bの配布ページ](https://ollama.com/library/gemma3:1b)
+- [Ollama：文脈長と必要メモリ](https://docs.ollama.com/context-length)
+- [Apple：アクティビティモニタでメモリ使用状況を表示](https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac)
+- [Apple：Appleシリコン搭載Macの確認方法](https://support.apple.com/en-us/116943)
+- [Ollama：FAQ](https://docs.ollama.com/faq)
+- [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
+
+## 次に考えたいこと
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
 
 
 ---
 
-# 磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース
+# Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認
 
-> 公称「8000Hz（0.125ms）・0.01mmラピッドトリガー」の裏にあるADCマトリクススキャン遅延と温度ドリフト・隣接キー振動による誤解除ログ集計（N=38）
+> Google AI Proを契約している人へ。GeminiアプリとAntigravityの提供条件、Ultraへの追加費用、公開評価から分かる得意分野を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/gemini-4-argon-google-ai-pro-ultra.csv
+- **Category**: Cloud & AI Infrastructure
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-14
+
+## 選び方の要点
+- Google AI ProでもGeminiアプリのArgonは提供対象。アプリで試すためだけにUltraへ変更する必要はありません。
+- 独立したAntigravityデスクトップアプリ・CLIのArgonは、個人サブスクではUltra向け。ProのAntigravity利用特典とは区別します。
+- 日本向け月額表示はPro 2,900円、Ultra 14,500円から。最小構成でも月11,600円の差があるため、使いたい場所と不足している利用枠から判断します。
+
+
+## 選択肢の比較表
+| Argonを使う場所 | Google AI Pro | Google AI Ultra | 確認する条件 |
+| --- | --- | --- | --- |
+| Geminiアプリ | 提供対象 | 提供対象 | 対象国・アカウント条件・順次提供 |
+| Google検索のAIモード | 提供対象（地域等の条件あり） | 提供対象（地域等の条件あり） | 検索のAIモード固有の地域・言語条件 |
+| 独立したAntigravityアプリ・CLI | Argonのサブスク提供対象として記載なし | 個人サブスクの提供対象 | Antigravity自体へのアクセスとArgonへのアクセスは別 |
+| Gemini API | 有料APIを別途利用 | サブスク特典と従量課金を区別 | APIの課金設定・利用枠を確認 |
+
+## 詳細解説・原因分析
+### Pro契約者は、まずGeminiアプリで使える範囲を確認する
+Google AI Proを使っているなら、Argonを試す入口はGeminiアプリです。日本向けの公式プラン表でもProの対象モデルにArgonが含まれています。今の契約を継続して使う範囲なら、Argon用に別の上位契約を結ぶ必要はありません。Google Oneの保存容量だけの契約や、名前の似たGoogle AI PlusはProと別です。まずGoogle Oneでプラン名とログイン中のアカウントを確認してください。
+参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
+参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
+
+### Ultra向けなのは、AntigravityでのArgon利用
+Googleは、独立したAntigravityデスクトップアプリとCLIでのArgon提供を、個人向けにはGoogle AI Ultra加入者向けと発表しています。ProにもAntigravityの特典はありますが、それだけでArgonを選べるとは限りません。Geminiアプリでコードを相談することと、Antigravityからプロジェクトのファイルや開発ツールを操作させることは、契約上も使い方も異なります。Ultra契約者はAntigravityを最新版に更新し、モデルの提供状況を確認しましょう。
+参照: [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
+参照: [Antigravity：Argonのアプリ・CLI提供条件](https://antigravity.google/blog/gemini-4-argon-in-google-antigravity)
+
+### Ultraへの追加費用は、最小構成でも月11,600円
+Googleの日本向け月額表示はProが2,900円、Ultraが14,500円からで、32,000円の構成もあります。Proとの差額はそれぞれ月11,600円と29,100円。これは月額表示同士の計算で、契約変更日に請求される精算額ではありません。割引終了後や年払い・通信会社経由の契約では、自分の更新料金で比べてください。アプリのArgon利用だけが目的ならProがすでに対象なので、追加費用の理由はAntigravityでの利用や必要な利用枠にあるかを確認します。
+参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
+参照: [Antigravity：Argonのアプリ・CLI提供条件](https://antigravity.google/blog/gemini-4-argon-in-google-antigravity)
+
+### 追加料金を払うなら、月に何時間戻るかで考える
+仮に自分の作業時間を1時間3,000円と評価すると、月11,600円の追加費用に見合う時短は約3.9時間、29,100円なら約9.7時間です。これは賃金や実測効果ではなく、差額を時間に置き換えた判断例です。Proで同じ仕事をした場合との差を測り、回答の確認、修正、上限待ちまで含めて時間が減るかを見ます。すでにUltraを契約している人は、この差額を新たな負担と考える必要はありません。今の枠で終わらせられる仕事を確認するのが先です。
+参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
+
+### 利用枠は、固定の質問回数として読まない
+英語版の公式ヘルプでは、Geminiアプリの使用量は質問の複雑さ、モデルや機能、会話の長さに依存し、5時間ごとの更新に加えて週間上限があると説明されています。短い質問と長い資料の分析を同じ1回として比べることはできません。確認時にはUltraの倍率が日本語ヘルプでProの4倍または20倍、英語版と日本向け料金ページで5倍または20倍と食い違っていました。倍率をArgonの保証回数には換算せず、Geminiの設定にある使用量上限と更新時刻を確認してください。このヘルプはGeminiアプリの説明で、Antigravityの枠にそのまま適用しません。
+参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
+参照: [Geminiヘルプ：使用量上限（英語版）](https://support.google.com/gemini/answer/16275805?hl=en)
+参照: [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)
+
+### 長い資料の処理は、公開評価でも強みが見える
+Googleの公開表では、長文の関係をたどるGraphWalksの256k〜1Mトークン区間でArgonのF1は84.2%、比較先の最高値は71.8%で、差は12.4ポイントでした。業務自動化のAutomationBenchも51.3%対42.5%で8.8ポイント上回っています。複数資料の情報整理や段階の多い作業を試す根拠にはなりますが、これらは日本語の会話満足度や日常作業の時短率ではありません。公開表には旧Geminiとの同条件比較がそろっていないため、普段使っていたモデルから何%改善するかは断定しません。
+参照: [Google DeepMind：Argonの公開性能比較](https://deepmind.google/models/gemini/)
+参照: [Google DeepMind：Argon評価方法](https://deepmind.google/models/evals-methodology/gemini-4-argon)
+
+### コーディングの数値だけでUltraを選ばない
+同じ公開表でも、ソフトウェア修正のDeepSWE v1.1はArgon 77.9%、比較先の最高値74.2%ですが、FrontierSWE v2は55.0%対65.5%で逆転します。さらにDeepSWEはArgonの自社測定と競合の公開値が混在しています。第三者のArtificial AnalysisではArgon highの総合指数は53、確認時の掲載順位は216モデル中8位でした。指数は正答率ではありません。上位のモデルであることと、自分の開発環境で追加料金分の仕事が進むことは、別に確かめる必要があります。
+参照: [Google DeepMind：Argonの公開性能比較](https://deepmind.google/models/gemini/)
+参照: [Google DeepMind：Argon評価方法](https://deepmind.google/models/evals-methodology/gemini-4-argon)
+参照: [Artificial Analysis：Gemini 4 Argon high](https://artificialanalysis.ai/models/gemini-4-argon)
+
+### 100万トークンの仕様と、サブスクの使用量を区別する
+Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トークン。通常の同期出力の上限は65,536トークンで、最大約100万トークンの出力にはlong decodeの仕組みを使います。これはAPIの仕様で、GeminiアプリやAntigravityで毎回同じ長さを出せるという保証ではありません。一度に扱える情報量と、一定期間に使える計算量も別の制限です。長い資料が入るから使い放題、という理解では利用枠を見積もれません。
+参照: [Google AI for Developers：ArgonのAPI仕様](https://ai.google.dev/gemini-api/docs/models/gemini-4-argon)
+
+### APIの発売価格は、サブスクの値下げではない
+有料Gemini APIはサブスクとは別の利用経路です。Standardの100万トークン当たり料金は2026年11月30日まで入力2ドル・出力10ドル、12月1日以降は入力4ドル・出力20ドル。出力には思考トークンを含みます。この料金変更をProやUltraの月額変更と混同しないでください。アプリで対話したい既存Pro利用者が、ArgonのためにAPI課金を設定する必要はありません。独自ツールから使う場合は、サブスクの利用枠と分けて費用を管理します。
+参照: [Google AI for Developers：API料金](https://ai.google.dev/gemini-api/docs/pricing)
+
+### 使えないときは、契約・利用場所・提供条件の順で確認する
+まずGoogle AI ProかUltraか、対象の個人アカウントでログインしているかを確認します。次にGeminiアプリなのか独立したAntigravityなのかを確認してください。Googleは順次提供と案内しており、日本向けプラン表も対象国や年齢などの条件を示しています。検索のAIモードにも固有の条件があります。ProとUltraを日本で契約できることだけで、すべての機能が同時に使えるとは判断できません。表示されない理由を確かめる前に、上位プランへの変更だけで解決すると考えないことが大切です。
+参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
+参照: [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
+参照: [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)
+
+## 記事の範囲
+2026年10月14日時点の公式プラン表、提供開始告知、ヘルプ、公開ベンチマークを参照した編集記事です。Nodusによる契約画面での動作確認、性能・利用枠の独自実測は行っていません。料金はGoogleの日本向け月額表示、差額と必要時短時間はその表示からの計算です。割引、年払い、通信会社経由の契約、変更時の精算は含めません。ベンチマークはAPI等での公開評価であり、サブスク画面で同じ結果や利用量を保証するものではありません。一般ユーザーの初期感想は性能・利用上限の根拠に採用していません。
+
+
+## 参考資料
+- [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
+- [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
+- [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
+- [Antigravity：Argonのアプリ・CLI提供条件](https://antigravity.google/blog/gemini-4-argon-in-google-antigravity)
+- [Geminiヘルプ：使用量上限（英語版）](https://support.google.com/gemini/answer/16275805?hl=en)
+- [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)
+- [Google DeepMind：Argonの公開性能比較](https://deepmind.google/models/gemini/)
+- [Google DeepMind：Argon評価方法](https://deepmind.google/models/evals-methodology/gemini-4-argon)
+- [Artificial Analysis：Gemini 4 Argon high](https://artificialanalysis.ai/models/gemini-4-argon)
+- [Google AI for Developers：ArgonのAPI仕様](https://ai.google.dev/gemini-api/docs/models/gemini-4-argon)
+- [Google AI for Developers：API料金](https://ai.google.dev/gemini-api/docs/pricing)
+
+## 次に考えたいこと
+- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
+- [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+
+
+---
+
+# 100W・140W充電器は必要？ ポート配分と使い方から選ぶ
+
+> ノートPCとスマホを一緒に充電したい人へ。最大出力、複数ポート時の配分、ケーブル、持ち運びまで含めて考えます。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/100w-140w-gan-charger-thermal-throttling-real-world-tests.csv
+
+## 訂正について
+旧版の機種別温度、持続出力、リップル電圧および38件の集計は、採用ログと集計手順を追跡できないため撤回しました。製品間の優劣を示すグラフを外し、用途別の選び方に改訂しています。
+
+---
+
+- **Category**: Hardware & Power Electronics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 充電器のW数が大きくても、PCとケーブルがその出力に対応していなければ使い切れない。
+- 複数ポートでは「合計100W」と「PCへ100Wを維持できる」は別の確認事項。
+- GaNや小型という表記から、連続出力・温度・故障の有無を判定しない。
+
+
+## 選択肢の比較表
+| 使い方 | 最初に確認すること | 追加費用 | 選び方 |
+| --- | --- | --- | --- |
+| ノートPCを1台充電 | PCが受けられるUSB PD電力・電圧 | 対応ケーブル | PCの要件を満たす単ポート出力から選ぶ |
+| PCとスマホを同時充電 | 同時接続時のポート別出力表 | 複数のケーブル | 合計出力だけでなくPC側への配分を見る |
+| 持ち運びが中心 | 重量、端子配置、ケーブル込みの大きさ | ケース、予備ケーブル | 最大W数を上げる前に荷物全体で比較する |
+| 高負荷作業を続ける | 同型番の連続負荷試験と使用条件 | 用途に合う電源一式 | 純正品も候補にして、未検証の持続性能を決めつけない |
+
+## 詳細解説・原因分析
+### PCの必要電力から逆算する
+いま使うPCの公式充電仕様と、手元の純正アダプターの出力を確認します。スマホだけを充電する人と、PCを充電しながら使う人では候補が違います。USB-IFの資料ではUSB PDを電源供給の規格として扱っていますが、その規格に対応することだけで、すべてのPCで同じ電力を受けられるわけではありません。
+参照: [USB-IF：USB Charger / USB Power Delivery](https://www.usb.org/usb-charger-pd)
+
+### 合計出力より、同時接続時の表を見る
+購入前に製品の説明書で「USB-Cを2本使う場合」「USB-Aを追加する場合」の出力配分を確認します。たとえばPCに必要な出力が65Wで、スマホと同時接続するとPC側が45Wになる構成なら、合計値が大きくても希望を満たしません。この65W・45Wは比較のための仮定例で、特定製品の仕様ではありません。
+
+### ケーブルを含めて見積もる
+端子の形がUSB-Cでも、ケーブルの電力・電圧への対応は同じとは限りません。充電器、ケーブル、受電機器の仕様を組にして確認してください。「100Wの充電器に替えれば必ず速くなる」という買い方より、いま不足している要素を見つける方が費用を抑えやすくなります。
+参照: [USB-IF：USB Charger / USB Power Delivery](https://www.usb.org/usb-charger-pd)
+
+### 小さいほど熱ダレする、と断定しない
+旧記事は最大出力を一律に短時間のピーク値と説明し、筐体の電力密度で持続性能の境界を決めていました。今回、その一般化を裏付ける資料は確認できませんでした。持続出力を知りたい場合は、型番、室温、入力電源、負荷、ポート構成、経過時間をそろえた試験が必要です。表面温度だけで内部の制御や安全性を判断することも避けます。
+
+### 買い替える価値があるのは、どんなときか
+PCの指定する充電要件を現在の構成で満たせない、2台同時に使うと不足する、持ち運びの荷物を減らしたい、という困りごとがあれば候補を絞れます。すでに不便なく使えているなら、W数だけを理由に買い替える必要性は低いというのが編集上の判断です。実際に接続が切れる場合は熱保護だと決めつけず、説明書を確認し、改善しなければメーカーに相談してください。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [USB-IF：USB Charger / USB Power Delivery](https://www.usb.org/usb-charger-pd)
+
+## 次に考えたいこと
+- [外付けSSDは完成品か、ケースと中身を別々に買うか](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html)
+- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+
+
+---
+
+# AIエージェントのトークンを減らすには？ ASTと部分読みの使い分け
+
+> 全文を何度も読む、テストログを大量に渡す。その前にできることと、情報を削りすぎて手戻りになる境界を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv
+
+## 訂正について
+旧版は42セッションの実測として削減率や完走数を掲載していましたが、保存ファイルは6件の代表例と集計済み数値で、母集団や算出手順を再現できませんでした。効果率と順位を撤回し、元の集計ファイルの公開先も訂正案内に置き換えました。
+
+---
+
+- **Category**: Software & SaaS Economics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- まず必要な箇所を探し、足りない文脈を追加する。短くすること自体を目的にしない。
+- ASTはコードの構造を調べる道具。呼び出し関係や実行結果の確認を代替しない。
+- トークン数、キャッシュ、料金、利用上限、完成までの時間は別々に記録する。
+
+
+## 選択肢の比較表
+| 方法 | 役立つ場面 | 残すべき情報 | 注意点 |
+| --- | --- | --- | --- |
+| 文字列検索と行範囲指定 | 対象の関数や呼び出し元が分かる | 前後の分岐、呼び出し元、エラー | 関数だけ切り出すと前提を見落とす |
+| ASTのアウトライン | 長いコードの構造を最初に把握する | 関数・クラス・行位置 | 動的な挙動や実装内容までは分からない |
+| ログの要約 | 繰り返し出る進捗を省く | 終了コード、失敗内容、再現コマンド | 警告や前段のエラーを消さない |
+| 会話の整理 | 話題変更、文脈が長くなったとき | 目的、制約、変更点、未解決事項 | 要約でも必要な文脈が落ちることがある |
+
+## 詳細解説・原因分析
+### 最初の一手は、専用ツールの追加ではない
+エラーの場所や関数名が分かっているなら、既存の文字列検索と行範囲指定から始めます。該当箇所を読んだら呼び出し元、設定、データの形式も確認します。必要な情報が別ファイルにあるのに短い断片だけで修正すると、再調査の往復が増えることがあります。
+
+### ASTで分かること、分からないこと
+Python標準のastモジュールは、コードを構文木として扱うための機能を提供します。関数やクラスの構造を拾って探索の入口にする使い方は考えられますが、それだけで実装の正しさや実行時のデータを判断できるわけではありません。まずアウトライン、次に実装と呼び出し元、という使い分けが編集上の提案です。
+参照: [Python公式：astモジュール](https://docs.python.org/3/library/ast.html)
+
+### テストログは、診断に必要な範囲を残す
+成功した進捗の繰り返しを省いても、終了コード、失敗したテスト名、期待値と実際値、例外までの経路は残します。「Errorという単語の周辺だけ」に固定すると、ビルドの前段で出た原因や警告を落とすことがあります。元ログを保存し、要約から戻れる状態で使います。
+
+### キャッシュが効くことと、文脈が短いことは別
+Claude Codeの公式資料は、コンテキスト管理、モデル選択、キャッシュなどの費用対策を説明しています。OpenAIのPrompt Cachingも繰り返す入力を扱う仕組みですが、対応条件と料金はモデルや設定によります。入力の総量が減った割合を、そのままAPI料金や定額プランの利用枠が増える割合として扱わないでください。
+参照: [Claude Code：費用とコンテキストの管理](https://code.claude.com/docs/en/costs)
+参照: [OpenAI：Prompt Caching](https://developers.openai.com/api/docs/guides/prompt-caching)
+
+### 効果を測るなら、完了までの費用を見る
+同じ変更対象と受け入れ条件で、通常の読み方と部分読みを比べます。モデル、実行日、入力・出力・キャッシュの各量、再試行、所要時間、テスト結果を残し、作業が完成したところまで比較します。要約ツールや別エージェントを使った費用も合計に含めます。回数が少ない結果は個別事例として扱い、普遍的な削減率を出さないようにします。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [Python公式：astモジュール](https://docs.python.org/3/library/ast.html)
+- [Claude Code：費用とコンテキストの管理](https://code.claude.com/docs/en/costs)
+- [OpenAI：Prompt Caching](https://developers.openai.com/api/docs/guides/prompt-caching)
+
+## 次に考えたいこと
+- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
+- [AIコードレビューを別の会話・モデルに任せる価値は？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html)
+
+
+---
+
+# AIコーディングのサブスクとAPI、費用をどう比べる？
+
+> Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv
+
+## 訂正について
+旧版の85アカウント集計、固定トークン上限、API比の倍率および損益分岐点は、採用ログを確認できないため撤回しました。変動する契約条件と、読者自身の作業費用を比較する内容へ改訂しています。
+
+---
+
+- **Category**: Software & SaaS Economics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 定額プランを「固定のトークン数を買う契約」と見なさない。上限や計算方法は契約ごとに確認する。
+- API換算で何倍お得かを決める前に、同じ作業の完了品質と総費用を比べる。
+- 利用量の多い1週間を記録してから、追加契約や上位プランを検討する。
+
+
+## 選択肢の比較表
+| 使い方 | 比較する単位 | 確認する契約条件 | 費用以外の判断 |
+| --- | --- | --- | --- |
+| 対話しながら開発 | 普段の作業を完了する月額合計 | 対応モデル、含まれる枠、上限到達時の動作 | 編集環境との相性、修正の手戻り |
+| 複数のAIを併用 | 主契約と補助契約の総額 | 枠が余る契約、重複する機能 | 切替の手間と文脈の引き継ぎ |
+| 独自アプリ・バッチ | 成功した1タスクあたりのAPI費用 | API料金、速度制限、実行基盤代 | 再試行、監視、結果の検証 |
+| チームで利用 | 利用者数と実際の請求額 | 管理機能、共有枠、追加課金設定 | 権限管理、データの扱い |
+
+## 詳細解説・原因分析
+### 月額と、使える量を分ける
+月額が同じサービスでも、含まれるモデル、補完、対話、エージェント、レビューの範囲は同じではありません。まず契約画面と公式資料で、どの利用がどの枠を消費するかを書き出します。料金や利用枠の設計は変わるため、この記事では固定のメッセージ回数やトークン数に置き換えていません。
+
+### Cursorは、現在の利用枠を画面で確認する
+確認時点のCursor公式資料は、モデルの利用プールと使用量をダッシュボードで確認する仕組みを説明しています。モデルによって消費の仕方が違うため、「1回の質問」という単位だけでは比較できません。旧記事の固定的な実効コンテキスト長や回数目安を前提にせず、自分の契約と実際の使用状況を照らし合わせてください。
+参照: [Cursor：Models & Pricing](https://cursor.com/docs/models-and-pricing)
+
+### Claude Codeでは、何の制限かを見分ける
+Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管理を分けて説明しています。会話が長くなった警告、契約上の利用制限、API経由の支出は同じ問題ではありません。上限に達した日時、選択モデル、実行内容、表示された説明を記録すると、契約を上げるべきか使い方を変えるべきか判断しやすくなります。
+参照: [Claude Code：Manage costs effectively](https://code.claude.com/docs/en/costs)
+
+### 損益分岐点は、自分の作業から計算する
+月の総費用 = サブスク料金 + 追加使用料 + API料金 + 実行基盤代。これを完了したタスク数で割ると、1件あたり費用を比較できます。ただし同じ難易度と品質で比べることが前提です。仮に月3,000円で10件なら300円/件、APIで同じ10件を2,000円で完了すれば200円/件。いずれも仮定例で、現行価格や性能の推定ではありません。
+
+### 併用するなら、役割の重複を減らす
+毎日使う編集環境を主契約にし、独自連携や不定期の処理だけAPIにする、といった分け方を検討できます。ただしサブスクの認証を自動処理で利用できるかは、公式の対応方法と契約条件によります。APIだけが唯一の選択とも、サブスクにAPI利用が含まれるとも決めつけず、目的の実行方法が提供されているかを確認します。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [Cursor：Models & Pricing](https://cursor.com/docs/models-and-pricing)
+- [Claude Code：Manage costs effectively](https://code.claude.com/docs/en/costs)
+
+## 次に考えたいこと
+- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html)
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+
+
+---
+
+# AIコードレビューを別の会話・モデルに任せる価値は？
+
+> セルフレビュー、新しい会話、別モデル。追加の費用と手間に見合うかを、指摘の再現性と修正後の確認で考えます。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv
+
+## 訂正について
+旧版は28回の比較として検出率を掲載していましたが、保存されているのは4件の検出例と集計済み数値で、全対象・正解集合・方式別結果を再現できませんでした。検出率と手戻り削減の断定を撤回し、確認手順を中心に改訂しました。
+
+---
+
+- **Category**: Software & SaaS Economics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 別の会話やモデルは、追加の確認手段として試す。必ず検出率が上がるとは言えない。
+- 指摘には場所・発生条件・影響・再現方法を求める。重大度のラベルだけで修正しない。
+- 差分だけで分からない仕様や呼び出し元も渡し、指摘をテストや実行結果で確かめる。
+
+
+## 選択肢の比較表
+| 方法 | 検討する理由 | 渡す情報 | 弱点 |
+| --- | --- | --- | --- |
+| 同じ会話で確認 | 変更の背景を説明し直す手間が小さい | 差分、受け入れ条件、テスト結果 | 実装時の思い込みを引き継ぐ可能性 |
+| 新しい会話で確認 | 説明とコードを改めて照合する | 差分、仕様、呼び出し元 | 背景を落とすと仕様を誤解する |
+| 別モデルで確認 | 別の指摘を得るか試す | 同じ仕様と対象コード | モデルの違いだけで検出能力は決まらない |
+| テストと人の確認 | 指摘が実際に起きるか確かめる | 再現入力、期待結果、修正差分 | 自動テストの対象外も残る |
+
+## 詳細解説・原因分析
+### 見直してもらう目的を決める
+「よくできていますか」ではなく、「空入力で例外が出ないか」「単位が異なる値を正しく並べられるか」「再実行で前の結果を上書きしないか」のように、壊れると困る挙動を指定します。小さな表示修正と、データを書き換える処理とでは、かける確認の費用も変わります。
+
+### 会話を分けるだけでは、独立した検証にならない
+新しい会話にすると過去の説明を見直す機会になりますが、必要な仕様まで消すと誤検知が増えます。差分、関連する呼び出し元、公開されている契約、期待する結果をそろえて渡します。別モデルを使っても、同じ不十分な情報を与えれば同じ見落としが起きる可能性があります。
+
+### 指摘を具体化するための依頼文
+「この差分を確認し、実際に挙動が壊れる候補だけを挙げてください。各指摘にはファイルと行、発生条件、期待結果と実際の結果、最小の再現方法を添えてください。未確認の推測と再現済みの事実を分け、修正は適用しないでください。」これを出発点にして、プロジェクトの仕様を追加します。人が読んで確かめられることを優先する、編集上の提案です。
+
+### MCPは、検出率を高める認定ではない
+MCPの公式資料は、AIアプリと外部のデータやツールを接続するプロトコルを説明しています。利用すること自体がレビュー精度を保証するものではありません。Claude Codeにも公式のレビュー機能が紹介されていますが、製品の機能説明と、今回のリポジトリで何割見つけられるかの測定は区別します。
+参照: [Model Context Protocol：概要](https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro)
+参照: [Claude Code：Code Review](https://code.claude.com/docs/en/code-review)
+
+### 追加費用に見合ったかを振り返る
+指摘数の多さより、再現できた不具合、誤検知の調査時間、修正で増えた問題を記録します。検出率を算出するには、見つからなかった不具合も含む正解集合が必要です。レビューが2回とも同じ不具合を見落とすこともあるので、テストや人の確認を置き換える根拠にはしません。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [Model Context Protocol：概要](https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro)
+- [Claude Code：Code Review](https://code.claude.com/docs/en/code-review)
+
+## 次に考えたいこと
+- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html)
+- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
+
+
+---
+
+# それ、自作したほうが安い？
+
+> 温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/diy-or-ready-made-total-cost.csv
+- **Category**: Software & SaaS Economics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 部品代の合計と完成品の価格だけでは、同じ条件の比較にならない。
+- 実用品としての節約と、工作を楽しむための支出は分けて考える。
+- 欲しい機能、置き場所、電源、許容できる停止時間を決めてから見積もる。
+
+
+## 選択肢の比較表
+| 比較するもの | 自作で数える費用 | 既製品で確認する費用 |
+| --- | --- | --- |
+| 初期費用 | 基板、センサー、電源、ケース、送料、工具 | 本体、送料、専用ハブ、追加アクセサリー |
+| 完成まで | 調査、組み立て、設定、動作確認の時間 | 初期設定と既存環境への接続時間 |
+| 使い続ける費用 | 電気・電池、修理、更新、予備部品 | 電気・電池、クラウド月額、交換費用 |
+| 自由度と継続性 | 変更できる範囲、部品とソフトの維持 | 連携機能、ローカル動作、サービス終了時の影響 |
+
+## 詳細解説・原因分析
+### 比較の単位は、基板ではなく完成品
+温湿度計なら、温度と湿度が読めるだけで十分なのか、電池で動かしたいのか、スマホから確認したいのかを決めます。ケースに収まり、必要な場所に置けて、一定期間安定して動くところまでが完成です。ESP32の基板だけの値段を、電池や保証付きの完成品と直接比較しないようにします。
+
+### 「自作が安い」が成立する条件
+既に工具や電源を持っている、欲しい機能が市販品にない、複数台を同じ構成で作る、といった場合は自作を検討する理由があります。一方で1台だけすぐ使いたいときは、初期設定や不具合の調査時間が大きくなりがちです。自作を勧めるかどうかは、価格より先に前提条件で変わります。
+
+### 時間も見積もる。ただし、楽しみは別にする
+総費用 = 初期費用 + 維持費 + 作業時間 × 自分で置く時間単価。たとえば部品が既製品より2,000円安くても、追加で4時間かかり、時間単価を1,000円と置けば、時間込みでは自作側が2,000円高くなります。この単価は仮定です。学ぶ時間や作る楽しさに価値を感じるなら、その価値も別の判断軸として残します。
+
+### 既製品でも、連携と維持費を確認する
+スマートホームでは本体のほかにハブやクラウド契約が必要な場合があります。Home Assistantの公式資料にはESPHome連携と完成済みデバイスの案内があり、自作か完全な既製品かの二択だけではありません。既製ハードウェアを使いながら、連携や自動化を自分で組む方法も比較候補になります。
+
+### まず比べたいのは、温湿度計
+最初の検証題材は、ESP32とセンサーの自作温湿度計と既製のスマート温湿度計です。同じ設置場所で測定値、欠測、電池交換、設置までの時間を記録します。電源方式や連携機能が違えば、その差も明記します。現時点では比較機種の購入や測定をしていないため、特定製品より安い・正確という結論は出していません。
+
+## 記事の範囲
+公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
+
+
+## 参考資料
+- [Home Assistant：ESPHome連携と完成済みデバイス](https://www.home-assistant.io/integrations/esphome/)
+- [Home Assistant：ハードウェア選びと導入](https://www.home-assistant.io/getting-started/)
+
+
+---
+
+# ESP32、結局どれを買えばいい？
+
+> C3・S3・C6を、温湿度計・音声・スマートホームの用途から比較。ボード単価だけでは見えない費用も整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/esp32-c3-s3-c6-which-board-to-choose.csv
+- **Category**: Hardware & Power Electronics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 温湿度の送信や小さな制御なら、まずC3で必要な端子とソフト対応を確認。
+- 音声・カメラ・画面はS3を候補に。チップ名だけでなくPSRAM搭載ボードを比較する。
+- Thread・Zigbeeが目的ならC6を候補に。Wi-Fi 6対応だけで速度や省電力の優位は決められない。
+
+
+## 選択肢の比較表
+| 候補 | 通信・処理の特徴 | 候補になる用途 | 購入前に確認すること |
+| --- | --- | --- | --- |
+| ESP32-C3 | 単コア RISC-V / Wi-Fi 4 / Bluetooth LE | センサー送信、シンプルな制御 | 必要なGPIO、USB接続方式、基板の待機電流 |
+| ESP32-S3 | デュアルコア Xtensa / Wi-Fi 4 / Bluetooth LE | 音声、カメラ、画面付き工作 | PSRAM搭載量、ピン配置、周辺機器の対応 |
+| ESP32-C6 | 単コア RISC-V / 2.4GHz Wi-Fi 6 / Bluetooth LE / 802.15.4 | Thread・Zigbeeを使う工作 | 利用フレームワークと接続先の対応、ボーダールーターの要否 |
+
+## 詳細解説・原因分析
+### 最初に決めるのは、完成させたいもの
+「一番高性能なESP32」を選ぶ前に、センサーの種類、必要なピン数、電源、通信方式を書き出します。温湿度を数分ごとに送る装置と、マイクで音声を取り込む装置では、必要なメモリも処理能力も違います。上の3種類は出発点であり、ESP32全シリーズの網羅比較ではありません。
+
+### チップの比較と、開発ボードの比較を分ける
+同じS3でもPSRAMの有無・容量、Flash容量、USB端子、レギュレーター、ピンの引き出し方が異なります。製品ページのチップ名だけで決めず、正確なボード型番と回路図を確認してください。Bluetooth LE対応とBluetooth Classic対応も別の話です。
+
+### 安さは「動くところまで」の合計で比べる
+基板価格に、送料、電源、ケーブル、センサー、ケース、足りない工具を足します。電池駆動なら開発ボード全体の待機電流を調べる必要があります。チップのディープスリープ公称値を、そのまま完成品の電池寿命に換算することはできません。安い基板でも、資料やピン配置が不明なら調査時間が増えます。
+
+### C6を選ぶ理由は、使う通信規格にある
+C6は2.4GHzのWi-Fi 6と802.15.4を備えます。ThreadやZigbeeを使いたいときの候補ですが、チップが対応していることと、使いたいファームウェアで目的の機能が動くことは別です。接続先のハブ、ボーダールーター、フレームワークの対応を先に確認します。
+
+### 次に実機で比べたいこと
+同じセンサーと送信間隔で、USB給電時の平均電力、電池駆動時の待機電流、接続の復帰時間を測ると選び方に役立ちます。国内購入と海外購入の送料込み総額、初回書き込みまでの所要時間も記録したい項目です。現段階ではこれらを測っていないため、価格ランキングや電池寿命の順位は付けていません。
+
+## 記事の範囲
+公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
+
+
+## 参考資料
+- [Espressif：ESP32シリーズの機能比較](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
+- [Espressif：ESP32-C6 データシート](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf)
+
+
+---
+
+# 外付けSSDは完成品か、ケースと中身を別々に買うか
+
+> USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv
+
+## 訂正について
+旧版の41件集計、機種別の持続速度・温度・キャッシュ容量、Mac全機種への速度の一般化は、採用データと条件を追跡できないため撤回しました。完成品と組み合わせ型の選び方へ改訂しました。
+
+---
+
+- **Category**: Hardware & Power Electronics
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- ケースだけ高速でも、PC、ケーブル、SSD、コピー元が追い付かなければ効果は限られる。
+- 短い速度テストと、日常の大きなファイル転送は分けて評価する。
+- 自作構成は安さだけでなく、組み立て時間と故障時の切り分けも見積もる。
+
+
+## 選択肢の比較表
+| 選択肢 | 候補になる条件 | 確認すること | 費用の範囲 |
+| --- | --- | --- | --- |
+| 完成済みポータブルSSD | 組み立てずに使いたい | PCとの接続規格、保証、付属ケーブル | 本体と不足するケーブル |
+| NVMe SSD + 外付けケース | 余ったSSDを使う、容量や中身を選ぶ | SSDサイズ、規格、放熱パッド、電力、対応OS | SSD、ケース、ケーブル、送料 |
+| 既存SSDを使い続ける | 普段の転送量と待ち時間に不満がない | 容量、バックアップ、接続の安定性 | 不足する容量やバックアップ先 |
+| 高速な構成へ更新 | 大きなデータの移動が多い | 接続先と元ドライブを含めた実効転送時間 | 機器一式と組み立て・確認の時間 |
+
+## 詳細解説・原因分析
+### USB-Cという端子名から速度を決めない
+まずPCの正確な型番の仕様で、接続規格を確認します。ケースや完成品の対応表、付属ケーブルの仕様も照らし合わせます。OWC Express 1M2の公式ページには、USB4の完成済み構成と組み合わせて使う構成の両方が案内されています。メーカーの最大速度表記は条件付きの仕様であり、手元の転送時間を保証する数値ではありません。
+参照: [OWC：Express 1M2の仕様と構成](https://www.owc.com/solutions/express-1m2)
+
+### 短いベンチマークと、長いコピーを分ける
+連続転送では、SSDの空き容量、書き込みキャッシュ、温度、コピー元の速度が結果に影響する可能性があります。小さなファイルを大量にコピーする場合も、大きな単一ファイルとは条件が違います。「何MB/s出たか」だけでなく、何をどこからどこへ、何分かけて移したかを比べます。
+
+### 組み合わせ型の費用を数える
+SSDとケースの値段に、送料、必要なケーブル、放熱パッドなど不足する部品を足します。すでにSSDを持っていれば初期支出を減らせますが、サイズや両面実装の適合、組み立て方法をケースの説明書で確認します。問題が起きたときにSSDとケースのどちらが原因か切り分ける時間も考えます。
+
+### 切断を、熱だけの問題にしない
+転送中の切断には、接続、給電、OS、ファームウェア、機器の不具合など複数の候補があります。まずデータのバックアップを確保して、別の適合ケーブル、PCの直結ポート、メーカー案内を順に確認します。型番や記録なしに「薄型ケースは必ず落ちる」「TLCに替えれば直る」と結論づけないようにします。
+
+### 買う前の判断と、購入後の確認
+毎週大きなデータを移動するなら、同じPCと同じファイル群で全体の所要時間を比較する価値があります。たまに書類を保存する程度なら、速度の上位構成より容量・保証・バックアップを優先するというのが編集上の提案です。高価なストレージを使うことと、データが二重化されていることは別です。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [OWC：Express 1M2の仕様と構成](https://www.owc.com/solutions/express-1m2)
+
+## 次に考えたいこと
+- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+
+
+---
+
+# ColabのGPUは何時間使える？ CUと完了までの費用の考え方
+
+> GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から見積もる。Colab、時間課金GPU、自宅PCの使い分けも整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv
+
+## 訂正について
+旧版の64セッション集計、GPU別CU/h、円換算と外部クラウドとの価格順位は、採用ログと料金条件を確認できないため撤回しました。実行時の表示と残高に基づく見積もりへ改訂しています。
+
+---
+
+- **Category**: Cloud & AI Infrastructure
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- ColabのGPU種類や実行可能時間は変動する。過去のCU/hを現在の保証値にしない。
+- 比較するのは1時間の安さより、同じ処理を完了する費用と待ち時間。
+- 保存と再開を先に用意し、途中停止でやり直す負担も見積もる。
+
+
+## 選択肢の比較表
+| 選択肢 | 候補になる使い方 | 数える費用 | 確認事項 |
+| --- | --- | --- | --- |
+| Colab | ノートブックで試す、短い処理を行う | 計算ユニットと契約料金 | 割り当てGPU、表示レート、実行制限、データ保存先 |
+| 時間課金GPU | 必要なGPU条件を選んで処理する | 稼働時間、ディスク、転送など | 在庫、停止中の課金、セットアップ時間 |
+| 手元のPC | 既存機器で収まる処理を繰り返す | 追加電力と必要な増設 | メモリ、速度、占有時間、運用負担 |
+
+## 詳細解説・原因分析
+### GPUが選べることと、確保できることは違う
+Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変動し、有料プランでもリソースの状況が変わると説明しています。希望するGPUを常に使える前提で予定を立てず、実行時の選択肢と条件を確認します。固定した資源が必要な場合は、別の提供形態も比較対象です。
+参照: [Google Colab：FAQとリソース制限](https://research.google.com/colaboratory/faq.html)
+
+### 残高からの見積もりは、そのときのレートで
+目安時間 = 利用可能CU ÷ 表示されているCU/時。仮に100 CUを持ち、レートが5 CU/時なら20時間相当です。これは計算例で、実際の消費レート、連続実行可能時間、割り当て保証を示しません。表示、実行前後の残高、実行時刻を記録し、実際の消費と照合します。
+
+### 速いGPUが、安い処理になるとは限らない
+同じ成果物を得るまでの費用で比較します。仮にAが1時間に2 CUで30分かかるなら1 CU、Bが1時間に6 CUで15分かかるなら1.5 CUです。Bは早く終わりますがCUは多く消費します。この数値は仮定例です。準備、データ読み込み、失敗後のやり直しを含めて判断します。
+
+### 処理の途中でも、成果を残せるようにする
+ランタイムが止まっても戻れるよう、学習のチェックポイント、処理済みファイルの一覧、実行条件を永続的な保存先に残します。環境の準備を毎回繰り返しているなら、その時間も比較に含めます。GPUを使わない前処理を別で済ませられるかは、転送や準備が増える負担と一緒に考えます。
+
+### Colab、クラウド、自宅の境界
+ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCを候補にする、という整理です。最安の順位は、実行する仕事、必要なGPU、契約、利用頻度を決めてから検証します。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [Google Colab：FAQとリソース制限](https://research.google.com/colaboratory/faq.html)
+
+## 次に考えたいこと
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+
+
+---
+
+# LLM APIの速さは、何を測って比べればいい？
+
+> 最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv
+
+## 訂正について
+旧版の672リクエスト集計、プロバイダー別のp50・p95、夜間の悪化率、キャッシュの短縮率は、計測記録を確認できないため撤回しました。待ち時間と品質を分けて比較する手順へ改訂しています。
+
+---
+
+- **Category**: Cloud & AI Infrastructure
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 同じ仕事を、同じ品質で完了できる条件をそろえてから速さを比べる。
+- ストリーミングで早く見せることと、モデルが早く生成を終えることは区別する。
+- 特定の時間帯やプロバイダーが必ず遅いという順位は、測定なしに付けない。
+
+
+## 選択肢の比較表
+| 指標 | 答える疑問 | 記録する条件 | 読み違えやすい点 |
+| --- | --- | --- | --- |
+| 初回表示までの時間 | ユーザーが待つ時間は長いか | 計測の開始点、最初のイベントか表示文字か | 接続完了や空のイベントを回答開始と混同しない |
+| 全文の完了時間 | 1つの仕事を何秒で終えるか | 入力、出力長、ツール呼び出し、再試行 | 出力が短いだけの回答を速いと評価しない |
+| 生成速度 | 生成中にどれくらい出力するか | トークナイザー、出力数、時間範囲 | モデルが違うtok/sを同じ文章量として比べない |
+| 遅い側の分布 | 普段より待つケースはどれくらいか | 件数、測定期間、エラーとタイムアウト | p95だけを足して直列処理全体のp95にしない |
+
+## 詳細解説・原因分析
+### どの待ち時間を短くしたいか
+対話画面なら最初の意味のある表示、帳票生成なら最後まで正しく作れた時間、複数段の処理ならアプリ全体の完了時間を測ります。送信開始から測るのか、接続後から測るのかも決めてください。別の測定範囲の秒数を同じ列で比較しないことが出発点です。
+
+### 同じプロンプトでも、比較条件はまだ足りない
+モデルのバージョン、入力の長さ、最大出力、思考設定、実行元、同時実行数を記録します。モデルごとにトークンへの分割方法が違うため、tok/sだけでは同じ量の日本語を処理したか分かりません。JSONの形式や必要な情報がそろったかを判定し、失敗と再試行を含めて比べます。
+
+### キャッシュとストリーミングは、分けて測る
+OpenAIの公式資料は、ストリーミングによる早い表示や、入力・出力・呼び出し回数を見直す方法を説明しています。Prompt Cachingにはモデルや設定ごとの条件があり、毎回同じ短縮率になるものではありません。キャッシュがない最初の呼び出しと、ヒットした呼び出しを混ぜず、使用量の情報も保存します。
+参照: [OpenAI：Latency optimization](https://developers.openai.com/api/docs/guides/latency-optimization)
+参照: [OpenAI：Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
+
+### p95を足せば、全体のp95になるわけではない
+複数のAPI呼び出しを直列に行うと待ち時間は積み上がりますが、各段のp95を足した数値は処理全体のp95とは一般に一致しません。ユーザー操作から完了までの時間を直接記録します。エラーやタイムアウトを速いリクエストだけの集計から除外すると、運用上の待ち時間を過小評価するので、成功率と別々に示します。
+
+### 別のAPIへ切り替える前に
+まず長すぎる出力、不要な直列呼び出し、データ読み込み、アプリ側のバッファリングを確認します。別モデルへの切替は品質・対応機能・料金・データの送信先も変えます。障害時の代替構成も、同じ結果を出せるかと二重実行を防げるかを検証してから導入します。切替先を増やすだけで速さや可用性が保証されるわけではありません。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [OpenAI：Latency optimization](https://developers.openai.com/api/docs/guides/latency-optimization)
+- [OpenAI：Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
+
+## 次に考えたいこと
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
+
+
+---
+
+# 磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方
+
+> ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。
 
 - **Canonical URL**: https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv
+
+## 訂正について
+旧版の38件集計と機種別の遅延、安定する感度、温度ドリフト耐性の順位は、採用ログを追跡できないため撤回しました。ポーリング周期と操作全体の遅延を分けた選び方へ改訂しました。
+
+---
+
 - **Category**: Hardware & Power Electronics
-- **Sample Size (N)**: 38
-- **Data Updated**: 2026-10-12
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
 
-## 結論・実測サマリー (TL;DR)
-- 集計ハードウェア遅延ログ数は「38 件」（光学センサ＋USBアナライザ計測）。
-- 8000Hz機のEnd-to-End実測遅延は「0.78 〜 1.48 ms」（USB理論周期0.125ms＋ADCスキャン時間）。
-- 誤解除を防ぐ実用最小感度は「0.10 〜 0.15 mm」（0.02mm以下は基板振動でキー抜け発生）。
-- Wooting 80HE (Lekker L60 v2 / Tachyon Mode 8000Hz)：LED演算を抑制しADCマトリクススキャンを8kHzと同期させるTachyonモードにより、公称どおり実測0.78msを達成（N=12）。
+## 選び方の要点
+- 8000Hzの周期は0.125msという計算になるが、操作全体の実測遅延ではない。
+- ラピッドトリガーは最小設定にすれば必ず有利になるわけではない。
+- ゲーム用途が中心でなければ、配列、打鍵感、音、設定の手間も優先する。
 
-## 主要実測指標 (Key Metrics)
-- **集計ハードウェア遅延ログ数**: 38 件 (光学センサ＋USBアナライザ計測)
-- **8000Hz機のEnd-to-End実測遅延**: 0.78 〜 1.48 ms (USB理論周期0.125ms＋ADCスキャン時間)
-- **誤解除を防ぐ実用最小感度**: 0.10 〜 0.15 mm (0.02mm以下は基板振動でキー抜け発生)
-- **温度変化ドリフト耐性最良**: Wooting / Razer光学 (自動ゼロ点補正と光学式の安定性)
 
-## 条件別・実測比較データテーブル
-| モデル名 | 検知方式 / ポーリング | 実測入力遅延 (p50 / p95) | 最小設定 / 実用安定設定 | 温度・磁気ドリフト耐性 | 設定ソフト仕様 | 最適ユースケース |
-| --- | --- | --- | --- | --- | --- | --- |
-| Wooting 80HE | Hall Effect / 8000Hz | 0.78 ms / 0.94 ms | 0.1mm / 0.10mm安定 | 極めて高い (自動補正優秀) | Web完結 (Wootility) | 競技FPS最優先・最高信頼性 |
-| Razer Huntsman V3 Pro TKL | 光学アナログ / 8000Hz | 0.92 ms / 1.15 ms | 0.1mm / 0.10mm安定 | 最高 (磁気影響を一切受けない) | オンボード + Synapse | 環境変化に強い競技運用 |
-| DrunkDeer A75 Pro | Hall Effect / 1000Hz | 1.48 ms / 1.95 ms | 0.1mm / 0.15mm推奨 | 標準 (定期キャリブレーション推奨) | Webドライバ対応 | 2万円以下の高コスパ導入 |
-| Keychron Q1 HE | Hall Effect (二軸) / 1000Hz | 1.85 ms / 2.20 ms | 0.1mm / 0.15mm安定 | 高い (ダブルレールで軸ブレ小) | Web完結 (Keychron Launcher) | 開発・執筆とゲームの兼用 |
+## 選択肢の比較表
+| 見る項目 | 確認したいこと | 購入前に試すこと | 数字だけでは分からないこと |
+| --- | --- | --- | --- |
+| ポーリング周期 | USB報告の公称頻度 | 利用設定とPC側の動作 | 打鍵からゲームの反応までの遅延 |
+| ラピッドトリガー | 解除と再入力の設定範囲 | 長押し、連打、意図しない入力 | 自分に合う感度 |
+| 配列と打鍵感 | JIS/ANSI、キー配置、重さ | 日本語入力、ショートカット | 仕事とゲームの両立 |
+| 設定と保証 | ソフト対応、保存、保証窓口 | 使うOSで設定できるか | 長く使うときの手間 |
 
 ## 詳細解説・原因分析
-### 1. 8000Hzポーリングレートと「内部ADCマトリクススキャン周期」の関係
-USBポーリングレートが8000Hz（0.125ms周期）であっても、キーボード内部のMCUがホールセンサのアナログ電圧（ADC）を全キースキャンする周期が1000Hz〜2000Hzにとどまっている場合、同じ測定値を複数回USBパケットに載せて送信しているだけになります。真に1ms未満のEnd-to-End遅延を実現しているのは、Tachyonモード等でRGB LEDのPWM演算を抑制し、ADCサンプリングレート自体を8kHz以上に同期させている設計に限られます。
+### 周期と、操作の遅延を分ける
+1秒を8,000回に分けると0.125msです。これは周期の計算であり、指で動かし始めてからキーが認識され、ゲームが処理して画面に出るまでの時間とは違います。モデル別の入力遅延を並べる場合は、測定の開始点と終了点、ファームウェア、設定、PC側の条件をそろえる必要があります。
 
-### 2. 「0.01mmラピッドトリガー」が実戦で逆効果になる物理的理由
-ネオジム磁石とホール素子を用いた距離計測では、指先のわずかな横ブレ（ステムのガタつき）や隣キーを強く底打ちした際のプレートたわみによって、0.015mm〜0.03mm相当の磁束密度変化が常時発生します。デッドゾーン（不感帯）をゼロにして0.01mm〜0.02mmのラピッドトリガーを設定すると、キーを押し続けているつもりでも微小振動でキーアップ判定（キー抜け）が入り、ストッピングや長押し挙動が破綻します。実測データ上も0.10mm〜0.15mm設定が最も高い入力再現性を示しました。
+### 公称機能から分かる範囲
+Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソフトとオンボードプロファイルの説明があります。これは当該製品の公称機能を確認する資料で、他機種より何ms速いかを同条件で比較した資料ではありません。設定ソフトが手元のOSやブラウザで使えるかも確認します。
+参照: [Wooting：80HE公式機能・仕様](https://wooting.io/wooting-80he)
 
-## よくある疑問と回答 (FAQ)
-### Q. 8000Hzポーリングレートを有効にするとゲームのフレームレート（FPS）が落ちることがあるのは本当ですか？
-A. はい。キー押し下げ中にアナログ値やマウス移動が8000Hzで送信されると、OSカーネルのUSB割り込み処理（ISR/DPC）が増加します。特にCPUボトルネックになりやすい競技タイトル（ValorantやCS2等）で古い世代のCPUを使用している場合、最小FPS（1% Low）が低下することがあるため、4000Hzまたは2000Hz設定が最もバランスの良い選択肢となるケースもあります。
+### 感度は、普段の操作で調整する
+入力を早く切り替えたいキーと、長押しを安定させたいキーでは望ましい設定が違う可能性があります。実際のゲームや文章入力で、意図した押し方と解除ができるか確認してください。全機種・全員に共通する安定設定のmm値や、必ず誤動作する境界値は、今回の資料からは示していません。
 
-### Q. 常時電源ONにするアプリ不要で設定変更できる磁気キーボードはどれですか？
-A. Wooting（Wootility）、Keychron（Keychron Launcher）、DrunkDeer（Antler Web）はいずれもChromium系ブラウザのWebHID API経由でキーボード本体のオンボードメモリへ直接設定を書き込めるため、バックグラウンド常駐ソフトを一切インストールせずに運用可能です。
+### 買い替え前に、困っていることを具体化する
+現在のキーボードで困るのは、入力の切替、配列、打鍵の重さ、音、接続のどれなのかを書き出します。ゲームの操作を調整したいならアナログ機能が比較対象になりますが、執筆やプログラミング中心なら配列や打ちやすさで満足する可能性もあります。実売価格や送料、交換キーなどを含めて見積もります。
 
-## 検証環境・集計メソドロジー
-r/MechanicalKeyboards、r/MouseReview およびハードウェア遅延計測コミュニティで公開された高速ソレノイド＋フォトインタラプタ＋USBパケットアナライザ計測ログ38件を集計。公称USBポーリング周期ではなく、物理打鍵開始からUSB HIDレポート到達までの実測End-to-End入力応答性（10ms基準からの短縮幅および実測ms）を比較。
+### 機能を増やした後も、結果を確かめる
+ポーリングや入力補助の設定を変えたら、普段使うアプリで動作を確認します。高い頻度なら常にFPSが落ちる、低くすれば必ず安定する、とは断定できません。競技で使う補助機能はゲームや大会の現行ルールも確認してください。製品間の遅延・誤入力率の順位は、再現できる測定が用意できるまで付けません。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [Wooting：80HE公式機能・仕様](https://wooting.io/wooting-80he)
+
+## 次に考えたいこと
+- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
 
 
 ---
 
-# 高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース
+# 自宅サーバー用ミニPC、CPU名だけで選んでいい？
 
-> 公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）
+> RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。
 
 - **Canonical URL**: https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.csv
+
+## 訂正について
+旧版の36件集計と機種別の持続電力・温度・騒音順位は、採用ログを追跡できないため撤回しました。CPUのTDPとPC全体の消費電力を区別し、性能を落とさず静かになるとした一律の設定推奨も外しました。
+
+---
+
 - **Category**: Hardware & Power Electronics
-- **Sample Size (N)**: 36
-- **Data Updated**: 2026-10-12
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
 
-## 結論・実測サマリー (TL;DR)
-- 集計連続負荷ログ数は「36 台」（r/MiniPCs 30分HWiNFO64計測）。
-- 0.8L級65W機の持続電力は「46.5 〜 54.0 W」（公称ピーク65W比 約72〜83%に収束）。
-- 高負荷時50cm騒音中央値は「31.2 〜 45.8 dBA」（42dBA超でデスク上の静音性が損なわれる）。
-- Beelink SER9 (Ryzen AI 9 HX 370 / ベイパーチャンバー搭載)：大型ベイパーチャンバーと低回転ブロワーにより、38.4dBAの静音性を保ったまま54Wを30分間スロットリングなしで維持（N=9）。
+## 選び方の要点
+- CPUのTDPは、PC全体のコンセント消費電力ではない。
+- 同じCPU名でも、筐体、設定、メモリ、冷却が違えば使い勝手は変わる。
+- 24時間動かす用途では、ピーク性能よりアイドル電力と保守の手間を先に見る。
 
-## 主要実測指標 (Key Metrics)
-- **集計連続負荷ログ数**: 36 台 (r/MiniPCs 30分HWiNFO64計測)
-- **0.8L級65W機の持続電力**: 46.5 〜 54.0 W (公称ピーク65W比 約72〜83%に収束)
-- **高負荷時50cm騒音中央値**: 31.2 〜 45.8 dBA (42dBA超でデスク上の静音性が損なわれる)
-- **背面M.2スロットピーク温度**: 52.0 〜 74.5 ℃ (サブファン非搭載機は70℃超でSSD減速)
 
-## 条件別・実測比較データテーブル
-| モデル / SoC構成 | 公称最大TDP | 30分持続電力 (中央値) | 50cm騒音値 (Idle / Load) | CPUピーク温度 | NVMe SSD温度 (同時負荷) | 常時稼働・静音評価 |
-| --- | --- | --- | --- | --- | --- | --- |
-| Beelink SER9 (HX 370) | 54W 〜 65W | 54.0 W | 28.0 / 38.4 dBA | 81.5 ℃ | 58.0 ℃ | 高負荷でも静か・最良 |
-| Apple Mac mini (M4) | 約 38W (SoC) | 36.8 W | 26.8 / 31.2 dBA | 84.0 ℃ | 52.0 ℃ | 極静音・ワット効率最高 |
-| Minisforum UM880 Pro | 65W (Perf) | 48.5 W (Balanced時 45W) | 29.2 / 43.2 dBA (45W時 37.8) | 89.0 ℃ | 64.0 ℃ | 45W運用なら高コスパ |
-| GMKtec K8 Plus (8845HS) | 65W (Perf) | 52.0 W | 30.5 / 45.8 dBA | 87.2 ℃ | 54.0 ℃ (サブファン有) | OCuLink重視向け・騒音大 |
+## 選択肢の比較表
+| 用途 | 優先して確認すること | 測って比べたいこと | 追加費用 |
+| --- | --- | --- | --- |
+| 常時動く小さなサービス | メモリ、LAN、復旧方法、OS対応 | アイドル電力と利用中の安定性 | 保存領域、バックアップ、電気代 |
+| コンパイル・長い計算 | メモリ容量、冷却、電力設定 | 同じ仕事の所要時間と経過後の変化 | 必要なRAM・SSDと作業時間 |
+| ローカルAI | 推論ソフト、メモリ、GPU/NPUの対応 | 希望するモデルでの品質と待ち時間 | 機器全体と利用頻度 |
+| 書斎で普段も使う | 端子、画面、騒音、修理・保証 | 設置場所での音と操作感 | 周辺機器と保証条件 |
 
 ## 詳細解説・原因分析
-### 1. 「最大65W TDP」と「30分持続TDP」の乖離メカニズム
-x86系ミニPCの製品ページで強調される「最大65W TDP」は、多くの場合PL2（数分間の短時間ブースト電力制限）を指しています。筐体体積が0.7L〜0.9Lの小型ヒートシンク構造では、放熱能力の物理的限界が45W〜54W前後に存在するため、連続コンパイルやローカルLLM推論を10分以上継続すると、VRM（電源回路）温度またはCPUジャンクション温度（TjMax 95℃〜100℃）が閾値に達し、自動的に48W前後へ電力制限が引き下げられます。
+### どの仕事を、何時間動かすか
+小さな自動化を常時動かすPCと、夜だけ重い計算を行うPCでは選び方が違います。前者は低負荷時の電力と復旧のしやすさ、後者は同じ仕事を終える時間を比べます。用途が決まらないまま、CPUの上位モデルだけで選ばないようにします。
 
-### 2. 騒音値（dBA）だけでなく周波数特性と背面SSD温度に注目
-騒音計の数値上は同じ43dBA〜45dBAであっても、40mm径の小径サブファンを高回転させる構造では1.5kHz〜3kHz帯の高周波風切り音が目立ち、体感ノイズが大きくなります。一方、底面吸気・背面排気の大口径ブロワーとベイパーチャンバーを組み合わせた機種（Beelink SER9、Mac mini M4）は、ファン回転数の急激なハンチング（上下動）が少なく、書斎やオフィス環境での作業阻害度が大幅に低く抑えられています。
+### TDPと電気代を混同しない
+AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています。これらはCPUの仕様であり、メモリ、SSD、変換損失などを含めたPC全体の実測電力ではありません。また、異なるメーカーの制御用語をひとまとめにして「最大TDPは短時間のブースト」と断定することは避けます。
+参照: [AMD：Ryzen 7 8845HS公式仕様](https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html)
 
-## よくある疑問と回答 (FAQ)
-### Q. ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？
-A. Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。
+### 24時間の電力差は、式で見積もる
+月の差額 = 平均電力の差(W) ÷ 1000 × 稼働時間(h) × 電気料金(円/kWh)。仮に差が10W、月720時間、31円/kWhなら約223円/月です。これは料金と電力を仮定した例で、実際の機種差ではありません。購入額の差や、VPS・バックアップの費用も加えて比べます。
 
-### Q. ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？
-A. 多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。
+### 長時間性能と静かさは、別々に確認する
+同じ処理を続けたときの所要時間、消費電力、温度とファンの変化を記録します。騒音の数値は距離と暗騒音の条件がないと比べにくく、音の高さや回転の上下も使い心地に関係します。メーカー名だけで静かさを決めつけず、設置する場所で確認できることを重視します。
 
-## 検証環境・集計メソドロジー
-r/MiniPCs および SFF技術フォーラムに投稿された HWiNFO64 / powermetrics 30分連続負荷ログ（Cinebench R23 Multi + NVMe fio 同時負荷、室温23〜25℃、筐体前方50cmでのIEC Class 2騒音計計測）計36件を集計。短時間ブースト（PL2）ではなく20分経過後の定常パッケージ電力（Sustained Package Power）中央値を比較。
+### 増設と運用まで含めて、VPSと比べる
+ベアボーンならRAMとSSD、必要ならOS、バックアップ先も費用に含めます。SSDの実装面や厚み、メモリ容量は正確な型番の説明書で確認してください。NPU搭載だけで目的のAIソフトが動くとは限りません。機器を買う価値は、メモリや端子の要件を満たすことと、障害・更新の運用を引き受けたいかで変わります。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [AMD：Ryzen 7 8845HS公式仕様](https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html)
+
+## 次に考えたいこと
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
 
 
 ---
 
-# 1000Whポータブル電源のUPS機能・パススルー比較：Anker・EcoFlowの10ms切替時間と待機消費電力実測
+# パーソナルAIは、どこに置く？
 
-> カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）
+> VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/personal-ai-vps-home-server-subscription.csv
+- **Category**: Cloud & AI Infrastructure
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
+
+## 選び方の要点
+- 会話が主目的なら、サブスクで必要な機能を満たせるかを先に確認する。
+- 安いCPU中心のVPSに記憶や自動化を置き、推論は外部APIに任せる構成もある。
+- 自宅運用の判断は、電気代だけでなく、同じ課題を同じ品質で処理できるかで行う。
+
+
+## 選択肢の比較表
+| 構成 | 費用の構造 | 向く使い方 | 引き受ける手間 |
+| --- | --- | --- | --- |
+| 大手のAIサブスク | 月額料金。API費用は別契約・別枠の場合あり | まず会話・文章・調査に使う | サービスの制限とデータの扱いを確認 |
+| VPS + 外部モデルAPI | VPS月額 + API従量 + バックアップ等 | 記憶や定期処理を常時動かす | 更新、認証、監視、バックアップ |
+| 自宅 + ローカルモデル | 機器代 + 電気代 + 保守。API併用なら従量も追加 | 手元のデータ処理、モデルの変更や実験 | 性能調整、故障、停電、外部からのアクセス管理 |
+| GPU付きクラウドでモデル実行 | GPU稼働時間 + ストレージ等 | 必要な時間だけ大きな計算資源を借りる | 起動停止、モデル配備、課金管理 |
+
+## 詳細解説・原因分析
+### VPSとサブスクは、同じものを売っていない
+サブスクは完成した対話サービス、VPSは自分のソフトウェアを動かす場所です。パーソナルAIを、モデルによる推論、会話履歴や文書の保存、予定実行や外部ツール接続に分けると比較しやすくなります。VPSに文書検索や自動化を置き、推論は外部APIで行う組み合わせもあります。一般的な低価格CPU VPSが大規模モデルを快適に動かせるとは限りません。
+
+### 比べる前に、同じ仕事を用意する
+日記の要約、手元の文書検索、日本語の相談など、自分が毎週やる課題を用意します。回答の正確さ、出典、待ち時間、やり直し回数を記録してください。安くても何度も修正が必要なら、利用時間を含む費用は上がります。モデルが異なる構成を、月額だけで同等と扱わないことが大切です。
+
+### 月額費用を、式にしてみる
+自宅の月額相当 = 機器の購入額 ÷ 使用月数 + 消費電力(W) ÷ 1000 × 稼働時間(h/月) × 電気料金(円/kWh) + API・保守費用。仮に機器60,000円を36か月使い、平均20Wで月720時間、31円/kWhと置くと、機器1,667円 + 電気446円 ≒ 月2,113円です。これは実測でも現在の料金でもなく、故障・作業時間・通信費などを除いた計算例です。既存機器を使う場合も、追加消費電力を確認します。
+
+### サブスク料金とAPI料金を混ぜない
+対話サービスの月額に、独自アプリからのAPI呼び出しが含まれるとは限りません。自動化したいならAPIの提供条件と従量料金を別に確認します。VPSの場合は本体料金以外にAPI、保存領域、転送量、バックアップが加わることがあります。自宅でもクラウドモデルを併用すれば、その分の費用とデータ送信が発生します。
+
+### 手元にあることと、外に送らないことは別
+Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別しています。ローカルモデルでも、外部の検索やAPIを呼ぶ機能を足せばデータは外へ出ます。VPSも外部事業者の設備です。どの処理がどこへ送信するかを確認し、公開する場合は認証、更新、バックアップまで運用の範囲に含めます。
+
+### 買い足す前に、一週間の記録を取る
+最初は手元のPCと利用中のサービスで同じ課題を試し、使った回数、待ち時間、失敗、必要な連携を記録します。常時の定期処理が必要になったらVPS、外に出せないデータやモデル実験が中心なら自宅構成を検討する、という順番なら過剰な購入を避けやすくなります。最適解は利用頻度と品質の許容範囲で変わります。
+
+## 記事の範囲
+公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
+
+
+## 参考資料
+- [Ollama：ローカル実行、クラウド、メモリとサーバー設定のFAQ](https://docs.ollama.com/faq)
+
+## 次に考えたいこと
+- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
+
+
+---
+
+# ポータブル電源をUPS代わりにする前に、何を確認する？
+
+> 防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。
 
 - **Canonical URL**: https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/portable-power-station-ups-switchover-time-idle-drain-tests.csv
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/portable-power-station-ups-switchover-time-idle-drain-tests.csv
+
+## 訂正について
+旧版の46台分の容量・待機電力・切替波形集計は、採用ログを確認できないため撤回しました。「一定の切替時間ならPCが落ちない」という境界の断定も外し、用途と互換性の確認を中心に改訂しました。
+
+---
+
 - **Category**: Hardware & Power Electronics
-- **Sample Size (N)**: 46
-- **Data Updated**: 2026-10-12
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
 
-## 結論・実測サマリー (TL;DR)
-- 集計充放電・波形ログ数は「46 台分」（r/SolarDIY・オシロスコープ計測）。
-- AC実効放電容量の中央値は「公称比 83.5%」（1024Wh機から実質 約840〜870Wh 出力）。
-- AC出力ON時の無負荷待機電力は「16.5 〜 31.0 W」（ACつけっぱなし放置で1日35〜65%自然減）。
-- Anker Solix C1000 (公称 1,056Wh)：ACインバータ効率が高く実測約84.5%を取り出し可能。ただしUPS切替公称20ms（実測14〜18ms）のため高負荷PCのUPS用途は注意（N=14）。
+## 選び方の要点
+- 切替時間の公称値だけで、手元のPCやNASが止まらないとは保証できない。
+- Whからの稼働時間は、利用できる電力量と機器の平均電力をそろえて計算する。
+- 停電対策なら、容量の比較に加えて通知・自動停止・復旧も検討する。
 
-## 主要実測指標 (Key Metrics)
-- **集計充放電・波形ログ数**: 46 台分 (r/SolarDIY・オシロスコープ計測)
-- **AC実効放電容量の中央値**: 公称比 83.5% (1024Wh機から実質 約840〜870Wh 出力)
-- **AC出力ON時の無負荷待機電力**: 16.5 〜 31.0 W (ACつけっぱなし放置で1日35〜65%自然減)
-- **ATX電源PCが落ちないUPS閾値**: ≤ 10.0 ms (20ms〜30ms機は高負荷PCで再起動事例あり)
 
-## 条件別・実測比較データテーブル
-| モデル名 | 公称容量 | AC実効容量 (300W負荷) | 実効変換効率 | AC無負荷待機電力 | UPS切替時間 (公称 / 実測) | 主な適性用途 |
-| --- | --- | --- | --- | --- | --- | --- |
-| EcoFlow DELTA 3 Plus | 1,024 Wh | 850 Wh | 83.0 % | 約 21.5 W | <10ms / 実測 8.8 ms | PC・NAS常時UPS兼防災バックアップ |
-| Anker Solix C1000 | 1,056 Wh | 892 Wh | 84.5 % | 約 18.0 W | <20ms / 実測 15.4 ms | 家電高出力駆動・急速充電運用 |
-| Jackery 1000 Plus | 1,264 Wh | 1,062 Wh | 84.0 % | 約 16.5 W | <20ms / 実測 16.2 ms | 長時間冷蔵庫駆動・車中泊・拡張運用 |
-| 一般廉価1000Wh機 (平均) | 1,000 Wh | 745 Wh | 74.5 % | 約 30.2 W | 20〜30ms / 実測 24.5 ms | 短時間の屋外電動工具・投光器 |
+## 選択肢の比較表
+| 目的 | 優先して確認すること | 実機で確かめること | 容量だけでは分からないこと |
+| --- | --- | --- | --- |
+| 家電をしばらく動かす | 機器の定格と起動時の電力、出力条件 | 同じ機器・設定での運転時間 | 利用できるAC電力量と負荷の変動 |
+| PC・NASの停電対策 | 切替、機器との互換性、常時接続条件 | 予定する負荷で継続動作するか | 再起動の有無とデータ保護 |
+| 安全に停止する | 残量通知や停止連携の対応 | 想定した条件で停止処理が完了するか | 電力を出し続ける以外の機能 |
+| 小さな負荷の常時運用 | 出力の自動停止、待機消費、電源方式 | 低負荷で途切れないか | カタログ容量だけの時間換算 |
 
 ## 詳細解説・原因分析
-### 1. なぜ「1000Wh」のポータブル電源で「100Wの家電が10時間」動かないのか
-カタログに記載されている「1024Wh」などの数値は、内部のリン酸鉄リチウムイオン電池（DC 51.2V等）の定格容量です。ここからAC 100Vの正弦波を作るにはDC-ACインバータ回路を通す必要があり、（1）変換ロス（約10〜15%）と（2）インバータ回路自体の固定待機電力（毎時16W〜30W）が常時消費されます。そのため、たとえば消費電力40Wの小型冷蔵庫をAC接続すると、冷蔵庫40W＋インバータ自己消費20W＝毎時60Wがバッテリーから削られ、実効稼働時間は理論値の約6割（15〜16時間程度）になります。
+### 防災用と、データを守る用途を分ける
+照明や家電を長く動かすことと、PCを止めずにデータを書き終えることは別の要件です。PC・NAS向けなら、切替時の動作、常時給電条件、残量が減った後の停止処理を確認します。「UPS」「EPS」という呼び方だけで互換性や機能範囲を決めず、正確な型番の説明書を読みます。
 
-### 2. 「EPS（20ms）」と「UPS（10ms未満）」の決定的な境界線
-一般的なPC用電源ユニット（ATX規格）が瞬間停電時に出力電圧を維持できるホールドアップタイム（Hold-up Time）は、規格上「100%負荷時に16ms以上（推奨17ms以上）」と定められています。そのため、公称切替時間が「20ms以下」のポータブル電源（簡易EPS）をパススルー接続していると、アイドル時は耐えられても、GPUがフル稼働している瞬間に停電が起きると電圧低下によりPCが強制再起動する事例が確認されています。ワークステーションやNASの保護には、オシロスコープ実測で10ms未満を達成しているモデルを選ぶ必要があります。
+### 公称の切替時間は、確認の出発点
+Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間の公称仕様があります。これは当該地域モデルの説明で、国内モデルや手元のPCとの互換性の測定ではありません。一定のms値を境にすべてのPCが安全になると断定せず、利用する機器と負荷の組み合わせで確認します。
+参照: [Anker SOLIX：C1000 米国向け公式仕様](https://www.ankersolix.com/products/c1000)
 
-## よくある疑問と回答 (FAQ)
-### Q. 車載冷蔵庫やルーターを最も長持ちさせる接続方法は何ですか？
-A. AC 100Vコンセント出力を使わず、DC 12V（シガーソケット）またはUSB-C PD出力に直接接続することです。ACインバータをOFFにすることで毎時16〜30Wのインバータ待機電力をゼロにでき、実測稼働時間が約1.3倍〜1.6倍に延びます。
+### WhとWで、何を計算しているか
+利用できる出力電力量(Wh) ÷ 負荷の平均電力(W)で時間の目安を求めます。仮にAC側で利用できる電力量を800Wh、一定負荷を100Wと置けば8時間相当です。800Whは仮定で、特定製品の実測ではありません。AC側の実測電力量に変換損失や自己消費が含まれるなら、同じ損失をもう一度差し引かないようにします。
 
-### Q. パススルー（常時コンセント接続）でUPSとして使い続けるとバッテリーは劣化しますか？
-A. 現行のリン酸鉄（LiFePO4）採用かつ純正バイパス回路を搭載したモデルでは、通常時は商用電源をそのままスルー出力し、バッテリーへの微弱充放電を抑える制御が入っています。ただし100%満充電のまま高温環境に置くとカレンダー劣化が進むため、アプリ設定で充電上限を80%〜90%に制限して常時接続する運用が推奨されます。
+### 待機消費と低負荷時の挙動も確認する
+ルーターのような小さな負荷では、電源側の自己消費や出力の自動停止が判断材料になります。DCやUSB接続を使う場合も、電圧、極性、対応規格を一致させます。出力方式を変えたときの変換効率や運転時間は測定が必要で、「DCなら損失ゼロ」「必ず何倍長持ち」とは言えません。
 
-## 検証環境・集計メソドロジー
-r/SolarDIY、r/Ecoflow、および独立系電力検証ログ（N=46）より、（1）0.2C〜0.3C（200W〜300W）定電力AC負荷時の積算電力計による実効放電容量（Wh）、（2）AC出力ON・無負荷放置時の1時間あたりバッテリー減少率から算出したインバータ待機電力（W）、（3）商用電源遮断時のオシロスコープ電圧ゼロクロス停止時間（ms）を集計。
+### 停電対策の完成形まで見積もる
+バックアップを用意し、重要な処理をしていない状態でメーカーの案内に沿って動作確認します。停電後の残量通知、停止、復電時の起動までが要件なら、対応する専用UPSも候補です。容量が大きいことだけで置き換えられるとは限りません。常時接続の可否と保管・充電設定は各製品の説明に従い、共通の充電上限を一律には推奨しません。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [Anker SOLIX：C1000 米国向け公式仕様](https://www.ankersolix.com/products/c1000)
+
+## 次に考えたいこと
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
 
 
 ---
 
-# Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース
+# Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する
 
-> カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）
+> MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。
 
 - **Canonical URL**: https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html
-- **CSV Dataset**: https://nodus-lab.pages.dev/datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv
+
+## 訂正について
+旧版の52環境集計、壁越しの速度維持率、MLOによる倍率、待機電力と年間費用は、採用ログを追跡できないため撤回しました。全機種を同じMIMO構成とする説明も外し、経路と対応条件を確認する内容に改訂しました。
+
+---
+
 - **Category**: Hardware & Power Electronics
-- **Sample Size (N)**: 52
-- **Data Updated**: 2026-10-12
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-13
 
-## 結論・実測サマリー (TL;DR)
-- 集計iperf3計測環境数は「52 環境」（r/HomeNetworking 10GbE LAN基準）。
-- 同室3m (6GHz 320MHz) 実測は「3.4 〜 4.2 Gbps」（2x2クライアント（リンク速度5.76Gbps）時）。
-- 壁2枚越し時の6GHz速度維持率は「約 22% 〜 31%」（5GHz帯（160MHz）と実効速度が逆転する境界）。
-- 6GHz単体 (320MHz幅) — 同室・見通し 3m：4096-QAMが安定維持され、2.5GbE有線LANの限界（約2.35Gbps）を大きく上回る実効3.8Gbps超を達成（N=19）。
+## 選び方の要点
+- ルーターの合算公称速度を、1台のPCで得られる実効速度と混同しない。
+- MLOや広いチャネル幅には端末側の対応も必要。購入前に両端を確認する。
+- 別室の不満なら、世代の更新より先に設置場所と通信経路を調べる。
 
-## 主要実測指標 (Key Metrics)
-- **集計iperf3計測環境数**: 52 環境 (r/HomeNetworking 10GbE LAN基準)
-- **同室3m (6GHz 320MHz) 実測**: 3.4 〜 4.2 Gbps (2x2クライアント（リンク速度5.76Gbps）時)
-- **壁2枚越し時の6GHz速度維持率**: 約 22% 〜 31% (5GHz帯（160MHz）と実効速度が逆転する境界)
-- **10GbE搭載Wi-Fi 7機の待機電力**: 18.5 〜 27.4 W (Wi-Fi 6機の約1.6〜2.1倍（年間約5,500〜8,000円）)
 
-## 条件別・実測比較データテーブル
-| 接続モード・環境 | 周波数・チャネル幅 | 2x2 PHY理論リンク速度 | iperf3実測中央値 | Ping P99遅延 (負荷時) | 主なボトルネック要因 |
-| --- | --- | --- | --- | --- | --- |
-| 同室3m (6GHz単体) | 6GHz / 320MHz | 5,764 Mbps | 3,840 Mbps | 4.2 ms | クライアント側MIMO数 (2x2上限) |
-| 同室3m (MLO有効) | 5GHz(160) + 6GHz(320) | 8,646 Mbps | 4,120 Mbps | 2.7 ms | OS/ドライバのSTR/EMLSR制御 |
-| 壁2枚10m (6GHz単体) | 6GHz / 320MHz | 5,764 Mbps | 920 Mbps | 14.8 ms | 高周波遮蔽減衰・SNR低下 |
-| 壁2枚10m (MLO有効) | 5GHz(160) + 6GHz(320) | 8,646 Mbps | 1,580 Mbps | 6.1 ms | 5GHz帯へのトラフィック比重移行 |
+## 選択肢の比較表
+| 困りごと | 最初に調べること | 候補になる対策 | 買い替えで保証されないこと |
+| --- | --- | --- | --- |
+| ネット全体が遅い | 有線での速度、契約、混雑 | 回線や有線経路の確認 | ルーター交換だけで外向き回線が速くなること |
+| 別室だけ遅い | 設置位置、壁、干渉、接続帯域 | 配置変更、適切な追加AP、有線接続 | Wi-Fi 7ならどの壁でも届くこと |
+| NASへの転送を速くしたい | 端末、NAS、有線ポート、保存先 | 経路全体の速度と機能対応をそろえる | ルーターの合算速度が1台に出ること |
+| 対応端末でMLOを使いたい | 両端の機能、OS、ドライバ、地域モデル | 必要な機能を備える組み合わせ | どの端末・環境でも同じ効果が出ること |
 
 ## 詳細解説・原因分析
-### 1. なぜ「BE19000（最大19Gbps）」のルーターでもPC1台では4Gbps前後が上限なのか
-ルーターのパッケージに記載されている「BE19000（約19Gbps）」「BE9300（約9.3Gbps）」という数値は、2.4GHz帯・5GHz帯・6GHz帯のすべてを4x4 MIMO（アンテナ4本分）で同時フル通信した場合の理論合算値です。しかし、市販のノートPCやスマートフォン（iPhone 16 ProやIntel BE200搭載PC）の内蔵アンテナは「2x2 MIMO（2ストリーム）」であるため、6GHz・320MHz接続時の物理リンク上限は5,764Mbpsとなり、プロトコルオーバーヘッドを除いた実効速度は同室至近距離で約3.6〜4.2Gbpsが物理的な天井となります。
+### ネットが遅いのか、家の中の通信が遅いのか
+同じ端末を使い、可能なら有線接続と無線接続を比べます。外向きの速度測定と、宅内のPC・NAS間の転送は別の結果として記録します。有線でも遅い場合に、無線ルーターだけを交換して解決するとは限りません。改善したい経路を先に特定します。
 
-### 2. MLO（Multi-Link Operation）が最も効くのは「同室」ではなく「壁越しの中距離」
-コミュニティの検証ログ（N=52）から判明した重要な事実は、ルーターの真横（同室3m）では6GHz単体でも十分すぎる帯域が出るためMLOの速度上積みは約5〜10%に留まる一方、ドアや石膏ボード壁を1〜2枚挟んだ別室環境ではMLOの有無で実効速度に約1.7倍（920Mbps vs 1,580Mbps）の差がつく点です。6GHzの320MHz幅は壁による減衰に弱いですが、MLOを有効化しておくことで5GHz帯がシームレスに下支えし、切断やパケ詰まりを防ぎます。
+### 公称値の注記まで読む
+TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なること、端末・環境で変わることを注記しています。MLOや320MHzなどの機能には端末側の対応が必要で、地域の条件もあります。このページは機能の確認例であり、国内の全製品や全端末で同じ速度が出るという根拠ではありません。
+参照: [TP-Link：Deco BE9300の仕様と条件注記](https://www.tp-link.com/uk/home-networking/deco/deco-be9300/)
 
-## よくある疑問と回答 (FAQ)
-### Q. インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？
-A. 外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。
+### 壁越しの速度を、固定の減衰率で見積もらない
+壁の材質、距離、設置の高さ、周囲の干渉、端末の向きなどを記録して、同じ場所で測ります。置き場所を変える、既存の有線経路を使う、適切な位置へアクセスポイントを追加するなど、機器の世代以外の対策も候補です。MLOを有効にすれば必ず別室が速くなるという結論は今回の資料からは出せません。
 
-### Q. MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？
-A. はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。
+### NAS転送では、有線側も含める
+端末からルーター、ルーターからNAS、NASの保存領域までの経路を確認します。ひとつの区間が遅いままでは、別の区間だけ高速化しても全体の転送時間が改善しない場合があります。買い替えの総額はルーターだけでなく、端末側の対応、スイッチ、ケーブルなど必要な変更も含めます。
 
-## 検証環境・集計メソドロジー
-r/HomeNetworking および有志のローカル10GbE NAS環境における iperf3（TCPマルチストリーム）計測ログ52件を集計。クライアント側は Intel BE200 / Qualcomm FastConnect 7800 (2x2 MIMO, 320MHz対応) を基準とし、見通し3m（同室）および壁2枚越し（距離10m）での実効スループット中央値を算出。
+### IoT機器も含めて、導入後を考える
+既存のスマート家電が使う帯域と暗号化方式、ルーターのSSID設定、ゲストネットワークなどの対応を確認します。問題が起きても「Wi-Fi 7は古い機器が必ずつながらない」と一括りにしません。常時稼働の電気代を比べるなら、機種の実測電力と契約単価で計算します。買い替え後は元と同じ場所・端末で測り、改善したか確かめます。
+
+## 記事の範囲
+公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
+
+
+## 参考資料
+- [TP-Link：Deco BE9300の仕様と条件注記](https://www.tp-link.com/uk/home-networking/deco/deco-be9300/)
+
+## 次に考えたいこと
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
 

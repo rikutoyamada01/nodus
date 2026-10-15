@@ -1,219 +1,116 @@
 {
   "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
-  "title": "Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測",
-  "subtitle": "公式非公開のCompute Units (CU) 時間あたり消費量（L4 / A100 / G4 / H100）の有志実測集計（N=64）と損益分岐点",
+  "title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方",
+  "display_title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方",
+  "subtitle": "GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から見積もる。Colab、時間課金GPU、自宅PCの使い分けも整理します。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
-    "Google Colab",
-    "Google AI Pro",
-    "GPU Benchmark",
-    "A100",
-    "H100",
-    "RTX 6000 Blackwell"
+    "Colab GPU CU 何時間",
+    "Colab クラウドGPU 比較",
+    "Colab 費用"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 64,
-  "methodology_note": "Google Colabの公式仕様ではGPUごとの固定CU消費レートは非公開（動的変動表記）であるため、r/GoogleColab (N=42) および r/LocalLLaMA (N=22) の計64セッションにおけるランタイム接続前後の残高差分（CU/h）を集計。チャート上段は外部クラウドGPUスポット相場（$13.3/200CU相当基準）からの理論換算時間、下段はColab 200 CU枠での実測稼働時間中央値を示す。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の64セッション集計、GPU別CU/h、円換算と外部クラウドとの価格順位は、採用ログと料金条件を確認できないため撤回しました。実行時の表示と残高に基づく見積もりへ改訂しています。",
   "seo": {
-    "meta_title": "【実測N=64】Google Colab GPU 制限・料金比較｜AI Pro (200 CU) でA100は37時間稼働 | Nodus",
-    "meta_description": "Google ColabのGPU使用制限と料金（AI Pro 月200 Compute Units）でL4・A100・G4(96GB)・H100が何時間使えるのか？無料枠やローカルGPUとの比較、公式非公開のCU消費レートを実測ログ(N=64)から定量比較。",
+    "meta_title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方 | Nodus",
+    "meta_description": "GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から見積もる。Colab、時間課金GPU、自宅PCの使い分けも整理します。",
     "target_keywords": [
-      "Google Colab GPU 制限 料金 比較",
-      "Google AI Pro Colab A100 時間",
-      "Colab H100 CU 消費量 実測",
-      "Colab L4 A100 スペック 比較"
+      "Colab GPU CU 何時間",
+      "Colab クラウドGPU 比較",
+      "Colab 費用"
     ],
-    "primary_seed": "Google Colab GPU"
+    "primary_seed": "Colab GPU CU 何時間"
   },
-  "summary_metrics": [
-    {
-      "label": "集計サンプル数 (N)",
-      "value": "64 セッション",
-      "subtext": "r/GoogleColab (N=42), r/LocalLLaMA (N=22)"
-    },
-    {
-      "label": "A100 (40GB) 実測稼働時間",
-      "value": "37.2 時間 / 200CU",
-      "subtext": "実測中央値 5.37 CU/時 換算"
-    },
-    {
-      "label": "H100 (80GB) 実測稼働時間",
-      "value": "11.1 時間 / 200CU",
-      "subtext": "実測中央値 18.05 CU/時 換算"
-    },
-    {
-      "label": "推論・LoRA 最高効率枠",
-      "value": "NVIDIA L4 (22.5GB)",
-      "subtext": "実測中央値 1.78 CU/時（約112.3時間）"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "ColabのGPU種類や実行可能時間は変動する。過去のCU/hを現在の保証値にしない。",
+    "比較するのは1時間の安さより、同じ処理を完了する費用と待ち時間。",
+    "保存と再開を先に用意し、途中停止でやり直す負担も見積もる。"
   ],
-  "spec_gap_chart": {
-    "title": "外部クラウド同等予算（200 CU相当額）での想定稼働時間 vs Colab 200 CU枠での実測稼働時間中央値",
-    "unit": "時間 (Hours / 200 CU)",
-    "max_scale": 130,
-    "items": [
-      {
-        "name": "NVIDIA T4 (15GB VRAM)",
-        "official_label": "外部クラウド相場換算基準: 100.0h (公式CU非公開)",
-        "official_value": 100.0,
-        "measured_label": "Colab 200CU 実測中央値: 121.2h (1.65 CU/h)",
-        "measured_value": 121.2,
-        "status": "good",
-        "note": "CU消費は最小（1.65 CU/h ±0.15）だが、旧Turing世代のためFP8/BF16非対応（N=14）。"
-      },
-      {
-        "name": "NVIDIA L4 (22.5GB VRAM)",
-        "official_label": "外部クラウド相場換算基準: 65.0h (公式CU非公開)",
-        "official_value": 65.0,
-        "measured_label": "Colab 200CU 実測中央値: 112.3h (1.78 CU/h)",
-        "measured_value": 112.3,
-        "status": "good",
-        "note": "T4とほぼ同等のCU消費（1.78 CU/h ±0.20）でVRAM 1.5倍・Ada世代のFP8/BF16推論に対応（N=18）。"
-      },
-      {
-        "name": "NVIDIA A100 (40GB VRAM)",
-        "official_label": "外部クラウド相場換算基準: 22.0h (公式CU非公開)",
-        "official_value": 22.0,
-        "measured_label": "Colab 200CU 実測中央値: 37.2h (5.37 CU/h)",
-        "measured_value": 37.2,
-        "status": "good",
-        "note": "5.37 CU/h (±0.35)。7B〜32BのUnsloth LoRA学習やバッチ推論で時間単価効率が良好（N=16）。"
-      },
-      {
-        "name": "NVIDIA G4 / RTX 6000 Blackwell (96GB)",
-        "official_label": "外部クラウド相場換算基準: 14.0h (公式CU非公開)",
-        "official_value": 14.0,
-        "measured_label": "Colab 200CU 実測中央値: 20.4h (9.80 CU/h)",
-        "measured_value": 20.4,
-        "status": "warning",
-        "note": "9.80 CU/h (±0.80)。96GB VRAMにより70B級LLMの配置が可能。H100の約半分のCU消費（N=8）。"
-      },
-      {
-        "name": "NVIDIA H100 (80GB VRAM)",
-        "official_label": "外部クラウド相場換算基準: 10.0h (公式CU非公開)",
-        "official_value": 10.0,
-        "measured_label": "Colab 200CU 実測中央値: 11.1h (18.05 CU/h)",
-        "measured_value": 11.1,
-        "status": "danger",
-        "note": "18.05 CU/h (±1.10)。演算速度は高速だがCU消費レートがA100 (40GB) の約3.36倍に達する（N=8）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "GPUランタイム",
-      "VRAM容量",
-      "公式表記レート",
-      "実測消費レート中央値 (CU/時)",
-      "200 CUでの稼働時間目安",
-      "参考単価換算 (1 CU ≈ ¥7.5基準)",
-      "主な適性ワークロード"
+      "選択肢",
+      "候補になる使い方",
+      "数える費用",
+      "確認事項"
     ],
     "rows": [
       [
-        "NVIDIA T4",
-        "15 GB (GDDR6)",
-        "非公開（動的変動）",
-        "1.65 CU/h (±0.15)",
-        "約 121.2 時間",
-        "約 ¥12.4 / 時間",
-        "Whisper文字起こし、軽量7B推論"
+        "Colab",
+        "ノートブックで試す、短い処理を行う",
+        "計算ユニットと契約料金",
+        "割り当てGPU、表示レート、実行制限、データ保存先"
       ],
       [
-        "NVIDIA L4",
-        "22.5 GB (GDDR6)",
-        "非公開（動的変動）",
-        "1.78 CU/h (±0.20)",
-        "約 112.3 時間",
-        "約 ¥13.4 / 時間",
-        "FLUX画像生成、VLM-OCR、14B推論"
+        "時間課金GPU",
+        "必要なGPU条件を選んで処理する",
+        "稼働時間、ディスク、転送など",
+        "在庫、停止中の課金、セットアップ時間"
       ],
       [
-        "NVIDIA A100 (Standard)",
-        "40 GB (HBM2e)",
-        "非公開（動的変動）",
-        "5.37 CU/h (±0.35)",
-        "約 37.2 時間",
-        "約 ¥40.3 / 時間",
-        "動画生成、14B〜32B LoRA学習"
-      ],
-      [
-        "NVIDIA A100 (High-RAM)",
-        "80 GB (HBM2e)",
-        "非公開（動的変動）",
-        "7.52 CU/h (±0.50)",
-        "約 26.6 時間",
-        "約 ¥56.4 / 時間",
-        "長文コンテキスト学習、大型バッチ処理"
-      ],
-      [
-        "NVIDIA G4 (Blackwell)",
-        "96 GB (GDDR7)",
-        "非公開（動的変動）",
-        "9.80 CU/h (±0.80)",
-        "約 20.4 時間",
-        "約 ¥73.5 / 時間",
-        "70B+ LLM推論、FP4/FP8生成"
-      ],
-      [
-        "NVIDIA H100",
-        "80 GB (HBM3)",
-        "非公開（動的変動）",
-        "18.05 CU/h (±1.10)",
-        "約 11.1 時間",
-        "約 ¥135.4 / 時間",
-        "フルファインチューニング、大規模科学計算"
+        "手元のPC",
+        "既存機器で収まる処理を繰り返す",
+        "追加電力と必要な増設",
+        "メモリ、速度、占有時間、運用負担"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. 公式仕様の「動的変動」とコミュニティ実測値の収束レンジ",
-      "body": "Google Colabの公式FAQおよびランタイム選択画面では、各GPUの時間あたり消費量（Burn Rate）は「需要と供給に応じて動的に変動する」と記載されており、固定の数値表は公開されていません。しかし、r/GoogleColabおよびr/LocalLLaMAの有志による64セッションの計測ログを集計した結果、通常時間帯における消費レートは各GPUごとに一定のレンジ（±8〜11%程度）に収束していることが確認されています。"
+      "heading": "GPUが選べることと、確保できることは違う",
+      "body": "Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変動し、有料プランでもリソースの状況が変わると説明しています。希望するGPUを常に使える前提で予定を立てず、実行時の選択肢と条件を確認します。固定した資源が必要な場合は、別の提供形態も比較対象です。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "heading": "2. T4（1.65 CU/h）とL4（1.78 CU/h）の定量効率差",
-      "body": "実測値で注目すべき点は、T4（中央値 1.65 CU/h）とL4（中央値 1.78 CU/h）の消費レート差が約7.8%にとどまることです。一方でL4はVRAMが22.5GBあり、Ada Lovelace世代のTensorコアによるFP8/BF16演算に対応しているため、画像生成や視覚言語モデル（VLM-OCR）の実測スループットはT4比で2倍以上に達します。結果として1タスク完了あたりの累計CU消費量はL4の方が少なくなります。"
+      "heading": "残高からの見積もりは、そのときのレートで",
+      "body": "目安時間 = 利用可能CU ÷ 表示されているCU/時。仮に100 CUを持ち、レートが5 CU/時なら20時間相当です。これは計算例で、実際の消費レート、連続実行可能時間、割り当て保証を示しません。表示、実行前後の残高、実行時刻を記録し、実際の消費と照合します。",
+      "source_indices": []
     },
     {
-      "heading": "3. H100 vs A100：1ステップあたりのCU損益分岐点",
-      "body": "H100は1時間あたり中央値18.05 CU（A100 40GBの約3.36倍）を消費します。単一バッチ推論や小規模LoRA学習ではディスクI/Oや前処理がボトルネックとなり、H100の速度向上幅がCU消費倍率（3.36倍）を下回るケースが多く見られます。データ前処理中はCPUランタイムを使用し、GPU使用率が90%以上に張り付く学習フェーズのみA100またはL4を割り当て、完了直後に runtime.unassign() で切断する運用がCU節約に有効です。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "Google ColabのCompute Unitsはアイドル中も消費されますか？",
-      "answer": "はい。コードセルが実行されていなくても、GPUランタイムが割り当てられている（接続中）状態では時間あたりのCUが継続して減算されます。バッチ処理の末尾に from google.colab import runtime; runtime.unassign() を記述し、処理完了と同時にランタイムを解放することが推奨されます。"
+      "heading": "速いGPUが、安い処理になるとは限らない",
+      "body": "同じ成果物を得るまでの費用で比較します。仮にAが1時間に2 CUで30分かかるなら1 CU、Bが1時間に6 CUで15分かかるなら1.5 CUです。Bは早く終わりますがCUは多く消費します。この数値は仮定例です。準備、データ読み込み、失敗後のやり直しを含めて判断します。",
+      "source_indices": []
     },
     {
-      "question": "超小型100W充電器などのローカル環境検証ログ処理と外部クラウド（RunPod等）の使い分けは？",
-      "answer": "RunPod等の時間課金クラウドではA100が約$1.19〜$1.69/時間で時間制限なく利用できるため、数十時間に及ぶ連続学習には専用クラウドが適しています。一方、1回15〜40分程度のバッチ推論やOCR処理を月数十回回す用途では、即座に起動・切断できるColabのCU枠がコスト面で優位になりやすい傾向があります。"
+      "heading": "処理の途中でも、成果を残せるようにする",
+      "body": "ランタイムが止まっても戻れるよう、学習のチェックポイント、処理済みファイルの一覧、実行条件を永続的な保存先に残します。環境の準備を毎回繰り返しているなら、その時間も比較に含めます。GPUを使わない前処理を別で済ませられるかは、転送や準備が増える負担と一緒に考えます。",
+      "source_indices": []
+    },
+    {
+      "heading": "Colab、クラウド、自宅の境界",
+      "body": "ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCを候補にする、という整理です。最安の順位は、実行する仕事、必要なGPU、契約、利用頻度を決めてから検証します。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/GoogleColab - Search: Compute Units burn rate L4 A100 H100 empirical logs",
-      "url": "https://www.reddit.com/r/GoogleColab/search/?q=compute+units+per+hour+A100+L4&restrict_sr=1",
-      "sample_size": "N=42 sessions",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Reddit r/LocalLLaMA - Search: Colab GPU compute units & Blackwell G4 runtime benchmarks",
-      "url": "https://www.reddit.com/r/LocalLLaMA/search/?q=colab+compute+units+A100+L4&restrict_sr=1",
-      "sample_size": "N=22 benchmarks",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Google Colaboratory Official FAQ - Paid Services & Compute Units Specification",
+      "title": "Google Colab：FAQとリソース制限",
       "url": "https://research.google.com/colaboratory/faq.html",
-      "sample_size": "Official Documentation",
-      "verified_date": "2026-10-12"
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "利用条件と資源の変動性。GPU別の固定CU消費や割り当てを保証しません。"
     }
   ],
-  "affiliate_keys": [
-    "google-ai-pro",
-    "runpod-gpu"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "title": "パーソナルAIは、どこに置く？"
+    },
+    {
+      "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
+      "title": "ローカルLLM用に買うなら、MacかGPUか"
+    }
   ]
 }

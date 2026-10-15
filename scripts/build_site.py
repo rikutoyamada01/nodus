@@ -81,6 +81,21 @@ def validate_article(article: dict[str, Any], config: dict[str, Any]) -> None:
         for src in sources:
             validate_url(src.get("url", ""))
 
+    if article.get("kind") == "guide":
+        if article.get("origin") != "editorial" or article.get("sample_size_n") != 0:
+            raise ValueError(f"Article {slug}: guides must be editorial with zero measured samples")
+        if not article.get("sections") or not article.get("comparison_table", {}).get("rows"):
+            raise ValueError(f"Article {slug}: guides require prose and a comparison table")
+        for section in article["sections"]:
+            for index in section.get("source_indices", []):
+                if type(index) is not int or not 0 <= index < len(article["sources"]):
+                    raise ValueError(f"Article {slug}: invalid section source index")
+        for related in article.get("related_articles", []):
+            validate_slug(related["slug"])
+            if not (ARTICLES_DIR / f"{related['slug']}.json").exists():
+                raise ValueError(f"Article {slug}: missing related article {related['slug']}")
+        return
+
     chart = article.get("spec_gap_chart", {})
     max_scale = float(chart.get("max_scale", 0))
     if not math.isfinite(max_scale) or max_scale <= 0:
@@ -136,1102 +151,7 @@ def _normalize_sort_value(text: str) -> str:
 
 
 def build_css() -> str:
-    return """
-:root {
-  --bg-page: #f5f7f9;
-  --bg-surface: #ffffff;
-  --bg-subtle: #f0f3f6;
-  --bg-callout: #f2f9f6;
-  --text-primary: #181a1c;
-  --text-secondary: #374151;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --brand-primary: #0f5c4d;
-  --brand-accent: #0d7462;
-  --brand-light: #e6f4f1;
-  --origin-self-bg: #e6f4f1;
-  --origin-self-fg: #0b5345;
-  --origin-comm-bg: #f1f5f9;
-  --origin-comm-fg: #334155;
-  --status-good: #065f46;
-  --status-good-bg: #d1fae5;
-  --status-warn: #92400e;
-  --status-warn-bg: #fef3c7;
-  --status-danger: #991b1b;
-  --status-danger-bg: #fee2e2;
-  --font-sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Consolas, "BIZ UDGothic", "Liberation Mono", Menlo, monospace;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-padding-top: 72px;
-}
-
-body {
-  font-family: var(--font-sans);
-  background-color: var(--bg-page);
-  color: var(--text-primary);
-  line-height: 1.8;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-.skip-link {
-  position: absolute;
-  top: -100px;
-  left: 16px;
-  background: var(--brand-primary);
-  color: #ffffff;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: 700;
-  z-index: 1000;
-}
-
-.skip-link:focus {
-  top: 12px;
-  color: #ffffff;
-  outline: 2px solid var(--brand-accent);
-}
-
-a {
-  color: var(--brand-accent);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--brand-primary);
-  text-decoration: underline;
-}
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--brand-accent);
-  outline-offset: 2px;
-}
-
-.container {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* Clean Editorial Tech Header (Zenn / Note / Qiita vibe) */
-.site-header {
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 58px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.brand-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-primary);
-  font-weight: 800;
-  font-size: 1.18rem;
-  letter-spacing: -0.02em;
-  text-decoration: none;
-}
-
-.brand-logo:hover {
-  color: var(--brand-primary);
-  text-decoration: none;
-}
-
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: var(--text-primary);
-  color: #ffffff;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.brand-tagline {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-weight: 500;
-  border-left: 1px solid var(--border-strong);
-  padding-left: 10px;
-}
-
-.site-nav {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 0.84rem;
-  flex-wrap: wrap;
-}
-
-.site-nav a {
-  color: var(--text-secondary);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.site-nav a:hover {
-  color: var(--brand-primary);
-  text-decoration: underline;
-}
-
-/* Compliance Notice Bar */
-.pr-banner {
-  background: var(--bg-subtle);
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  padding: 6px 0;
-}
-
-/* Compact Reader Intro Banner (Replaces dark SaaS Hero) */
-.editorial-intro {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
-  padding: 24px 0 20px;
-}
-
-.intro-inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.intro-copy {
-  max-width: 720px;
-}
-
-.intro-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--brand-primary);
-  margin-bottom: 4px;
-}
-
-.intro-copy h1 {
-  font-size: 1.38rem;
-  line-height: 1.4;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-
-.intro-copy p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.intro-stats-inline {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  background: var(--bg-page);
-  border: 1px solid var(--border-color);
-  padding: 10px 14px;
-  border-radius: 6px;
-  align-self: center;
-}
-
-.intro-stats-inline strong {
-  color: var(--text-primary);
-  font-weight: 700;
-}
-
-/* Index Controls & Feed List */
-.controls-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: space-between;
-  margin: 22px 0 18px;
-}
-
-.filter-bar {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.filter-btn[aria-pressed="true"],
-.filter-btn:hover {
-  background: var(--text-primary);
-  color: #ffffff;
-  border-color: var(--text-primary);
-}
-
-.search-input {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
-  color: var(--text-primary);
-  padding: 7px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  min-width: 240px;
-  max-width: 100%;
-}
-
-/* Scannable Article Feed (Zenn / Qiita / Reddit list feel) */
-.article-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 56px;
-}
-
-.article-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.12s ease;
-}
-
-.article-card[data-origin="first_party"] {
-  border-left: 4px solid var(--brand-accent);
-}
-
-.article-card[hidden] {
-  display: none !important;
-}
-
-.article-card:hover {
-  border-color: var(--border-strong);
-}
-
-.card-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.76rem;
-  flex-wrap: wrap;
-}
-
-.origin-badge {
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.74rem;
-}
-
-.origin-self {
-  background: var(--origin-self-bg);
-  color: var(--origin-self-fg);
-}
-
-.origin-community {
-  background: var(--origin-comm-bg);
-  color: var(--origin-comm-fg);
-}
-
-.category-pill {
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 0.76rem;
-}
-
-.date-text {
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  margin-left: auto;
-}
-
-.article-card h2 {
-  font-size: 1.18rem;
-  line-height: 1.45;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.card-title-link {
-  color: inherit;
-  text-decoration: none;
-}
-
-.card-title-link:hover {
-  color: var(--brand-accent);
-  text-decoration: underline;
-}
-
-.article-card p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.card-takeaway-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--bg-subtle);
-}
-
-.card-metrics-inline {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.inline-metric {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  background: var(--bg-page);
-  padding: 3px 9px;
-  border-radius: 4px;
-  border: 1px solid var(--border-color);
-}
-
-.inline-metric strong {
-  font-family: var(--font-mono);
-  color: var(--text-primary);
-  font-weight: 700;
-  margin-left: 4px;
-}
-
-.card-tags-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-}
-
-.tag-chip {
-  color: var(--text-muted);
-  background: var(--bg-subtle);
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-size: 0.73rem;
-}
-
-/* Article Detail: Zenn / Qiita / Note 2-Column Readable Layout */
-.article-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 760px) 280px;
-  gap: 28px;
-  align-items: start;
-  padding: 28px 0 64px;
-}
-
-.article-sheet {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 36px 40px 48px;
-}
-
-.article-sidebar {
-  position: sticky;
-  top: 78px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.sidebar-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 16px 18px;
-  font-size: 0.84rem;
-}
-
-.sidebar-title {
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.toc-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.toc-list a {
-  color: var(--text-secondary);
-  font-size: 0.82rem;
-  line-height: 1.45;
-  display: block;
-}
-
-.toc-list a:hover {
-  color: var(--brand-primary);
-}
-
-.meta-kv-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-}
-
-.meta-kv-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  border-bottom: 1px dashed var(--border-color);
-  padding-bottom: 4px;
-}
-
-.meta-kv-row strong {
-  font-family: var(--font-mono);
-  color: var(--text-primary);
-}
-
-.breadcrumb {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-  word-break: break-word;
-}
-
-.article-meta-top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.article-title {
-  font-size: 1.72rem;
-  line-height: 1.38;
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  margin-bottom: 10px;
-  color: var(--text-primary);
-}
-
-.article-subtitle {
-  font-size: 0.96rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin-bottom: 14px;
-}
-
-.article-tags-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.article-timestamps {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 24px;
-}
-
-/* TL;DR / Key Takeaways Callout (結論ファースト) */
-.tldr-box {
-  background: var(--bg-callout);
-  border: 1px solid #b7e4d8;
-  border-left: 4px solid var(--brand-accent);
-  border-radius: 6px;
-  padding: 18px 20px;
-  margin-bottom: 28px;
-}
-
-.tldr-title {
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: var(--origin-self-fg);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tldr-list {
-  padding-left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 0.92rem;
-  color: var(--text-primary);
-  line-height: 1.7;
-}
-
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
-  gap: 10px;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid #ccebe2;
-}
-
-.kpi-item {
-  background: #ffffff;
-  border: 1px solid #d5ede6;
-  border-radius: 6px;
-  padding: 10px 12px;
-}
-
-.kpi-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.kpi-value {
-  font-family: var(--font-mono);
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
-  margin: 2px 0;
-}
-
-.kpi-sub {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-}
-
-/* Cohesive Markdown-Style Sections inside Article Sheet */
-.article-section {
-  margin-top: 38px;
-}
-
-.section-h2 {
-  font-size: 1.28rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border-color);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.section-subnote {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-.prose-section {
-  margin-bottom: 28px;
-}
-
-.prose-section h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 24px 0 10px;
-  padding-left: 10px;
-  border-left: 3px solid var(--brand-accent);
-}
-
-.prose-section p {
-  color: var(--text-primary);
-  font-size: 0.98rem;
-  line-height: 1.85;
-}
-
-.methodology-box {
-  background: var(--bg-page);
-  border: 1px solid var(--border-color);
-  padding: 14px 16px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-top: 12px;
-}
-
-.csv-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--brand-primary);
-  background: var(--brand-light);
-  border: 1px solid #a7f3d0;
-  padding: 5px 11px;
-  border-radius: 4px;
-  text-decoration: none;
-}
-
-.csv-btn:hover {
-  background: #d1fae5;
-  text-decoration: none;
-}
-
-/* Honest Zero-Baseline Quantitative Plot */
-.gap-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: 12px;
-}
-
-.gap-item {
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 14px 16px;
-  background: var(--bg-page);
-}
-
-.gap-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.gap-item-name {
-  font-weight: 700;
-  font-size: 0.94rem;
-}
-
-.status-badge {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-
-.status-good {
-  background: var(--status-good-bg);
-  color: var(--status-good);
-}
-
-.status-warning {
-  background: var(--status-warn-bg);
-  color: var(--status-warn);
-}
-
-.status-danger {
-  background: var(--status-danger-bg);
-  color: var(--status-danger);
-}
-
-.bar-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 8px 0;
-}
-
-.bar-row {
-  display: grid;
-  grid-template-columns: 270px 1fr;
-  align-items: center;
-  gap: 12px;
-}
-
-.bar-label {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  color: var(--text-secondary);
-  font-variant-numeric: tabular-nums;
-}
-
-.bar-svg {
-  width: 100%;
-  height: 10px;
-  background: #e2e8f0;
-  border-radius: 2px;
-  overflow: hidden;
-  display: block;
-}
-
-.bar-rect-official {
-  fill: #94a3b8;
-}
-
-.bar-rect-measured {
-  fill: var(--brand-accent);
-}
-
-.gap-note {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--border-color);
-}
-
-/* Booktabs-style Comparison Table with Right-Aligned Numeric Columns */
-.table-wrap {
-  overflow-x: auto;
-  margin-top: 12px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-}
-
-table.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.84rem;
-  text-align: left;
-  font-variant-numeric: tabular-nums;
-}
-
-table.data-table caption {
-  text-align: left;
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  padding: 8px 12px;
-  background: var(--bg-page);
-  border-bottom: 1px solid var(--border-color);
-}
-
-table.data-table thead th {
-  background: var(--bg-subtle);
-  color: var(--text-primary);
-  font-weight: 700;
-  padding: 0;
-  white-space: nowrap;
-  font-size: 0.78rem;
-  border-bottom: 2px solid var(--border-strong);
-}
-
-.th-sort-btn {
-  background: transparent;
-  border: none;
-  color: inherit;
-  font: inherit;
-  font-weight: 700;
-  padding: 10px 12px;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-.th-sort-btn:hover {
-  background: #e2e8f0;
-}
-
-table.data-table td,
-table.data-table tbody th {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.82rem;
-}
-
-table.data-table td.num-cell {
-  text-align: right;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-table.data-table tbody th {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  background: #fafbfc;
-  color: var(--text-primary);
-}
-
-table.data-table tr:last-child td,
-table.data-table tr:last-child th {
-  border-bottom: none;
-}
-
-table.data-table tbody tr:hover td,
-table.data-table tbody tr:hover th {
-  background: var(--bg-page);
-}
-
-/* Reference / Affiliate Links */
-.cta-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.cta-card {
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 14px 16px;
-  background: var(--bg-page);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.cta-badge {
-  display: inline-block;
-  background: var(--brand-light);
-  color: var(--brand-primary);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 4px;
-  width: fit-content;
-}
-
-.cta-title {
-  font-weight: 700;
-  font-size: 0.92rem;
-  color: var(--text-primary);
-  margin-top: 6px;
-}
-
-.cta-provider {
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--text-primary);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.82rem;
-  padding: 8px 14px;
-  border-radius: 4px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.cta-btn:hover {
-  background: var(--brand-primary);
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.cta-disclosure-note {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 10px;
-}
-
-/* FAQ & Sources */
-.faq-list {
-  margin-top: 8px;
-}
-
-.faq-item {
-  border-bottom: 1px solid var(--border-color);
-  padding: 14px 0;
-}
-
-.faq-item:last-child {
-  border-bottom: none;
-}
-
-.faq-q {
-  font-weight: 700;
-  font-size: 0.95rem;
-  margin-bottom: 6px;
-  color: var(--text-primary);
-}
-
-.faq-a {
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  line-height: 1.75;
-}
-
-.source-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.source-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-page);
-  border: 1px solid var(--border-color);
-  padding: 9px 12px;
-  border-radius: 4px;
-  font-size: 0.82rem;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.source-meta {
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  font-size: 0.74rem;
-}
-
-/* Clean Minimal Footer */
-.site-footer {
-  background: var(--bg-surface);
-  border-top: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  padding: 40px 0 32px;
-  font-size: 0.84rem;
-  margin-top: 48px;
-}
-
-.footer-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 28px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.footer-desc {
-  max-width: 500px;
-  color: var(--text-secondary);
-  margin-top: 8px;
-  font-size: 0.82rem;
-}
-
-.footer-amazon-notice {
-  margin-top: 8px;
-  font-size: 0.76rem;
-  color: var(--text-muted);
-}
-
-.footer-links {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.footer-links a {
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.footer-bottom {
-  padding-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 0.76rem;
-  color: var(--text-muted);
-}
-
-.panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 28px 32px;
-  margin-bottom: 24px;
-}
-
-@media (max-width: 960px) {
-  .article-layout {
-    grid-template-columns: 1fr;
-  }
-  .article-sidebar {
-    position: static;
-    order: -1;
-  }
-}
-
-@media (max-width: 680px) {
-  .brand-tagline {
-    display: none;
-  }
-  .article-sheet {
-    padding: 22px 18px 32px;
-  }
-  .article-title {
-    font-size: 1.38rem;
-  }
-  .bar-row {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-}
-"""
+    return (ROOT_DIR / "scripts" / "editorial.css").read_text(encoding="utf-8")
 
 
 def build_js() -> str:
@@ -1263,6 +183,8 @@ def build_js() -> str:
           card.setAttribute("hidden", "hidden");
         }
       });
+      var empty = document.getElementById("searchEmpty");
+      if (empty) empty.hidden = Array.prototype.some.call(cards, function (card) { return !card.hidden; });
     }
 
     filterBtns.forEach(function (btn) {
@@ -1300,7 +222,8 @@ def build_js() -> str:
       if (!tbody) return;
 
       headers.forEach(function (th, colIdx) {
-        var btn = th.querySelector(".th-sort-btn") || th;
+        var btn = th.querySelector(".th-sort-btn");
+        if (!btn) return;
         btn.addEventListener("click", function () {
           var rows = Array.prototype.slice.call(tbody.querySelectorAll("tr"));
           var asc = th.getAttribute("aria-sort") !== "ascending";
@@ -1374,11 +297,11 @@ def render_header(config: dict[str, Any], root_prefix: str = "") -> str:
     <a href="{root_prefix}index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>{esc(site["name"])}</span>
-      <span class="brand-tagline">一次検証・定量技術ノート</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="{root_prefix}index.html">検証記事一覧</a>
-      <a href="{root_prefix}about.html">検証手法・運営情報</a>
+      <a href="{root_prefix}index.html">記事を読む</a>
+      <a href="{root_prefix}about.html">Nodusについて</a>
       <a href="{root_prefix}about.html#privacy">ポリシー</a>
       <a href="{root_prefix}feed.xml">RSS</a>
     </nav>
@@ -1414,7 +337,7 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
           <span>{esc(site["name"])}</span>
         </div>
         <p class="footer-desc">
-          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
         </p>
         <p class="footer-amazon-notice">{esc(footer_notice)}</p>
       </div>
@@ -1429,7 +352,7 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
     </div>
     <div class="footer-bottom">
       <span>&copy; {esc(site["copyright_year"])} {esc(site["organization"])}. All rights reserved.</span>
-      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
     </div>
   </div>
 </footer>
@@ -1490,6 +413,8 @@ def render_article_page(
     config: dict[str, Any],
     all_articles: list[dict[str, Any]] | None = None,
 ) -> str:
+    if article.get("kind") == "guide":
+        return render_guide(article, config)
     site = config["site"]
     seo = article["seo"]
     slug = validate_slug(article["slug"])
@@ -1504,8 +429,7 @@ def render_article_page(
         "origin_label",
         "🔬 独自実機・AIチャット検証" if is_self else "📊 一次検証ログ定量調査",
     )
-    if is_self and not origin_text.startswith(("🔬", "🧪")):
-        origin_text = f"🔬 {origin_text}"
+    origin_text = origin_text.lstrip("🔬🧪📊 ")
     lead_variant = seo.get("lead_variant", "default")
 
     amazon_notice = config["compliance"].get(
@@ -1830,7 +754,7 @@ def render_article_page(
             )
         related_section_html = f"""
         <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
-          <h2 class="section-h2"><span>6. あわせて読みたい関連検証データ</span></h2>
+          <h2 class="section-h2"><span>あわせて読みたい</span></h2>
           <ul class="source-list">
             {''.join(rel_items)}
           </ul>
@@ -1854,7 +778,7 @@ def render_article_page(
     table_section_block = f"""
       <section id="sec-table" class="article-section">
         <h2 class="section-h2">
-          <span>{table_num}. 条件別・実測比較データテーブル</span>
+          <span>{table_num}. 条件別の比較表</span>
           <span class="section-subnote">列見出しクリックで数値ソート可能</span>
         </h2>
         <div class="table-wrap">
@@ -1931,7 +855,7 @@ def render_article_page(
 
       <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
         <div class="tldr-title">
-          <span>💡 この記事でわかること（結論・実測サマリー）</span>
+          <span>この記事の要点</span>
           <div class="card-metrics-inline">
             {raw_log_btn_html}
             <a href="../datasets/{esc(slug)}.csv" download="{esc(slug)}.csv" class="csv-btn">CSVデータを取得</a>
@@ -1949,7 +873,7 @@ def render_article_page(
 
       <section id="sec-analysis" class="article-section">
         <h2 class="section-h2">
-          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
+          <span>結果をどう読むか</span>
         </h2>
         {sections_html}
       </section>
@@ -1957,7 +881,7 @@ def render_article_page(
       {cta_section_html}
 
       <section id="sec-faq" class="article-section">
-        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
+        <h2 class="section-h2"><span>よくある疑問</span></h2>
         <div class="faq-list">
           {faq_html}
         </div>
@@ -1965,7 +889,7 @@ def render_article_page(
 
       <section id="sec-sources" class="article-section">
         <h2 class="section-h2">
-          <span>5. 検証条件・一次情報ソース (Provenance)</span>
+          <span>検証条件と出典</span>
         </h2>
         {methodology_html}
         {citation_box_html}
@@ -1981,7 +905,7 @@ def render_article_page(
       <div class="sidebar-box">
         <div class="sidebar-title">目次</div>
         <ul class="toc-list">
-          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
+          <li><a href="#sec-tldr">この記事の要点</a></li>
           {toc_quant_links}
           <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
           <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
@@ -2019,7 +943,7 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
     slug = validate_slug(article["slug"])
     canonical_url = f"{base_url}/articles/{slug}.html"
     csv_url = f"{base_url}/datasets/{slug}.csv"
-    has_raw_log = (RAW_LOGS_DIR / f"{slug}.json").exists()
+    has_raw_log = article.get("kind") != "guide" and (RAW_LOGS_DIR / f"{slug}.json").exists()
     data_updated = article.get("data_updated_at", article["updated_at"])
 
     lines = [
@@ -2028,14 +952,16 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
         f"> {article['subtitle']}",
         "",
         f"- **Canonical URL**: {canonical_url}",
-        f"- **CSV Dataset**: {csv_url}",
+        f"- **{'CSV Comparison Table' if article.get('kind') == 'guide' else 'CSV Dataset'}**: {csv_url}",
     ]
     if has_raw_log:
         lines.append(f"- **Raw Verification Log (JSON)**: {base_url}/logs/{slug}.json")
+    if article.get("revision_note"):
+        lines.extend(["", "## 訂正について", article["revision_note"], "", "---", ""])
     lines.extend(
         [
             f"- **Category**: {article['category']}",
-            f"- **Sample Size (N)**: {int(article.get('sample_size_n', 0))}",
+            ("- **Article type**: 選び方・公式資料から整理（実測なし）" if article.get("kind") == "guide" else f"- **Sample Size (N)**: {int(article.get('sample_size_n', 0))}"),
             f"- **Data Updated**: {data_updated}",
             "",
             "## 結論・実測サマリー (TL;DR)",
@@ -2045,7 +971,8 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
         lines.append(f"- {b}")
 
     lines.append("")
-    lines.append("## 主要実測指標 (Key Metrics)")
+    if article.get("summary_metrics"):
+        lines.append("## 主要実測指標 (Key Metrics)")
     for m in article.get("summary_metrics", []):
         lines.append(f"- **{m['label']}**: {m['value']} ({m['subtext']})")
 
@@ -2056,7 +983,7 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
         lines.extend(
             [
                 "",
-                "## 条件別・実測比較データテーブル",
+                "## 条件別の比較表",
                 "| " + " | ".join(headers) + " |",
                 "| " + " | ".join(["---"] * len(headers)) + " |",
             ]
@@ -2070,6 +997,9 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
     for sec in article.get("sections", []):
         lines.append(f"### {sec['heading']}")
         lines.append(sec["body"])
+        for source_index in sec.get("source_indices", []):
+            source = article["sources"][source_index]
+            lines.append(f"参照: [{source['title']}]({validate_url(source['url'])})")
         lines.append("")
 
     if article.get("faqs"):
@@ -2084,121 +1014,122 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
         lines.append(article["methodology_note"])
         lines.append("")
 
+    if article.get("kind") == "guide":
+        lines = [line.replace("結論・実測サマリー (TL;DR)", "選び方の要点").replace("主要実測指標 (Key Metrics)", "判断の軸").replace("条件別の比較表", "選択肢の比較表").replace("検証環境・集計メソドロジー", "記事の範囲") for line in lines]
+    lines.extend(["", "## 参考資料"] + [f"- [{src['title']}]({validate_url(src['url'])})" for src in article.get("sources", [])])
+    if article.get("related_articles"):
+        lines.extend(["", "## 次に考えたいこと"] + [f"- [{r['title']}]({base_url}/articles/{validate_slug(r['slug'])}.html)" for r in article["related_articles"]])
     return "\n".join(lines).strip() + "\n"
 
 
-def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) -> str:
+CATEGORY_LABELS = {
+    "Hardware & Power Electronics": "道具と電子工作",
+    "Cloud & AI Infrastructure": "AIとサーバー",
+    "Software & SaaS Economics": "サービスと費用",
+}
+
+
+def category_label(category):
+    return CATEGORY_LABELS.get(category, category)
+
+
+def illustration(kind):
+    # Code-native diagrams illustrate the subject without suggesting a product photograph.
+    drawings = {
+        "esp": '<rect x="95" y="18" width="110" height="120" rx="3"/><rect x="120" y="55" width="60" height="48"/><path d="M120 40h60m-60 8h60M110 67H75m35 15H75m35 15H75m115-30h35m-35 15h35m-35 15h35M130 110v17m20-17v17m20-17v17"/><circle cx="106" cy="28" r="3"/><circle cx="194" cy="128" r="3"/>',
+        "ai": '<rect x="25" y="45" width="70" height="70"/><path d="M35 63h50m-50 15h50m-50 15h28M95 80h30m50 0h30"/><circle cx="150" cy="80" r="25"/><rect x="205" y="45" width="70" height="70"/><path d="M220 65h40m-40 15h40m-40 15h20"/>',
+        "diy": '<path d="M40 32h65v96H40zM55 48h35m-35 14h35M160 52h92v65h-92zM175 67h62m-62 15h62M122 80h22m-11-11v22"/><circle cx="72" cy="105" r="9"/>',
+    }
+    return '<svg viewBox="0 0 300 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' + drawings[kind] + '</svg>'
+
+
+def render_index(articles, config):
     site = config["site"]
-    base_url = validate_url(site["base_url"]).rstrip("/")
-    categories = sorted({a["category"] for a in articles})
-
-    total_samples = sum(int(a.get("sample_size_n", 0)) for a in articles)
-    first_party_count = sum(1 for a in articles if a.get("origin") in {"first_party", "hybrid"})
-
-    filter_btns = [
-        '<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて表示</button>',
-        '<button type="button" class="filter-btn" data-filter="first_party" aria-pressed="false">🔬 独自検証・チャット知見</button>',
-    ]
-    for cat in categories:
-        filter_btns.append(
-            f'<button type="button" class="filter-btn" data-filter="{esc(cat)}" aria-pressed="false">{esc(cat)}</button>'
-        )
-
-    cards_html = []
+    featured = [a for a in articles if a.get("kind") == "guide" and "feature_order" in a]
+    featured.sort(key=lambda a: a.get("feature_order", 99))
+    features = []
+    for i, a in enumerate(featured[:3], 1):
+        features.append(f'''<article class="feature-story">
+          <a href="articles/{esc(a['slug'])}.html" tabindex="-1" aria-hidden="true"><div class="feature-art {esc(a['illustration'])}">{illustration(a['illustration'])}</div></a>
+          <div class="feature-number">0{i} / {esc(category_label(a['category']))}</div>
+          <h3><a href="articles/{esc(a['slug'])}.html">{esc(a['title'])}</a></h3>
+          <p>{esc(a['subtitle'])}</p>
+          <a class="feature-link" href="articles/{esc(a['slug'])}.html">選び方を読む <span aria-hidden="true">↗</span></a>
+        </article>''')
+    buttons = ['<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて</button>']
+    for c in sorted({a['category'] for a in articles}):
+        buttons.append(f'<button type="button" class="filter-btn" data-filter="{esc(c)}" aria-pressed="false">{esc(category_label(c))}</button>')
+    cards = []
     for a in articles:
-        slug = validate_slug(a["slug"])
-        origin = a.get("origin", "community")
-        is_self = origin in {"first_party", "hybrid"}
-        origin_badge_cls = "origin-self" if is_self else "origin-community"
-        origin_text = a.get(
-            "origin_label",
-            "🔬 独自実機・AIチャット検証" if is_self else "📊 一次検証ログ定量調査",
-        )
-        if is_self and not origin_text.startswith(("🔬", "🧪")):
-            origin_text = f"🔬 {origin_text}"
+        label = '選び方・公式資料から整理' if a.get('kind') == 'guide' else ('独自検証' if a.get('origin') in {'first_party', 'hybrid'} else '公開ログの調査')
+        cards.append(f'''<article class="article-card" data-category="{esc(a['category'])}" data-origin="{esc(a.get('origin', 'community'))}">
+          <div class="card-meta"><span class="category-pill">{esc(category_label(a['category']))}</span><span class="origin-badge">{label}</span><time class="date-text" datetime="{esc(a['updated_at'])}">{esc(a['updated_at'])}</time></div>
+          <h2><a class="card-title-link" href="articles/{esc(a['slug'])}.html">{esc(a.get('display_title', a['title']))}</a></h2>
+          <p>{esc(a['subtitle'])}</p></article>''')
+    description = '電子工作、AI、サーバー。買うか、作るか、借りるかを、費用と使い道から考える技術ノート。'
+    return f'''<!DOCTYPE html><html lang="ja"><head>
+      <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>{esc(site['name'])} — 電子工作・AI・サーバーの選び方</title><meta name="description" content="{description}">
+      <link rel="canonical" href="{esc(site['base_url'])}/"><meta property="og:title" content="Nodus — 買う、作る、その前に。">
+      <meta property="og:description" content="{description}"><meta property="og:type" content="website"><meta property="og:url" content="{esc(site['base_url'])}/">
+      <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="feed.xml"><link rel="stylesheet" href="assets/style.css">
+      </head><body>{render_header(config)}
+      <main id="main-content">
+        <section class="editorial-intro"><div class="container intro-inner"><div class="intro-copy">
+          <div class="intro-kicker">NODUS / NOTES ON MAKING &amp; CHOOSING</div>
+          <h1>買う、作る、<br>その前に。</h1>
+          <p>安いボードを買って、結局高くついた。<br>便利なサブスク。でも、自分で動かしたらどうだろう。<br>そんな迷いを、費用と使い道からほどく技術ノートです。</p>
+        </div><div class="intro-note"><strong>値札の先まで、考える。</strong>部品代だけでなく、電気代、作る時間、使い続ける手間まで。自分に合う選択のために、条件をそろえて比べます。<p>手持ちのMacから試したい人へ。<a href="articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">MacでローカルLLMを使うには</a>で、必要メモリと機器選びを整理しました。</p></div></div></section>
+        <div class="container"><section class="featured" aria-labelledby="featured-title">
+          <div class="featured-heading"><h2 id="featured-title">いま、考えたいこと</h2><span>まずは、この3つから</span></div>
+          <div class="feature-grid">{''.join(features)}</div></section>
+          <section aria-labelledby="archive-title"><div class="archive-heading"><h2 id="archive-title">記事を読む</h2><span>{len(articles)} articles / 比較と検証のノート</span></div>
+          <div class="controls-wrap"><div class="filter-bar" role="group" aria-label="記事のカテゴリ">{''.join(buttons)}</div>
+          <div><label for="datasetSearch" class="category-pill">記事検索 </label><input type="search" id="datasetSearch" class="search-input" placeholder="ESP32、電気代、ローカルLLM…"></div></div>
+          <div class="article-grid" id="articleGrid">{''.join(cards)}<p class="empty-state" id="searchEmpty" role="status" hidden>該当する記事がありません。別の言葉で検索してください。</p></div></section>
+        </div></main>{render_footer(config)}</body></html>'''
 
-        m1 = a["summary_metrics"][0] if len(a["summary_metrics"]) > 0 else {"label": "データ", "value": "-"}
-        m2 = a["summary_metrics"][1] if len(a["summary_metrics"]) > 1 else {"label": "指標", "value": "-"}
-        data_date = a.get("data_updated_at", a["updated_at"])
-        tags_chips = "".join(f'<span class="tag-chip">#{esc(t)}</span>' for t in a.get("tags", [])[:4])
-        cards_html.append(
-            f"""
-            <article class="article-card" data-category="{esc(a["category"])}" data-origin="{esc(origin)}">
-              <div class="card-meta">
-                <span class="origin-badge {origin_badge_cls}">{esc(origin_text)}</span>
-                <span class="category-pill">{esc(a["category"])}</span>
-                <time class="date-text" datetime="{esc(data_date)}">更新: {esc(data_date)}</time>
-              </div>
-              <h2><a href="articles/{esc(slug)}.html" class="card-title-link">{esc(a["title"])}</a></h2>
-              <p>{esc(a["subtitle"])}</p>
-              <div class="card-takeaway-bar">
-                <div class="card-metrics-inline">
-                  <span class="inline-metric">{esc(m1["label"])}: <strong>{esc(m1["value"])}</strong></span>
-                  <span class="inline-metric">{esc(m2["label"])}: <strong>{esc(m2["value"])}</strong></span>
-                </div>
-                <div class="card-tags-meta">
-                  {tags_chips}
-                  <span>N={int(a.get("sample_size_n", 0))}</span>
-                </div>
-              </div>
-            </article>
-            """
-        )
 
-    return f"""<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{esc(site["name"])} | {esc(site["jp_subtitle"])}</title>
-  <meta name="description" content="Note・Zenn・Qiitaや公式仕様書だけでは辿り着けない「独自の実機・AIチャット検証ログ」と「海外一次検証データ」を、結論ファーストでわかりやすくまとめた技術検証メディア。">
-  <link rel="canonical" href="{esc(base_url)}/">
-  <meta property="og:title" content="{esc(site["name"])} | {esc(site["jp_subtitle"])}">
-  <meta property="og:description" content="独自の実験・AIチャット検証と一次計測ログから、公式スペックの裏にある実測値をわかりやすく解説する技術検証ノート。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="{esc(base_url)}/">
-  <link rel="alternate" type="application/atom+xml" title="{esc(site["name"])} Feed" href="feed.xml">
-  <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-  {render_header(config, root_prefix="")}
+def render_guide(article, config):
+    a = article
+    url = validate_url(config['site']['base_url']).rstrip('/') + '/articles/' + a['slug'] + '.html'
+    schema = {"@context": "https://schema.org", "@type": "TechArticle", "headline": a['title'], "description": a['subtitle'], "datePublished": a['published_at'], "dateModified": a['updated_at'], "inLanguage": "ja", "mainEntityOfPage": url, "citation": [validate_url(s['url']) for s in a['sources']], "author": {"@type": "Organization", "name": config['site']['organization']}}
+    headers = ''.join(f'<th scope="col">{esc(h)}</th>' for h in a['comparison_table']['headers'])
+    rows = ''.join('<tr>' + ''.join(f'<th scope="row">{esc(c)}</th>' if i == 0 else f'<td>{esc(c)}</td>' for i, c in enumerate(r)) + '</tr>' for r in a['comparison_table']['rows'])
+    sections = ''
+    for i, section in enumerate(a['sections']):
+        refs = ''.join(f'<a href="{esc(validate_url(a["sources"][n]["url"]))}" target="_blank" rel="noopener noreferrer">{esc(a["sources"][n]["title"])}</a> ' for n in section.get('source_indices', []))
+        sections += f'<section class="prose-section" id="part-{i}"><h2 class="section-h2">{esc(section["heading"])}</h2><p>{esc(section["body"])}</p>' + (f'<p class="source-meta">参照: {refs}</p>' if refs else '') + '</section>'
+    toc = ''.join(f'<li><a href="#part-{i}">{esc(s["heading"])}</a></li>' for i, s in enumerate(a['sections']))
+    sources = ''.join(f'<li class="source-item"><a href="{esc(validate_url(s["url"]))}" target="_blank" rel="noopener noreferrer">{esc(s["title"])}</a><span class="source-meta">確認日: {esc(s["verified_date"])} / {esc(s.get("scope", "公式資料の参照"))}</span></li>' for s in a['sources'])
+    bullets = ''.join(f'<li>{esc(b)}</li>' for b in a['tldr'])
+    correction = ''
+    if a.get('revision_note'):
+        correction = f'<aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>{esc(a["revision_note"])}</p></aside>'
+    related = ''
+    if a.get('related_articles'):
+        links = ''.join(f'<li class="source-item"><a href="{esc(validate_slug(r["slug"]))}.html">{esc(r["title"])}</a></li>' for r in a['related_articles'])
+        related = f'<section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list">{links}</ul></section>'
+    return f'''<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>{esc(a['seo']['meta_title'])}</title><meta name="description" content="{esc(a['seo']['meta_description'])}"><link rel="canonical" href="{esc(url)}">
+      <meta property="og:title" content="{esc(a['title'])}"><meta property="og:description" content="{esc(a['subtitle'])}"><meta property="og:type" content="article"><meta property="og:url" content="{esc(url)}">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="{esc(a['slug'])}.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{safe_json_ld(schema)}</script></head><body>{render_header(config, '../')}
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / {esc(category_label(a['category']))}</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">{esc(a['title'])}</h1><p class="article-subtitle">{esc(a['subtitle'])}</p>
+      <div class="article-timestamps"><span>公開 <time datetime="{esc(a['published_at'])}">{esc(a['published_at'])}</time></span><span>更新 <time datetime="{esc(a['updated_at'])}">{esc(a['updated_at'])}</time></span><span>{esc(a.get('evidence_notice', '実機テスト・実売価格調査は未実施'))}</span></div>
+      {correction}
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list">{bullets}</ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>{esc(a['table_caption'])}</caption><thead><tr>{headers}</tr></thead><tbody>{rows}</tbody></table></div><a class="csv-btn" href="../datasets/{esc(a['slug'])}.csv" download>比較表をCSVで保存</a></section>
+      {sections}<section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">{esc(a['methodology_note'])}</p><ul class="source-list">{sources}</ul></section>{related}
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li>{toc}<li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>{render_footer(config, '../')}</body></html>'''
 
-  <section class="editorial-intro">
-    <div class="container intro-inner">
-      <div class="intro-copy">
-        <div class="intro-kicker">EMPIRICAL TECH NOTES &amp; BENCHMARKS</div>
-        <h1>検索しても出てこない「実測値」と「独自の検証結果」を、結論ファーストで。</h1>
-        <p>
-          公式ドキュメントの曖昧な表記や、Zenn・Qiita・Note・Redditにもまだまとまっていない「実際に手元やAIチャットで試してわかった数値・挙動」を分析・構造化して公開しています。すべての記事に30秒で読める要点まとめと生CSVデータが付属します。
-        </p>
-      </div>
-      <div class="intro-stats-inline" aria-label="公開データ統計">
-        <span>検証記事: <strong>{len(articles)}本</strong> (独自検証 {first_party_count}本)</span>
-        <span>累計検証サンプル: <strong>N = {total_samples}</strong></span>
-      </div>
-    </div>
-  </section>
 
-  <main id="main-content" class="container">
-    <div class="controls-wrap">
-      <div class="filter-bar" role="group" aria-label="カテゴリ・検証種別絞り込み">
-        {''.join(filter_btns)}
-      </div>
-      <div>
-        <label for="datasetSearch" class="category-pill">検索: </label>
-        <input type="search" id="datasetSearch" class="search-input" placeholder="例: AST, Claude, 100W, USB4...">
-      </div>
-    </div>
 
-    <div class="article-grid" id="articleGrid">
-      {''.join(cards_html)}
-    </div>
-  </main>
-
-  {render_footer(config, root_prefix="")}
-</body>
-</html>
-"""
+def render_index_page(articles: list[dict[str, Any]], config: dict[str, Any]) -> str:
+    return render_index(articles, config)
 
 
 def render_about_page(config: dict[str, Any]) -> str:
@@ -2223,19 +1154,28 @@ def render_about_page(config: dict[str, Any]) -> str:
 
   <div class="container article-layout">
     <main id="main-content" class="article-sheet">
-      <h1 class="article-title">データ集計手法・運営情報・法的コンプライアンス</h1>
-      <p class="article-subtitle">{esc(site["name"])} ({esc(site["organization"])}) における定量データの抽出基準、広告開示、プライバシー保護方針について</p>
+      <h1 class="article-title">Nodusについて</h1>
+      <p class="article-subtitle">記事の根拠、訂正、広告とプライバシーについて</p>
 
       <div class="prose-section">
-        <h3>1. 定量データの収集・正規化メソドロジーと統計的限界</h3>
+        <h3>買う、作る、その前に。</h3>
+        <p>電子工作、AI、サーバーについて、費用と使い道から選択を考える技術ノートです。「選び方」は公式資料と編集上の判断を整理した記事であり、実機テストや実売価格調査を行っていない場合は明記します。仮定に基づく計算例と測定結果を区別し、検証記事では条件と出典を示します。</p>
+      </div>
+
+      <div class="prose-section">
+        <h3>1. 公式仕様、編集上の判断、実測を分ける</h3>
         <p>
-          当サイト（{esc(site["name"])}）は、ハードウェア製品やクラウド・SaaSサービスの「メーカー公称仕様（カタログ値）」と「実運用環境における実測パフォーマンス」の乖離、および独自環境での実機・AI検証結果を可視化する技術検証メディアです。測定条件（室温、負荷時間、バージョン、トークン数等）が確認可能な数値データを抽出し、中央値（Median）およびレンジを算出して比較表・CSVデータセットとして公開しています。個体差やアップデートにより実測値は変動するため、各記事にサンプル数（N）と測定条件メソドロジーを明記しています。
+          公式資料は機能や公称仕様の確認に使い、個別製品の実測や順位の証拠とは区別します。比較表には選択肢と確認事項をまとめ、仮定の計算には前提を添えます。今後、独自の実測記事を掲載する場合は、個別の記録、測定条件、採用したデータと集計手順を示します。検索結果ページや抜粋だけを、集計全体の根拠にはしません。
         </p>
+      </div>
+      <div class="prose-section">
+        <h3>2026-10-13 既存12記事の訂正</h3>
+        <p>既存12記事の根拠を見直したところ、掲載した件数・中央値・効果率を、保存資料と出典から再現確認できませんでした。該当する数値とランキングを撤回し、公式資料と判断手順に基づく「選び方」へ改訂しました。各記事の冒頭に訂正理由を記載しています。旧集計ファイルの公開URLには取り下げ案内を置き、未確認の数値が引用され続けないようにしました。</p>
       </div>
       <div class="prose-section">
         <h3>2. 知的財産権の尊重および一次情報源への参照方針</h3>
         <p>
-          当サイトは、他者の創作的表現（投稿本文の文章や撮影画像・図表）の無断転載や翻案を行いません。著作権法上の保護対象とならない客観的な「計測事実・数値・条件データ」および当サイト独自の実験ログのみを基に、独自の比較体系および解説文として構成しています。また、データの検証可能性（トレーサビリティ）を担保するため、すべての記事末尾に一次情報源および公式仕様書への参照リンクを明記しています。
+          参照した公式資料や個別の技術報告は、記事内と末尾から確認できるようにします。資料が裏付ける範囲も明記し、メーカーの機能説明を独自実測として扱いません。他者の文章、画像、図表を無断転載せず、比較の考え方や判断手順は当サイトの言葉で説明します。
         </p>
       </div>
       <div class="prose-section" id="privacy">
@@ -2285,9 +1225,9 @@ def render_404_page(config: dict[str, Any]) -> str:
   {render_header(config, root_prefix="/")}
   <main id="main-content" class="container article-body">
     <section class="panel">
-      <h1 class="article-title">404 — 指定されたデータセットが見つかりません</h1>
-      <p class="article-subtitle">URLが変更されたか、アーカイブされた可能性があります。トップページより最新の実測比較データベースをご参照ください。</p>
-      <p><a href="/index.html" class="cta-btn">実測データベース一覧へ戻る &rarr;</a></p>
+      <h1 class="article-title">404 — ページが見つかりません</h1>
+      <p class="article-subtitle">URLが変更されたか、アーカイブされた可能性があります。トップページの記事一覧からお探しください。</p>
+      <p><a href="/index.html" class="cta-btn">記事一覧へ戻る &rarr;</a></p>
     </section>
   </main>
   {render_footer(config, root_prefix="/")}
@@ -2413,7 +1353,8 @@ def build_all() -> dict[str, Any]:
         out_path = (articles_out_dir / f"{slug}.html").resolve()
         if out_path.parent != articles_out_dir.resolve():
             raise ValueError(f"Path traversal blocked for slug: {slug}")
-        out_path.write_text(render_article_page(article, config, articles), encoding="utf-8")
+        article_html = render_article_page(article, config, articles)
+        out_path.write_text(re.sub(r"^[ \t]+$", "", article_html, flags=re.MULTILINE), encoding="utf-8")
 
         md_content = render_article_markdown(article, config)
         md_path = (articles_out_dir / f"{slug}.md").resolve()
@@ -2425,10 +1366,19 @@ def build_all() -> dict[str, Any]:
 
         raw_log_src = RAW_LOGS_DIR / f"{slug}.json"
         if raw_log_src.exists():
-            raw_obj = load_json(raw_log_src)
+            if article.get("kind") == "guide":
+                raw_obj = {
+                    "status": "withdrawn_unverified",
+                    "article_url": f"{site_url}/articles/{slug}.html",
+                    "reviewed_at": article["updated_at"],
+                    "notice": "旧集計値は母集団と集計手順を再現確認できないため公開を取り下げました。元ファイルは編集用に保存しています。",
+                }
+            else:
+                raw_obj = load_json(raw_log_src)
             log_out_path = (logs_out_dir / f"{slug}.json").resolve()
             log_out_path.write_text(json.dumps(raw_obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            published_logs.append(f"logs/{slug}.json")
+            if article.get("kind") != "guide":
+                published_logs.append(f"logs/{slug}.json")
 
     # Render index, about, 404, feed, and _headers
     (DIST_DIR / "index.html").write_text(render_index_page(articles, config), encoding="utf-8")
@@ -2482,7 +1432,7 @@ def build_all() -> dict[str, Any]:
         f"- Full Markdown Corpus for AI/LLMs: [{site_url}/llms-full.txt]({site_url}/llms-full.txt)",
         "- License for Data Citation: CC BY 4.0 (Attribute Nodus with canonical article URL)",
         "",
-        "## Datasets & Quantitative Benchmark Reports",
+        "## Articles & Comparison Tables",
     ]
     for a in articles:
         slug = a["slug"]
@@ -2492,18 +1442,18 @@ def build_all() -> dict[str, Any]:
         )
         raw_suffix = (
             f" | [Raw Log JSON]({site_url}/logs/{slug}.json)"
-            if (RAW_LOGS_DIR / f"{slug}.json").exists()
+            if a.get("kind") != "guide" and (RAW_LOGS_DIR / f"{slug}.json").exists()
             else ""
         )
         llms_lines.append(
             f"- [{a['title']}]({site_url}/articles/{slug}.html) "
-            f"([Markdown]({site_url}/articles/{slug}.md) | [CSV Dataset]({site_url}/datasets/{slug}.csv){raw_suffix}): "
-            f"N={n_val} | {kpi_summary} — {a['subtitle']}"
+            f"([Markdown]({site_url}/articles/{slug}.md) | [{'CSV Comparison Table' if a.get('kind') == 'guide' else 'CSV Dataset'}]({site_url}/datasets/{slug}.csv){raw_suffix}): "
+            f"{'公式資料に基づく選び方・実測なし' if a.get('kind') == 'guide' else f'N={n_val}'}{f' | {kpi_summary}' if kpi_summary else ''} — {a['subtitle']}"
         )
     (DIST_DIR / "llms.txt").write_text("\n".join(llms_lines) + "\n", encoding="utf-8")
 
     llms_full_header = (
-        f"# {config['site']['name']} — Complete Empirical Benchmark Corpus (llms-full.txt)\n\n"
+        f"# {config['site']['name']} — Complete Article Corpus (llms-full.txt)\n\n"
         f"> {config['site']['jp_subtitle']}\n\n"
         "---\n\n"
     )

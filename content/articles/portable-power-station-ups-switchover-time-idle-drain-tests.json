@@ -1,182 +1,122 @@
 {
   "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
-  "title": "1000Whポータブル電源のUPS機能・パススルー比較：Anker・EcoFlowの10ms切替時間と待機消費電力実測",
-  "subtitle": "カタログ表記「1024Wh・UPS機能搭載」の裏にあるインバータ自己消費ロス・実効放電Wh・オシロスコープ切替波形集計（N=46）",
+  "title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
+  "display_title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
+  "subtitle": "防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。",
   "category": "Hardware & Power Electronics",
   "tags": [
-    "Portable Power Station",
-    "LiFePO4",
-    "UPS Switchover",
-    "Inverter Efficiency",
-    "EcoFlow",
-    "Anker Solix"
+    "ポータブル電源 UPS 代わり",
+    "NAS 停電 バックアップ",
+    "ポータブル電源 待機電力"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 46,
-  "methodology_note": "r/SolarDIY、r/Ecoflow、および独立系電力検証ログ（N=46）より、（1）0.2C〜0.3C（200W〜300W）定電力AC負荷時の積算電力計による実効放電容量（Wh）、（2）AC出力ON・無負荷放置時の1時間あたりバッテリー減少率から算出したインバータ待機電力（W）、（3）商用電源遮断時のオシロスコープ電圧ゼロクロス停止時間（ms）を集計。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の46台分の容量・待機電力・切替波形集計は、採用ログを確認できないため撤回しました。「一定の切替時間ならPCが落ちない」という境界の断定も外し、用途と互換性の確認を中心に改訂しました。",
   "seo": {
-    "meta_title": "【実測N=46】ポータブル電源のUPS機能・パススルー比較｜Anker・EcoFlow 10ms切替と待機電力 | Nodus",
-    "meta_description": "ポータブル電源をパソコンのUPS代わりにパススルー常時接続すると待機電力は何Wかかるのか？Anker SolixやEcoFlow等の10ms〜20ms切替時間・UPS機能の違い・実効容量を実測比較。",
+    "meta_title": "ポータブル電源をUPS代わりにする前に、何を確認する？ | Nodus",
+    "meta_description": "防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。",
     "target_keywords": [
-      "ポータブル電源 UPS パススルー 実測",
-      "ポータブル電源 UPS 10ms Anker EcoFlow",
-      "ポータブル電源 待機電力 インバータ",
-      "ポータブル電源 UPS代わり パソコン"
+      "ポータブル電源 UPS 代わり",
+      "NAS 停電 バックアップ",
+      "ポータブル電源 待機電力"
     ],
-    "primary_seed": "ポータブル電源 UPS"
+    "primary_seed": "ポータブル電源 UPS 代わり"
   },
-  "summary_metrics": [
-    {
-      "label": "集計充放電・波形ログ数",
-      "value": "46 台分",
-      "subtext": "r/SolarDIY・オシロスコープ計測"
-    },
-    {
-      "label": "AC実効放電容量の中央値",
-      "value": "公称比 83.5%",
-      "subtext": "1024Wh機から実質 約840〜870Wh 出力"
-    },
-    {
-      "label": "AC出力ON時の無負荷待機電力",
-      "value": "16.5 〜 31.0 W",
-      "subtext": "ACつけっぱなし放置で1日35〜65%自然減"
-    },
-    {
-      "label": "ATX電源PCが落ちないUPS閾値",
-      "value": "≤ 10.0 ms",
-      "subtext": "20ms〜30ms機は高負荷PCで再起動事例あり"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "切替時間の公称値だけで、手元のPCやNASが止まらないとは保証できない。",
+    "Whからの稼働時間は、利用できる電力量と機器の平均電力をそろえて計算する。",
+    "停電対策なら、容量の比較に加えて通知・自動停止・復旧も検討する。"
   ],
-  "spec_gap_chart": {
-    "title": "カタログ公称バッテリー容量（Rated Wh）vs AC100V・300W連続放電時の実効取り出し容量中央値（Usable AC Wh）",
-    "unit": "Wh (Watt-hour)",
-    "max_scale": 1200,
-    "items": [
-      {
-        "name": "Anker Solix C1000 (公称 1,056Wh)",
-        "official_label": "公称セル容量: 1,056 Wh",
-        "official_value": 1056.0,
-        "measured_label": "AC実効放電中央値: 892 Wh (効率 84.5%)",
-        "measured_value": 892.0,
-        "status": "good",
-        "note": "ACインバータ効率が高く実測約84.5%を取り出し可能。ただしUPS切替公称20ms（実測14〜18ms）のため高負荷PCのUPS用途は注意（N=14）。"
-      },
-      {
-        "name": "EcoFlow DELTA 3 Plus (公称 1,024Wh)",
-        "official_label": "公称セル容量: 1,024 Wh",
-        "official_value": 1024.0,
-        "measured_label": "AC実効放電中央値: 850 Wh (効率 83.0%)",
-        "measured_value": 850.0,
-        "status": "good",
-        "note": "UPS切替時間がオシロ実測で8.2〜9.5msに収まり、NASやデスクトップPCのパススルー保護で高い安定性を確認（N=13）。"
-      },
-      {
-        "name": "Jackery Explorer 1000 Plus (公称 1,264Wh)",
-        "official_label": "公称セル容量: 1,264 Wh",
-        "official_value": 1264.0,
-        "measured_label": "AC実効放電中央値: 1,062 Wh (効率 84.0%)",
-        "measured_value": 1062.0,
-        "status": "good",
-        "note": "基礎容量が大きく無負荷待機電力も約16.5Wと低め。ファン静音性に優れる（N=11）。"
-      },
-      {
-        "name": "旧世代・廉価1000Wh級ポータブル電源群 (参考)",
-        "official_label": "公称セル容量: 1,000 Wh",
-        "official_value": 1000.0,
-        "measured_label": "AC実効放電中央値: 745 Wh (効率 74.5%)",
-        "measured_value": 745.0,
-        "status": "warning",
-        "note": "インバータ自己消費が28〜34Wと大きく、低負荷（50W以下）で長時間使うほど変換ロスが増大（N=8）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "モデル名",
-      "公称容量",
-      "AC実効容量 (300W負荷)",
-      "実効変換効率",
-      "AC無負荷待機電力",
-      "UPS切替時間 (公称 / 実測)",
-      "主な適性用途"
+      "目的",
+      "優先して確認すること",
+      "実機で確かめること",
+      "容量だけでは分からないこと"
     ],
     "rows": [
       [
-        "EcoFlow DELTA 3 Plus",
-        "1,024 Wh",
-        "850 Wh",
-        "83.0 %",
-        "約 21.5 W",
-        "<10ms / 実測 8.8 ms",
-        "PC・NAS常時UPS兼防災バックアップ"
+        "家電をしばらく動かす",
+        "機器の定格と起動時の電力、出力条件",
+        "同じ機器・設定での運転時間",
+        "利用できるAC電力量と負荷の変動"
       ],
       [
-        "Anker Solix C1000",
-        "1,056 Wh",
-        "892 Wh",
-        "84.5 %",
-        "約 18.0 W",
-        "<20ms / 実測 15.4 ms",
-        "家電高出力駆動・急速充電運用"
+        "PC・NASの停電対策",
+        "切替、機器との互換性、常時接続条件",
+        "予定する負荷で継続動作するか",
+        "再起動の有無とデータ保護"
       ],
       [
-        "Jackery 1000 Plus",
-        "1,264 Wh",
-        "1,062 Wh",
-        "84.0 %",
-        "約 16.5 W",
-        "<20ms / 実測 16.2 ms",
-        "長時間冷蔵庫駆動・車中泊・拡張運用"
+        "安全に停止する",
+        "残量通知や停止連携の対応",
+        "想定した条件で停止処理が完了するか",
+        "電力を出し続ける以外の機能"
       ],
       [
-        "一般廉価1000Wh機 (平均)",
-        "1,000 Wh",
-        "745 Wh",
-        "74.5 %",
-        "約 30.2 W",
-        "20〜30ms / 実測 24.5 ms",
-        "短時間の屋外電動工具・投光器"
+        "小さな負荷の常時運用",
+        "出力の自動停止、待機消費、電源方式",
+        "低負荷で途切れないか",
+        "カタログ容量だけの時間換算"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. なぜ「1000Wh」のポータブル電源で「100Wの家電が10時間」動かないのか",
-      "body": "カタログに記載されている「1024Wh」などの数値は、内部のリン酸鉄リチウムイオン電池（DC 51.2V等）の定格容量です。ここからAC 100Vの正弦波を作るにはDC-ACインバータ回路を通す必要があり、（1）変換ロス（約10〜15%）と（2）インバータ回路自体の固定待機電力（毎時16W〜30W）が常時消費されます。そのため、たとえば消費電力40Wの小型冷蔵庫をAC接続すると、冷蔵庫40W＋インバータ自己消費20W＝毎時60Wがバッテリーから削られ、実効稼働時間は理論値の約6割（15〜16時間程度）になります。"
+      "heading": "防災用と、データを守る用途を分ける",
+      "body": "照明や家電を長く動かすことと、PCを止めずにデータを書き終えることは別の要件です。PC・NAS向けなら、切替時の動作、常時給電条件、残量が減った後の停止処理を確認します。「UPS」「EPS」という呼び方だけで互換性や機能範囲を決めず、正確な型番の説明書を読みます。",
+      "source_indices": []
     },
     {
-      "heading": "2. 「EPS（20ms）」と「UPS（10ms未満）」の決定的な境界線",
-      "body": "一般的なPC用電源ユニット（ATX規格）が瞬間停電時に出力電圧を維持できるホールドアップタイム（Hold-up Time）は、規格上「100%負荷時に16ms以上（推奨17ms以上）」と定められています。そのため、公称切替時間が「20ms以下」のポータブル電源（簡易EPS）をパススルー接続していると、アイドル時は耐えられても、GPUがフル稼働している瞬間に停電が起きると電圧低下によりPCが強制再起動する事例が確認されています。ワークステーションやNASの保護には、オシロスコープ実測で10ms未満を達成しているモデルを選ぶ必要があります。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "車載冷蔵庫やルーターを最も長持ちさせる接続方法は何ですか？",
-      "answer": "AC 100Vコンセント出力を使わず、DC 12V（シガーソケット）またはUSB-C PD出力に直接接続することです。ACインバータをOFFにすることで毎時16〜30Wのインバータ待機電力をゼロにでき、実測稼働時間が約1.3倍〜1.6倍に延びます。"
+      "heading": "公称の切替時間は、確認の出発点",
+      "body": "Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間の公称仕様があります。これは当該地域モデルの説明で、国内モデルや手元のPCとの互換性の測定ではありません。一定のms値を境にすべてのPCが安全になると断定せず、利用する機器と負荷の組み合わせで確認します。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "question": "パススルー（常時コンセント接続）でUPSとして使い続けるとバッテリーは劣化しますか？",
-      "answer": "現行のリン酸鉄（LiFePO4）採用かつ純正バイパス回路を搭載したモデルでは、通常時は商用電源をそのままスルー出力し、バッテリーへの微弱充放電を抑える制御が入っています。ただし100%満充電のまま高温環境に置くとカレンダー劣化が進むため、アプリ設定で充電上限を80%〜90%に制限して常時接続する運用が推奨されます。"
+      "heading": "WhとWで、何を計算しているか",
+      "body": "利用できる出力電力量(Wh) ÷ 負荷の平均電力(W)で時間の目安を求めます。仮にAC側で利用できる電力量を800Wh、一定負荷を100Wと置けば8時間相当です。800Whは仮定で、特定製品の実測ではありません。AC側の実測電力量に変換損失や自己消費が含まれるなら、同じ損失をもう一度差し引かないようにします。",
+      "source_indices": []
+    },
+    {
+      "heading": "待機消費と低負荷時の挙動も確認する",
+      "body": "ルーターのような小さな負荷では、電源側の自己消費や出力の自動停止が判断材料になります。DCやUSB接続を使う場合も、電圧、極性、対応規格を一致させます。出力方式を変えたときの変換効率や運転時間は測定が必要で、「DCなら損失ゼロ」「必ず何倍長持ち」とは言えません。",
+      "source_indices": []
+    },
+    {
+      "heading": "停電対策の完成形まで見積もる",
+      "body": "バックアップを用意し、重要な処理をしていない状態でメーカーの案内に沿って動作確認します。停電後の残量通知、停止、復電時の起動までが要件なら、対応する専用UPSも候補です。容量が大きいことだけで置き換えられるとは限りません。常時接続の可否と保管・充電設定は各製品の説明に従い、共通の充電上限を一律には推奨しません。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/SolarDIY - Search: LiFePO4 portable power station inverter idle power consumption & usable Wh tests",
-      "url": "https://www.reddit.com/r/SolarDIY/search/?q=power+station+idle+draw+usable+Wh&restrict_sr=1",
-      "sample_size": "N=28 discharge logs",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Reddit r/Ecoflow - Search: UPS switchover time oscilloscope ms test DELTA 3 Anker Solix",
-      "url": "https://www.reddit.com/r/Ecoflow/search/?q=UPS+ms+oscilloscope+switchover&restrict_sr=1",
-      "sample_size": "N=18 waveform logs",
-      "verified_date": "2026-10-12"
+      "title": "Anker SOLIX：C1000 米国向け公式仕様",
+      "url": "https://www.ankersolix.com/products/c1000",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "米国向け製品の公称仕様。日本向けモデルの仕様・実効容量・互換性を保証しません。"
     }
   ],
-  "affiliate_keys": [
-    "ecoflow-delta-3-plus",
-    "anker-solix-c1000"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
+      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+    },
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "title": "パーソナルAIは、どこに置く？"
+    }
   ]
 }

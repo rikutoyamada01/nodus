@@ -1,393 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【TTFT遅延・速度実測】主要LLM API 5社の時間帯別レイテンシ分散・キャッシュ比較 | Nodus</title>
-  <meta name="description" content="OpenAI、Anthropic、Google Vertex AI、Groq、Together AIの5社を対象に、日本時間の昼間と深夜ピーク帯における初回応答遅延(TTFT p50/p95)と出力速度(tok/s)を672回計測比較。">
-  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html">
-  <meta property="og:title" content="【TTFT遅延・速度実測】主要LLM API 5社の時間帯別レイテンシ分散・キャッシュ比較 | Nodus">
-  <meta property="og:description" content="OpenAI、Anthropic、Google Vertex AI、Groq、Together AIの5社を対象に、日本時間の昼間と深夜ピーク帯における初回応答遅延(TTFT p50/p95)と出力速度(tok/s)を672回計測比較。">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html">
-  <meta property="og:site_name" content="Nodus">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
-  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="llm-api-providers-ttft-latency-throughput-variance-benchmarks.md">
-  <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース", "description": "OpenAI、Anthropic、Google Vertex AI、Groq、Together AIの5社を対象に、日本時間の昼間と深夜ピーク帯における初回応答遅延(TTFT p50/p95)と出力速度(tok/s)を672回計測比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "LLM API, TTFT Latency, Prompt Caching, OpenAI API, Anthropic Claude, Groq LPU", "citation": ["https://www.reddit.com/r/LocalLLaMA/search/?q=API+TTFT+latency+throughput+benchmark\u0026restrict_sr=1", "https://hn.algolia.com/?q=prompt+caching+TTFT+latency"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html"}, {"@type": "Dataset", "name": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース 実測検証データセット (N=672)", "description": "公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）", "url": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "東京リージョン（ap-northeast-1）から15分間隔×7日間（計672リクエスト/エンドポイント）、入力4,096 tokens・出力512 tokensの構造化JSON生成ストリーミングを実行した公開ベンチマークおよびr/LocalLLaMA運用テレメトリを集計。JST昼間帯（10:00〜18:00）のp50出力速度と、北米営業時間重複帯（JST 22:00〜04:00）の実効スループット（TTFT待ち時間込み）を比較。", "variableMeasured": ["日中 TTFT (p50)", "北米ピーク TTFT (p95)", "純粋出力速度 (p50)", "夜間p95実効速度 (512tok)", "Prompt Caching短縮効果", "推奨ワークロード"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？", "acceptedAnswer": {"@type": "Answer", "text": "最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。"}}, {"@type": "Question", "name": "夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？", "acceptedAnswer": {"@type": "Answer", "text": "単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html"}]}]}</script>
-</head>
-<body>
-  
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>LLM APIの速さは、何を測って比べればいい？ | Nodus</title><meta name="description" content="最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html">
+      <meta property="og:title" content="LLM APIの速さは、何を測って比べればいい？"><meta property="og:description" content="最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="llm-api-providers-ttft-latency-throughput-variance-benchmarks.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "LLM APIの速さは、何を測って比べればいい？", "description": "最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。", "datePublished": "2026-10-12", "dateModified": "2026-10-13", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html", "citation": ["https://developers.openai.com/api/docs/guides/latency-optimization", "https://developers.openai.com/api/docs/guides/prompt-caching"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="../index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">一次検証・定量技術ノート</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">検証記事一覧</a>
-      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
       <a href="../about.html#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
 </header>
 <div class="pr-banner" role="note" aria-label="運営ステータス表示">
-  <div class="container">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</div>
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
 </div>
 
-
-  <div class="container article-layout">
-    <main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>Cloud &amp; AI Infrastructure</span>
-      </nav>
-
-      <div class="article-meta-top">
-        <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
-        <span class="category-pill">Cloud &amp; AI Infrastructure</span>
-      </div>
-
-      <h1 class="article-title">主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース</h1>
-      <p class="article-subtitle">公称「高速推論 tok/s」の裏にある北米ピーク重複時間帯（JST 22:00〜03:00）のp95レイテンシ悪化とPrompt Caching効果の計測集計（N=672）</p>
-
-      <div class="article-tags-row">
-        <span class="tag-chip">#LLM API</span><span class="tag-chip">#TTFT Latency</span><span class="tag-chip">#Prompt Caching</span><span class="tag-chip">#OpenAI API</span><span class="tag-chip">#Anthropic Claude</span><span class="tag-chip">#Groq LPU</span>
-      </div>
-
-      <div class="article-timestamps">
-        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>サンプル数: <strong>N = 672</strong></span>
-      </div>
-
-      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
-        <div class="tldr-title">
-          <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <div class="card-metrics-inline">
-            
-            <a href="../datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" download="llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" class="csv-btn">CSVデータを取得</a>
-          </div>
-        </div>
-        <ul class="tldr-list">
-          <li>集計API計測リクエスト数は「672 回/社」（15分周期×7日間 4k入力ストリーミング）。</li><li>夜間ピーク時のp95 TTFT倍率は「2.1x 〜 3.4x」（JST 22:00〜03:00（北米日中帯と重複））。</li><li>Prompt Cachingヒット時短縮率は「-46% 〜 -74%」（32k長文コンテキスト時のPrefill削減効果）。</li><li>Groq Cloud API (Llama-3.3-70B-Versatile)：専用LPUアーキテクチャにより北米ピーク時間帯でもp95 TTFTが0.48秒にとどまり、リアルタイム音声・対話用途で圧倒的安定性（N=672）。</li>
-        </ul>
-        <div class="kpi-strip">
-          
-        <div class="kpi-item">
-          <div class="kpi-label">集計API計測リクエスト数</div>
-          <div class="kpi-value">672 回/社</div>
-          <div class="kpi-sub">15分周期×7日間 4k入力ストリーミング</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">夜間ピーク時のp95 TTFT倍率</div>
-          <div class="kpi-value">2.1x 〜 3.4x</div>
-          <div class="kpi-sub">JST 22:00〜03:00（北米日中帯と重複）</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">Prompt Cachingヒット時短縮率</div>
-          <div class="kpi-value">-46% 〜 -74%</div>
-          <div class="kpi-sub">32k長文コンテキスト時のPrefill削減効果</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">最低遅延プロバイダ (p95 TTFT)</div>
-          <div class="kpi-value">0.48 秒</div>
-          <div class="kpi-sub">Groq LPU / 次点 Gemini Flash 0.89秒</div>
-        </div>
-        
-        </div>
-      </section>
-
-      
-      <section id="sec-chart" class="article-section">
-        <h2 class="section-h2">
-          <span>1. 公称・日中ピーク出力速度（Peak tok/s）vs 北米ピーク時間帯のTTFT待ち時間込み実効速度（Effective tok/s at p95）</span>
-          <span class="section-subnote">単位: tok/s</span>
-        </h2>
-        <div class="gap-list">
-          
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Groq Cloud API (Llama-3.3-70B-Versatile)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">公称・最良時出力速度: 275.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称・最良時出力速度: 275.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="98.21" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>夜間p95 TTFT(0.48s)込み実効速度: 201.5 tok/s</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="夜間p95 TTFT(0.48s)込み実効速度: 201.5 tok/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="71.96" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">専用LPUアーキテクチャにより北米ピーク時間帯でもp95 TTFTが0.48秒にとどまり、リアルタイム音声・対話用途で圧倒的安定性（N=672）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Google Vertex AI (Gemini 2.5 Flash / Global)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">日中p50純粋出力速度: 155.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="日中p50純粋出力速度: 155.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="55.36" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>夜間p95 TTFT(0.89s)込み実効速度: 114.0 tok/s</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="夜間p95 TTFT(0.89s)込み実効速度: 114.0 tok/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="40.71" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">東京からのエッジルーティングが安定しており、夜間でもTTFT p95が1秒未満。高スループット・低単価の両立で最優秀（N=672）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Together AI (Llama-3.3-70B-Instruct-Turbo FP8)</span>
-                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">公称FP8ピーク出力速度: 135.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="公称FP8ピーク出力速度: 135.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="48.21" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>夜間p95 TTFT(1.78s)込み実効速度: 80.8 tok/s</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="夜間p95 TTFT(1.78s)込み実効速度: 80.8 tok/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="28.86" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">昼間は高速だが、JST深夜帯にPrefillキュー待ちが発生しやすくp95 TTFTが1.78秒まで拡大（N=672）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">OpenAI API (GPT-4o / Standard Tier 5・キャッシュ未ヒット時)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">日中p50純粋出力速度: 92.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="日中p50純粋出力速度: 92.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="32.86" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>夜間p95 TTFT(1.62s)込み実効速度: 66.5 tok/s</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="夜間p95 TTFT(1.62s)込み実効速度: 66.5 tok/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="23.75" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">自動Prompt Cachingヒット時は夜間でもTTFTが0.31秒〜0.55秒へ大幅短縮されるため、共通プレフィックス設計が鍵（N=672）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Anthropic API (Claude 3.7 Sonnet / Tier 4・キャッシュ未ヒット時)</span>
-                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">日中p50純粋出力速度: 74.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="日中p50純粋出力速度: 74.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="26.43" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>夜間p95 TTFT(2.45s)込み実効速度: 51.5 tok/s</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="夜間p95 TTFT(2.45s)込み実効速度: 51.5 tok/s">
-                    <rect class="bar-rect-measured" x="0" y="0" width="18.39" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">コーディング・複雑推論の品質は最高水準だが、北米ピーク時の非キャッシュTTFT変動が大きいためcache_control指定が必須（N=672）。</div>
-            </div>
-            
-        </div>
-      </section>
-    
-      <section id="sec-table" class="article-section">
-        <h2 class="section-h2">
-          <span>2. 条件別・実測比較データテーブル</span>
-          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
-        </h2>
-        <div class="table-wrap">
-          <table class="data-table">
-            <caption>主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース — 実測検証データ比較表</caption>
-            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>APIプロバイダ / モデル</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>日中 TTFT (p50)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>北米ピーク TTFT (p95)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>純粋出力速度 (p50)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>夜間p95実効速度 (512tok)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>Prompt Caching短縮効果</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>推奨ワークロード</span><span aria-hidden="true">↕</span></button></th></tr></thead>
-            <tbody><tr><th scope="row">Groq Cloud (Llama-3.3-70B)</th><td class="num-cell" data-sort-value="240.000000">0.24 秒</td><td class="num-cell" data-sort-value="480.000000">0.48 秒</td><td class="num-cell" data-sort-value="248.500000">248.5 tok/s</td><td class="num-cell" data-sort-value="201.500000">201.5 tok/s</td><td>ベースが極小遅延</td><td>音声対話・リアルタイムUI</td></tr><tr><th scope="row">Vertex AI (Gemini 2.5 Flash)</th><td class="num-cell" data-sort-value="410.000000">0.41 秒</td><td class="num-cell" data-sort-value="890.000000">0.89 秒</td><td class="num-cell" data-sort-value="142.000000">142.0 tok/s</td><td class="num-cell" data-sort-value="114.000000">114.0 tok/s</td><td>Context Caching対応</td><td>大規模構造化抽出・分類</td></tr><tr><th scope="row">Together AI (70B Turbo)</th><td class="num-cell" data-sort-value="520.000000">0.52 秒</td><td class="num-cell" data-sort-value="1780.000000">1.78 秒</td><td class="num-cell" data-sort-value="112.400000">112.4 tok/s</td><td class="num-cell" data-sort-value="80.800000">80.8 tok/s</td><td>限定的</td><td>オープン重みモデルの低単価実行</td></tr><tr><th scope="row">OpenAI API (GPT-4o)</th><td class="num-cell" data-sort-value="580.000000">0.58 秒</td><td class="num-cell" data-sort-value="1620.000000">1.62 秒 (Cache時 0.52s)</td><td class="num-cell" data-sort-value="84.200000">84.2 tok/s</td><td class="num-cell" data-sort-value="66.500000">66.5 tok/s</td><td data-sort-value="-46.000000">自動適用 (TTFT -46%)</td><td>汎用プロダクション・マルチモーダル</td></tr><tr><th scope="row">Anthropic (Claude 3.7 Sonnet)</th><td class="num-cell" data-sort-value="820.000000">0.82 秒</td><td class="num-cell" data-sort-value="2450.000000">2.45 秒 (Cache時 0.85s)</td><td class="num-cell" data-sort-value="68.400000">68.4 tok/s</td><td class="num-cell" data-sort-value="51.500000">51.5 tok/s</td><td data-sort-value="32.000000">明示指定 (32k時 -74%)</td><td>高度なコード生成・エージェント監査</td></tr></tbody>
-          </table>
-        </div>
-      </section>
-    
-
-      <section id="sec-analysis" class="article-section">
-        <h2 class="section-h2">
-          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
-        </h2>
-        
-        <div class="prose-section">
-          <h3>1. 平均値（Mean）ではなく「北米ピーク帯のp95 TTFT」で設計すべき理由</h3>
-          <p>1回のユーザー操作の裏で3回〜5回のLLM呼び出しを直列実行するエージェント型アプリケーションでは、1ステップあたりp95で2.0秒のTTFT（初回トークン到達遅延）が発生すると、チェーン全体の待ち時間が10秒を超えます。特にJST 22:00〜03:00は米国西海岸・東海岸のコア業務時間と重なるため、共有エンドポイントではPrefill（入力プロンプトのKVキャッシュ計算）フェーズのキュー待ちが昼間比で2倍〜3倍以上に増加します。</p>
-        </div>
-        
-        <div class="prose-section">
-          <h3>2. Prompt CachingによるPrefillボトルネックの解消効果</h3>
-          <p>システムプロンプトやFew-shot例、リポジトリ構造など共通プレフィックスを先頭4,096 tokens以上に固定してPrompt Cachingを有効化した場合、OpenAI（自動キャッシュ）ではTTFT p50が0.58秒から0.31秒へ46%短縮、Anthropic（cache_control指定）では32k tokens入力時のTTFTが3.8秒から0.98秒へ74%短縮されました。同時にキャッシュ読み取りトークン単価も50%〜90%割引されるため、本番環境では必須の設計パターンです。</p>
-        </div>
-        
-      </section>
-
-      
-        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
-          <h2 class="section-h2">
-            <span>検証対象モデル・関連サービス公式リンク</span>
-            <span class="section-subnote">公式・参考リンク (広告なし)</span>
-          </h2>
-          <div class="cta-grid">
-            
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">Claude Code 対応</span>
-                    <div class="cta-title">Anthropic Claude Pro / Max プラン</div>
-                    <div class="cta-provider">提供元: Anthropic （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">月間 200 CU 付帯</span>
-                    <div class="cta-title">Google One AI Pro 公式プラン詳細</div>
-                    <div class="cta-provider">提供元: Google （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://one.google.com/about/ai-premium/" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-          </div>
-          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
-        </section>
-        
-
-      <section id="sec-faq" class="article-section">
-        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
-        <div class="faq-list">
-          
-        <div class="faq-item">
-          <h3 class="faq-q">Q. ストリーミング（stream: true）を使えば合計完了時間も速くなりますか？</h3>
-          <p class="faq-a">最後のトークンが出力し終わるまでの合計時間（Total Completion Time）自体はストリーミングの有無でほぼ変わりませんが、ユーザーが最初の文字を目にするまでの体感待ち時間（TTFT）が数秒から0.3〜0.8秒へ劇的に短縮されます。また、Cloudflare Workersやブラウザのタイムアウト切断を防ぐ上でもストリーミングは有効です。</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3 class="faq-q">Q. 夜間のAPI遅延スパイクやレート制限（429 Overloaded）を回避する最も確実な構成は？</h3>
-          <p class="faq-a">単一プロバイダに依存せず、例えばClaude APIをプライマリとしつつ、TTFTが3.0秒を超えた場合や529/429エラー時にAWS Bedrock / Google Vertex AI上の同一モデル、またはOpenAI / Geminiへ自動フェイルオーバーするマルチプロバイダルーティングが最も高い可用性を実現します。</p>
-        </div>
-        
-        </div>
-      </section>
-
-      <section id="sec-sources" class="article-section">
-        <h2 class="section-h2">
-          <span>5. 検証条件・一次情報ソース (Provenance)</span>
-        </h2>
-        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 東京リージョン（ap-northeast-1）から15分間隔×7日間（計672リクエスト/エンドポイント）、入力4,096 tokens・出力512 tokensの構造化JSON生成ストリーミングを実行した公開ベンチマークおよびr/LocalLLaMA運用テレメトリを集計。JST昼間帯（10:00〜18:00）のp50出力速度と、北米営業時間重複帯（JST 22:00〜04:00）の実効スループット（TTFT待ち時間込み）を比較。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース」(2026-10-12更新, N=672) — <code>https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html</code></div>
-        <ul class="source-list">
-          
-        <li class="source-item">
-          <a href="https://www.reddit.com/r/LocalLLaMA/search/?q=API+TTFT+latency+throughput+benchmark&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/LocalLLaMA - Search: LLM API provider TTFT latency &amp; throughput benchmarks</a>
-          <span class="source-meta">サンプル: N=672 API latency probes | 確認日: 2026-10-12</span>
-        </li>
-        
-        <li class="source-item">
-          <a href="https://hn.algolia.com/?q=prompt+caching+TTFT+latency" target="_blank" rel="noopener noreferrer">Hacker News Algolia Search: Prompt Caching TTFT latency reduction benchmarks</a>
-          <span class="source-meta">サンプル: Production telemetry threads | 確認日: 2026-10-12</span>
-        </li>
-        
-        </ul>
-      </section>
-
-      
-        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
-          <h2 class="section-h2"><span>6. あわせて読みたい関連検証データ</span></h2>
-          <ul class="source-list">
-            
-                <li class="source-item">
-                  <a href="google-colab-ai-pro-gpu-burn-rate-benchmarks.html"><strong>Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測</strong></a>
-                  <span class="source-meta">集計サンプル数 (N): 64 セッション (N=64)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html"><strong>ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較</strong></a>
-                  <span class="source-meta">集計llama-benchログ数: 74 環境 (N=74)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="ai-coding-agent-ast-peek-token-reduction-benchmarks.html"><strong>Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証</strong></a>
-                  <span class="source-meta">探索トークン削減率 (中央値): -78.4% (N=42)</span>
-                </li>
-                
-          </ul>
-        </section>
-        
-    </main>
-
-    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
-      <div class="sidebar-box">
-        <div class="sidebar-title">目次</div>
-        <ul class="toc-list">
-          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
-          
-          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
-          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
-        
-          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
-          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
-          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
-        </ul>
-      </div>
-      <div class="sidebar-box">
-        <div class="sidebar-title">検証データ概要</div>
-        <div class="meta-kv-list">
-          <div class="meta-kv-row"><span>データ種別</span><strong>一次ログ集計</strong></div>
-          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 672</strong></div>
-          <div class="meta-kv-row"><span>比較行数</span><strong>5 件</strong></div>
-          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
-          
-        </div>
-        <div class="card-takeaway-bar">
-          
-          <a href="../datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" download="llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
-          <a href="llm-api-providers-ttft-latency-throughput-variance-benchmarks.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / AIとサーバー</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">LLM APIの速さは、何を測って比べればいい？</h1><p class="article-subtitle">最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-12">2026-10-12</time></span><span>更新 <time datetime="2026-10-13">2026-10-13</time></span><span>公式資料に基づく整理。独自の比較実測値は掲載していません。</span></div>
+      <aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>旧版の672リクエスト集計、プロバイダー別のp50・p95、夜間の悪化率、キャッシュの短縮率は、計測記録を確認できないため撤回しました。待ち時間と品質を分けて比較する手順へ改訂しています。</p></aside>
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>同じ仕事を、同じ品質で完了できる条件をそろえてから速さを比べる。</li><li>ストリーミングで早く見せることと、モデルが早く生成を終えることは区別する。</li><li>特定の時間帯やプロバイダーが必ず遅いという順位は、測定なしに付けない。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>用途と確認事項の比較表。製品ごとの実測ランキングではありません。</caption><thead><tr><th scope="col">指標</th><th scope="col">答える疑問</th><th scope="col">記録する条件</th><th scope="col">読み違えやすい点</th></tr></thead><tbody><tr><th scope="row">初回表示までの時間</th><td>ユーザーが待つ時間は長いか</td><td>計測の開始点、最初のイベントか表示文字か</td><td>接続完了や空のイベントを回答開始と混同しない</td></tr><tr><th scope="row">全文の完了時間</th><td>1つの仕事を何秒で終えるか</td><td>入力、出力長、ツール呼び出し、再試行</td><td>出力が短いだけの回答を速いと評価しない</td></tr><tr><th scope="row">生成速度</th><td>生成中にどれくらい出力するか</td><td>トークナイザー、出力数、時間範囲</td><td>モデルが違うtok/sを同じ文章量として比べない</td></tr><tr><th scope="row">遅い側の分布</th><td>普段より待つケースはどれくらいか</td><td>件数、測定期間、エラーとタイムアウト</td><td>p95だけを足して直列処理全体のp95にしない</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/llm-api-providers-ttft-latency-throughput-variance-benchmarks.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">どの待ち時間を短くしたいか</h2><p>対話画面なら最初の意味のある表示、帳票生成なら最後まで正しく作れた時間、複数段の処理ならアプリ全体の完了時間を測ります。送信開始から測るのか、接続後から測るのかも決めてください。別の測定範囲の秒数を同じ列で比較しないことが出発点です。</p></section><section class="prose-section" id="part-1"><h2 class="section-h2">同じプロンプトでも、比較条件はまだ足りない</h2><p>モデルのバージョン、入力の長さ、最大出力、思考設定、実行元、同時実行数を記録します。モデルごとにトークンへの分割方法が違うため、tok/sだけでは同じ量の日本語を処理したか分かりません。JSONの形式や必要な情報がそろったかを判定し、失敗と再試行を含めて比べます。</p></section><section class="prose-section" id="part-2"><h2 class="section-h2">キャッシュとストリーミングは、分けて測る</h2><p>OpenAIの公式資料は、ストリーミングによる早い表示や、入力・出力・呼び出し回数を見直す方法を説明しています。Prompt Cachingにはモデルや設定ごとの条件があり、毎回同じ短縮率になるものではありません。キャッシュがない最初の呼び出しと、ヒットした呼び出しを混ぜず、使用量の情報も保存します。</p><p class="source-meta">参照: <a href="https://developers.openai.com/api/docs/guides/latency-optimization" target="_blank" rel="noopener noreferrer">OpenAI：Latency optimization</a> <a href="https://developers.openai.com/api/docs/guides/prompt-caching" target="_blank" rel="noopener noreferrer">OpenAI：Prompt caching</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">p95を足せば、全体のp95になるわけではない</h2><p>複数のAPI呼び出しを直列に行うと待ち時間は積み上がりますが、各段のp95を足した数値は処理全体のp95とは一般に一致しません。ユーザー操作から完了までの時間を直接記録します。エラーやタイムアウトを速いリクエストだけの集計から除外すると、運用上の待ち時間を過小評価するので、成功率と別々に示します。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">別のAPIへ切り替える前に</h2><p>まず長すぎる出力、不要な直列呼び出し、データ読み込み、アプリ側のバッファリングを確認します。別モデルへの切替は品質・対応機能・料金・データの送信先も変えます。障害時の代替構成も、同じ結果を出せるかと二重実行を防げるかを検証してから導入します。切替先を増やすだけで速さや可用性が保証されるわけではありません。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://developers.openai.com/api/docs/guides/latency-optimization" target="_blank" rel="noopener noreferrer">OpenAI：Latency optimization</a><span class="source-meta">確認日: 2026-10-13 / APIの遅延を減らす設計。プロバイダー間の測定順位ではありません。</span></li><li class="source-item"><a href="https://developers.openai.com/api/docs/guides/prompt-caching" target="_blank" rel="noopener noreferrer">OpenAI：Prompt caching</a><span class="source-meta">確認日: 2026-10-13 / キャッシュ条件と使用量の確認。一定の短縮率を保証しません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="personal-ai-vps-home-server-subscription.html">パーソナルAIは、どこに置く？</a></li><li class="source-item"><a href="ai-coding-subscriptions-real-rate-limits-token-economics.html">AIコーディングのサブスクとAPI、費用をどう比べる？</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">どの待ち時間を短くしたいか</a></li><li><a href="#part-1">同じプロンプトでも、比較条件はまだ足りない</a></li><li><a href="#part-2">キャッシュとストリーミングは、分けて測る</a></li><li><a href="#part-3">p95を足せば、全体のp95になるわけではない</a></li><li><a href="#part-4">別のAPIへ切り替える前に</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -397,9 +42,9 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
         </p>
-        <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
         <a href="../index.html">記事一覧</a>
@@ -412,11 +57,9 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
     </div>
   </div>
 </footer>
 <script src="../assets/app.js" defer></script>
-
-</body>
-</html>
+</body></html>

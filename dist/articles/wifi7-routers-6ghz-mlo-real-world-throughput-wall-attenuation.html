@@ -1,360 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【iperf3実測N=52】Wi-Fi 7ルーターの6GHz/MLO実効速度と壁越し減衰比較 | Nodus</title>
-  <meta name="description" content="公称9,300Mbps〜19,000Mbpsを謳うWi-Fi 7(802.11be)ルーターで、実際に何Gbps出るのか？2x2クライアント接続時のiperf3実測速度、MLOの効果、6GHz帯の壁越し減衰率、常時消費電力を定量比較。">
-  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html">
-  <meta property="og:title" content="【iperf3実測N=52】Wi-Fi 7ルーターの6GHz/MLO実効速度と壁越し減衰比較 | Nodus">
-  <meta property="og:description" content="公称9,300Mbps〜19,000Mbpsを謳うWi-Fi 7(802.11be)ルーターで、実際に何Gbps出るのか？2x2クライアント接続時のiperf3実測速度、MLOの効果、6GHz帯の壁越し減衰率、常時消費電力を定量比較。">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html">
-  <meta property="og:site_name" content="Nodus">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
-  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md">
-  <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース", "description": "公称9,300Mbps〜19,000Mbpsを謳うWi-Fi 7(802.11be)ルーターで、実際に何Gbps出るのか？2x2クライアント接続時のiperf3実測速度、MLOの効果、6GHz帯の壁越し減衰率、常時消費電力を定量比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Wi-Fi 7, 802.11be, MLO, 6GHz, iperf3, r/HomeNetworking", "citation": ["https://www.reddit.com/r/HomeNetworking/search/?q=WiFi+7+MLO+iperf3+throughput\u0026restrict_sr=1", "https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html"}, {"@type": "Dataset", "name": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース 実測検証データセット (N=52)", "description": "カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）", "url": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/HomeNetworking および有志のローカル10GbE NAS環境における iperf3（TCPマルチストリーム）計測ログ52件を集計。クライアント側は Intel BE200 / Qualcomm FastConnect 7800 (2x2 MIMO, 320MHz対応) を基準とし、見通し3m（同室）および壁2枚越し（距離10m）での実効スループット中央値を算出。", "variableMeasured": ["周波数・チャネル幅", "2x2 PHY理論リンク速度", "iperf3実測中央値", "Ping P99遅延 (負荷時)", "主なボトルネック要因"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？", "acceptedAnswer": {"@type": "Answer", "text": "外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。"}}, {"@type": "Question", "name": "MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Hardware \u0026 Power Electronics", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース", "item": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html"}]}]}</script>
-</head>
-<body>
-  
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する | Nodus</title><meta name="description" content="MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html">
+      <meta property="og:title" content="Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する"><meta property="og:description" content="MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する", "description": "MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。", "datePublished": "2026-10-12", "dateModified": "2026-10-13", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html", "citation": ["https://www.tp-link.com/uk/home-networking/deco/deco-be9300/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="../index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">一次検証・定量技術ノート</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">検証記事一覧</a>
-      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
       <a href="../about.html#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
 </header>
 <div class="pr-banner" role="note" aria-label="運営ステータス表示">
-  <div class="container">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</div>
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
 </div>
 
-
-  <div class="container article-layout">
-    <main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>Hardware &amp; Power Electronics</span>
-      </nav>
-
-      <div class="article-meta-top">
-        <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
-        <span class="category-pill">Hardware &amp; Power Electronics</span>
-      </div>
-
-      <h1 class="article-title">Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース</h1>
-      <p class="article-subtitle">カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）</p>
-
-      <div class="article-tags-row">
-        <span class="tag-chip">#Wi-Fi 7</span><span class="tag-chip">#802.11be</span><span class="tag-chip">#MLO</span><span class="tag-chip">#6GHz</span><span class="tag-chip">#iperf3</span><span class="tag-chip">#r/HomeNetworking</span>
-      </div>
-
-      <div class="article-timestamps">
-        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>サンプル数: <strong>N = 52</strong></span>
-      </div>
-
-      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
-        <div class="tldr-title">
-          <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <div class="card-metrics-inline">
-            
-            <a href="../datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" download="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" class="csv-btn">CSVデータを取得</a>
-          </div>
-        </div>
-        <ul class="tldr-list">
-          <li>集計iperf3計測環境数は「52 環境」（r/HomeNetworking 10GbE LAN基準）。</li><li>同室3m (6GHz 320MHz) 実測は「3.4 〜 4.2 Gbps」（2x2クライアント（リンク速度5.76Gbps）時）。</li><li>壁2枚越し時の6GHz速度維持率は「約 22% 〜 31%」（5GHz帯（160MHz）と実効速度が逆転する境界）。</li><li>6GHz単体 (320MHz幅) — 同室・見通し 3m：4096-QAMが安定維持され、2.5GbE有線LANの限界（約2.35Gbps）を大きく上回る実効3.8Gbps超を達成（N=19）。</li>
-        </ul>
-        <div class="kpi-strip">
-          
-        <div class="kpi-item">
-          <div class="kpi-label">集計iperf3計測環境数</div>
-          <div class="kpi-value">52 環境</div>
-          <div class="kpi-sub">r/HomeNetworking 10GbE LAN基準</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">同室3m (6GHz 320MHz) 実測</div>
-          <div class="kpi-value">3.4 〜 4.2 Gbps</div>
-          <div class="kpi-sub">2x2クライアント（リンク速度5.76Gbps）時</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">壁2枚越し時の6GHz速度維持率</div>
-          <div class="kpi-value">約 22% 〜 31%</div>
-          <div class="kpi-sub">5GHz帯（160MHz）と実効速度が逆転する境界</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">10GbE搭載Wi-Fi 7機の待機電力</div>
-          <div class="kpi-value">18.5 〜 27.4 W</div>
-          <div class="kpi-sub">Wi-Fi 6機の約1.6〜2.1倍（年間約5,500〜8,000円）</div>
-        </div>
-        
-        </div>
-      </section>
-
-      
-      <section id="sec-chart" class="article-section">
-        <h2 class="section-h2">
-          <span>1. 2x2クライアント最大リンク速度（5,764 Mbps）vs 距離・障害物別のiperf3実効TCPスループット中央値（Mbps）</span>
-          <span class="section-subnote">単位: Mbps</span>
-        </h2>
-        <div class="gap-list">
-          
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">6GHz単体 (320MHz幅) — 同室・見通し 3m</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">2x2 PHY理論リンク上限: 5,764 Mbps</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="2x2 PHY理論リンク上限: 5,764 Mbps">
-                    <rect class="bar-rect-official" x="0" y="0" width="96.07" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>iperf3実効中央値: 3,840 Mbps</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="iperf3実効中央値: 3,840 Mbps">
-                    <rect class="bar-rect-measured" x="0" y="0" width="64.00" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">4096-QAMが安定維持され、2.5GbE有線LANの限界（約2.35Gbps）を大きく上回る実効3.8Gbps超を達成（N=19）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">MLO (5GHz + 6GHz 同時集約) — 同室・見通し 3m</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">MLO合算PHY理論上限: 8,646 Mbps (上限5.7G換算)</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="MLO合算PHY理論上限: 8,646 Mbps (上限5.7G換算)">
-                    <rect class="bar-rect-official" x="0" y="0" width="96.07" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>iperf3実効中央値: 4,120 Mbps</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="iperf3実効中央値: 4,120 Mbps">
-                    <rect class="bar-rect-measured" x="0" y="0" width="68.67" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">スループット純増は6GHz単体比で+7%前後だが、高負荷時のピンポイント遅延（P99 Jitter）が約35%改善（N=14）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">6GHz単体 (320MHz幅) — 石膏ボード壁2枚・10m</span>
-                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">2x2 PHY理論リンク上限: 5,764 Mbps</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="2x2 PHY理論リンク上限: 5,764 Mbps">
-                    <rect class="bar-rect-official" x="0" y="0" width="96.07" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>iperf3実効中央値: 920 Mbps (-76%減衰)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="iperf3実効中央値: 920 Mbps (-76%減衰)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="15.33" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">障害物による減衰で4096-QAMから256-QAM以下へフォールバックし、320MHz幅のノイズフロア上昇も重なり1Gbps未満へ低下（N=11）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">MLO (5GHz + 6GHz 自動切替) — 石膏ボード壁2枚・10m</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">MLO合算PHY理論上限: 5,764 Mbps</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="MLO合算PHY理論上限: 5,764 Mbps">
-                    <rect class="bar-rect-official" x="0" y="0" width="96.07" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>iperf3実効中央値: 1,580 Mbps</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="iperf3実効中央値: 1,580 Mbps">
-                    <rect class="bar-rect-measured" x="0" y="0" width="26.33" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">壁越しの中距離環境でこそMLOが真価を発揮し、減衰に強い5GHz帯を主軸に1.5Gbps超を維持（N=8）。</div>
-            </div>
-            
-        </div>
-      </section>
-    
-      <section id="sec-table" class="article-section">
-        <h2 class="section-h2">
-          <span>2. 条件別・実測比較データテーブル</span>
-          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
-        </h2>
-        <div class="table-wrap">
-          <table class="data-table">
-            <caption>Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース — 実測検証データ比較表</caption>
-            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>接続モード・環境</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>周波数・チャネル幅</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>2x2 PHY理論リンク速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>iperf3実測中央値</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>Ping P99遅延 (負荷時)</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>主なボトルネック要因</span><span aria-hidden="true">↕</span></button></th></tr></thead>
-            <tbody><tr><th scope="row">同室3m (6GHz単体)</th><td data-sort-value="6.000000">6GHz / 320MHz</td><td data-sort-value="5764.000000">5,764 Mbps</td><td data-sort-value="3840.000000">3,840 Mbps</td><td class="num-cell" data-sort-value="4.200000">4.2 ms</td><td data-sort-value="2.000000">クライアント側MIMO数 (2x2上限)</td></tr><tr><th scope="row">同室3m (MLO有効)</th><td data-sort-value="5.000000">5GHz(160) + 6GHz(320)</td><td data-sort-value="8646.000000">8,646 Mbps</td><td data-sort-value="4120.000000">4,120 Mbps</td><td class="num-cell" data-sort-value="2.700000">2.7 ms</td><td>OS/ドライバのSTR/EMLSR制御</td></tr><tr><th scope="row">壁2枚10m (6GHz単体)</th><td data-sort-value="6.000000">6GHz / 320MHz</td><td data-sort-value="5764.000000">5,764 Mbps</td><td data-sort-value="920.000000">920 Mbps</td><td class="num-cell" data-sort-value="14.800000">14.8 ms</td><td>高周波遮蔽減衰・SNR低下</td></tr><tr><th scope="row">壁2枚10m (MLO有効)</th><td data-sort-value="5.000000">5GHz(160) + 6GHz(320)</td><td data-sort-value="8646.000000">8,646 Mbps</td><td data-sort-value="1580.000000">1,580 Mbps</td><td class="num-cell" data-sort-value="6.100000">6.1 ms</td><td data-sort-value="5.000000">5GHz帯へのトラフィック比重移行</td></tr></tbody>
-          </table>
-        </div>
-      </section>
-    
-
-      <section id="sec-analysis" class="article-section">
-        <h2 class="section-h2">
-          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
-        </h2>
-        
-        <div class="prose-section">
-          <h3>1. なぜ「BE19000（最大19Gbps）」のルーターでもPC1台では4Gbps前後が上限なのか</h3>
-          <p>ルーターのパッケージに記載されている「BE19000（約19Gbps）」「BE9300（約9.3Gbps）」という数値は、2.4GHz帯・5GHz帯・6GHz帯のすべてを4x4 MIMO（アンテナ4本分）で同時フル通信した場合の理論合算値です。しかし、市販のノートPCやスマートフォン（iPhone 16 ProやIntel BE200搭載PC）の内蔵アンテナは「2x2 MIMO（2ストリーム）」であるため、6GHz・320MHz接続時の物理リンク上限は5,764Mbpsとなり、プロトコルオーバーヘッドを除いた実効速度は同室至近距離で約3.6〜4.2Gbpsが物理的な天井となります。</p>
-        </div>
-        
-        <div class="prose-section">
-          <h3>2. MLO（Multi-Link Operation）が最も効くのは「同室」ではなく「壁越しの中距離」</h3>
-          <p>コミュニティの検証ログ（N=52）から判明した重要な事実は、ルーターの真横（同室3m）では6GHz単体でも十分すぎる帯域が出るためMLOの速度上積みは約5〜10%に留まる一方、ドアや石膏ボード壁を1〜2枚挟んだ別室環境ではMLOの有無で実効速度に約1.7倍（920Mbps vs 1,580Mbps）の差がつく点です。6GHzの320MHz幅は壁による減衰に弱いですが、MLOを有効化しておくことで5GHz帯がシームレスに下支えし、切断やパケ詰まりを防ぎます。</p>
-        </div>
-        
-      </section>
-
-      
-        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
-          <h2 class="section-h2">
-            <span>検証対象モデル・関連サービス公式リンク</span>
-            <span class="section-subnote">公式・参考リンク (広告なし)</span>
-          </h2>
-          <div class="cta-grid">
-            
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">6GHz 320MHz / MLO対応</span>
-                    <div class="cta-title">ASUS Wi-Fi 7 (802.11be) ルーター シリーズ</div>
-                    <div class="cta-provider">提供元: Amazon.co.jp （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://www.amazon.co.jp/s?k=ASUS+Wi-Fi+7+Router" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-          </div>
-          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
-        </section>
-        
-
-      <section id="sec-faq" class="article-section">
-        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
-        <div class="faq-list">
-          
-        <div class="faq-item">
-          <h3 class="faq-q">Q. インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？</h3>
-          <p class="faq-a">外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3 class="faq-q">Q. MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？</h3>
-          <p class="faq-a">はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。</p>
-        </div>
-        
-        </div>
-      </section>
-
-      <section id="sec-sources" class="article-section">
-        <h2 class="section-h2">
-          <span>5. 検証条件・一次情報ソース (Provenance)</span>
-        </h2>
-        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/HomeNetworking および有志のローカル10GbE NAS環境における iperf3（TCPマルチストリーム）計測ログ52件を集計。クライアント側は Intel BE200 / Qualcomm FastConnect 7800 (2x2 MIMO, 320MHz対応) を基準とし、見通し3m（同室）および壁2枚越し（距離10m）での実効スループット中央値を算出。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース」(2026-10-12更新, N=52) — <code>https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html</code></div>
-        <ul class="source-list">
-          
-        <li class="source-item">
-          <a href="https://www.reddit.com/r/HomeNetworking/search/?q=WiFi+7+MLO+iperf3+throughput&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/HomeNetworking - Search: Wi-Fi 7 6GHz 320MHz MLO iperf3 real world throughput logs</a>
-          <span class="source-meta">サンプル: N=52 iperf3 benchmarks | 確認日: 2026-10-12</span>
-        </li>
-        
-        <li class="source-item">
-          <a href="https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance Official Specification - Wi-Fi CERTIFIED 7 (IEEE 802.11be MLO &amp; 320MHz)</a>
-          <span class="source-meta">サンプル: Official Protocol Spec | 確認日: 2026-10-12</span>
-        </li>
-        
-        </ul>
-      </section>
-
-      
-        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
-          <h2 class="section-h2"><span>6. あわせて読みたい関連検証データ</span></h2>
-          <ul class="source-list">
-            
-                <li class="source-item">
-                  <a href="100w-140w-gan-charger-thermal-throttling-real-world-tests.html"><strong>100W・140W GaN充電器（Anker Prime / UGREEN Nexode）の連続高負荷・熱ダレ持続出力比較</strong></a>
-                  <span class="source-meta">検証対象モデル・報告数: 4 機種 / N=38 (N=38)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html"><strong>USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース</strong></a>
-                  <span class="source-meta">集計連続書込テスト数: 41 ログ (N=41)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html"><strong>磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース</strong></a>
-                  <span class="source-meta">集計ハードウェア遅延ログ数: 38 件 (N=38)</span>
-                </li>
-                
-          </ul>
-        </section>
-        
-    </main>
-
-    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
-      <div class="sidebar-box">
-        <div class="sidebar-title">目次</div>
-        <ul class="toc-list">
-          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
-          
-          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
-          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
-        
-          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
-          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
-          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
-        </ul>
-      </div>
-      <div class="sidebar-box">
-        <div class="sidebar-title">検証データ概要</div>
-        <div class="meta-kv-list">
-          <div class="meta-kv-row"><span>データ種別</span><strong>一次ログ集計</strong></div>
-          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 52</strong></div>
-          <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
-          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
-          
-        </div>
-        <div class="card-takeaway-bar">
-          
-          <a href="../datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" download="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" class="csv-btn">CSVをダウンロード</a>
-          <a href="wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / 道具と電子工作</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する</h1><p class="article-subtitle">MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-12">2026-10-12</time></span><span>更新 <time datetime="2026-10-13">2026-10-13</time></span><span>公式資料に基づく整理。独自の比較実測値は掲載していません。</span></div>
+      <aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>旧版の52環境集計、壁越しの速度維持率、MLOによる倍率、待機電力と年間費用は、採用ログを追跡できないため撤回しました。全機種を同じMIMO構成とする説明も外し、経路と対応条件を確認する内容に改訂しました。</p></aside>
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>ルーターの合算公称速度を、1台のPCで得られる実効速度と混同しない。</li><li>MLOや広いチャネル幅には端末側の対応も必要。購入前に両端を確認する。</li><li>別室の不満なら、世代の更新より先に設置場所と通信経路を調べる。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>用途と確認事項の比較表。製品ごとの実測ランキングではありません。</caption><thead><tr><th scope="col">困りごと</th><th scope="col">最初に調べること</th><th scope="col">候補になる対策</th><th scope="col">買い替えで保証されないこと</th></tr></thead><tbody><tr><th scope="row">ネット全体が遅い</th><td>有線での速度、契約、混雑</td><td>回線や有線経路の確認</td><td>ルーター交換だけで外向き回線が速くなること</td></tr><tr><th scope="row">別室だけ遅い</th><td>設置位置、壁、干渉、接続帯域</td><td>配置変更、適切な追加AP、有線接続</td><td>Wi-Fi 7ならどの壁でも届くこと</td></tr><tr><th scope="row">NASへの転送を速くしたい</th><td>端末、NAS、有線ポート、保存先</td><td>経路全体の速度と機能対応をそろえる</td><td>ルーターの合算速度が1台に出ること</td></tr><tr><th scope="row">対応端末でMLOを使いたい</th><td>両端の機能、OS、ドライバ、地域モデル</td><td>必要な機能を備える組み合わせ</td><td>どの端末・環境でも同じ効果が出ること</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">ネットが遅いのか、家の中の通信が遅いのか</h2><p>同じ端末を使い、可能なら有線接続と無線接続を比べます。外向きの速度測定と、宅内のPC・NAS間の転送は別の結果として記録します。有線でも遅い場合に、無線ルーターだけを交換して解決するとは限りません。改善したい経路を先に特定します。</p></section><section class="prose-section" id="part-1"><h2 class="section-h2">公称値の注記まで読む</h2><p>TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なること、端末・環境で変わることを注記しています。MLOや320MHzなどの機能には端末側の対応が必要で、地域の条件もあります。このページは機能の確認例であり、国内の全製品や全端末で同じ速度が出るという根拠ではありません。</p><p class="source-meta">参照: <a href="https://www.tp-link.com/uk/home-networking/deco/deco-be9300/" target="_blank" rel="noopener noreferrer">TP-Link：Deco BE9300の仕様と条件注記</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">壁越しの速度を、固定の減衰率で見積もらない</h2><p>壁の材質、距離、設置の高さ、周囲の干渉、端末の向きなどを記録して、同じ場所で測ります。置き場所を変える、既存の有線経路を使う、適切な位置へアクセスポイントを追加するなど、機器の世代以外の対策も候補です。MLOを有効にすれば必ず別室が速くなるという結論は今回の資料からは出せません。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">NAS転送では、有線側も含める</h2><p>端末からルーター、ルーターからNAS、NASの保存領域までの経路を確認します。ひとつの区間が遅いままでは、別の区間だけ高速化しても全体の転送時間が改善しない場合があります。買い替えの総額はルーターだけでなく、端末側の対応、スイッチ、ケーブルなど必要な変更も含めます。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">IoT機器も含めて、導入後を考える</h2><p>既存のスマート家電が使う帯域と暗号化方式、ルーターのSSID設定、ゲストネットワークなどの対応を確認します。問題が起きても「Wi-Fi 7は古い機器が必ずつながらない」と一括りにしません。常時稼働の電気代を比べるなら、機種の実測電力と契約単価で計算します。買い替え後は元と同じ場所・端末で測り、改善したか確かめます。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://www.tp-link.com/uk/home-networking/deco/deco-be9300/" target="_blank" rel="noopener noreferrer">TP-Link：Deco BE9300の仕様と条件注記</a><span class="source-meta">確認日: 2026-10-13 / 英国向けモデルの公称機能と端末・環境の制約。日本での速度測定ではありません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="esp32-c3-s3-c6-which-board-to-choose.html">ESP32、結局どれを買えばいい？</a></li><li class="source-item"><a href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">自宅サーバー用ミニPC、CPU名だけで選んでいい？</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">ネットが遅いのか、家の中の通信が遅いのか</a></li><li><a href="#part-1">公称値の注記まで読む</a></li><li><a href="#part-2">壁越しの速度を、固定の減衰率で見積もらない</a></li><li><a href="#part-3">NAS転送では、有線側も含める</a></li><li><a href="#part-4">IoT機器も含めて、導入後を考える</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -364,9 +42,9 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
         </p>
-        <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
         <a href="../index.html">記事一覧</a>
@@ -379,11 +57,9 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
     </div>
   </div>
 </footer>
 <script src="../assets/app.js" defer></script>
-
-</body>
-</html>
+</body></html>

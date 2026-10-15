@@ -1,64 +1,6 @@
 {
-  "schema_version": "1.0",
-  "experiment_id": "cross-model-peer-audit-bug-detection-benchmarks",
-  "origin": "first_party_lab",
-  "recorded_at": "2026-10-12",
-  "environment": {
-    "protocol": "MCP peer-audit (stateless isolated file snapshot audit)",
-    "sample_audit_runs_n": 28,
-    "severity_definitions": {
-      "P1": "Data loss, security/CSP violation, or unhandled runtime crash",
-      "P2": "Concrete edge-case bug with reproducible failing input (regex truncation, unit sort error, file overwrite)",
-      "P3": "Editorial, architecture, or maintainability improvement"
-    }
-  },
-  "aggregate_telemetry": {
-    "same_thread_self_review_p1_p2_recall_pct": 21.4,
-    "fresh_thread_same_model_p1_p2_recall_pct": 53.6,
-    "cross_model_isolated_audit_p1_p2_recall_pct": 82.1,
-    "false_positive_rate_with_evidence_constraint_pct": 14.2,
-    "median_audit_latency_sec": 62.0
-  },
-  "verified_defect_detections": [
-    {
-      "audit_run_id": "audit-01",
-      "target_component": "svg_bar_chart_scaler",
-      "defect_severity": "P2",
-      "failing_input_example": "official_value=0, measured_value=1, max_scale=100",
-      "observed_bug": "min(100.0, max(4.0, pct)) clamped both 0 and 1 to 4.0% width and clamped values >max_scale to 100%, falsifying visual ratios",
-      "detected_by_same_thread_self_review": false,
-      "detected_by_cross_model_peer_audit": true,
-      "audit_duration_sec": 58.4
-    },
-    {
-      "audit_run_id": "audit-02",
-      "target_component": "table_numeric_sorter",
-      "defect_severity": "P2",
-      "failing_input_example": "Column cells containing '900 ms' and '1 s', or '.25' and '0.5'",
-      "observed_bug": "Naive leading-number regex sorted '1 s' before '900 ms' and parsed '.25' as '25'",
-      "detected_by_same_thread_self_review": false,
-      "detected_by_cross_model_peer_audit": true,
-      "audit_duration_sec": 64.1
-    },
-    {
-      "audit_run_id": "audit-03",
-      "target_component": "quantitative_unit_regex_extractor",
-      "defect_severity": "P2",
-      "failing_input_example": "Text containing 'temperature -5 °C, latency 1,200 ms, commit 94a'",
-      "observed_bug": "Word-boundary unsigned regex dropped minus sign ('5 °C'), truncated comma thousands ('200 ms'), and matched hex '94a' as Amperes",
-      "detected_by_same_thread_self_review": false,
-      "detected_by_cross_model_peer_audit": true,
-      "audit_duration_sec": 61.8
-    },
-    {
-      "audit_run_id": "audit-04",
-      "target_component": "candidate_file_writer",
-      "defect_severity": "P2",
-      "failing_input_example": "run_mine('USB4', subreddit='UsbCHardware') followed by run_mine('USB4', subreddit='hardware')",
-      "observed_bug": "Slug omitted subreddit and non-ASCII fallback hash, overwriting previous candidate JSON",
-      "detected_by_same_thread_self_review": false,
-      "detected_by_cross_model_peer_audit": true,
-      "audit_duration_sec": 59.2
-    }
-  ]
+  "status": "withdrawn_unverified",
+  "article_url": "https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html",
+  "reviewed_at": "2026-10-13",
+  "notice": "旧集計値は母集団と集計手順を再現確認できないため公開を取り下げました。元ファイルは編集用に保存しています。"
 }

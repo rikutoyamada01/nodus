@@ -1,5 +1,11 @@
 # Nodus — Quantitative Spec & Real-World Benchmark Intelligence
 
+サイトの編集方針は「買う、作る、その前に。」。企画の優先順位・需要の仮説・取材項目は [EDITORIAL_PLAN.md](EDITORIAL_PLAN.md) を参照。
+
+既存12記事の数値・出典を見直した記録は [EDITORIAL_REVIEW.md](EDITORIAL_REVIEW.md) を参照。再現確認できない集計値を撤回し、選び方へ改訂済み。旧ログURLは取り下げ案内を配信し、元資料は編集用に保存する。
+
+デザインのソースは `scripts/editorial.css`、ページの生成は `scripts/build_site.py`。`dist/` を直接編集する代わりにソースを変更して再ビルドする。`kind: "guide"` の記事は公式資料に基づく選び方として表示し、実測グラフや実測サンプル数を付けない。既存記事の一覧用見出しは `display_title` で指定できる。
+
 **Nodus** は、メーカーの「カタログ公称値」とグローバル技術コミュニティ（Reddit / Hacker News / GitHub Discussions / 一次検証ログ）の「実測データ（中央値・制限閾値・持続性能）」を定量比較するデータメディア基盤です。
 
 ## アーキテクチャとディレクトリ構成

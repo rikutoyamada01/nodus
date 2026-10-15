@@ -1,181 +1,122 @@
 {
   "slug": "mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests",
-  "title": "磁気式（Hall Effect / 光学アナログ）ラピッドトリガーキーボード 4機種の「8000Hz実測入力遅延ms・誤入力境界」比較データベース",
-  "subtitle": "公称「8000Hz（0.125ms）・0.01mmラピッドトリガー」の裏にあるADCマトリクススキャン遅延と温度ドリフト・隣接キー振動による誤解除ログ集計（N=38）",
+  "title": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方",
+  "display_title": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方",
+  "subtitle": "ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。",
   "category": "Hardware & Power Electronics",
   "tags": [
-    "Hall Effect Keyboard",
-    "Rapid Trigger",
-    "8000Hz Polling",
-    "Input Latency",
-    "Wooting 80HE",
-    "r/MechanicalKeyboards"
+    "磁気式 キーボード 必要",
+    "8000Hz ラピッドトリガー",
+    "キーボード コスパ"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 38,
-  "methodology_note": "r/MechanicalKeyboards、r/MouseReview およびハードウェア遅延計測コミュニティで公開された高速ソレノイド＋フォトインタラプタ＋USBパケットアナライザ計測ログ38件を集計。公称USBポーリング周期ではなく、物理打鍵開始からUSB HIDレポート到達までの実測End-to-End入力応答性（10ms基準からの短縮幅および実測ms）を比較。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の38件集計と機種別の遅延、安定する感度、温度ドリフト耐性の順位は、採用ログを追跡できないため撤回しました。ポーリング周期と操作全体の遅延を分けた選び方へ改訂しました。",
   "seo": {
-    "meta_title": "【8000Hz遅延・誤入力実測】ラピッドトリガー磁気キーボード4機種の入力遅延・デッドゾーン比較 | Nodus",
-    "meta_description": "ポーリングレート8000Hz(0.125ms)と0.01mm〜0.1mmラピッドトリガーを謳う磁気式・光学式キーボードの実測End-to-End入力遅延は何msか？温度ドリフトや振動によるキー抜け境界(N=38)を定量比較。",
+    "meta_title": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方 | Nodus",
+    "meta_description": "ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。",
     "target_keywords": [
-      "ラピッドトリガー キーボード 遅延 実測",
-      "8000Hz ポーリングレート 意味ない 実測",
-      "Wooting 80HE Keychron Q1 HE 比較",
-      "磁気キーボード 0.01mm チャタリング キー抜け"
+      "磁気式 キーボード 必要",
+      "8000Hz ラピッドトリガー",
+      "キーボード コスパ"
     ],
-    "primary_seed": "ラピッドトリガー キーボード"
+    "primary_seed": "磁気式 キーボード 必要"
   },
-  "summary_metrics": [
-    {
-      "label": "集計ハードウェア遅延ログ数",
-      "value": "38 件",
-      "subtext": "光学センサ＋USBアナライザ計測"
-    },
-    {
-      "label": "8000Hz機のEnd-to-End実測遅延",
-      "value": "0.78 〜 1.48 ms",
-      "subtext": "USB理論周期0.125ms＋ADCスキャン時間"
-    },
-    {
-      "label": "誤解除を防ぐ実用最小感度",
-      "value": "0.10 〜 0.15 mm",
-      "subtext": "0.02mm以下は基板振動でキー抜け発生"
-    },
-    {
-      "label": "温度変化ドリフト耐性最良",
-      "value": "Wooting / Razer光学",
-      "subtext": "自動ゼロ点補正と光学式の安定性"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "8000Hzの周期は0.125msという計算になるが、操作全体の実測遅延ではない。",
+    "ラピッドトリガーは最小設定にすれば必ず有利になるわけではない。",
+    "ゲーム用途が中心でなければ、配列、打鍵感、音、設定の手間も優先する。"
   ],
-  "spec_gap_chart": {
-    "title": "公称スキャン・ポーリング応答性スコア（1000回/ms換算インデックス）vs 実測End-to-End応答速度（1/ms換算、高いほど高速・低遅延）",
-    "unit": "score",
-    "max_scale": 150,
-    "items": [
-      {
-        "name": "Wooting 80HE (Lekker L60 v2 / Tachyon Mode 8000Hz)",
-        "official_label": "公称 <1.0ms 応答目標スコア: 130.0 (理論 <0.8ms級)",
-        "official_value": 130.0,
-        "measured_label": "実測遅延 0.78ms (p95: 0.94ms) 応答スコア: 128.2",
-        "measured_value": 128.2,
-        "status": "good",
-        "note": "LED演算を抑制しADCマトリクススキャンを8kHzと同期させるTachyonモードにより、公称どおり実測0.78msを達成（N=12）。"
-      },
-      {
-        "name": "Razer Huntsman V3 Pro TKL (第2世代アナログ光学 / 8000Hz FW)",
-        "official_label": "公称8000Hz高速応答目標スコア: 125.0",
-        "official_value": 125.0,
-        "measured_label": "実測遅延 0.92ms (p95: 1.15ms) 応答スコア: 108.7",
-        "measured_value": 108.7,
-        "status": "good",
-        "note": "磁気ではなく光学アナログ方式のため、室温変化やスマホ等の磁気干渉によるゼロ点ドリフトが原理的に発生しない（N=10）。"
-      },
-      {
-        "name": "DrunkDeer A75 Pro (Raeds磁気スイッチ / Turbo Mode)",
-        "official_label": "公称高速ラピッドトリガー目標スコア: 110.0",
-        "official_value": 110.0,
-        "measured_label": "実測遅延 1.48ms (p95: 1.95ms) 応答スコア: 67.6",
-        "measured_value": 67.6,
-        "status": "warning",
-        "note": "コストパフォーマンスは非常に高いが、底打ち付近のデッドゾーン余裕とスキャンフィルタにより実測は約1.5ms前後（N=9）。"
-      },
-      {
-        "name": "Keychron Q1 HE (Gateronダブルレール磁気 / 有線1000Hz)",
-        "official_label": "公称1000Hz低遅延目標スコア: 80.0",
-        "official_value": 80.0,
-        "measured_label": "実測遅延 1.85ms (p95: 2.20ms) 応答スコア: 54.1",
-        "measured_value": 54.1,
-        "status": "good",
-        "note": "1000Hz駆動のため絶対遅延は1.85msだが、フルCNCアルミ筐体＋ガスケット構造でプログラミング・執筆の打鍵感は最良（N=7）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "モデル名",
-      "検知方式 / ポーリング",
-      "実測入力遅延 (p50 / p95)",
-      "最小設定 / 実用安定設定",
-      "温度・磁気ドリフト耐性",
-      "設定ソフト仕様",
-      "最適ユースケース"
+      "見る項目",
+      "確認したいこと",
+      "購入前に試すこと",
+      "数字だけでは分からないこと"
     ],
     "rows": [
       [
-        "Wooting 80HE",
-        "Hall Effect / 8000Hz",
-        "0.78 ms / 0.94 ms",
-        "0.1mm / 0.10mm安定",
-        "極めて高い (自動補正優秀)",
-        "Web完結 (Wootility)",
-        "競技FPS最優先・最高信頼性"
+        "ポーリング周期",
+        "USB報告の公称頻度",
+        "利用設定とPC側の動作",
+        "打鍵からゲームの反応までの遅延"
       ],
       [
-        "Razer Huntsman V3 Pro TKL",
-        "光学アナログ / 8000Hz",
-        "0.92 ms / 1.15 ms",
-        "0.1mm / 0.10mm安定",
-        "最高 (磁気影響を一切受けない)",
-        "オンボード + Synapse",
-        "環境変化に強い競技運用"
+        "ラピッドトリガー",
+        "解除と再入力の設定範囲",
+        "長押し、連打、意図しない入力",
+        "自分に合う感度"
       ],
       [
-        "DrunkDeer A75 Pro",
-        "Hall Effect / 1000Hz",
-        "1.48 ms / 1.95 ms",
-        "0.1mm / 0.15mm推奨",
-        "標準 (定期キャリブレーション推奨)",
-        "Webドライバ対応",
-        "2万円以下の高コスパ導入"
+        "配列と打鍵感",
+        "JIS/ANSI、キー配置、重さ",
+        "日本語入力、ショートカット",
+        "仕事とゲームの両立"
       ],
       [
-        "Keychron Q1 HE",
-        "Hall Effect (二軸) / 1000Hz",
-        "1.85 ms / 2.20 ms",
-        "0.1mm / 0.15mm安定",
-        "高い (ダブルレールで軸ブレ小)",
-        "Web完結 (Keychron Launcher)",
-        "開発・執筆とゲームの兼用"
+        "設定と保証",
+        "ソフト対応、保存、保証窓口",
+        "使うOSで設定できるか",
+        "長く使うときの手間"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. 8000Hzポーリングレートと「内部ADCマトリクススキャン周期」の関係",
-      "body": "USBポーリングレートが8000Hz（0.125ms周期）であっても、キーボード内部のMCUがホールセンサのアナログ電圧（ADC）を全キースキャンする周期が1000Hz〜2000Hzにとどまっている場合、同じ測定値を複数回USBパケットに載せて送信しているだけになります。真に1ms未満のEnd-to-End遅延を実現しているのは、Tachyonモード等でRGB LEDのPWM演算を抑制し、ADCサンプリングレート自体を8kHz以上に同期させている設計に限られます。"
+      "heading": "周期と、操作の遅延を分ける",
+      "body": "1秒を8,000回に分けると0.125msです。これは周期の計算であり、指で動かし始めてからキーが認識され、ゲームが処理して画面に出るまでの時間とは違います。モデル別の入力遅延を並べる場合は、測定の開始点と終了点、ファームウェア、設定、PC側の条件をそろえる必要があります。",
+      "source_indices": []
     },
     {
-      "heading": "2. 「0.01mmラピッドトリガー」が実戦で逆効果になる物理的理由",
-      "body": "ネオジム磁石とホール素子を用いた距離計測では、指先のわずかな横ブレ（ステムのガタつき）や隣キーを強く底打ちした際のプレートたわみによって、0.015mm〜0.03mm相当の磁束密度変化が常時発生します。デッドゾーン（不感帯）をゼロにして0.01mm〜0.02mmのラピッドトリガーを設定すると、キーを押し続けているつもりでも微小振動でキーアップ判定（キー抜け）が入り、ストッピングや長押し挙動が破綻します。実測データ上も0.10mm〜0.15mm設定が最も高い入力再現性を示しました。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "8000Hzポーリングレートを有効にするとゲームのフレームレート（FPS）が落ちることがあるのは本当ですか？",
-      "answer": "はい。キー押し下げ中にアナログ値やマウス移動が8000Hzで送信されると、OSカーネルのUSB割り込み処理（ISR/DPC）が増加します。特にCPUボトルネックになりやすい競技タイトル（ValorantやCS2等）で古い世代のCPUを使用している場合、最小FPS（1% Low）が低下することがあるため、4000Hzまたは2000Hz設定が最もバランスの良い選択肢となるケースもあります。"
+      "heading": "公称機能から分かる範囲",
+      "body": "Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソフトとオンボードプロファイルの説明があります。これは当該製品の公称機能を確認する資料で、他機種より何ms速いかを同条件で比較した資料ではありません。設定ソフトが手元のOSやブラウザで使えるかも確認します。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "question": "常時電源ONにするアプリ不要で設定変更できる磁気キーボードはどれですか？",
-      "answer": "Wooting（Wootility）、Keychron（Keychron Launcher）、DrunkDeer（Antler Web）はいずれもChromium系ブラウザのWebHID API経由でキーボード本体のオンボードメモリへ直接設定を書き込めるため、バックグラウンド常駐ソフトを一切インストールせずに運用可能です。"
+      "heading": "感度は、普段の操作で調整する",
+      "body": "入力を早く切り替えたいキーと、長押しを安定させたいキーでは望ましい設定が違う可能性があります。実際のゲームや文章入力で、意図した押し方と解除ができるか確認してください。全機種・全員に共通する安定設定のmm値や、必ず誤動作する境界値は、今回の資料からは示していません。",
+      "source_indices": []
+    },
+    {
+      "heading": "買い替え前に、困っていることを具体化する",
+      "body": "現在のキーボードで困るのは、入力の切替、配列、打鍵の重さ、音、接続のどれなのかを書き出します。ゲームの操作を調整したいならアナログ機能が比較対象になりますが、執筆やプログラミング中心なら配列や打ちやすさで満足する可能性もあります。実売価格や送料、交換キーなどを含めて見積もります。",
+      "source_indices": []
+    },
+    {
+      "heading": "機能を増やした後も、結果を確かめる",
+      "body": "ポーリングや入力補助の設定を変えたら、普段使うアプリで動作を確認します。高い頻度なら常にFPSが落ちる、低くすれば必ず安定する、とは断定できません。競技で使う補助機能はゲームや大会の現行ルールも確認してください。製品間の遅延・誤入力率の順位は、再現できる測定が用意できるまで付けません。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/MechanicalKeyboards - Search: Hall Effect 8000Hz latency & rapid trigger deadzone tests",
-      "url": "https://www.reddit.com/r/MechanicalKeyboards/search/?q=Hall+Effect+latency+rapid+trigger&restrict_sr=1",
-      "sample_size": "N=24 keyboard latency logs",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Reddit r/WootingKB - Search: Wooting 80HE Tachyon Mode input latency & stem stability logs",
-      "url": "https://www.reddit.com/r/WootingKB/search/?q=80HE+latency+tachyon&restrict_sr=1",
-      "sample_size": "N=14 Wooting 80HE logs",
-      "verified_date": "2026-10-12"
+      "title": "Wooting：80HE公式機能・仕様",
+      "url": "https://wooting.io/wooting-80he",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "当該製品の公称機能。独自の遅延・誤入力測定ではありません。"
     }
   ],
-  "affiliate_keys": [
-    "wooting-80he"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "diy-or-ready-made-total-cost",
+      "title": "それ、自作したほうが安い？"
+    },
+    {
+      "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
+      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+    }
   ]
 }

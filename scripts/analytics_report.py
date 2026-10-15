@@ -13,11 +13,13 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
 from seo_loop import CONFIG_PATH, _gsc_query_rest, load_json, resolve_gsc_access_token
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "data" / "analytics" / "latest.json"
+GSC_ROW_LIMIT = 25000
 
 
 def cloudflare_request(path: str, token: str, body: dict | None = None) -> dict:
@@ -86,21 +88,56 @@ def fetch_cloudflare(config: dict) -> dict:
     groups = accounts[0]["rumPageloadEventsAdaptiveGroups"]
     rows = [{"date": g["dimensions"]["date"], "pageviews": g["count"], "visits": g["sum"]["visits"]} for g in groups]
     status = "live" if rows else "collection_disabled" if collection_enabled is False else "no_observations"
-    return {"status": status, "source": "Cloudflare Web Analytics / RUM", "host": host, "timezone": "UTC", "collection_enabled": collection_enabled, "rows": rows, "comparison": compare_days(rows, start, split, end, ["pageviews", "visits"]) if rows else None, "note": "Adaptive estimates of recorded browser beacons. Visits are not unique users. No historical backfill before collection was enabled."}
+    return {"status": status, "source": "Cloudflare Web Analytics / RUM", "host": host, "timezone": "UTC", "window": {"start": start, "end": end}, "collection_enabled": collection_enabled, "rows": rows, "comparison": compare_days(rows, start, split, end, ["pageviews", "visits"]) if rows else None, "note": "Adaptive estimates of recorded browser beacons. Visits are not unique users. No historical backfill before collection was enabled."}
+
+
+def fetch_gsc_table(prop: str, token: str, request: dict, dimensions: list[str]) -> dict:
+    """Page through API rows without treating query breakdowns as site totals."""
+    rows = []
+    metadata = {}
+    aggregation = None
+    start_row = 0
+    while True:
+        raw = _gsc_query_rest(prop, token, {**request, "dimensions": dimensions, "rowLimit": GSC_ROW_LIMIT, "startRow": start_row, "aggregationType": "auto" if "page" in dimensions else "byProperty"})
+        if raw.get("error"):
+            raise RuntimeError("Search Console rejected the query")
+        batch = raw.get("rows", [])
+        for row in batch:
+            keys = row.get("keys", [])
+            if len(keys) != len(dimensions):
+                raise ValueError("Search Console returned unexpected dimension keys")
+            rows.append({**dict(zip(dimensions, keys)), **{m: row[m] for m in ("clicks", "impressions", "ctr", "position")}})
+        metadata.update(raw.get("metadata", {}))
+        aggregation = raw.get("responseAggregationType", aggregation)
+        if len(batch) < GSC_ROW_LIMIT:
+            break
+        start_row += GSC_ROW_LIMIT
+    return {"status": "live" if rows else "no_observations", "dimensions": dimensions, "rows": rows, "row_count": len(rows), "response_aggregation_type": aggregation, "metadata": metadata}
+
+
+def fetch_gsc_window(prop: str, token: str, start: str, end: str, data_state: str) -> dict:
+    request = {"startDate": start, "endDate": end, "dataState": data_state, "type": "web"}
+    daily = fetch_gsc_table(prop, token, request, ["date"])
+    totals = fetch_gsc_table(prop, token, request, [])
+    breakdowns = {name: fetch_gsc_table(prop, token, request, dimensions) for name, dimensions in [("query", ["query"]), ("page", ["page"]), ("query_page", ["query", "page"]), ("country", ["country"]), ("device", ["device"])]}
+    return {"status": "live" if daily["rows"] or totals["rows"] else "no_observations", "window": {"start": start, "end": end, "dataState": data_state, "type": "web"}, "daily": daily, "site_totals": totals, "breakdowns": breakdowns}
 
 
 def fetch_gsc(config: dict) -> dict:
     token = resolve_gsc_access_token()
     if not token:
         return {"status": "not_configured", "required": ["GSC_CLIENT_ID", "GSC_CLIENT_SECRET", "GSC_REFRESH_TOKEN"]}
-    end_dt = datetime.now(timezone.utc).date() - timedelta(days=3)
+    today = datetime.now(timezone.utc).astimezone(ZoneInfo("America/Los_Angeles")).date()
+    end_dt = today - timedelta(days=3)
     start = (end_dt - timedelta(days=27)).isoformat()
     split = (end_dt - timedelta(days=13)).isoformat()
     end = end_dt.isoformat()
     prop = config["seo_loop"]["gsc_property_url"]
-    raw = _gsc_query_rest(prop, token, {"startDate": start, "endDate": end, "dimensions": ["date"], "dataState": "final", "rowLimit": 100})
-    rows = [{"date": r["keys"][0], "clicks": r["clicks"], "impressions": r["impressions"]} for r in raw.get("rows", [])]
-    return {"status": "live" if rows else "no_observations", "source": "Google Search Console API", "property": prop, "timezone": "America/Los_Angeles (Search Console reporting)", "rows": rows, "comparison": compare_days(rows, start, split, end, ["clicks", "impressions"]) if rows else None}
+    final = fetch_gsc_window(prop, token, start, end, "final")
+    recent = fetch_gsc_window(prop, token, (today - timedelta(days=6)).isoformat(), today.isoformat(), "all")
+    rows = final["daily"]["rows"]
+    final["comparison"] = compare_days(rows, start, split, end, ["clicks", "impressions"]) if rows else None
+    return {"status": "live" if final["status"] == "live" or recent["status"] == "live" else "no_observations", "source": "Google Search Console API", "property": prop, "timezone": "America/Los_Angeles (Search Console reporting)", "rows": rows, "comparison": final["comparison"], "windows": {"final": final, "recent": recent}, "note": "Legacy rows/comparison use the final 28-day window only. Recent all-data rows may change; daily.metadata.first_incomplete_date identifies incomplete dates when returned. Site totals come from a separate query without dimensions. Query data excludes anonymized queries; API internal limits can omit breakdown rows even after pagination. CTR is a fraction (0 to 1); position is the API average, never summed."}
 
 
 def collect() -> dict:

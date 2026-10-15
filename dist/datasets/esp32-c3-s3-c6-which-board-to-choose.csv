@@ -1,0 +1,4 @@
+﻿候補,通信・処理の特徴,候補になる用途,購入前に確認すること
+ESP32-C3,単コア RISC-V / Wi-Fi 4 / Bluetooth LE,センサー送信、シンプルな制御,必要なGPIO、USB接続方式、基板の待機電流
+ESP32-S3,デュアルコア Xtensa / Wi-Fi 4 / Bluetooth LE,音声、カメラ、画面付き工作,PSRAM搭載量、ピン配置、周辺機器の対応
+ESP32-C6,単コア RISC-V / 2.4GHz Wi-Fi 6 / Bluetooth LE / 802.15.4,Thread・Zigbeeを使う工作,利用フレームワークと接続先の対応、ボーダールーターの要否

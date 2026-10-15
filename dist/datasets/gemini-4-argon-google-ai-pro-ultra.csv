@@ -1,0 +1,5 @@
+﻿Argonを使う場所,Google AI Pro,Google AI Ultra,確認する条件
+Geminiアプリ,提供対象,提供対象,対象国・アカウント条件・順次提供
+Google検索のAIモード,提供対象（地域等の条件あり）,提供対象（地域等の条件あり）,検索のAIモード固有の地域・言語条件
+独立したAntigravityアプリ・CLI,Argonのサブスク提供対象として記載なし,個人サブスクの提供対象,Antigravity自体へのアクセスとArgonへのアクセスは別
+Gemini API,有料APIを別途利用,サブスク特典と従量課金を区別,APIの課金設定・利用枠を確認

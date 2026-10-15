@@ -1,182 +1,122 @@
 {
   "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-  "title": "高性能ミニPC（Ryzen AI 9 HX 370 / 8845HS / M4）の「30分持続TDP・騒音値dBA・背面SSD温度」実測比較データベース",
-  "subtitle": "公称「最大65W TDP・静音冷却」の裏にある連続負荷時のPL1電力低下・45dBA超ファンノイズ・M.2スロット熱干渉ログ集計（N=36）",
+  "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？",
+  "display_title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？",
+  "subtitle": "RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。",
   "category": "Hardware & Power Electronics",
   "tags": [
-    "Mini PC",
-    "Ryzen AI 9 HX 370",
-    "Ryzen 7 8845HS",
-    "Mac mini M4",
-    "Sustained TDP",
-    "r/MiniPCs"
+    "自宅サーバー ミニPC 選び方",
+    "ミニPC TDP 電気代",
+    "ミニPC VPS 比較"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 36,
-  "methodology_note": "r/MiniPCs および SFF技術フォーラムに投稿された HWiNFO64 / powermetrics 30分連続負荷ログ（Cinebench R23 Multi + NVMe fio 同時負荷、室温23〜25℃、筐体前方50cmでのIEC Class 2騒音計計測）計36件を集計。短時間ブースト（PL2）ではなく20分経過後の定常パッケージ電力（Sustained Package Power）中央値を比較。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の36件集計と機種別の持続電力・温度・騒音順位は、採用ログを追跡できないため撤回しました。CPUのTDPとPC全体の消費電力を区別し、性能を落とさず静かになるとした一律の設定推奨も外しました。",
   "seo": {
-    "meta_title": "【持続TDP・騒音実測】高性能ミニPC（HX 370 / 8845HS / M4）の熱ダレ・dBA比較データ | Nodus",
-    "meta_description": "最大54W〜65W TDPを謳う小型ミニPCで30分間連続負荷をかけると実測何Wまで低下し、ファン騒音は何dBAに達するのか？CPU持続電力・50cm騒音値・背面NVMe SSD温度(N=36)を定量比較。",
+    "meta_title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？ | Nodus",
+    "meta_description": "RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。",
     "target_keywords": [
-      "ミニPC 騒音 実測 dBA",
-      "Ryzen 8845HS HX370 持続TDP 発熱",
-      "Minisforum Beelink 冷却 比較",
-      "Mac mini M4 消費電力 騒音"
+      "自宅サーバー ミニPC 選び方",
+      "ミニPC TDP 電気代",
+      "ミニPC VPS 比較"
     ],
-    "primary_seed": "ミニPC Ryzen"
+    "primary_seed": "自宅サーバー ミニPC 選び方"
   },
-  "summary_metrics": [
-    {
-      "label": "集計連続負荷ログ数",
-      "value": "36 台",
-      "subtext": "r/MiniPCs 30分HWiNFO64計測"
-    },
-    {
-      "label": "0.8L級65W機の持続電力",
-      "value": "46.5 〜 54.0 W",
-      "subtext": "公称ピーク65W比 約72〜83%に収束"
-    },
-    {
-      "label": "高負荷時50cm騒音中央値",
-      "value": "31.2 〜 45.8 dBA",
-      "subtext": "42dBA超でデスク上の静音性が損なわれる"
-    },
-    {
-      "label": "背面M.2スロットピーク温度",
-      "value": "52.0 〜 74.5 ℃",
-      "subtext": "サブファン非搭載機は70℃超でSSD減速"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "CPUのTDPは、PC全体のコンセント消費電力ではない。",
+    "同じCPU名でも、筐体、設定、メモリ、冷却が違えば使い勝手は変わる。",
+    "24時間動かす用途では、ピーク性能よりアイドル電力と保守の手間を先に見る。"
   ],
-  "spec_gap_chart": {
-    "title": "公称最大パッケージ電力（Peak TDP W）vs 30分連続高負荷時の持続パッケージ電力中央値（Sustained W）",
-    "unit": "W",
-    "max_scale": 70,
-    "items": [
-      {
-        "name": "Beelink SER9 (Ryzen AI 9 HX 370 / ベイパーチャンバー搭載)",
-        "official_label": "公称ピークTDP設定: 65.0 W",
-        "official_value": 65.0,
-        "measured_label": "30分持続実測中央値: 54.0 W (騒音 38.4 dBA)",
-        "measured_value": 54.0,
-        "status": "good",
-        "note": "大型ベイパーチャンバーと低回転ブロワーにより、38.4dBAの静音性を保ったまま54Wを30分間スロットリングなしで維持（N=9）。"
-      },
-      {
-        "name": "GMKtec NucBox K8 Plus (Ryzen 7 8845HS / デュアルファン)",
-        "official_label": "公称ピークTDP設定: 65.0 W",
-        "official_value": 65.0,
-        "measured_label": "30分持続実測中央値: 52.0 W (騒音 45.8 dBA)",
-        "measured_value": 52.0,
-        "status": "warning",
-        "note": "DDR5/SSD専用サブファンによりSSD温度は54℃と低いが、フル負荷時の風切り音が45.8dBAに達する（N=8）。"
-      },
-      {
-        "name": "Minisforum UM880 Pro (Ryzen 7 8845HS / Performance Mode)",
-        "official_label": "公称ピークTDP設定: 65.0 W",
-        "official_value": 65.0,
-        "measured_label": "30分持続実測中央値: 48.5 W (騒音 43.2 dBA)",
-        "measured_value": 48.5,
-        "status": "warning",
-        "note": "開始11分前後でVRM・コア温度保護により48.5WへPL1遷移。BIOSでBalanced(45W)設定時は37.8dBAで安定（N=10）。"
-      },
-      {
-        "name": "Apple Mac mini (M4 10-Core / 2024刷新筐体)",
-        "official_label": "最大SoC Package電力目安: 38.0 W",
-        "official_value": 38.0,
-        "measured_label": "30分持続実測中央値: 36.8 W (騒音 31.2 dBA)",
-        "measured_value": 36.8,
-        "status": "good",
-        "note": "30分連続レンダリングでも性能維持率99.4%、50cm騒音31.2dBA（暗騒音+4.7dBA）と事実上の無音稼働を達成（N=9）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "モデル / SoC構成",
-      "公称最大TDP",
-      "30分持続電力 (中央値)",
-      "50cm騒音値 (Idle / Load)",
-      "CPUピーク温度",
-      "NVMe SSD温度 (同時負荷)",
-      "常時稼働・静音評価"
+      "用途",
+      "優先して確認すること",
+      "測って比べたいこと",
+      "追加費用"
     ],
     "rows": [
       [
-        "Beelink SER9 (HX 370)",
-        "54W 〜 65W",
-        "54.0 W",
-        "28.0 / 38.4 dBA",
-        "81.5 ℃",
-        "58.0 ℃",
-        "高負荷でも静か・最良"
+        "常時動く小さなサービス",
+        "メモリ、LAN、復旧方法、OS対応",
+        "アイドル電力と利用中の安定性",
+        "保存領域、バックアップ、電気代"
       ],
       [
-        "Apple Mac mini (M4)",
-        "約 38W (SoC)",
-        "36.8 W",
-        "26.8 / 31.2 dBA",
-        "84.0 ℃",
-        "52.0 ℃",
-        "極静音・ワット効率最高"
+        "コンパイル・長い計算",
+        "メモリ容量、冷却、電力設定",
+        "同じ仕事の所要時間と経過後の変化",
+        "必要なRAM・SSDと作業時間"
       ],
       [
-        "Minisforum UM880 Pro",
-        "65W (Perf)",
-        "48.5 W (Balanced時 45W)",
-        "29.2 / 43.2 dBA (45W時 37.8)",
-        "89.0 ℃",
-        "64.0 ℃",
-        "45W運用なら高コスパ"
+        "ローカルAI",
+        "推論ソフト、メモリ、GPU/NPUの対応",
+        "希望するモデルでの品質と待ち時間",
+        "機器全体と利用頻度"
       ],
       [
-        "GMKtec K8 Plus (8845HS)",
-        "65W (Perf)",
-        "52.0 W",
-        "30.5 / 45.8 dBA",
-        "87.2 ℃",
-        "54.0 ℃ (サブファン有)",
-        "OCuLink重視向け・騒音大"
+        "書斎で普段も使う",
+        "端子、画面、騒音、修理・保証",
+        "設置場所での音と操作感",
+        "周辺機器と保証条件"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. 「最大65W TDP」と「30分持続TDP」の乖離メカニズム",
-      "body": "x86系ミニPCの製品ページで強調される「最大65W TDP」は、多くの場合PL2（数分間の短時間ブースト電力制限）を指しています。筐体体積が0.7L〜0.9Lの小型ヒートシンク構造では、放熱能力の物理的限界が45W〜54W前後に存在するため、連続コンパイルやローカルLLM推論を10分以上継続すると、VRM（電源回路）温度またはCPUジャンクション温度（TjMax 95℃〜100℃）が閾値に達し、自動的に48W前後へ電力制限が引き下げられます。"
+      "heading": "どの仕事を、何時間動かすか",
+      "body": "小さな自動化を常時動かすPCと、夜だけ重い計算を行うPCでは選び方が違います。前者は低負荷時の電力と復旧のしやすさ、後者は同じ仕事を終える時間を比べます。用途が決まらないまま、CPUの上位モデルだけで選ばないようにします。",
+      "source_indices": []
     },
     {
-      "heading": "2. 騒音値（dBA）だけでなく周波数特性と背面SSD温度に注目",
-      "body": "騒音計の数値上は同じ43dBA〜45dBAであっても、40mm径の小径サブファンを高回転させる構造では1.5kHz〜3kHz帯の高周波風切り音が目立ち、体感ノイズが大きくなります。一方、底面吸気・背面排気の大口径ブロワーとベイパーチャンバーを組み合わせた機種（Beelink SER9、Mac mini M4）は、ファン回転数の急激なハンチング（上下動）が少なく、書斎やオフィス環境での作業阻害度が大幅に低く抑えられています。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "ミニPCのファンがアイドル時や軽いブラウザ操作でも頻繁にうなる（急回転する）のを防ぐには？",
-      "answer": "Ryzen 7040/8040シリーズのPrecision Boostは単一コアの瞬間的な温度スパイク（45℃→75℃）に反応してファンPWMを急上昇させます。BIOSでTDPプロファイルを「Balanced（35W〜45W）」に設定するか、Windowsの電源プランで最大プロセッサ状態を99%（またはブースト遅延設定）に調整することで、体感性能をほぼ落とさずにファンの急回転を抑制できます。"
+      "heading": "TDPと電気代を混同しない",
+      "body": "AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています。これらはCPUの仕様であり、メモリ、SSD、変換損失などを含めたPC全体の実測電力ではありません。また、異なるメーカーの制御用語をひとまとめにして「最大TDPは短時間のブースト」と断定することは避けます。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "question": "ミニPCに増設するM.2 NVMe SSDは両面実装（4TB等）でも問題ありませんか？",
-      "answer": "多くのミニPCではM.2スロットの下にWi-FiカードやSMD部品が配置されており、裏面にもNANDチップがある両面実装SSDは物理的に干渉するか、放熱パッドが密着せず75℃以上のサーマルスロットリングを起こします。原則として発熱の少ない単面実装（片面実装）のPCIe 4.0 TLC SSDを選択してください。"
+      "heading": "24時間の電力差は、式で見積もる",
+      "body": "月の差額 = 平均電力の差(W) ÷ 1000 × 稼働時間(h) × 電気料金(円/kWh)。仮に差が10W、月720時間、31円/kWhなら約223円/月です。これは料金と電力を仮定した例で、実際の機種差ではありません。購入額の差や、VPS・バックアップの費用も加えて比べます。",
+      "source_indices": []
+    },
+    {
+      "heading": "長時間性能と静かさは、別々に確認する",
+      "body": "同じ処理を続けたときの所要時間、消費電力、温度とファンの変化を記録します。騒音の数値は距離と暗騒音の条件がないと比べにくく、音の高さや回転の上下も使い心地に関係します。メーカー名だけで静かさを決めつけず、設置する場所で確認できることを重視します。",
+      "source_indices": []
+    },
+    {
+      "heading": "増設と運用まで含めて、VPSと比べる",
+      "body": "ベアボーンならRAMとSSD、必要ならOS、バックアップ先も費用に含めます。SSDの実装面や厚み、メモリ容量は正確な型番の説明書で確認してください。NPU搭載だけで目的のAIソフトが動くとは限りません。機器を買う価値は、メモリや端子の要件を満たすことと、障害・更新の運用を引き受けたいかで変わります。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/MiniPCs - Search: Ryzen 8845HS HX370 sustained TDP HWiNFO64 & fan noise dBA logs",
-      "url": "https://www.reddit.com/r/MiniPCs/search/?q=8845HS+sustained+TDP+noise+dBA&restrict_sr=1",
-      "sample_size": "N=27 Mini PC thermal logs",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Reddit r/macmini - Search: M4 Mac mini powermetrics package power & acoustic benchmarks",
-      "url": "https://www.reddit.com/r/macmini/search/?q=M4+powermetrics+watt+noise&restrict_sr=1",
-      "sample_size": "N=9 M4 thermal logs",
-      "verified_date": "2026-10-12"
+      "title": "AMD：Ryzen 7 8845HS公式仕様",
+      "url": "https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "CPUのTDP・cTDPなど。個別ミニPCの実測電力や騒音を示しません。"
     }
   ],
-  "affiliate_keys": [
-    "minisforum-um880-pro",
-    "owc-express-1m2"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "title": "パーソナルAIは、どこに置く？"
+    },
+    {
+      "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
+      "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方"
+    }
   ]
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>それ、自作したほうが安い？ | Nodus</title><meta name="description" content="温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html">
+      <meta property="og:title" content="それ、自作したほうが安い？"><meta property="og:description" content="温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="diy-or-ready-made-total-cost.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "それ、自作したほうが安い？", "description": "温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。", "datePublished": "2026-10-13", "dateModified": "2026-10-13", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html", "citation": ["https://www.home-assistant.io/integrations/esphome/", "https://www.home-assistant.io/getting-started/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / サービスと費用</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">それ、自作したほうが安い？</h1><p class="article-subtitle">温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-13">2026-10-13</time></span><span>更新 <time datetime="2026-10-13">2026-10-13</time></span><span>実機テスト・実売価格調査は未実施</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>部品代の合計と完成品の価格だけでは、同じ条件の比較にならない。</li><li>実用品としての節約と、工作を楽しむための支出は分けて考える。</li><li>欲しい機能、置き場所、電源、許容できる停止時間を決めてから見積もる。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>総費用を見積もるための比較表。特定製品の実売価格や実機性能のランキングではありません。</caption><thead><tr><th scope="col">比較するもの</th><th scope="col">自作で数える費用</th><th scope="col">既製品で確認する費用</th></tr></thead><tbody><tr><th scope="row">初期費用</th><td>基板、センサー、電源、ケース、送料、工具</td><td>本体、送料、専用ハブ、追加アクセサリー</td></tr><tr><th scope="row">完成まで</th><td>調査、組み立て、設定、動作確認の時間</td><td>初期設定と既存環境への接続時間</td></tr><tr><th scope="row">使い続ける費用</th><td>電気・電池、修理、更新、予備部品</td><td>電気・電池、クラウド月額、交換費用</td></tr><tr><th scope="row">自由度と継続性</th><td>変更できる範囲、部品とソフトの維持</td><td>連携機能、ローカル動作、サービス終了時の影響</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/diy-or-ready-made-total-cost.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">比較の単位は、基板ではなく完成品</h2><p>温湿度計なら、温度と湿度が読めるだけで十分なのか、電池で動かしたいのか、スマホから確認したいのかを決めます。ケースに収まり、必要な場所に置けて、一定期間安定して動くところまでが完成です。ESP32の基板だけの値段を、電池や保証付きの完成品と直接比較しないようにします。</p></section><section class="prose-section" id="part-1"><h2 class="section-h2">「自作が安い」が成立する条件</h2><p>既に工具や電源を持っている、欲しい機能が市販品にない、複数台を同じ構成で作る、といった場合は自作を検討する理由があります。一方で1台だけすぐ使いたいときは、初期設定や不具合の調査時間が大きくなりがちです。自作を勧めるかどうかは、価格より先に前提条件で変わります。</p></section><section class="prose-section" id="part-2"><h2 class="section-h2">時間も見積もる。ただし、楽しみは別にする</h2><p>総費用 = 初期費用 + 維持費 + 作業時間 × 自分で置く時間単価。たとえば部品が既製品より2,000円安くても、追加で4時間かかり、時間単価を1,000円と置けば、時間込みでは自作側が2,000円高くなります。この単価は仮定です。学ぶ時間や作る楽しさに価値を感じるなら、その価値も別の判断軸として残します。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">既製品でも、連携と維持費を確認する</h2><p>スマートホームでは本体のほかにハブやクラウド契約が必要な場合があります。Home Assistantの公式資料にはESPHome連携と完成済みデバイスの案内があり、自作か完全な既製品かの二択だけではありません。既製ハードウェアを使いながら、連携や自動化を自分で組む方法も比較候補になります。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">まず比べたいのは、温湿度計</h2><p>最初の検証題材は、ESP32とセンサーの自作温湿度計と既製のスマート温湿度計です。同じ設置場所で測定値、欠測、電池交換、設置までの時間を記録します。電源方式や連携機能が違えば、その差も明記します。現時点では比較機種の購入や測定をしていないため、特定製品より安い・正確という結論は出していません。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。</p><ul class="source-list"><li class="source-item"><a href="https://www.home-assistant.io/integrations/esphome/" target="_blank" rel="noopener noreferrer">Home Assistant：ESPHome連携と完成済みデバイス</a><span class="source-meta">確認日: 2026-10-13 / 公式資料の参照</span></li><li class="source-item"><a href="https://www.home-assistant.io/getting-started/" target="_blank" rel="noopener noreferrer">Home Assistant：ハードウェア選びと導入</a><span class="source-meta">確認日: 2026-10-13 / 公式資料の参照</span></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">比較の単位は、基板ではなく完成品</a></li><li><a href="#part-1">「自作が安い」が成立する条件</a></li><li><a href="#part-2">時間も見積もる。ただし、楽しみは別にする</a></li><li><a href="#part-3">既製品でも、連携と維持費を確認する</a></li><li><a href="#part-4">まず比べたいのは、温湿度計</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

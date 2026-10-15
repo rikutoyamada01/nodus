@@ -1,182 +1,122 @@
 {
   "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
-  "title": "USB4 / 40Gbps 外付けSSD「SLCキャッシュ枯渇後の連続書き込み速度・温度」実測比較データベース",
-  "subtitle": "カタログ表記「最大3,800MB/s」の裏にある500GB連続転送時のキャッシュ切れ速度低下とコントローラ熱ダレ計測集計（N=41）",
+  "title": "外付けSSDは完成品か、ケースと中身を別々に買うか",
+  "display_title": "外付けSSDは完成品か、ケースと中身を別々に買うか",
+  "subtitle": "USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。",
   "category": "Hardware & Power Electronics",
   "tags": [
-    "USB4 SSD",
-    "Thunderbolt 4",
-    "SLC Cache",
-    "Thermal Throttling",
-    "ASM2464PD",
-    "r/NewMaxx"
+    "外付けSSD 自作 完成品 比較",
+    "USB4 SSD 選び方",
+    "SSD 連続書き込み"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 41,
-  "methodology_note": "r/NewMaxx および r/UsbCHardware に投稿された CrystalDiskMark ピーク値ではなく、500GB〜1TB単一イメージ連続書き込み試験（室温24〜26℃）のログ41件を集計。pSLCキャッシュ枯渇後のTLC/QLCネイティブ書き込み速度中央値を比較。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の41件集計、機種別の持続速度・温度・キャッシュ容量、Mac全機種への速度の一般化は、採用データと条件を追跡できないため撤回しました。完成品と組み合わせ型の選び方へ改訂しました。",
   "seo": {
-    "meta_title": "【連続書込実測】USB4外付けSSDのキャッシュ切れ速度低下・発熱比較データ | Nodus",
-    "meta_description": "公称最大3,800MB/sを謳うUSB4(40Gbps)外付けSSDで数百GBの動画データを連続転送すると実測何MB/sまで落ちるのか？SLCキャッシュ枯渇後の持続書き込み速度と筐体温度(N=41)を定量比較。",
+    "meta_title": "外付けSSDは完成品か、ケースと中身を別々に買うか | Nodus",
+    "meta_description": "USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。",
     "target_keywords": [
-      "USB4 外付けSSD 速度低下 実測",
-      "外付けSSD キャッシュ切れ 書き込み速度",
-      "ASM2464PD 発熱 切断",
-      "OWC Express 1M2 実測"
+      "外付けSSD 自作 完成品 比較",
+      "USB4 SSD 選び方",
+      "SSD 連続書き込み"
     ],
-    "primary_seed": "USB4 外付けSSD"
+    "primary_seed": "外付けSSD 自作 完成品 比較"
   },
-  "summary_metrics": [
-    {
-      "label": "集計連続書込テスト数",
-      "value": "41 ログ",
-      "subtext": "r/NewMaxx 500GB連続転送計測"
-    },
-    {
-      "label": "QLC採用機のキャッシュ後速度",
-      "value": "180 〜 320 MB/s",
-      "subtext": "公称ピーク比 約8〜10%まで急落"
-    },
-    {
-      "label": "DRAM搭載TLC機の持続速度",
-      "value": "1,450 〜 1,820 MB/s",
-      "subtext": "放熱筐体との組み合わせ時の中央値"
-    },
-    {
-      "label": "熱切断を防ぐ筐体熱設計目安",
-      "value": "アルミ総重量 ≥ 180g",
-      "subtext": "薄型エンクロージャは72℃超で減速"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "ケースだけ高速でも、PC、ケーブル、SSD、コピー元が追い付かなければ効果は限られる。",
+    "短い速度テストと、日常の大きなファイル転送は分けて評価する。",
+    "自作構成は安さだけでなく、組み立て時間と故障時の切り分けも見積もる。"
   ],
-  "spec_gap_chart": {
-    "title": "公称最大書き込み速度（Peak MB/s）vs 500GB連続書き込み時の持続速度中央値（Sustained MB/s）",
-    "unit": "MB/s",
-    "max_scale": 4000,
-    "items": [
-      {
-        "name": "OWC Express 1M2 + DRAM搭載TLC (2TB)",
-        "official_label": "公称ピーク書込: 3,200 MB/s",
-        "official_value": 3200.0,
-        "measured_label": "500GB連続実測中央値: 1,780 MB/s",
-        "measured_value": 1780.0,
-        "status": "good",
-        "note": "大型フィン付きアルミ筐体によりコントローラ温度が62℃前後に抑えられ、キャッシュ枯渇後も約1.78GB/sを維持（N=14）。"
-      },
-      {
-        "name": "Samsung T9 Portable SSD (2TB / USB 3.2 Gen 2x2)",
-        "official_label": "公称ピーク書込: 1,950 MB/s",
-        "official_value": 1950.0,
-        "measured_label": "500GB連続実測中央値: 1,050 MB/s",
-        "measured_value": 1050.0,
-        "status": "good",
-        "note": "ピークは2,000MB/s級だが、サーマルガード制御が安定しており連続書込でも約1GB/s前後で破綻なく推移（N=11）。"
-      },
-      {
-        "name": "小型ファンレスUSB4ケース + DRAMレスTLC (2TB)",
-        "official_label": "公称ピーク書込: 3,600 MB/s",
-        "official_value": 3600.0,
-        "measured_label": "500GB連続実測中央値: 720 MB/s",
-        "measured_value": 720.0,
-        "status": "warning",
-        "note": "ASM2464PDブリッジチップが約12分で75℃超に達し、サーマルスロットリングにより700MB/s台へ減速（N=9）。"
-      },
-      {
-        "name": "小型ポータブルSSD (QLC NAND採用 2TBモデル群)",
-        "official_label": "公称ピーク書込: 2,000 MB/s",
-        "official_value": 2000.0,
-        "measured_label": "500GB連続実測中央値: 240 MB/s",
-        "measured_value": 240.0,
-        "status": "danger",
-        "note": "動的pSLCキャッシュ（約120〜180GB）を使い切った瞬間、HDD並みの240MB/s前後まで急落（N=7）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "構成 / モデル",
-      "インターフェース",
-      "公称最大書込速度",
-      "pSLCキャッシュ容量目安",
-      "キャッシュ枯渇後の持続速度",
-      "500GB転送時の最高表面温度",
-      "瞬断・熱ダレ傾向"
+      "選択肢",
+      "候補になる条件",
+      "確認すること",
+      "費用の範囲"
     ],
     "rows": [
       [
-        "OWC Express 1M2 + TLC (SN850X等)",
-        "USB4 (40Gbps)",
-        "3,150〜3,600 MB/s",
-        "約 280〜350 GB",
-        "1,650 〜 1,850 MB/s",
-        "54.5 ℃ (大型ヒートシンク)",
-        "熱ダレなし・安定"
+        "完成済みポータブルSSD",
+        "組み立てずに使いたい",
+        "PCとの接続規格、保証、付属ケーブル",
+        "本体と不足するケーブル"
       ],
       [
-        "Samsung T9 (2TB)",
-        "USB 3.2 Gen2x2 (20Gbps)",
-        "1,950 MB/s",
-        "約 180 GB",
-        "980 〜 1,120 MB/s",
-        "58.2 ℃ (ラバー外装)",
-        "熱ダレ軽微・安定"
+        "NVMe SSD + 外付けケース",
+        "余ったSSDを使う、容量や中身を選ぶ",
+        "SSDサイズ、規格、放熱パッド、電力、対応OS",
+        "SSD、ケース、ケーブル、送料"
       ],
       [
-        "薄型USB4エンクロージャ + TLC",
-        "USB4 (40Gbps)",
-        "3,600 MB/s",
-        "約 200 GB",
-        "650 〜 820 MB/s",
-        "71.4 ℃ (過熱減速発生)",
-        "10〜15分で速度制限"
+        "既存SSDを使い続ける",
+        "普段の転送量と待ち時間に不満がない",
+        "容量、バックアップ、接続の安定性",
+        "不足する容量やバックアップ先"
       ],
       [
-        "一般的なQLC採用ポータブルSSD",
-        "USB 3.2 Gen2 / Gen2x2",
-        "1,050〜2,000 MB/s",
-        "約 100〜160 GB (空き依存)",
-        "180 〜 310 MB/s",
-        "63.0 ℃",
-        "キャッシュ枯渇後に大幅低下"
+        "高速な構成へ更新",
+        "大きなデータの移動が多い",
+        "接続先と元ドライブを含めた実効転送時間",
+        "機器一式と組み立て・確認の時間"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. CrystalDiskMarkの数値（1GiB〜4GiB）が連続転送で当てにならない理由",
-      "body": "一般的なレビュー記事で掲載されるCrystalDiskMarkのデフォルト計測（1GiB×5回）は、SSD全体の数%にあたる高速pSLCキャッシュ領域の中だけで完結します。しかし、ProRes動画素材やLLMの重みファイル（100GB〜500GB）を一括コピーする場合、pSLCキャッシュ領域を超過した時点からNANDフラッシュ本来の書き込み速度（TLCまたはQLCの素の速度）とキャッシュ解放処理が同時に発生し、実効速度が1/3〜1/10に低下します。"
+      "heading": "USB-Cという端子名から速度を決めない",
+      "body": "まずPCの正確な型番の仕様で、接続規格を確認します。ケースや完成品の対応表、付属ケーブルの仕様も照らし合わせます。OWC Express 1M2の公式ページには、USB4の完成済み構成と組み合わせて使う構成の両方が案内されています。メーカーの最大速度表記は条件付きの仕様であり、手元の転送時間を保証する数値ではありません。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "heading": "2. USB4ブリッジチップ（ASM2464PD）の発熱と電力要求",
-      "body": "USB4 (40Gbps) 外付けケースの多くに採用されているASMedia製ASM2464PDコントローラは、単体で2.5W〜3.5W前後を発熱します。NVMe SSD自体の発熱（4W〜7W）と合わさると合計7W〜10Wの熱源となるため、サーマルパッドで筐体へ確実に熱伝導できない小型・薄型ケースでは、NANDのキャッシュが切れる前にコントローラ温度が上限に達し、スロットリングやバス再接続（瞬断）を引き起こす事例が報告されています。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "Mac (M1/M2/M3/M4) にSamsung T9などのUSB 3.2 Gen 2x2 (20Gbps) SSDを繋ぐと何MB/s出ますか？",
-      "answer": "Apple Silicon搭載MacのThunderbolt / USB4ポートは「USB 3.2 Gen 2x2 (20Gbps)」規格をサポートしていないため、自動的に10Gbps（実測約950MB/s前後）にフォールバックします。Mac環境で1,000MB/s以上の実測速度を得るには、USB4 (40Gbps) または Thunderbolt 3/4 対応エンクロージャを選ぶ必要があります。"
+      "heading": "短いベンチマークと、長いコピーを分ける",
+      "body": "連続転送では、SSDの空き容量、書き込みキャッシュ、温度、コピー元の速度が結果に影響する可能性があります。小さなファイルを大量にコピーする場合も、大きな単一ファイルとは条件が違います。「何MB/s出たか」だけでなく、何をどこからどこへ、何分かけて移したかを比べます。",
+      "source_indices": []
     },
     {
-      "question": "外付けSSDが大容量コピー中にアンマウント（強制切断）される原因は何ですか？",
-      "answer": "主な原因は（1）コントローラの過熱保護によるリセット、または（2）バスパワー給電の一時的な電圧降下（ピーク時10W〜12W要求に対してポート供給が不足）の2点です。省電力な単面実装TLC SSD（Lexar NM790等）と大型放熱ケースを組み合わせることで切断率が大幅に低下します。"
+      "heading": "組み合わせ型の費用を数える",
+      "body": "SSDとケースの値段に、送料、必要なケーブル、放熱パッドなど不足する部品を足します。すでにSSDを持っていれば初期支出を減らせますが、サイズや両面実装の適合、組み立て方法をケースの説明書で確認します。問題が起きたときにSSDとケースのどちらが原因か切り分ける時間も考えます。",
+      "source_indices": []
+    },
+    {
+      "heading": "切断を、熱だけの問題にしない",
+      "body": "転送中の切断には、接続、給電、OS、ファームウェア、機器の不具合など複数の候補があります。まずデータのバックアップを確保して、別の適合ケーブル、PCの直結ポート、メーカー案内を順に確認します。型番や記録なしに「薄型ケースは必ず落ちる」「TLCに替えれば直る」と結論づけないようにします。",
+      "source_indices": []
+    },
+    {
+      "heading": "買う前の判断と、購入後の確認",
+      "body": "毎週大きなデータを移動するなら、同じPCと同じファイル群で全体の所要時間を比較する価値があります。たまに書類を保存する程度なら、速度の上位構成より容量・保証・バックアップを優先するというのが編集上の提案です。高価なストレージを使うことと、データが二重化されていることは別です。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/NewMaxx - Search: USB4 ASM2464PD sustained write & thermal throttling benchmarks",
-      "url": "https://www.reddit.com/r/NewMaxx/search/?q=ASM2464PD+sustained+thermal&restrict_sr=1",
-      "sample_size": "N=26 SSD logs",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Reddit r/UsbCHardware - Search: OWC Express 1M2 USB4 enclosure thermal test logs",
-      "url": "https://www.reddit.com/r/UsbCHardware/search/?q=OWC+Express+1M2+thermal&restrict_sr=1",
-      "sample_size": "N=15 enclosure logs",
-      "verified_date": "2026-10-12"
+      "title": "OWC：Express 1M2の仕様と構成",
+      "url": "https://www.owc.com/solutions/express-1m2",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "メーカー公称仕様と完成品・組み合わせ型の案内。独自の連続書込測定ではありません。"
     }
   ],
-  "affiliate_keys": [
-    "owc-express-1m2",
-    "samsung-t9-ssd"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "diy-or-ready-made-total-cost",
+      "title": "それ、自作したほうが安い？"
+    },
+    {
+      "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
+      "title": "ローカルLLM用に買うなら、MacかGPUか"
+    }
   ]
 }

@@ -1,371 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【llama-bench実測N=74】ローカルLLM Mac Studio / MacBook Pro vs RTX 4090 モデル別速度比較 | Nodus</title>
-  <meta name="description" content="ローカルLLM（32B/70Bモデル）を動かすならMac Studio・MacBook Pro（M4 Max/M2 Ultra）とWindows RTX 4090/3090のどっちが速いか？llama.cpp実測データ(N=74)からスペック別tok/sと電力効率を比較。">
-  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">
-  <meta property="og:title" content="【llama-bench実測N=74】ローカルLLM Mac Studio / MacBook Pro vs RTX 4090 モデル別速度比較 | Nodus">
-  <meta property="og:description" content="ローカルLLM（32B/70Bモデル）を動かすならMac Studio・MacBook Pro（M4 Max/M2 Ultra）とWindows RTX 4090/3090のどっちが速いか？llama.cpp実測データ(N=74)からスペック別tok/sと電力効率を比較。">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">
-  <meta property="og:site_name" content="Nodus">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
-  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md">
-  <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較", "description": "ローカルLLM（32B/70Bモデル）を動かすならMac Studio・MacBook Pro（M4 Max/M2 Ultra）とWindows RTX 4090/3090のどっちが速いか？llama.cpp実測データ(N=74)からスペック別tok/sと電力効率を比較。", "datePublished": "2026-10-12", "dateModified": "2026-10-12", "inLanguage": "ja", "keywords": "Local LLM, llama.cpp, Apple Silicon, RTX 4090, Memory Bandwidth, r/LocalLLaMA", "citation": ["https://github.com/ggml-org/llama.cpp/discussions/4167", "https://www.reddit.com/r/LocalLLaMA/search/?q=llama-bench+3090+4090+Mac+Studio\u0026restrict_sr=1"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html"}, {"@type": "Dataset", "name": "ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較 実測検証データセット (N=74)", "description": "llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）", "url": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-12", "dateModified": "2026-10-12", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "r/LocalLLaMA および ggml-org/llama.cpp 公式ディスカッションの llama-bench 計測スレッド（N=74）より、Qwen2.5-32B-Instruct (Q4_K_M, 約19.8GB) および Llama-3.3-70B-Instruct (Q4_K_M, 約42.5GB) のトークン生成速度（tg128, tok/s）とプロンプト処理速度（pp512, tok/s）、およびシステム全体の壁コンセント消費電力（W）を集計。", "variableMeasured": ["利用可能VRAM / 統合メモリ", "公称メモリ帯域", "32B (Q4_K_M) 生成速度", "70B (Q4_K_M) 生成速度", "推論時システム消費電力", "70B時の電力効率 (tok/kJ)"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？", "acceptedAnswer": {"@type": "Answer", "text": "32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。"}}, {"@type": "Question", "name": "メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？", "acceptedAnswer": {"@type": "Answer", "text": "動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較", "item": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html"}]}]}</script>
-</head>
-<body>
-  
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>MacでローカルLLMは動く？必要メモリとGPUとの選び方 | Nodus</title><meta name="description" content="MacでローカルLLMを始めるOllamaの手順、Apple SiliconとIntelの対応、必要メモリの考え方、メモリ不足の確認方法を解説。GPU搭載PCとの比較は、使うモデル・待ち時間・費用をそろえて判断します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">
+      <meta property="og:title" content="MacでローカルLLMは動く？必要メモリとGPUとの選び方"><meta property="og:description" content="手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "MacでローカルLLMは動く？必要メモリとGPUとの選び方", "description": "手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。", "datePublished": "2026-10-12", "dateModified": "2026-10-15", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html", "citation": ["https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md", "https://github.com/ggml-org/llama.cpp/discussions/4167", "https://docs.ollama.com/macos", "https://docs.ollama.com/cli", "https://ollama.com/library/gemma3:1b", "https://docs.ollama.com/context-length", "https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac", "https://support.apple.com/en-us/116943", "https://docs.ollama.com/faq", "https://docs.ollama.com/quickstart"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
     <a href="../index.html" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
-      <span class="brand-tagline">一次検証・定量技術ノート</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">検証記事一覧</a>
-      <a href="../about.html">検証手法・運営情報</a>
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
       <a href="../about.html#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
 </header>
 <div class="pr-banner" role="note" aria-label="運営ステータス表示">
-  <div class="container">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</div>
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
 </div>
 
-
-  <div class="container article-layout">
-    <main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>Cloud &amp; AI Infrastructure</span>
-      </nav>
-
-      <div class="article-meta-top">
-        <span class="origin-badge origin-community">📊 一次検証ログ定量調査</span>
-        <span class="category-pill">Cloud &amp; AI Infrastructure</span>
-      </div>
-
-      <h1 class="article-title">ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較</h1>
-      <p class="article-subtitle">llama.cpp (llama-bench) コミュニティ計測ログに基づく32B・70Bモデルのメモリ帯域律速と1ワットあたりトークン生成効率集計（N=74）</p>
-
-      <div class="article-tags-row">
-        <span class="tag-chip">#Local LLM</span><span class="tag-chip">#llama.cpp</span><span class="tag-chip">#Apple Silicon</span><span class="tag-chip">#RTX 4090</span><span class="tag-chip">#Memory Bandwidth</span><span class="tag-chip">#r/LocalLLaMA</span>
-      </div>
-
-      <div class="article-timestamps">
-        <span>公開: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>実測データ更新: <time datetime="2026-10-12">2026-10-12</time></span>
-        <span>サンプル数: <strong>N = 74</strong></span>
-      </div>
-
-      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
-        <div class="tldr-title">
-          <span>💡 この記事でわかること（結論・実測サマリー）</span>
-          <div class="card-metrics-inline">
-            
-            <a href="../datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" download="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" class="csv-btn">CSVデータを取得</a>
-          </div>
-        </div>
-        <ul class="tldr-list">
-          <li>集計llama-benchログ数は「74 環境」（ggml-org/llama.cpp &amp; r/LocalLLaMA）。</li><li>32B (Q4_K_M) 最高速構成は「RTX 4090 (61.5 tok/s)」（24GB VRAM内に全層配置・消費約340W）。</li><li>70B (Q4_K_M) 最高電力効率は「M4 Max 128GB (0.19 tok/J)」（約18.5 tok/s・システム全体わずか約98W）。</li><li>NVIDIA RTX 4090 (24GB VRAM / 1,008 GB/s)：24GB VRAMに19.8GBの重みが完全収容され、Prompt Processing (pp512) も約2,850 tok/sと圧倒的。ただし70B (42.5GB) は単体では収まらない（N=24）。</li>
-        </ul>
-        <div class="kpi-strip">
-          
-        <div class="kpi-item">
-          <div class="kpi-label">集計llama-benchログ数</div>
-          <div class="kpi-value">74 環境</div>
-          <div class="kpi-sub">ggml-org/llama.cpp &amp; r/LocalLLaMA</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">32B (Q4_K_M) 最高速構成</div>
-          <div class="kpi-value">RTX 4090 (61.5 tok/s)</div>
-          <div class="kpi-sub">24GB VRAM内に全層配置・消費約340W</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">70B (Q4_K_M) 最高電力効率</div>
-          <div class="kpi-value">M4 Max 128GB (0.19 tok/J)</div>
-          <div class="kpi-sub">約18.5 tok/s・システム全体わずか約98W</div>
-        </div>
-        
-        <div class="kpi-item">
-          <div class="kpi-label">長文プロンプト処理 (pp512) 差</div>
-          <div class="kpi-value">CUDAが Metal比 3.2〜4.8倍</div>
-          <div class="kpi-sub">RAGや長文コード読込ではNVIDIAが圧倒</div>
-        </div>
-        
-        </div>
-      </section>
-
-      
-      <section id="sec-chart" class="article-section">
-        <h2 class="section-h2">
-          <span>1. 32Bモデル (Q4_K_M) 推論時の理論メモリ帯域換算上限 vs llama-bench 実測トークン生成速度中央値 (tok/s)</span>
-          <span class="section-subnote">単位: tok/s (Tokens / sec)</span>
-        </h2>
-        <div class="gap-list">
-          
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">NVIDIA RTX 4090 (24GB VRAM / 1,008 GB/s)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">理論メモリ帯域上限換算: 51.0 tok/s (FlashAttn込理論)</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="理論メモリ帯域上限換算: 51.0 tok/s (FlashAttn込理論)">
-                    <rect class="bar-rect-official" x="0" y="0" width="68.00" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>32B Q4_K_M 実測中央値: 61.5 tok/s (量子化効率込)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="32B Q4_K_M 実測中央値: 61.5 tok/s (量子化効率込)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="82.00" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">24GB VRAMに19.8GBの重みが完全収容され、Prompt Processing (pp512) も約2,850 tok/sと圧倒的。ただし70B (42.5GB) は単体では収まらない（N=24）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Dual RTX 3090 (24GB×2 = 48GB VRAM / 936 GB/s)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">理論メモリ帯域上限換算: 47.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="理論メモリ帯域上限換算: 47.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="62.67" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>32B Q4_K_M 実測中央値: 44.2 tok/s (70B時: 23.8 tok/s)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="32B Q4_K_M 実測中央値: 44.2 tok/s (70B時: 23.8 tok/s)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="58.93" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">48GB VRAMにより70B Q4_K_Mも約23.8 tok/sで高速動作。ただし推論時の壁コンセント消費電力はピーク580〜650Wに達する（N=19）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Apple M2 Ultra (192GB統合メモリ / 800 GB/s)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">理論メモリ帯域上限換算: 40.0 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="理論メモリ帯域上限換算: 40.0 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="53.33" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>32B Q4_K_M 実測中央値: 28.4 tok/s (70B時: 14.8 tok/s)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="32B Q4_K_M 実測中央値: 28.4 tok/s (70B時: 14.8 tok/s)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="37.87" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">120B超の超巨大モデルや長大コンテキストを無劣化でロード可能。消費電力は約115Wと静音・低発熱（N=16）。</div>
-            </div>
-            
-            <div class="gap-item">
-              <div class="gap-item-header">
-                <span class="gap-item-name">Apple M4 Max (128GB統合メモリ / 546 GB/s)</span>
-                <span class="status-badge status-good">実測良好・高効率</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar-row">
-                  <span class="bar-label">理論メモリ帯域上限換算: 27.5 tok/s</span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="理論メモリ帯域上限換算: 27.5 tok/s">
-                    <rect class="bar-rect-official" x="0" y="0" width="36.67" height="6"></rect>
-                  </svg>
-                </div>
-                <div class="bar-row">
-                  <span class="bar-label"><strong>32B Q4_K_M 実測中央値: 22.6 tok/s (70B時: 11.4 tok/s)</strong></span>
-                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="32B Q4_K_M 実測中央値: 22.6 tok/s (70B時: 11.4 tok/s)">
-                    <rect class="bar-rect-measured" x="0" y="0" width="30.13" height="6"></rect>
-                  </svg>
-                </div>
-              </div>
-              <div class="gap-note">ノート筐体（約90〜105W）で70Bモデルを実用速度で駆動でき、1ジュール（W・秒）あたりの生成トークン効率は最高水準（N=15）。</div>
-            </div>
-            
-        </div>
-      </section>
-    
-      <section id="sec-table" class="article-section">
-        <h2 class="section-h2">
-          <span>2. 条件別・実測比較データテーブル</span>
-          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
-        </h2>
-        <div class="table-wrap">
-          <table class="data-table">
-            <caption>ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較 — 実測検証データ比較表</caption>
-            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>ハードウェア構成</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>利用可能VRAM / 統合メモリ</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>公称メモリ帯域</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>32B (Q4_K_M) 生成速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>70B (Q4_K_M) 生成速度</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>推論時システム消費電力</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>70B時の電力効率 (tok/kJ)</span><span aria-hidden="true">↕</span></button></th></tr></thead>
-            <tbody><tr><th scope="row">RTX 4090 (24GB 単体)</th><td class="num-cell" data-sort-value="24.000000">24 GB (GDDR6X)</td><td class="num-cell" data-sort-value="1008000.000000">1,008 GB/s</td><td class="num-cell" data-sort-value="61.500000">61.5 tok/s</td><td data-sort-value="3.800000">VRAM超過 (CPUオフロード時 3.8 tok/s)</td><td class="num-cell" data-sort-value="340.000000">約 340 W</td><td data-sort-value="11.200000">11.2 tok/kJ (オフロード時)</td></tr><tr><th scope="row">RTX 3090 × 2枚 (48GB)</th><td class="num-cell" data-sort-value="48.000000">48 GB (GDDR6X)</td><td class="num-cell" data-sort-value="936000.000000">936 GB/s</td><td class="num-cell" data-sort-value="44.200000">44.2 tok/s</td><td class="num-cell" data-sort-value="23.800000">23.8 tok/s</td><td class="num-cell" data-sort-value="610.000000">約 610 W</td><td data-sort-value="39.000000">39.0 tok/kJ</td></tr><tr><th scope="row">Mac Studio (M2 Ultra 192GB)</th><td class="num-cell" data-sort-value="192.000000">192 GB (Unified)</td><td class="num-cell" data-sort-value="800000.000000">800 GB/s</td><td class="num-cell" data-sort-value="28.400000">28.4 tok/s</td><td class="num-cell" data-sort-value="14.800000">14.8 tok/s</td><td class="num-cell" data-sort-value="115.000000">約 115 W</td><td data-sort-value="128.700000">128.7 tok/kJ</td></tr><tr><th scope="row">MacBook Pro / Studio (M4 Max 128GB)</th><td class="num-cell" data-sort-value="128.000000">128 GB (Unified)</td><td class="num-cell" data-sort-value="546000.000000">546 GB/s</td><td class="num-cell" data-sort-value="22.600000">22.6 tok/s</td><td class="num-cell" data-sort-value="11.400000">11.4 tok/s</td><td class="num-cell" data-sort-value="95.000000">約 95 W</td><td data-sort-value="120.000000">120.0 tok/kJ</td></tr></tbody>
-          </table>
-        </div>
-      </section>
-    
-
-      <section id="sec-analysis" class="article-section">
-        <h2 class="section-h2">
-          <span>3. 検証結果の詳しい解説・なぜこの差が出るのか？</span>
-        </h2>
-        
-        <div class="prose-section">
-          <h3>1. ローカルLLMの生成速度（tg）は「GPU演算性能」ではなく「メモリ帯域幅」で決まる</h3>
-          <p>バッチサイズ1のローカルLLM推論では、1トークンを生成するたびにモデルの全パラメータ（32B Q4_K_Mなら約20GB、70B Q4_K_Mなら約43GB）をメモリから演算ユニットへ読み出す必要があります。そのため、理論上の最大生成速度（tok/s）は「実効メモリ帯域幅（GB/s）÷ モデルサイズ（GB）」にほぼ比例します。llama-benchの集計では、各ハードウェアとも公称メモリ帯域の約68%〜78%の実効効率に綺麗に収束しています。</p>
-        </div>
-        
-        <div class="prose-section">
-          <h3>2. 見落とされがちな「プロンプト処理速度（Prompt Processing / TTFT）」の格差</h3>
-          <p>Apple Silicon（統合メモリ）は128GB〜192GBの大容量を低消費電力（約100W前後）で扱えるため、70Bモデルのトークン生成（tg）におけるワット効率はRTX 3090 2枚構成の約3倍に達します。一方で、1万〜3万トークンの長文ドキュメントやコードベースを一気に読み込む「Prompt Processing（pp）」は純粋な行列演算（TFLOPS）律速となるため、NVIDIA CUDA環境の方がApple Metal環境より3倍〜5倍高速（初動の待ち時間が短い）という明確なトレードオフが存在します。</p>
-        </div>
-        
-      </section>
-
-      
-        <section class="article-section" aria-label="検証対象モデル・関連サービス参考リンク">
-          <h2 class="section-h2">
-            <span>検証対象モデル・関連サービス公式リンク</span>
-            <span class="section-subnote">公式・参考リンク (広告なし)</span>
-          </h2>
-          <div class="cta-grid">
-            
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">H100/A100 従量課金</span>
-                    <div class="cta-title">RunPod (時間課金クラウドGPU比較対象)</div>
-                    <div class="cta-provider">提供元: RunPod （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://www.runpod.io/" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-                <div class="cta-card">
-                  <div>
-                    <span class="cta-badge">月間 200 CU 付帯</span>
-                    <div class="cta-title">Google One AI Pro 公式プラン詳細</div>
-                    <div class="cta-provider">提供元: Google （公式・参考リンク）</div>
-                  </div>
-                  <a href="https://one.google.com/about/ai-premium/" target="_blank" rel="noopener noreferrer" class="cta-btn">
-                    公式仕様・詳細を見る &rarr;
-                  </a>
-                </div>
-                
-          </div>
-          <p class="cta-disclosure-note">※上記は読者の利便性のための参考リンクであり、現在アフィリエイト報酬等は設定されていません。</p>
-        </section>
-        
-
-      <section id="sec-faq" class="article-section">
-        <h2 class="section-h2"><span>4. よくある疑問と回答 (FAQ)</span></h2>
-        <div class="faq-list">
-          
-        <div class="faq-item">
-          <h3 class="faq-q">Q. RTX 4090（24GB）1枚で動かすのに最もバランスの良いモデルサイズは何ですか？</h3>
-          <p class="faq-a">32Bクラスの4bit量子化モデル（Qwen2.5-32B-Instruct Q4_K_M：約19.8GB）です。モデルの全レイヤーと16K〜32Kトークン分のKVキャッシュ（Flash Attention + Q8_0量子化併用）が24GB VRAM内に完全に収まり、60 tok/s超の極めて快適な応答速度が得られます。</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3 class="faq-q">Q. メインメモリ（DDR5 RAM）が128GBあれば、GPUなし（CPUのみ）でも70Bモデルを実用できますか？</h3>
-          <p class="faq-a">動作自体は可能ですが、一般的なデュアルチャネルDDR5-5600メモリの帯域幅は約89.6 GB/sしかないため、70B Q4_K_M（約42.5GB）では実測1.5〜2.0 tok/s程度（1秒間に1〜2単語）となり、対話用途には厳しい速度になります。</p>
-        </div>
-        
-        </div>
-      </section>
-
-      <section id="sec-sources" class="article-section">
-        <h2 class="section-h2">
-          <span>5. 検証条件・一次情報ソース (Provenance)</span>
-        </h2>
-        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> r/LocalLLaMA および ggml-org/llama.cpp 公式ディスカッションの llama-bench 計測スレッド（N=74）より、Qwen2.5-32B-Instruct (Q4_K_M, 約19.8GB) および Llama-3.3-70B-Instruct (Q4_K_M, 約42.5GB) のトークン生成速度（tg128, tok/s）とプロンプト処理速度（pp512, tok/s）、およびシステム全体の壁コンセント消費電力（W）を集計。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「ローカルLLM推論（Mac Studio / MacBook Pro vs RTX 4090/3090）モデル別生成速度・電力効率比較」(2026-10-12更新, N=74) — <code>https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html</code></div>
-        <ul class="source-list">
-          
-        <li class="source-item">
-          <a href="https://github.com/ggml-org/llama.cpp/discussions/4167" target="_blank" rel="noopener noreferrer">GitHub ggml-org/llama.cpp Discussion #4167 - Apple Silicon Mac llama-bench performance tracker</a>
-          <span class="source-meta">サンプル: N=45 Apple Silicon logs | 確認日: 2026-10-12</span>
-        </li>
-        
-        <li class="source-item">
-          <a href="https://www.reddit.com/r/LocalLLaMA/search/?q=llama-bench+3090+4090+Mac+Studio&amp;restrict_sr=1" target="_blank" rel="noopener noreferrer">Reddit r/LocalLLaMA - Search: Dual 3090 vs 4090 vs Mac Studio llama-bench tokens per watt</a>
-          <span class="source-meta">サンプル: N=29 GPU benchmark logs | 確認日: 2026-10-12</span>
-        </li>
-        
-        </ul>
-      </section>
-
-      
-        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
-          <h2 class="section-h2"><span>6. あわせて読みたい関連検証データ</span></h2>
-          <ul class="source-list">
-            
-                <li class="source-item">
-                  <a href="google-colab-ai-pro-gpu-burn-rate-benchmarks.html"><strong>Google Colab GPU 制限・料金・消費レート比較：AI Pro (200 CU) のA100/H100稼働時間実測</strong></a>
-                  <span class="source-meta">集計サンプル数 (N): 64 セッション (N=64)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="llm-api-providers-ttft-latency-throughput-variance-benchmarks.html"><strong>主要LLM推論APIプロバイダ 5社の「TTFT（初回応答遅延）・出力tok/s・夜間ピーク分散」実測比較データベース</strong></a>
-                  <span class="source-meta">集計API計測リクエスト数: 672 回/社 (N=672)</span>
-                </li>
-                
-                <li class="source-item">
-                  <a href="ai-coding-agent-ast-peek-token-reduction-benchmarks.html"><strong>Claude Code・AIエージェントのトークン節約と上限対策：AST骨格抽出（Peek）とログ圧縮の実測検証</strong></a>
-                  <span class="source-meta">探索トークン削減率 (中央値): -78.4% (N=42)</span>
-                </li>
-                
-          </ul>
-        </section>
-        
-    </main>
-
-    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
-      <div class="sidebar-box">
-        <div class="sidebar-title">目次</div>
-        <ul class="toc-list">
-          <li><a href="#sec-tldr">💡 結論・実測サマリー</a></li>
-          
-          <li><a href="#sec-chart">1. 実測ギャップ・比較グラフ</a></li>
-          <li><a href="#sec-table">2. 条件別・比較データ表</a></li>
-        
-          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
-          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
-          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
-        </ul>
-      </div>
-      <div class="sidebar-box">
-        <div class="sidebar-title">検証データ概要</div>
-        <div class="meta-kv-list">
-          <div class="meta-kv-row"><span>データ種別</span><strong>一次ログ集計</strong></div>
-          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 74</strong></div>
-          <div class="meta-kv-row"><span>比較行数</span><strong>4 件</strong></div>
-          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-12</strong></div>
-          
-        </div>
-        <div class="card-takeaway-bar">
-          
-          <a href="../datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" download="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" class="csv-btn">CSVをダウンロード</a>
-          <a href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / AIとサーバー</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">MacでローカルLLMは動く？必要メモリとGPUとの選び方</h1><p class="article-subtitle">手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-12">2026-10-12</time></span><span>更新 <time datetime="2026-10-15">2026-10-15</time></span><span>公式資料に基づく整理。独自の比較実測値は掲載していません。</span></div>
+      <aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>旧版の74環境集計、機種別tok/s、ワット効率、VRAMに収まる条件の断定は、採用した測定と集計手順を再現できないため撤回しました。必要なメモリと測定条件を確認する選び方へ改訂しました。</p></aside>
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>対応するMacならOllamaでローカルLLMを試せる。まずOS、チップ、メモリを確認する。</li><li>必要メモリはモデルと文脈長で変わる。搭載容量だけで判断せず、実行中の使用量を見る。</li><li>MacやGPUを買い足す前に、同じ日本語の課題で品質と待ち時間を比べる。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>用途と確認事項の比較表。製品ごとの実測ランキングではありません。</caption><thead><tr><th scope="col">候補</th><th scope="col">検討する理由</th><th scope="col">確認すること</th><th scope="col">費用の範囲</th></tr></thead><tbody><tr><th scope="row">手元のPCで試す</th><td>初期支出を増やさず用途を確かめる</td><td>モデル、量子化、メモリ、待ち時間</td><td>追加電力と必要な保存領域</td></tr><tr><th scope="row">Apple SiliconのMac</th><td>統合メモリ構成や普段の作業も含めて選ぶ</td><td>推論ソフトの対応、利用可能メモリ、性能</td><td>本体の構成、保存領域、他用途との共用</td></tr><tr><th scope="row">GPU搭載PC・増設</th><td>対応ソフトや既存PCを活かしたい</td><td>VRAM、電源、冷却、実行バックエンド</td><td>GPUだけでなく電源やケースの増設</td></tr><tr><th scope="row">API・クラウド併用</th><td>大きな処理を不定期に行う</td><td>品質、送信データ、料金、利用条件</td><td>利用量に応じた料金と運用費</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">手持ちのMacで動く？OSとチップを確認する</h2><p>Macでも、対応する実行ソフトとモデルを選べばローカルLLMを試せます。この記事ではOllamaを例にします。2026年10月15日確認の公式要件はmacOS Sonoma 14以降で、Apple MシリーズはCPUとGPU、Intelのx86 MacはCPUのみの対応です。Appleメニューの「このMacについて」でチップまたはプロセッサ、macOSの版、搭載メモリを確認し、モデルを保存するディスクの空き容量も用意します。これはOllamaの要件で、すべての推論ソフトに共通する条件ではありません。</p><p class="source-meta">参照: <a href="https://docs.ollama.com/macos" target="_blank" rel="noopener noreferrer">Ollama：macOSの要件とインストール</a> <a href="https://support.apple.com/en-us/116943" target="_blank" rel="noopener noreferrer">Apple：Appleシリコン搭載Macの確認方法</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">OllamaでローカルLLMを試す手順</h2><p>①Ollama公式サイトのmacOS版をインストールしてアプリを起動します。②ターミナルで ollama run gemma3:1b を実行します。初回はモデルをダウンロードするため通信と保存領域が必要です。③短い日本語の質問を入力し、回答が返ることを確認します。このモデルは導入確認の例で、日本語の品質を保証する推奨モデルではありません。④別のターミナルで ollama ps を実行し、PROCESSOR欄でCPU・GPUの使用状況を確認します。会話は /bye で終了し、モデルをメモリから外す場合は ollama stop gemma3:1b を実行します。</p><p class="source-meta">参照: <a href="https://docs.ollama.com/macos" target="_blank" rel="noopener noreferrer">Ollama：macOSの要件とインストール</a> <a href="https://docs.ollama.com/cli" target="_blank" rel="noopener noreferrer">Ollama：CLIリファレンス</a> <a href="https://ollama.com/library/gemma3:1b" target="_blank" rel="noopener noreferrer">Ollama：Gemma 3 1Bの配布ページ</a> <a href="https://docs.ollama.com/context-length" target="_blank" rel="noopener noreferrer">Ollama：文脈長と必要メモリ</a> <a href="https://docs.ollama.com/faq" target="_blank" rel="noopener noreferrer">Ollama：FAQ</a> <a href="https://docs.ollama.com/quickstart" target="_blank" rel="noopener noreferrer">Ollama：クイックスタート</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">最初に決めるのは、モデルではなく仕事</h2><p>日本語の相談、文書検索、コード補助など、毎週行いたい仕事を選びます。求める品質と待てる時間を決めて、手元のPCやAPIで試します。大きなモデルを動かせたという事実だけでは、その機器に購入額を払う価値があるかは分かりません。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">必要メモリは何GB？重みの容量だけで決めない</h2><p>8GB・16GBなどの搭載容量だけでは、使いたいモデルが快適に動くかは決まりません。モデルの保存ファイルのほかに、実行時のキャッシュや作業領域が必要です。文脈長、量子化、同時利用数、実行ソフトの設定でも使用量が変わり、macOSやほかのアプリにもメモリが必要です。Ollamaの公式資料も文脈長を大きくすると必要メモリが増えると説明しています。旧版のように特定のパラメータ数なら必ず一定容量に収まるとは断定せず、使うファイルと設定で実行中の使用量を確認します。</p><p class="source-meta">参照: <a href="https://docs.ollama.com/context-length" target="_blank" rel="noopener noreferrer">Ollama：文脈長と必要メモリ</a> <a href="https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac" target="_blank" rel="noopener noreferrer">Apple：アクティビティモニタでメモリ使用状況を表示</a> <a href="https://docs.ollama.com/faq" target="_blank" rel="noopener noreferrer">Ollama：FAQ</a> </p></section><section class="prose-section" id="part-4"><h2 class="section-h2">メモリ不足や遅さを感じたら、条件を一つずつ変える</h2><p>アクティビティモニタの「メモリ」でメモリプレッシャーとスワップ使用領域を見て、実行前後を比較します。Ollamaでは ollama ps で実際の文脈長とCPU・GPUの使用状況も確認します。負荷が大きい場合は、不要なアプリやほかのモデルを終了し、短い会話と小さいモデルで再確認します。文脈長を大きく設定していたならOllamaの設定で下げ、必要な文書が収まる範囲を探します。文脈を減らすと扱える情報も減るため、回答の品質も確かめます。スワップの値だけで原因を断定せず、変えた条件と待ち時間を一緒に記録します。</p><p class="source-meta">参照: <a href="https://docs.ollama.com/cli" target="_blank" rel="noopener noreferrer">Ollama：CLIリファレンス</a> <a href="https://docs.ollama.com/context-length" target="_blank" rel="noopener noreferrer">Ollama：文脈長と必要メモリ</a> <a href="https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac" target="_blank" rel="noopener noreferrer">Apple：アクティビティモニタでメモリ使用状況を表示</a> </p></section><section class="prose-section" id="part-5"><h2 class="section-h2">入力処理と生成を別に比べる</h2><p>llama-benchの公式READMEでは、プロンプト処理のppと生成のtgを分けた測定例が示されています。長い文書を読み込む用途と短い会話を続ける用途では、注目する項目が違います。同じモデルファイル、ソフトの版、バックエンド、文脈条件を記録して比較し、異なる条件のログから機種の順位を作らないようにします。</p><p class="source-meta">参照: <a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md" target="_blank" rel="noopener noreferrer">llama.cpp：llama-bench README</a> </p></section><section class="prose-section" id="part-6"><h2 class="section-h2">公開ログは、同じ条件かを確かめる</h2><p>llama.cppのApple Silicon向けディスカッションには利用者の報告があります。ただし投稿の機器、モデル、ソフトの版、設定は一定ではありません。個別の構成の参考として読めても、そのまま最近のすべてのMacやGPUの性能に一般化することはできません。今回も、その投稿群から比較中央値を再計算したわけではありません。</p><p class="source-meta">参照: <a href="https://github.com/ggml-org/llama.cpp/discussions/4167" target="_blank" rel="noopener noreferrer">llama.cpp：Apple Siliconの性能報告</a> </p></section><section class="prose-section" id="part-7"><h2 class="section-h2">本体価格と、使い続ける費用</h2><p>GPUの増設では、必要な電源、ケース、冷却、騒音も含めます。電力効率を比較するならGPU単体の表示値と、PC全体のコンセントでの消費を混ぜず、同じ仕事の完了までに使った電力量を見る方法があります。不定期にしか使わないならAPIやクラウドも候補にし、手元で動かす目的と費用を照らし合わせます。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md" target="_blank" rel="noopener noreferrer">llama.cpp：llama-bench README</a><span class="source-meta">確認日: 2026-10-15 / ベンチマークの使い方と測定例。現行MacとGPUの横断順位ではありません。</span></li><li class="source-item"><a href="https://github.com/ggml-org/llama.cpp/discussions/4167" target="_blank" rel="noopener noreferrer">llama.cpp：Apple Siliconの性能報告</a><span class="source-meta">確認日: 2026-10-13 / 個別利用者の報告。条件をそろえた母集団としては扱っていません。</span></li><li class="source-item"><a href="https://docs.ollama.com/macos" target="_blank" rel="noopener noreferrer">Ollama：macOSの要件とインストール</a><span class="source-meta">確認日: 2026-10-15 / 対応OS、Apple Mシリーズとx86の違い、導入と保存領域。モデルごとの動作速度の保証ではありません。</span></li><li class="source-item"><a href="https://docs.ollama.com/cli" target="_blank" rel="noopener noreferrer">Ollama：CLIリファレンス</a><span class="source-meta">確認日: 2026-10-15 / モデルの実行、一覧、停止などのコマンド。この記事ではMac実機での新規動作検証は行っていません。</span></li><li class="source-item"><a href="https://ollama.com/library/gemma3:1b" target="_blank" rel="noopener noreferrer">Ollama：Gemma 3 1Bの配布ページ</a><span class="source-meta">確認日: 2026-10-15 / 導入確認に用いるモデル名と実行例。日本語の品質や必要メモリの実測値ではありません。</span></li><li class="source-item"><a href="https://docs.ollama.com/context-length" target="_blank" rel="noopener noreferrer">Ollama：文脈長と必要メモリ</a><span class="source-meta">確認日: 2026-10-15 / 文脈長によるメモリ増加、アプリの設定、ollama psでの割り当て確認。</span></li><li class="source-item"><a href="https://support.apple.com/guide/activity-monitor/view-memory-usage-actmntr1004/mac" target="_blank" rel="noopener noreferrer">Apple：アクティビティモニタでメモリ使用状況を表示</a><span class="source-meta">確認日: 2026-10-15 / メモリプレッシャー、物理メモリ、使用量、スワップの意味。LLMモデルごとの容量保証ではありません。</span></li><li class="source-item"><a href="https://support.apple.com/en-us/116943" target="_blank" rel="noopener noreferrer">Apple：Appleシリコン搭載Macの確認方法</a><span class="source-meta">確認日: 2026-10-15 / 「このMacについて」でAppleシリコンのチップとIntelプロセッサを確認する方法。</span></li><li class="source-item"><a href="https://docs.ollama.com/faq" target="_blank" rel="noopener noreferrer">Ollama：FAQ</a><span class="source-meta">確認日: 2026-10-15 / GPU読み込みの確認、文脈・同時実行とメモリ、ローカルとクラウドの区別。</span></li><li class="source-item"><a href="https://docs.ollama.com/quickstart" target="_blank" rel="noopener noreferrer">Ollama：クイックスタート</a><span class="source-meta">確認日: 2026-10-15 / ローカルモデルのダウンロードと実行、/byeで会話を終了する手順。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="personal-ai-vps-home-server-subscription.html">パーソナルAIは、どこに置く？</a></li><li class="source-item"><a href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">自宅サーバー用ミニPC、CPU名だけで選んでいい？</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">手持ちのMacで動く？OSとチップを確認する</a></li><li><a href="#part-1">OllamaでローカルLLMを試す手順</a></li><li><a href="#part-2">最初に決めるのは、モデルではなく仕事</a></li><li><a href="#part-3">必要メモリは何GB？重みの容量だけで決めない</a></li><li><a href="#part-4">メモリ不足や遅さを感じたら、条件を一つずつ変える</a></li><li><a href="#part-5">入力処理と生成を別に比べる</a></li><li><a href="#part-6">公開ログは、同じ条件かを確かめる</a></li><li><a href="#part-7">本体価格と、使い続ける費用</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -375,9 +42,9 @@
           <span>Nodus</span>
         </div>
         <p class="footer-desc">
-          公式ドキュメントや一般的な技術ブログだけでは辿り着けない「独自の実機・チャット検証データ」と「コミュニティ一次計測ログ」を、結論ファーストで公開する技術検証メディア。
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
         </p>
-        <p class="footer-amazon-notice">現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。</p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
         <a href="../index.html">記事一覧</a>
@@ -390,11 +57,9 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
-      <span>Verified Empirical Notes &amp; Open CSV Datasets</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
     </div>
   </div>
 </footer>
 <script src="../assets/app.js" defer></script>
-
-</body>
-</html>
+</body></html>

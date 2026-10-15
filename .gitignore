@@ -16,5 +16,5 @@ gsc_credentials.json
 # Keep local raw chat scans and live GSC cache out of public git
 data/field_notes/chat_empirical_digest.json
 data/gsc_telemetry_live.json
-
 data/analytics/
+.analytics-release/

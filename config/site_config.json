@@ -1,8 +1,8 @@
 {
   "site": {
     "name": "Nodus",
-    "tagline": "Quantitative Spec & Real-World Benchmark Intelligence",
-    "jp_subtitle": "公称スペックとコミュニティ実測値の定量比較データベース",
+    "tagline": "Notes on making and choosing",
+    "jp_subtitle": "買う、作る、その前に。費用と使い道から考える技術ノート",
     "base_url": "https://nodus-lab.pages.dev",
     "language": "ja",
     "organization": "Nodus Research Editorial",
@@ -12,7 +12,7 @@
   "compliance": {
     "monetization_enabled": false,
     "pr_disclosure_text": "【PR】本ページはプロモーション（アフィリエイト広告）を含みます。掲載されている実測値・統計データは公開技術コミュニティおよび一次検証ログの集計結果に基づく客観的指標であり、特定の広告主による委託検証や数値改変は一切行っていません。",
-    "non_commercial_notice": "現在、当サイトは広告およびアフィリエイトリンクを一切掲載していない独立リサーチメディアとして運営されています。",
+    "non_commercial_notice": "広告・アフィリエイトリンクは掲載していません。",
     "amazon_disclosure_text": "Amazon のアソシエイトとして、Nodusは適格販売により収入を得ています。",
     "require_source_links": true,
     "excluded_categories": [

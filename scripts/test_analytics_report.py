@@ -1,6 +1,7 @@
 """Run: python -m unittest discover -s scripts -p test_analytics_report.py"""
 import os
 import unittest
+from datetime import datetime, timezone
 from unittest.mock import Mock, patch
 
 import analytics_report as analytics
@@ -30,6 +31,79 @@ class AnalyticsChecks(unittest.TestCase):
         self.assertEqual(result["status"], "collection_disabled")
         self.assertIsNone(result["comparison"])
         self.assertEqual(request.call_args.args[2]["variables"]["host"], "nodus-lab.pages.dev")
+
+    @patch.dict(os.environ, {"CLOUDFLARE_API_TOKEN": "test-only", "CLOUDFLARE_ACCOUNT_ID": "test-account"}, clear=True)
+    @patch.object(analytics, "cloudflare_request")
+    def test_enabled_but_empty_collection_stays_unknown(self, request):
+        request.side_effect = [{"result": {"build_config": {"web_analytics_token": "test-beacon"}}}, {"data": {"viewer": {"accounts": [{"rumPageloadEventsAdaptiveGroups": []}]}}}]
+        result = analytics.fetch_cloudflare({"site": {"base_url": "https://nodus-lab.pages.dev"}})
+        self.assertEqual(result["status"], "no_observations")
+        self.assertIsNone(result["comparison"])
+        self.assertEqual(result["rows"], [])
+        self.assertIn("start", result["window"])
+
+    @patch.object(analytics, "datetime", wraps=datetime)
+    @patch.object(analytics, "resolve_gsc_access_token", return_value="test-only")
+    @patch.object(analytics, "_gsc_query_rest")
+    def test_gsc_windows_breakdowns_and_independent_site_totals(self, query, token, clock):
+        # UTC has crossed midnight; Search Console's reporting day has not.
+        clock.now.return_value = datetime(2026, 10, 15, 1, tzinfo=timezone.utc)
+
+        def respond(prop, access_token, request):
+            dimensions = request["dimensions"]
+            values = {"date": request["endDate"], "query": "mac llm ローカル", "page": "https://nodus-lab.pages.dev/", "country": "jpn", "device": "DESKTOP"}
+            impressions = 9 if not dimensions else 1
+            result = {"rows": [{"keys": [values[d] for d in dimensions], "clicks": 0, "impressions": impressions, "ctr": 0.0, "position": 99.0}], "responseAggregationType": "byPage" if "page" in dimensions else "byProperty"}
+            if dimensions == ["date"] and request["dataState"] == "all":
+                result["metadata"] = {"first_incomplete_date": "2026-10-13"}
+            return result
+
+        query.side_effect = respond
+        result = analytics.fetch_gsc({"seo_loop": {"gsc_property_url": "https://nodus-lab.pages.dev/"}})
+        final, recent = result["windows"]["final"], result["windows"]["recent"]
+        self.assertEqual(final["window"], {"start": "2026-09-14", "end": "2026-10-11", "dataState": "final", "type": "web"})
+        self.assertEqual(recent["window"], {"start": "2026-10-08", "end": "2026-10-14", "dataState": "all", "type": "web"})
+        self.assertEqual(recent["daily"]["metadata"]["first_incomplete_date"], "2026-10-13")
+        self.assertEqual(result["rows"], final["daily"]["rows"])
+        self.assertEqual(result["comparison"]["totals"]["current"]["impressions"], 1)
+        self.assertEqual(final["site_totals"]["rows"][0]["impressions"], 9)
+        self.assertEqual(set(final["breakdowns"]), {"query", "page", "query_page", "country", "device"})
+        pair = final["breakdowns"]["query_page"]["rows"][0]
+        self.assertEqual(pair["query"], "mac llm ローカル")
+        self.assertEqual(pair["page"], "https://nodus-lab.pages.dev/")
+        self.assertEqual({m: pair[m] for m in ("clicks", "impressions", "ctr", "position")}, {"clicks": 0, "impressions": 1, "ctr": 0.0, "position": 99.0})
+        self.assertEqual(query.call_count, 14)
+
+    @patch.object(analytics, "GSC_ROW_LIMIT", 2)
+    @patch.object(analytics, "_gsc_query_rest")
+    def test_gsc_paginates_breakdowns(self, query):
+        rows = [{"keys": [q], "clicks": 0, "impressions": 1, "ctr": 0.0, "position": 99.0} for q in ["first", "second", "third"]]
+        query.side_effect = [{"rows": rows[:2], "responseAggregationType": "byProperty"}, {"rows": rows[2:]}]
+        result = analytics.fetch_gsc_table("test-property", "test-only", {"dataState": "final"}, ["query"])
+        self.assertEqual([row["query"] for row in result["rows"]], ["first", "second", "third"])
+        self.assertEqual([call.args[2]["startRow"] for call in query.call_args_list], [0, 2])
+        self.assertEqual(result["row_count"], 3)
+        self.assertEqual(result["response_aggregation_type"], "byProperty")
+
+    @patch.object(analytics, "resolve_gsc_access_token", return_value="test-only")
+    @patch.object(analytics, "_gsc_query_rest")
+    def test_recent_observations_do_not_enter_final_comparison(self, query, token):
+        query.side_effect = lambda prop, access_token, request: {"rows": [{"keys": [request["endDate"]], "clicks": 0, "impressions": 1, "ctr": 0.0, "position": 99.0}]} if request["dataState"] == "all" and request["dimensions"] == ["date"] else {}
+        result = analytics.fetch_gsc({"seo_loop": {"gsc_property_url": "test-property"}})
+        self.assertEqual(result["status"], "live")
+        self.assertEqual(result["windows"]["final"]["status"], "no_observations")
+        self.assertIsNone(result["comparison"])
+        self.assertEqual(result["rows"], [])
+
+    @patch.object(analytics, "_gsc_query_rest", return_value={"error": {"code": 403}})
+    def test_gsc_error_body_does_not_become_empty_traffic(self, query):
+        with self.assertRaises(RuntimeError):
+            analytics.fetch_gsc_table("test-property", "test-only", {}, ["query"])
+
+    @patch.object(analytics, "_gsc_query_rest", return_value={"rows": [{"keys": ["test-query"], "clicks": 0, "impressions": 1}]})
+    def test_incomplete_metrics_are_not_filled_with_zero(self, query):
+        with self.assertRaises(KeyError):
+            analytics.fetch_gsc_table("test-property", "test-only", {}, ["query"])
 
     @patch.object(seo_loop, "resolve_gsc_access_token", return_value="")
     @patch.object(seo_loop, "LIVE_GSC_PATH")

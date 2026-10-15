@@ -101,9 +101,42 @@ def validate_all() -> dict[str, object]:
     for path in article_files:
         article = load_json(path)
         validate_article(article, config)
+        if article.get("kind") == "guide":
+            guide_html = (DIST_DIR / "articles" / f"{article['slug']}.html").read_text(encoding="utf-8")
+            if '"@type": "Dataset"' in guide_html or "N = 0" in guide_html:
+                raise ValueError(f"{path.name}: guide misrepresented as a measured dataset")
+            if article.get("evidence_notice", "実機テスト・実売価格調査は未実施") not in guide_html:
+                raise ValueError(f"{path.name}: guide must disclose its evidence scope")
+            if article.get("revision_note"):
+                if article["revision_note"] not in guide_html:
+                    raise ValueError(f"{path.name}: built HTML lost revision note")
+                md = (DIST_DIR / "articles" / f"{article['slug']}.md").read_text(encoding="utf-8")
+                if article["revision_note"] not in md:
+                    raise ValueError(f"{path.name}: Markdown lost revision note")
+            raw_source = ROOT_DIR / "content" / "raw_logs" / f"{article['slug']}.json"
+            if raw_source.exists():
+                published_log = load_json(DIST_DIR / "logs" / raw_source.name)
+                if published_log.get("status") != "withdrawn_unverified" or "aggregate_telemetry" in published_log:
+                    raise ValueError(f"{path.name}: unverified log is still published")
+            bad_guide = copy.deepcopy(article)
+            bad_guide["sample_size_n"] = 1
+            try:
+                validate_article(bad_guide, config)
+            except ValueError:
+                pass
+            else:
+                raise ValueError("Guide validation allowed fabricated measured samples")
+            bad_reference = copy.deepcopy(article)
+            bad_reference["sections"][0]["source_indices"] = [len(article["sources"])]
+            try:
+                validate_article(bad_reference, config)
+            except ValueError:
+                pass
+            else:
+                raise ValueError("Guide validation allowed a broken source reference")
         slug = article["slug"]
         expected_slugs.append(slug)
-        if int(article.get("sample_size_n", 0)) <= 0:
+        if article.get("kind") != "guide" and int(article.get("sample_size_n", 0)) <= 0:
             raise ValueError(f"{path.name}: sample_size_n must be > 0")
         if not article.get("methodology_note"):
             raise ValueError(f"{path.name}: methodology_note is required")
@@ -274,6 +307,9 @@ def validate_all() -> dict[str, object]:
             "copyright_no_verbatim_snippets",
             "a11y_landmarks_and_sortable_table_buttons",
             "csv_datasets_present",
+            "guide_source_references_and_zero_measured_samples",
+            "revision_notes_in_html_and_markdown",
+            "unverified_raw_logs_replaced_with_withdrawal_notices",
         ],
     }
     print(json.dumps(report, ensure_ascii=False))

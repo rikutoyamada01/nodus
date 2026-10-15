@@ -1,176 +1,122 @@
 {
   "slug": "wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation",
-  "title": "Wi-Fi 7 ルーター「MLO実効スループット・6GHz帯の壁越し減衰率・消費電力」実測比較データベース",
-  "subtitle": "カタログ理論値「最大19Gbps / 9.3Gbps」に対するiperf3実測通信速度と石膏ボード・コンクリート壁通過時の速度維持率集計（N=52）",
+  "title": "Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する",
+  "display_title": "Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する",
+  "subtitle": "MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。",
   "category": "Hardware & Power Electronics",
   "tags": [
-    "Wi-Fi 7",
-    "802.11be",
-    "MLO",
-    "6GHz",
-    "iperf3",
-    "r/HomeNetworking"
+    "Wi-Fi 7 買い替え 必要",
+    "MLO 6GHz 壁越し",
+    "Wi-Fi ルーター コスパ"
   ],
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "公式資料と判断の手順",
   "published_at": "2026-10-12",
-  "updated_at": "2026-10-12",
-  "data_updated_at": "2026-10-12",
-  "sample_size_n": 52,
-  "methodology_note": "r/HomeNetworking および有志のローカル10GbE NAS環境における iperf3（TCPマルチストリーム）計測ログ52件を集計。クライアント側は Intel BE200 / Qualcomm FastConnect 7800 (2x2 MIMO, 320MHz対応) を基準とし、見通し3m（同室）および壁2枚越し（距離10m）での実効スループット中央値を算出。",
+  "updated_at": "2026-10-13",
+  "data_updated_at": "2026-10-13",
+  "sample_size_n": 0,
+  "evidence_notice": "公式資料に基づく整理。独自の比較実測値は掲載していません。",
+  "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
+  "revision_note": "旧版の52環境集計、壁越しの速度維持率、MLOによる倍率、待機電力と年間費用は、採用ログを追跡できないため撤回しました。全機種を同じMIMO構成とする説明も外し、経路と対応条件を確認する内容に改訂しました。",
   "seo": {
-    "meta_title": "【iperf3実測N=52】Wi-Fi 7ルーターの6GHz/MLO実効速度と壁越し減衰比較 | Nodus",
-    "meta_description": "公称9,300Mbps〜19,000Mbpsを謳うWi-Fi 7(802.11be)ルーターで、実際に何Gbps出るのか？2x2クライアント接続時のiperf3実測速度、MLOの効果、6GHz帯の壁越し減衰率、常時消費電力を定量比較。",
+    "meta_title": "Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する | Nodus",
+    "meta_description": "MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。",
     "target_keywords": [
-      "Wi-Fi 7 実測 速度 iperf3",
-      "Wi-Fi 7 6GHz 壁越し 減衰",
-      "MLO 実測 効果 ない",
-      "Wi-Fi 7 ルーター 消費電力 発熱"
+      "Wi-Fi 7 買い替え 必要",
+      "MLO 6GHz 壁越し",
+      "Wi-Fi ルーター コスパ"
     ],
-    "primary_seed": "Wi-Fi 7 ルーター"
+    "primary_seed": "Wi-Fi 7 買い替え 必要"
   },
-  "summary_metrics": [
-    {
-      "label": "集計iperf3計測環境数",
-      "value": "52 環境",
-      "subtext": "r/HomeNetworking 10GbE LAN基準"
-    },
-    {
-      "label": "同室3m (6GHz 320MHz) 実測",
-      "value": "3.4 〜 4.2 Gbps",
-      "subtext": "2x2クライアント（リンク速度5.76Gbps）時"
-    },
-    {
-      "label": "壁2枚越し時の6GHz速度維持率",
-      "value": "約 22% 〜 31%",
-      "subtext": "5GHz帯（160MHz）と実効速度が逆転する境界"
-    },
-    {
-      "label": "10GbE搭載Wi-Fi 7機の待機電力",
-      "value": "18.5 〜 27.4 W",
-      "subtext": "Wi-Fi 6機の約1.6〜2.1倍（年間約5,500〜8,000円）"
-    }
+  "summary_metrics": [],
+  "tldr": [
+    "ルーターの合算公称速度を、1台のPCで得られる実効速度と混同しない。",
+    "MLOや広いチャネル幅には端末側の対応も必要。購入前に両端を確認する。",
+    "別室の不満なら、世代の更新より先に設置場所と通信経路を調べる。"
   ],
-  "spec_gap_chart": {
-    "title": "2x2クライアント最大リンク速度（5,764 Mbps）vs 距離・障害物別のiperf3実効TCPスループット中央値（Mbps）",
-    "unit": "Mbps",
-    "max_scale": 6000,
-    "items": [
-      {
-        "name": "6GHz単体 (320MHz幅) — 同室・見通し 3m",
-        "official_label": "2x2 PHY理論リンク上限: 5,764 Mbps",
-        "official_value": 5764.0,
-        "measured_label": "iperf3実効中央値: 3,840 Mbps",
-        "measured_value": 3840.0,
-        "status": "good",
-        "note": "4096-QAMが安定維持され、2.5GbE有線LANの限界（約2.35Gbps）を大きく上回る実効3.8Gbps超を達成（N=19）。"
-      },
-      {
-        "name": "MLO (5GHz + 6GHz 同時集約) — 同室・見通し 3m",
-        "official_label": "MLO合算PHY理論上限: 8,646 Mbps (上限5.7G換算)",
-        "official_value": 5764.0,
-        "measured_label": "iperf3実効中央値: 4,120 Mbps",
-        "measured_value": 4120.0,
-        "status": "good",
-        "note": "スループット純増は6GHz単体比で+7%前後だが、高負荷時のピンポイント遅延（P99 Jitter）が約35%改善（N=14）。"
-      },
-      {
-        "name": "6GHz単体 (320MHz幅) — 石膏ボード壁2枚・10m",
-        "official_label": "2x2 PHY理論リンク上限: 5,764 Mbps",
-        "official_value": 5764.0,
-        "measured_label": "iperf3実効中央値: 920 Mbps (-76%減衰)",
-        "measured_value": 920.0,
-        "status": "warning",
-        "note": "障害物による減衰で4096-QAMから256-QAM以下へフォールバックし、320MHz幅のノイズフロア上昇も重なり1Gbps未満へ低下（N=11）。"
-      },
-      {
-        "name": "MLO (5GHz + 6GHz 自動切替) — 石膏ボード壁2枚・10m",
-        "official_label": "MLO合算PHY理論上限: 5,764 Mbps",
-        "official_value": 5764.0,
-        "measured_label": "iperf3実効中央値: 1,580 Mbps",
-        "measured_value": 1580.0,
-        "status": "good",
-        "note": "壁越しの中距離環境でこそMLOが真価を発揮し、減衰に強い5GHz帯を主軸に1.5Gbps超を維持（N=8）。"
-      }
-    ]
-  },
   "comparison_table": {
     "headers": [
-      "接続モード・環境",
-      "周波数・チャネル幅",
-      "2x2 PHY理論リンク速度",
-      "iperf3実測中央値",
-      "Ping P99遅延 (負荷時)",
-      "主なボトルネック要因"
+      "困りごと",
+      "最初に調べること",
+      "候補になる対策",
+      "買い替えで保証されないこと"
     ],
     "rows": [
       [
-        "同室3m (6GHz単体)",
-        "6GHz / 320MHz",
-        "5,764 Mbps",
-        "3,840 Mbps",
-        "4.2 ms",
-        "クライアント側MIMO数 (2x2上限)"
+        "ネット全体が遅い",
+        "有線での速度、契約、混雑",
+        "回線や有線経路の確認",
+        "ルーター交換だけで外向き回線が速くなること"
       ],
       [
-        "同室3m (MLO有効)",
-        "5GHz(160) + 6GHz(320)",
-        "8,646 Mbps",
-        "4,120 Mbps",
-        "2.7 ms",
-        "OS/ドライバのSTR/EMLSR制御"
+        "別室だけ遅い",
+        "設置位置、壁、干渉、接続帯域",
+        "配置変更、適切な追加AP、有線接続",
+        "Wi-Fi 7ならどの壁でも届くこと"
       ],
       [
-        "壁2枚10m (6GHz単体)",
-        "6GHz / 320MHz",
-        "5,764 Mbps",
-        "920 Mbps",
-        "14.8 ms",
-        "高周波遮蔽減衰・SNR低下"
+        "NASへの転送を速くしたい",
+        "端末、NAS、有線ポート、保存先",
+        "経路全体の速度と機能対応をそろえる",
+        "ルーターの合算速度が1台に出ること"
       ],
       [
-        "壁2枚10m (MLO有効)",
-        "5GHz(160) + 6GHz(320)",
-        "8,646 Mbps",
-        "1,580 Mbps",
-        "6.1 ms",
-        "5GHz帯へのトラフィック比重移行"
+        "対応端末でMLOを使いたい",
+        "両端の機能、OS、ドライバ、地域モデル",
+        "必要な機能を備える組み合わせ",
+        "どの端末・環境でも同じ効果が出ること"
       ]
     ]
   },
+  "table_caption": "用途と確認事項の比較表。製品ごとの実測ランキングではありません。",
   "sections": [
     {
-      "heading": "1. なぜ「BE19000（最大19Gbps）」のルーターでもPC1台では4Gbps前後が上限なのか",
-      "body": "ルーターのパッケージに記載されている「BE19000（約19Gbps）」「BE9300（約9.3Gbps）」という数値は、2.4GHz帯・5GHz帯・6GHz帯のすべてを4x4 MIMO（アンテナ4本分）で同時フル通信した場合の理論合算値です。しかし、市販のノートPCやスマートフォン（iPhone 16 ProやIntel BE200搭載PC）の内蔵アンテナは「2x2 MIMO（2ストリーム）」であるため、6GHz・320MHz接続時の物理リンク上限は5,764Mbpsとなり、プロトコルオーバーヘッドを除いた実効速度は同室至近距離で約3.6〜4.2Gbpsが物理的な天井となります。"
+      "heading": "ネットが遅いのか、家の中の通信が遅いのか",
+      "body": "同じ端末を使い、可能なら有線接続と無線接続を比べます。外向きの速度測定と、宅内のPC・NAS間の転送は別の結果として記録します。有線でも遅い場合に、無線ルーターだけを交換して解決するとは限りません。改善したい経路を先に特定します。",
+      "source_indices": []
     },
     {
-      "heading": "2. MLO（Multi-Link Operation）が最も効くのは「同室」ではなく「壁越しの中距離」",
-      "body": "コミュニティの検証ログ（N=52）から判明した重要な事実は、ルーターの真横（同室3m）では6GHz単体でも十分すぎる帯域が出るためMLOの速度上積みは約5〜10%に留まる一方、ドアや石膏ボード壁を1〜2枚挟んだ別室環境ではMLOの有無で実効速度に約1.7倍（920Mbps vs 1,580Mbps）の差がつく点です。6GHzの320MHz幅は壁による減衰に弱いですが、MLOを有効化しておくことで5GHz帯がシームレスに下支えし、切断やパケ詰まりを防ぎます。"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "インターネット回線が1Gbps（または2.5Gbps）の場合でもWi-Fi 7ルーターの意味はありますか？",
-      "answer": "外向け回線が1Gbpsの場合、ワンルーム同室での最高速度自体はWi-Fi 6Eと大きく変わりません。ただし、（1）別室での壁越しMLOによる遅延・速度低下の抑制、（2）宅内NASやPC間のローカル高速ファイル転送（3〜4Gbps）、（3）10Gbps光回線への将来移行時のボトルネック解消という3点で明確なメリットがあります。"
+      "heading": "公称値の注記まで読む",
+      "body": "TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なること、端末・環境で変わることを注記しています。MLOや320MHzなどの機能には端末側の対応が必要で、地域の条件もあります。このページは機能の確認例であり、国内の全製品や全端末で同じ速度が出るという根拠ではありません。",
+      "source_indices": [
+        0
+      ]
     },
     {
-      "question": "MLOを有効にすると古いスマート家電（IoT機器）が繋がらなくなることはありますか？",
-      "answer": "はい。Wi-Fi 7のMLOおよび6GHz帯では「WPA3」暗号化が必須仕様となっているため、WPA2しかサポートしない旧世代のIoT家電やプリンタを同一SSIDに混在させると接続エラーが起きる事例が報告されています。MLO用メインSSID（5GHz+6GHz / WPA3）と、IoT専用SSID（2.4GHz / WPA2）を分離して運用するのが定石です。"
+      "heading": "壁越しの速度を、固定の減衰率で見積もらない",
+      "body": "壁の材質、距離、設置の高さ、周囲の干渉、端末の向きなどを記録して、同じ場所で測ります。置き場所を変える、既存の有線経路を使う、適切な位置へアクセスポイントを追加するなど、機器の世代以外の対策も候補です。MLOを有効にすれば必ず別室が速くなるという結論は今回の資料からは出せません。",
+      "source_indices": []
+    },
+    {
+      "heading": "NAS転送では、有線側も含める",
+      "body": "端末からルーター、ルーターからNAS、NASの保存領域までの経路を確認します。ひとつの区間が遅いままでは、別の区間だけ高速化しても全体の転送時間が改善しない場合があります。買い替えの総額はルーターだけでなく、端末側の対応、スイッチ、ケーブルなど必要な変更も含めます。",
+      "source_indices": []
+    },
+    {
+      "heading": "IoT機器も含めて、導入後を考える",
+      "body": "既存のスマート家電が使う帯域と暗号化方式、ルーターのSSID設定、ゲストネットワークなどの対応を確認します。問題が起きても「Wi-Fi 7は古い機器が必ずつながらない」と一括りにしません。常時稼働の電気代を比べるなら、機種の実測電力と契約単価で計算します。買い替え後は元と同じ場所・端末で測り、改善したか確かめます。",
+      "source_indices": []
     }
   ],
   "sources": [
     {
-      "title": "Reddit r/HomeNetworking - Search: Wi-Fi 7 6GHz 320MHz MLO iperf3 real world throughput logs",
-      "url": "https://www.reddit.com/r/HomeNetworking/search/?q=WiFi+7+MLO+iperf3+throughput&restrict_sr=1",
-      "sample_size": "N=52 iperf3 benchmarks",
-      "verified_date": "2026-10-12"
-    },
-    {
-      "title": "Wi-Fi Alliance Official Specification - Wi-Fi CERTIFIED 7 (IEEE 802.11be MLO & 320MHz)",
-      "url": "https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7",
-      "sample_size": "Official Protocol Spec",
-      "verified_date": "2026-10-12"
+      "title": "TP-Link：Deco BE9300の仕様と条件注記",
+      "url": "https://www.tp-link.com/uk/home-networking/deco/deco-be9300/",
+      "verified_date": "2026-10-13",
+      "sample_size": "公式資料",
+      "scope": "英国向けモデルの公称機能と端末・環境の制約。日本での速度測定ではありません。"
     }
   ],
-  "affiliate_keys": [
-    "asus-rt-be92u"
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "esp32-c3-s3-c6-which-board-to-choose",
+      "title": "ESP32、結局どれを買えばいい？"
+    },
+    {
+      "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
+      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+    }
   ]
 }
