@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方 | Nodus</title><meta name="description" content="音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html">
+      <meta property="og:title" content="機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方"><meta property="og:description" content="音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方", "description": "音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html", "citation": ["https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html", "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / Architecture</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方</h1><p class="article-subtitle">音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式scikit-learn仕様資料を確認 / 特定モデルの普遍性能を保証する実測値なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>全体の件数加重Accuracy（正答率）だけを主指標にすると、データ件数が多い人物・撮影条件や簡単なクラス（5母音のみ等）の成績に引っ張られ、未知ユーザーや難クラスでの大幅な劣化を見落とす。</li><li>実機向けのAI開発では、クラス別Recallを平均しさらに人物・条件間で均等平均した「グループ均等Balanced Accuracy」を主指標に置き、最も成績が低い人物・条件のスコア（最低値）を併記して監視する。</li><li>混同行列（Confusion Matrix）はそのまま眺めるのではなく、「母音一致・子音誤認」や「検出点数の増減（マイナスなら指による隠れ、プラスなら背景誤検出または格子ズレ）」のように物理的な誤り方向へ集約することで、次に直すべき箇所（前処理・モデル・後処理）が特定できる。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>2026年10月16日確認のscikit-learn評価指標定義に基づく比較整理。</caption><thead><tr><th scope="col">評価アプローチ</th><th scope="col">計算の仕組み</th><th scope="col">見落とすリスク</th><th scope="col">適した用途・改善アクションへの繋がり</th></tr></thead><tbody><tr><th scope="row">全体件数加重Accuracy</th><td>全正解数 ÷ 全サンプル数</td><td>録音・撮影件数が多い特定人物や簡単な部分課題の成績に支配され、少数派や未知条件の崩壊に気づけない</td><td>データ分布が完全に均一な閉集合テストの参考値のみ（主指標には不適）</td></tr><tr><th scope="row">全体まとめMacro-F1</th><td>全サンプルを合算してクラス別F1を単純平均</td><td>クラス間の不均衡は補正できるが、サンプル数が多い人物・環境の支配は防げない</td><td>クラス別の見逃し・誤検出のバランス確認（人物間の均等性は別途必要）</td></tr><tr><th scope="row">グループ均等Balanced Accuracy</th><td>人物ごとにクラス別Recall平均（BA）を出し、人物間で均等平均</td><td>課題範囲（例：100クラス話者と5クラス話者）が異なるグループを混ぜると難易度が揃わない</td><td>同一課題を持つ未知人物・未知端末間での汎用性比較の主指標（課題別に分離して集計）</td></tr><tr><th scope="row">構造化混同行列（エラー内訳分析）</th><td>真値×予測値の行列を物理的・言語的特徴（子音/母音、点数の増減等）で集約</td><td>行列を生のまま眺めるだけでは100クラス超で傾向が読み取れない</td><td>誤りの8割が「子音誤認」なら特徴プーリング改善、「点数減少」なら指の隠れ対策など直すべき層を特定</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">全体の正答率（Accuracy）が上がったのに実機で悪化する仕組み</h2><p>機械学習モデルの改善サイクルで最も頻繁に起きる失敗の一つが、「テストデータ全体のAccuracy（正答率）が数ポイント上がったから新モデルを採用したのに、実機で別の人が使うと以前より当たらなくなった」という現象です。これはモデルの能力ではなく、評価指標の集計方法に原因があります。
+
+例えば計算例として、評価データに人物Aのサンプルが1,000件、人物Bのサンプルが100件含まれているとします。改善前のモデルが人物Aで85.0%（850件正解）、人物Bで60.0%（60件正解）だった場合、全体の件数加重Accuracyは 910 ÷ 1,100 ＝ 82.7% です。ここで新モデルが人物Aに特化して90.0%（900件正解）へ伸びる一方、人物Bで40.0%（40件正解）へ急落したとします。全体の件数加重Accuracyを計算すると 940 ÷ 1,100 ＝ 85.5% となり、見かけ上は「+2.8ポイントの改善」に見えてしまいます。
+
+さらに、評価データの中に「全100クラスを発声・撮影した人物」と「簡単な5クラス（5母音や基本図形のみ）だけを発声・撮影した人物」が混在している場合、それらを1つの平均値に混ぜてしまうと、簡単な課題のスコアが全体の数字をかさ上げします。主指標を作る際は、まず「同じ課題範囲（共通のクラス集合C）を持つ人物集合S」を予測結果を見る前に固定し、各人物のBalanced Accuracy（クラス別Recallの平均）を算出したうえで、人物間でも等しい重みで平均する「グループ均等Balanced Accuracy」を基準にする必要があります。
+
+主なチェックポイントは以下の通りです：全体の件数加重Accuracy：サンプル数が多い人物や環境の成績に支配されるため、主指標ではなく参考値として扱う / 課題の分離：100クラス課題と5クラス課題（基本母音のみ等）は難易度が異なるため、1つの主指標に混ぜず別スコアとして併記する / 最低グループ値の監視：平均値だけでなく「最も成績が低い人物・条件のスコア」を必ず併記し、特定層での回帰低下を見逃さない。</p><p class="source-meta">参照: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: confusion_matrix</a> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: balanced_accuracy_score</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">混同行列（Confusion Matrix）を「誤りの物理的・構造的な内訳」へ変換する</h2><p>AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれますが、「なぜ外れたか」「次にコードのどこを直せばよいか」は教えてくれません。10クラス〜100クラス以上の分類問題では、scikit-learnの `confusion_matrix` 等で真値と予測値のペアを出力し、さらにそれをドメイン固有の「誤り構造」へ集約することが不可欠です。
+
+例えば日本語の単音節音声認識（約100クラス）で誤分類の内訳を混同行列から集計すると、「母音も子音も外れている誤り」は全体の1割強に過ぎず、誤認全体の80%以上が「母音は合っているが子音だけ取り違えている（ち↔し、つ↔す、k↔g、n↔mなど）」に集中しているといった構造が浮かび上がります。この事実が分かれば、「データを闇雲に増やす」のではなく、「音声区間検出（VAD）の切り出し境界ジッターで先頭の短い子音フレームが欠けているのではないか」「時間方向の平均プーリングで短い子音の特徴が長い母音に埋もれているのではないか（フレーム単位のLogit最大値プーリングや子音・母音マルチタスクヘッドが必要ではないか）」という具体的なアーキテクチャ改善へ直結します。
+
+同様に、カメラ画像から点字やドットパターンを認識するタスクでも、文字単位の混同行列に「検出された点数の増減（予測された点数 − 本来の点数）」という軸を加えるだけで原因が明確に分かれます。点数の増減が「マイナス（点が減って別の文字に化けた）」なら原因は指や影によるオクルージョン（隠れ）や検出閾値の高さであり、「プラス（点が増えて化けた）」なら背景ノイズの誤検出または隣接列の割り当てズレであると即座に切り分けられます。
+
+主なチェックポイントは以下の通りです：音声認識の混同行列集約例：「母音一致・子音誤認」「子音一致・母音誤認」「両方誤認」「同音異表記（ぢ↔じ、づ↔ず、を↔お）」に分類してボトルネックを特定する / 画像・ドット認識の混同行列集約例：「置換（文字化け）」「余分（背景からの湧き出し）」「欠落（見逃し）」「重複（同一対象の2回読み）」と点数の増減方向を分離する / 同音・同義ラベルの扱い：生の予測結果は上書きせず保存したうえで、評価目的に応じて「厳密ラベル一致率」と「同音統合後のスコア」の両方を記録する。</p><p class="source-meta">参照: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: confusion_matrix</a> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: balanced_accuracy_score</a> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: f1_score</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">実機開発で導入すべき評価レポートの定型チェックリスト</h2><p>モデルや前処理を変更するたびに手作業で集計スクリプトを書き換えていると、都合の良い指標だけを見て採用判断を下す「チェリーピッキング」が起きやすくなります。評価パイプラインの出力フォーマットは以下の順序で固定しておくのが安全です。
+
+まず「1. データ分割と評価対象の検証範囲（人物数・件数・クラス範囲・欠落クラスの有無）」を出し、次に「2. 主指標（同一課題上のグループ均等Balanced Accuracy）」、続いて「3. 人物別・性別別・端末条件別のスコアと最低値」、「4. 基本課題（5母音等）の回帰確認」、「5. 対象外ノイズ（other）の誤受理率と発話の誤拒否率」、最後に「6. 混同行列の上位ペアとエラー種別内訳」を出力します。
+
+平均スコアが0.5ポイント上がっていても、特定の重要グループ（未知の女性話者や実機スピーカーフォン条件など）で数ポイントの悪化が起きている場合は自動採用せず、混同行列の差分を確認する運用ルールを徹底することで、実機での手戻りを劇的に減らすことができます。
+
+主なチェックポイントは以下の通りです：欠落クラスのゼロ埋め禁止：特定の評価話者に一部のクラスの正解データが存在しない場合、そのクラスを0点として平均に混ぜず、事前に固定した共通クラス集合上で比較する / 後付けの除外禁止：予測結果を見た後に「このクラスは難しいから評価から外そう」と集計範囲を変更しない / ValとTestの役割分離：閾値調整やエラー分析によるサンプラー調整はすべてVal（検証セット）で行い、Test（最終評価セット）の混同行列を見て学習設定を作り直さない。</p><p class="source-meta">参照: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: confusion_matrix</a> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: balanced_accuracy_score</a> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: f1_score</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にscikit-learn公式ドキュメント（confusion_matrix、balanced_accuracy_score、f1_score）を確認し、多クラス分類および複数人物・複数環境データセットにおける集計バイアスと混同行列の分析手法を整理した記事です。文中のスコアや件数は指標の性質を比較するための計算例です。</p><ul class="source-list"><li class="source-item"><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: confusion_matrix</a><span class="source-meta">確認日: 2026-10-16 / 混同行列（真値×予測値）の定義と多クラス分類における集計仕様。</span></li><li class="source-item"><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: balanced_accuracy_score</a><span class="source-meta">確認日: 2026-10-16 / クラス別Recallの平均としてのBalanced Accuracy定義と不均衡データでの性質。</span></li><li class="source-item"><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html" target="_blank" rel="noopener noreferrer">scikit-learn Documentation: f1_score</a><span class="source-meta">確認日: 2026-10-16 / macro / weighted / micro 平均の計算方法とzero_divisionの扱い。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="ml-benchmark-data-leakage-group-split-pipeline-guide.html">機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ</a></li><li class="source-item"><a href="ml-noise-other-class-false-acceptance-evaluation-guide.html">学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計</a></li><li class="source-item"><a href="streaming-ai-offline-accuracy-vs-realtime-timing-guide.html">オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">全体の正答率（Accuracy）が上がったのに実機で悪化する仕組み</a></li><li><a href="#part-1">混同行列（Confusion Matrix）を「誤りの物理的・構造的な内訳」へ変換する</a></li><li><a href="#part-2">実機開発で導入すべき評価レポートの定型チェックリスト</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

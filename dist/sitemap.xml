@@ -11,6 +11,8 @@
   <url><loc>https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
@@ -18,15 +20,23 @@
   <url><loc>https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>

@@ -72,6 +72,20 @@
     <summary>Windows向けに「USB-C 1本で4K 2画面出力」と書かれたドックをMacBookにつないだとき、2枚のモニターに同じ画面しか映らない（ミラーリングになる）原因と選び方を整理します。</summary>
   </entry>
   <entry>
+    <title>PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</title>
+    <link href="https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。</summary>
+  </entry>
+  <entry>
+    <title>展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計</title>
+    <link href="https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html" />
+    <id>https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。</summary>
+  </entry>
+  <entry>
     <title>ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器</title>
     <link href="https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html" />
     <id>https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html</id>
@@ -121,11 +135,25 @@
     <summary>個人サイトを公開した直後、Google Search Consoleとブラウザ側のアクセス解析（Cloudflare Web AnalyticsやGA4）で数値が食い違うときに、タグの設定ミスと仕様上の差を切り分ける手順です。</summary>
   </entry>
   <entry>
+    <title>カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正</title>
+    <link href="https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。</summary>
+  </entry>
+  <entry>
     <title>家族だけに自宅アプリを見せたいとき、VPN（Tailscale）とCloudflare Tunnelで何が変わる？</title>
     <link href="https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide.html" />
     <id>https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide.html</id>
     <updated>2026-10-16T00:00:00Z</updated>
     <summary>自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。</summary>
+  </entry>
+  <entry>
+    <title>実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計</title>
+    <link href="https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>「使いながらデータを集めてモデルを賢くする」継続学習パイプラインで、アプリが出題したお題をそのまま正解ラベルとして自動学習させるとデータセットが崩壊する理由を解説。出題・実際の発声・モデル予測の3分離、Top-3救済ログの保持、安全なモデル配布設計をまとめます。</summary>
   </entry>
   <entry>
     <title>Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認</title>
@@ -140,6 +168,34 @@
     <id>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</id>
     <updated>2026-10-16T00:00:00Z</updated>
     <summary>RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。</summary>
+  </entry>
+  <entry>
+    <title>機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方</title>
+    <link href="https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。</summary>
+  </entry>
+  <entry>
+    <title>機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ</title>
+    <link href="https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>検証環境では高精度なのに本番・展示会場で全く動かない最大の原因である「データリーク（Data Leakage）」と「ベンチマーク設計の不備」を解説。話者・セッション独立分割の崩壊、学習スクリプト内部で勝手に再分割するバグ、テスト結果のサンプラー逆流を防ぐ手順をまとめました。</summary>
+  </entry>
+  <entry>
+    <title>機械学習の不均衡データで「オーバーサンプリング」と「損失重み」を二重に掛けると何が起きるか：全件通過を守る学習設計</title>
+    <link href="https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction.html" />
+    <id>https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。</summary>
+  </entry>
+  <entry>
+    <title>学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計</title>
+    <link href="https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>クリーンな学習データだけで作ったAIモデルが、展示会場の雑音や操作中の無関係な動きに対して誤作動を連発する原因を解説。対象外クラス（other）の設計、環境音誤受理率・発話誤拒否率の分離集計、およびノイズデータのセッション単位保留の重要性を整理します。</summary>
   </entry>
   <entry>
     <title>初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか</title>
@@ -170,6 +226,13 @@
     <summary>VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。</summary>
   </entry>
   <entry>
+    <title>オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</title>
+    <link href="https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。</summary>
+  </entry>
+  <entry>
     <title>Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する</title>
     <link href="https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html" />
     <id>https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html</id>
@@ -182,6 +245,13 @@
     <id>https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html</id>
     <updated>2026-10-16T00:00:00Z</updated>
     <summary>アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。</summary>
+  </entry>
+  <entry>
+    <title>合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策</title>
+    <link href="https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls.html" />
+    <id>https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>不足している属性（女性音声や特定条件の画像など）をTTSや合成データで補う際に陥りやすい5つの罠を解説。同一音声IDの複数設定を独立話者と誤認する問題、合成データのTest混入、ゼロ波形・フォーマット偽装、前処理でのメタデータ消失を防ぐ手順を整理します。</summary>
   </entry>
   <entry>
     <title>100W・140W充電器は必要？ ポート配分と使い方から選ぶ</title>

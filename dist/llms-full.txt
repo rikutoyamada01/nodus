@@ -587,6 +587,132 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 
 ---
 
+# PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証
+
+> GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- PyTorchで学習したモデルをONNX INT8へ量子化してエッジ端末に載せる際、PyTorch時点の評価スコアをそのまま実機性能として転記してはいけない。
+- 精度変化の多くは量子化誤差だけでなく「学習時は事前に切り出し・音量正規化したファイルを使い、実機推論では生データ入力＋内包前処理を使っていることによる前処理不一致」や「labels.jsonの順序ズレ」で起きる。
+- 必ず同一の小さな開発検証セットで『PyTorch FP32』『ONNX FP32』『ONNX INT8』の3段階を生データ入力から比較し、学習用のマルチタスク補助ヘッドはエクスポート前に切り離してドロップイン置換性を保つ。
+
+
+## 選択肢の比較表
+| 検証ステージ | 確認すべき一致項目 | 不一致・劣化があった場合の主な原因 | 対策・ガードレール |
+| --- | --- | --- | --- |
+| Stage 1: PyTorch (前処理済み入力) vs PyTorch (生データ入力) | 切り出し窓（例：0.6秒）・リサンプリング・音量正規化・FeatureExtractor出力の一致 | 学習時は事前に切り出し・正規化したWAVを使い、評価時は生WAVから異なるルールで切り出している | 前処理関数を1つの共通モジュールに統一し、学習時と推論時で異なる正規化統計を使わない |
+| Stage 2: PyTorch FP32 vs ONNX FP32 | 同一入力テンソルに対する出力ロジット（Logits）の数値一致（許容誤差内） | 動的軸（dynamic_axes）の設定漏れ、制御フローの固定化、またはlabels.jsonのクラス順序ズレ | エクスポート直後にダミー入力と実サンプルでロジット差分を自動テストし、ラベル一覧との整合ガードを入れる |
+| Stage 3: ONNX FP32 vs ONNX INT8 | 開発検証セット（Val）でのBalanced Accuracy・混同行列・CPU推論レイテンシ | 特定層（Attentionや細かな特徴抽出層）のINT8丸め誤差による境界クラスの反転 | 必ず実運用するINT8 ONNXアーティファクトでVal/Testを再評価し、PyTorch時点のスコアを正式精度として報告しない |
+| Stage 4: 学習用マルチタスク構造からの推論モデル抽出 | 本番ランタイムとの入出力インターフェース互換性（ドロップイン置換性） | 学習時に追加した子音・母音等の補助分類ヘッドがONNX出力に残り、既存推論ワーカーが壊れる | エクスポート前に extract_inference_model() 等で補助ヘッドを切り離し、主分類ヘッドのみを出力する |
+
+## 詳細解説・原因分析
+### 「PyTorchのスコア」をそのまま実機の性能として報告してはいけない理由
+エッジ端末（Raspberry PiやローカルPCのCPUなど）でリアルタイムに音声認識（wav2vec 2.0等）や画像認識を動かす場合、PyTorchのFP32モデルをそのまま動かすと1回の推論に150ms以上かかり、ストリーミング応答が追いつかないことがあります。そこでONNXへエクスポートしたうえでINT8量子化（Quantization）を適用すると、モデルサイズを圧縮し、CPU推論レイテンシを2倍以上（例：150ms台→60ms台へ）高速化できます。
+
+しかしこのとき、クラウドGPU上でPyTorchモデルを評価した時点のAccuracyやMacro-F1を、そのまま「実機モデルの精度」としてレポートに転記してしまうケースが後を絶ちません。実機で動くのはあくまで量子化後のONNX INT8モデルであり、さらに学習時と実機推論時では「前処理の経路」が異なることが多いためです。
+
+例えば、学習高速化のために「あらかじめ0.6秒に切り出して音量処理を施した前処理済みWAVファイル」で学習を回し、本番推論では「マイクからの生音声ストリームをONNX前処理またはランタイム側で切り出してINT8モデルへ渡す」という構成をとっている場合、精度が落ちた原因がモデルの学習不足なのか、切り出し・音量正規化の不一致なのか、INT8量子化の丸め誤差なのかが分からなくなります。
+
+主なチェックポイントは以下の通りです：3段階の切り分け評価：小さな固定開発セットを用意し、(1) PyTorch FP32、(2) ONNX FP32、(3) ONNX INT8 の3つを同じ生データから走らせて予測の一致率を確認する / ラベル順序ガードの自動化：ONNXエクスポート時にモデルの出力次元数と `labels.json` のクラス順序・件数が完全一致しているかを単体テスト（label guard）で強制検証する / キャッシュ混入の防止：推論器がローカルの共有キャッシュディレクトリから古い重みファイルを勝手に読み込んでいないか、実験固有の出力パスとSHA-256ハッシュを明示して評価する。
+参照: [ONNX Runtime Documentation: Quantize ONNX Models](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+参照: [PyTorch Documentation: torch.onnx](https://pytorch.org/docs/stable/onnx.html)
+
+### 学習時の工夫（マルチタスク補助ヘッド等）を推論時にゼロコストで切り離す設計
+認識精度を高めるために、学習時に「主分類ヘッド（例：100音節分類）」だけでなく「子音分類ヘッド（30クラス）」「母音分類ヘッド（7クラス）」や知識蒸留（Knowledge Distillation）用の射影層といった補助ヘッドを並列に配置するマルチタスク学習は強力な手法です。
+
+ただし、これらの補助ヘッドを含んだままONNXへエクスポートしてしまうと、実機側の推論ランタイム（既存のストリームリスナーや出力ワーカー）が想定している出力テンソルの形と合わなくなり、本体アプリのコードを書き換える必要が出てきます。また、推論時には使わない補助ヘッドの演算コストも無駄に残ってしまいます。
+
+これを防ぐには、モデルクラスに推論用グラフ抽出メソッド（例：`extract_inference_model()`）を用意し、学習完了後に補助ヘッドを切り離して「既存のベースラインモデルと入出力の型・ラベル体系が100%同一のモデル」に変換してからONNXエクスポートとINT8量子化を実行します。こうすることで、学習側の工夫を本番ランタイムに対して完全なドロップイン置換（レイテンシ増加ゼロ・呼び出し側コード変更ゼロ）として安全に届けることができます。
+
+主なチェックポイントは以下の通りです：学習コードと推論依存の分離：エッジ端末側にはONNX Runtime等の軽量な推論依存だけを持たせ、PyTorch本体やラベリング・学習用の重い依存関係を本番環境へ持ち込まない / セットでのアトミック公開：採用基準を満たしたモデルを公開する際は、INT8 ONNXファイル単体ではなく『ONNXモデル・ラベル定義JSON・前処理設定』を必ず1セットとして配布する / 実運用アーティファクトでの最終回帰確認：量子化後のONNXファイルを使って最終的なVal/Test評価とCPUレイテンシ計測を行い、その数値を正式なリリース記録として残す。
+参照: [ONNX Runtime Documentation: Quantize ONNX Models](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+参照: [PyTorch Documentation: torch.onnx](https://pytorch.org/docs/stable/onnx.html)
+
+## 記事の範囲
+2026年10月16日にONNX Runtime Quantization公式ドキュメントおよびPyTorch `torch.onnx` 公式ドキュメントを確認し、音声・画像モデルのONNX変換・INT8量子化時における前処理一致検証と推論グラフ分離の設計手順を整理した記事です。
+
+
+## 参考資料
+- [ONNX Runtime Documentation: Quantize ONNX Models](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+- [PyTorch Documentation: torch.onnx](https://pytorch.org/docs/stable/onnx.html)
+
+## 次に考えたいこと
+- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html)
+- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html)
+- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html)
+
+
+---
+
+# 展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計
+
+> 開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/edge-ai-venue-wifi-congestion-offline-fallback-design.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- 展示会やコンテスト会場では数百台の端末と来場者のスマホで2.4GHz帯・会場Wi-Fiやテザリングが極度に混雑するため、起動時のモデルダウンロードやクラウド通信に依存していると実機デモが停止する。
+- さらに会場の反響音・周囲のプレゼン音声によりマイク入力のSNRが急落するため、静かな部屋で調整した固定音量閾値のVADやTop-1厳密一致判定のままだと音声認識がほぼ通らなくなる。
+- 実機審査・展示に持ち込むシステムは、(1) ネットワークを一切使わない『ローカル限定モード（ONNX INT8等の事前バンドル）』、(2) 機器間通信の有線化または5GHz専用ローカルルーター化、(3) ノイズ適応型VADとTop-3候補救済・手動進行フォールバックを必ず備える。
+
+
+## 選択肢の比較表
+| 障害ポイント | 開発室（普段の環境） | 展示会・実機審査会場 | 必須のフェイルセーフ・設計対策 |
+| --- | --- | --- | --- |
+| モデル読込・データ同期通信 | 高速な光回線で起動時にHubから最新モデルや設定を数秒で取得できる | 会場Wi-Fiやモバイル回線が輻輳し、起動時のモデル確認・ダウンロードでタイムアウトやフリーズが起きる | 『ローカル限定モード（オフライン固定）』を用意し、体験セッション中はネットワーク通信を一切行わずローカルのONNXモデルで即起動させる |
+| エッジ端末・マイコン間のローカル通信 | 2.4GHz Wi-FiやmDNS（.local）名前解決が遅延なく通る | 周囲の数百個のAP・Bluetooth電波干渉でパケットロスが多発し、音声・映像ストリームが途切れる | カメラ・マイコン〜PC間は可能な限りUSB有線接続または有線LAN＋専用5GHzローカルルーター（固定IP指定）で外部電波と分離する |
+| 音声認識・マイク集音（VAD） | 静かな部屋で固定の音量閾値でも発話区間を正確に切り出せる | 周囲の会話・アナウンス・空調騒音で背景ノイズ床が跳ね上がり、発話の切り出し失敗や誤受理が多発する | ノイズ床を追従推定する適応型VAD＋指向性/近接マイクを採用し、第1候補がotherなら判定を待つ＆Top-3候補内にお題があれば救済する |
+| 審査・デモ進行の継続性 | 認識が1回で通る前提で画面フローが組まれている | 通信遅延や騒音で認識が連続失敗した際、先の画面へ進めず実機のコア機能を見せられないまま制限時間が終わる | 音声・画像認識が失敗してもキー操作1つで次のステップへ進められるバイパス操作と、録音・送信失敗が体験を止めない非同期分離を入れる |
+
+## 詳細解説・原因分析
+### 会場のローカルネットワーク混雑がAIの「認識精度」まで悪化させる理由
+技術展示会やコンテストの実機審査（マニュアル審査・デモ審査）で最も多くのチームが直面する悪夢が、「控え室や開発室では動いていたのに、本番会場のブースではネットワークが混雑してうまく動作せず、さらに音声認識の精度まで劇的に悪化した」というトラブルです。
+
+なぜネットワークの混雑が音声認識の精度低下にまで直結するのでしょうか。理由は2つあります。1つ目は、エッジ端末（カメラやマイクを備えたラズパイ・マイコン等）から処理用PCへWi-Fi経由で音声や映像ストリームを飛ばしている場合、会場の電波干渉によるパケット欠落やジッター（遅延の揺らぎ）によって「音声フレームの一部が欠けた状態（またはチャンク境界がズレた状態）」でモデルへ入力され、子音や文字の判定が壊れるためです。2つ目は、起動時や判定ごとにクラウドAPIやHugging Face Hubへ通信する処理が挟まっていると、タイムアウト待ちでストリームバッファが溢れ、発話の頭切れが発生するためです。
+
+これを防ぐ鉄則は、展示・審査モードでは外部ネットワークへのアクセスを完全に遮断する『ローカル限定モード』へ切り替え、事前に検証済みの軽量モデル（ONNX INT8等）を手元のストレージから直接ロードして固定することです。また、機器間の通信も2.4GHz帯のWi-FiやmDNS名前解決に頼らず、USBシリアル/OTG有線接続や有線LAN・固定IPで直結する構成が最も確実です。
+
+主なチェックポイントは以下の通りです：起動時のネットワーク依存排除：`hf_hub_download` 等を使う場合も `local_files_only=True` 相当のローカル限定設定を用意し、会場で通信待ちロックを起こさない / ログとテレメトリの非ブロッキング化：利用データの保存やアップロード処理が失敗・タイムアウトしても、メインの認識ループやUI描画スレッドを絶対にブロックしない / スキーマ駆動の軽量通信：異種環境（C++マイコン〜Python推論器〜フロントエンド）を繋ぐ際は、曖昧なテキスト解析ではなく明確なスキーマ（Protobufや固定JSONスキーマ）とリングバッファで欠損を検知する。
+参照: [Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
+参照: [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+
+### 会場騒音で誤認識しても「体験を止めない」UIとTop-3救済設計
+展示会場は想像以上に騒がしく、また審査員や来場者は開発者とは異なる声質・声量・話すタイミングを持っています。静かな部屋で80%の精度が出ていたモデルでも、会場のスピーカーフォン越しでは第1候補（Top-1）の一致率が大きく下がることが珍しくありません。
+
+このとき「第1候補が完全一致しない限り次に進めない」という厳格すぎるUIを作ってしまうと、来場者が何度発声しても不正解になり、肝心のアプリケーション全体の流れ（出題から採点・フィードバックまでの一連の体験）を一度も見せられないまま審査時間が終了してしまいます。
+
+実機デモを成功させるには、(1) 背景ノイズレベルを動的に推定するノイズ適応型VADで雑音区間を切り分け、(2) 第1候補が `other`（環境音・不明音）のときは即座に不正解にせず判定を待ち、(3) 上位3候補（Top-3）以内に出題文字が一定スコア以上で入っていれば正解として進行させる救済ロジックを入れ、(4) 万が一マイク認識が通らない環境でもスタッフのキー操作やボタン1つで即座にフォールバック進行できる設計にしておくことが不可欠です。
+
+主なチェックポイントは以下の通りです：デモ審査の目的を意識する：スライド発表とは異なり、実機審査は『実機が止まらずに一連の体験として動くか』を確かめる場であるため、単一モジュールの通信エラーで全体が止まる構造を避ける / 機械の判定だけで利用者の誤りと断定しない：会場騒音による誤認識が起き得ることを踏まえ、UIや案内で再発声やスキップを自然に促せる導線を作る / 救済有無の正確な記録：Top-3救済を使って体験をスムーズに通した場合でも、内部ログには元のTop-1予測とスコアをそのまま残し、展示後のモデル改善（混同行列分析）に活用する。
+参照: [Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
+参照: [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+
+## 記事の範囲
+2026年10月16日にHugging Face Hubのオフライン・キャッシュ取得仕様およびONNX Runtimeのローカル推論仕様を確認し、展示会場・フィールド環境におけるネットワーク遮断耐性と騒音耐性のアーキテクチャ設計を整理した記事です。
+
+
+## 参考資料
+- [Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
+- [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+
+## 次に考えたいこと
+- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html)
+- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html)
+- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html)
+
+
+---
+
 # ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器
 
 > Wi-Fi 6とThread（802.15.4）に対応するESP32-C6でスマートホーム機器を自作する前に、既存のWi-Fiルーターだけで動くのか、別途ボーダールーターが必要なのかを整理します。
@@ -1010,6 +1136,69 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 
 ---
 
+# カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正
+
+> ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/hardware-change-camera-microphone-hyperparameter-regression-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- カメラの取り付け距離や左右の向きを変えた際、旧ハード向けに調整した『画面端の切り落とし（クロップ）』や『1度刻みの傾きヒストグラム』を残していると、有効領域の1/4を削り落としたり補正が打ち消し合ったりして精度が急落する。
+- マイクをヘッドセットからスピーカーフォンへ変更した際、特徴抽出器（Encoder）を固定したまま最後の分類層（Classifier）の損失重みだけを2倍・4倍にしても効果はほぼ無く、別条件での回帰低下を招く。
+- ハードウェア変更時はまず物理寸法・校正値の再測定と不要な前処理の撤去を行い、モデル適応では重み1倍（全件通過）の対照実験と複数乱数シード（3 seed等）で『1シード・最終エポックだけの偶然の差』を排除する。
+
+
+## 選択肢の比較表
+| ハードウェア変更に伴う問題 | 旧設定のまま残した場合の現象（例） | 原因のメカニズム | 正しい再校正・改善アプローチ |
+| --- | --- | --- | --- |
+| カメラ配置変更（右手用→左手用・距離接近）での画面端クロップ | 切り落とし幅を増やすと一致率が 77.4% → 64.7% へ低下する | 旧ハードでは写り込む指を隠すために有効だったが、新ハードでは対象が消え、さらに距離接近で1画面4マスしか入らないため160px削ると1/4のマスが消滅する | 旧ハード前提の切り落とし構成を撤去し、現在の画角での手の占有率を実測してから判断する |
+| 画面内ドット数減少による傾き推定の崩壊 | 紙が傾いた録画で隣り合うフレームの推定角が +22度 と -25度 を行き来し、平滑化でゼロになり補正が全く効かない | 1画面のマス数が減り投票材料のドット対が減ったのに、1度刻みの細かいヒストグラムを使っているため真の角度の票が散り、偶然固まったノイズ対に最頻値を奪われる | ヒストグラムのビン幅を5度へ広げ、ペアの長さ重み付き投票に変更することで傾き補正を機能させる |
+| マス間ピッチ推定の振れとマスの二重割れ | 1つのマスが左列と右列の2つのマスに割れて重なる現象が全フレームの15.7%で発生する | ピッチ許容帯域が広すぎるとマスの箱寸法が半分〜1.4倍まで振れ、さらに機体固有のマス間比（2.27）が分割閾値に近いため列間とマス間を取り違える | カメラ高さの実測値に基づきピッチ帯域を 0.8〜1.2倍 に縛り、点の二重検出は潰さず重なったマスの箱同士をマージする |
+| マイク変更（スピーカーフォン化）に対する分類層のみの損失重み増加 | 端末データの損失重みを2倍・4倍にしても主指標の上積みは平均0.00〜+0.21ptに留まり、3シード中2シードでは1倍より低く、既存条件が最大-4.07pt劣化する | 特徴抽出器（encoder）を固定したまま最後の線形分類層（classifier）の重み比率だけを変えても、新しいマイクの音響特徴そのものを抽出できるようにはならない | 分類層のみの重み調整で無理に4倍を採用せず、1倍重みのまま全データを毎エポック通し、小さい学習率でencoderの一部（上位層）を含めて更新する |
+
+## 詳細解説・原因分析
+### ハードを変えたとき、なぜ「かつて精度を上げた工夫」が足を引っ張るのか
+カメラやセンサーを使った組込みAIでは、筐体の改良によって「カメラの取り付け高さを4.0cmから3.0cmへ近づけた」「右手でなぞる構造から左手でなぞる構造へ変えた」といったハードウェア変更が頻繁に発生します。このとき、旧ハードウェアで80%以上の高精度を出していた認識パイプラインをそのまま流用すると、一気に精度が落ちることがあります。
+
+原因を調べると、ニューラルネットワーク（点検出YOLO等）の推論精度ではなく、その前後に置かれた幾何処理のハイパーパラメータが前提崩壊を起こしています。例えば、旧ハードでは「右手の指が画面右端に写り込むのを防ぐため、画面端160pxを切り落とす（クロップする）」という前処理が有効でした。ところが左手用ハードに変えてカメラ距離も近づけると、右端にはそもそも手が写らなくなり（占有率0%）、さらに1画面に4文字分しか入らない拡大率になったため、160px切り落とすと「読めるはずの1文字分（画面の4分の1）を自ら削り落とす」だけの害悪に転じてしまいます。
+
+また、カメラが近づいて1画面内のドット数が減ると、紙の傾きを求める「1度刻みの角度ヒストグラム投票」で票がばらけ、隣り合うフレームで推定角度が+22度と-25度に暴れて平滑化でゼロに打ち消し合う現象や、点の二重検出を前段で潰したせいで逆に格子当てはめの情報が減って精度が落ちるといった逆転現象も起きます。ハードウェアを変えたときは、まず基準高さでのピクセル寸法（DX/DY）を実測して校正値を取り直し、旧ハード専用の切り落としを撤去したうえで、ピッチ許容帯域（例：実測のばらつきを包む0.8〜1.2倍）を締め直すだけで大幅な改善が得られます。
+
+主なチェックポイントは以下の通りです：旧ハードの録画・数字との単純比較禁止：ハードウェアや評価判定器を修正した後はベースライン自体が変わるため、現行ハードの録画セット上で全候補を測り直す / 前段で潰すか後段でまとめるかの検証：点の二重検出がフレーム内で出ていても、前段で無理に間引くと格子推定の材料が減って精度が落ちることがあるため、後段のマス分割時に重なり率（例：0.3以上）でマージする方が強い / 距離変更時の再校正：カメラと紙面の距離を大きく変えた場合、単純な反比例の式だけではレンズ特性や基準点の違いで数%の残差が出るため、設定ファイルの基準ピクセル値そのものを実測し直す。
+参照: [scikit-learn User Guide: Cross-validation and Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+### マイク変更（スピーカーフォン適応）と「1シード・最終エポック比較」の罠
+同様に、音声認識で実運用デバイスが「近接マイク・ヘッドセット」から「スピーカーフォン（距離が遠く反響や環境音が混じる端末）」へ変わった場合、スピーカーフォン収録データの損失重み（Loss Weight）を2倍・4倍に増やして再学習したくなります。
+
+しかし、特徴抽出器（wav2vec 2.0等のEncoder）を固定したまま最後の分類層（Classifier）だけを更新する予備実験を3つの乱数シード（seed 42 / 43 / 44）で回してみると、非常に重要な教訓が得られます。もし seed 42 の1回しか実験していなければ、1倍重み（75.87%）に対して4倍重み（76.86%）が「+0.99ポイント改善した」と結論づけてしまったはずです。ところが seed 43 と seed 44 では4倍重みの方が1倍重みより低く、3シード平均の上積みはわずか +0.21ポイント で一貫性がなく、さらに既存の別マイク条件では最大 -4.07ポイント の回帰低下が起きていました。
+
+また、「未更新の初期モデル（73.02%）」と「4倍重みで学習したモデル（76.49%）」だけを比べて「重みを4倍にしたおかげで+3.47ポイント改善した」と説明するのも誤りです。なぜなら、重み1倍のまま全データを1回ずつ通して分類層を更新するだけでも 76.28% まで改善するからです。「学習を回したこと自体の効果」と「重みを増やした効果」を混同せず、端末の音響特性に適応させるなら重みは1倍を維持したまま、Encoderの一部（上位層）を小さな学習率で一緒にファインチューニングする方針を選ぶべきです。
+
+主なチェックポイントは以下の通りです：初期値との差と対照実験の差を混同しない：重み4倍で初期値から上がった分をすべて重み付けの効果と呼ばず、必ず同一条件の『重み1倍（Control）』との差分で評価する / 最終エポック比較の罠：1倍重みはエポック6〜10でVal最良に達し、4倍重みはエポック18〜19で最良に達するなど学習速度が異なるため、最終20エポック時点だけを切り取って比較しない / 複数シードでの一貫性確認：0.2〜0.5ポイント程度の微差は乱数シード1つで簡単に逆転するため、ハイパーパラメータの採用判断には複数シードまたはグループ交差検証を用いる。
+参照: [scikit-learn User Guide: Cross-validation and Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+## 記事の範囲
+2026年10月16日にscikit-learnの評価・交差検証ガイドラインを確認し、カメラ幾何条件・マイク音響条件の変更に伴うハイパーパラメータ再校正と対照実験の手順を整理した記事です。
+
+
+## 参考資料
+- [scikit-learn User Guide: Cross-validation and Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
+- [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+## 次に考えたいこと
+- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html)
+- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html)
+- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html)
+
+
+---
+
 # 家族だけに自宅アプリを見せたいとき、VPN（Tailscale）とCloudflare Tunnelで何が変わる？
 
 > 自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。
@@ -1067,6 +1256,71 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 ## 次に考えたいこと
 - [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html)
 - [NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html)
+
+
+---
+
+# 実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計
+
+> 「使いながらデータを集めてモデルを賢くする」継続学習パイプラインで、アプリが出題したお題をそのまま正解ラベルとして自動学習させるとデータセットが崩壊する理由を解説。出題・実際の発声・モデル予測の3分離、Top-3救済ログの保持、安全なモデル配布設計をまとめます。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/human-in-the-loop-labeling-prompt-vs-actual-input-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- 学習支援装置やエッジAIアプリで実利用データを収集する際、システムが出題した文字（例：『さ』）をそのまま録音データの正解ラベルにすると、利用者が読み間違えて『か』と発声したデータまで『さ』として学習しモデルが壊れる。
+- 収集データには「出題ラベル」「人が確認した実際の発声ラベル」「モデルの予測（Top-1およびTop-3救済前の生スコア）」の3つを分離して記録し、判別不能なデータは学習へ投入せず保留にする。
+- 発声した瞬間に端末内で重みを書き換えるのではなく、管理側の定期ジョブでVal選択・Test回帰確認を通過したモデルのみを配布し、端末側には『最新版・バージョン固定・ローカル限定』の切替を用意する。
+
+
+## 選択肢の比較表
+| 出題文字（お題） | 利用者の実際の発声 | モデルの第1候補予測 | 付与すべき学習ラベルとデータの意味 |
+| --- | --- | --- | --- |
+| 「さ」を出題 | 「さ」と正しく発声 | 「か」と誤予測 | 学習ラベルは『さ』。モデルの誤認識を改善するための貴重な教師データになる |
+| 「さ」を出題 | 「か」と読み間違い | 「か」と予測 | 学習ラベルは『か』。利用者の読み間違いであり、モデルの音声分類自体は正しいため『さ』にしてはいけない |
+| 「さ」を出題 | 雑音・小声で判別不能 | 「か」と予測 | 『保留（未投入）』。人が聞いても判別できないデータを無理にラベリングして学習へ混ぜない |
+| 「さ」を出題 | 「さ」と発声 | 第1候補「か」・第2候補「さ」(スコア0.18) | 体験上はTop-3救済で正解扱いにするが、ログには『第1候補＝か』を上書きせず残し、Top-1改善の材料にする |
+
+## 詳細解説・原因分析
+### なぜ「出題した文字＝音声の正解ラベル」にするとモデルが壊れるのか
+音声認識や手書き・点字認識を使った学習支援アプリでは、認識精度がまだ発展途上にある段階でもユーザー体験を損なわないよう、「モデルの第1候補（Top-1）が外れていても、上位3候補（Top-3）以内にお題の文字が一定のスコア（例：0.15以上）で入っていれば正解として救済する」といった工夫がよく使われます。
+
+このシステムに「実際の利用で集まったデータを学習に戻して賢くする」仕組みを組み込む際、最もやってはいけないのが『アプリが出題した文字をそのまま録音データの正解ラベルとして自動付与する』ことです。なぜなら、利用者がお題の『さ』を『か』と読み間違えて発声した場合、モデルが正しく『か』と認識していても、出題ラベルの『さ』を正解として再学習させてしまうと、「『か』という音声波形は『さ』である」という誤った教師信号をモデルに教え込むことになるからです。
+
+したがって、収集データには「1. 出題文字」「2. モデルの元の認識候補とスコア（Top-3救済で正解にした場合も元の第1候補を上書きせず保持）」「3. 人がレビューツールで実際に聞いて確認した発声ラベル」の3つを分けて記録し、確認済みのデータだけを学習パイプラインへ送る必要があります。また、認識が成功した回答ばかりを集めるとデータに偏りが出るため、低確信度やother（不明音）に分類された発声も漏れなく収集対象に含めます。
+
+主なチェックポイントは以下の通りです：Top-3救済ログの保全：体験上の採点結果（正解/不正解）と、モデルが本来出した第1候補の予測ラベルを別カラムで保持し、モデルの誤認識と人間の読み間違いを切り分けられるようにする / 重複送信の防止（べき等性）：各録音に一意な録音ID・試行IDを付与し、ネットワーク再送等で同じバッチを再度アップロードしても学習データに重複登録されないようにする / 収集失敗時の非ブロッキング設計：録音保存やクラウドへのアップロードがエラーになっても、目の前のユーザーの学習体験やアプリの動作を絶対に止めない。
+参照: [Hugging Face Hub Documentation: Upload files to the Hub](https://huggingface.co/docs/huggingface_hub/guides/upload)
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+### 「その場で賢くなる」と誤解させないバッチ検証とモデル配布アーキテクチャ
+展示会やフィールドテストで継続学習の仕組みを説明する際、「一度話すとその場で端末が賢くなる」「データが増えれば必ず精度が上がる」といった説明をするのは誠実ではありません。発声した瞬間に端末上で重みを更新（オンライン学習）すると、ノイズや偏った入力でモデルが即座に劣化するリスクがあり、またエッジ端末に重い学習用ライブラリ一式を持たせる必要も生じます。
+
+堅牢なアーキテクチャでは、利用端末（エッジ側）は「推論と同意に基づく録音・メタデータ送信」だけに徹し、学習と評価は管理側の定期ジョブで行います。具体的には、Hugging Face Hub等のリポジトリを介して確認済みデータを回収し、既存の人物分離Splitを維持したまま再学習を行い、Valでモデル選択した後にTestで現行配布モデルと回帰比較します。そして採用基準（未知話者やスピーカーフォン条件での改善、雑音誤受理率の非劣化）を満たしたモデルだけを、ONNXファイル・ラベル一覧・前処理設定のセットとして公開します。
+
+さらに利用端末側には「1. 最新版を自動取得（セッション開始前に確認）」「2. バージョン固定（指定したモデルを維持）」「3. ローカル限定（ネットワーク遮断・会場Wi-Fi混雑時でも手元のモデルで確実に動作）」の3モードを用意し、体験の最中にモデルが勝手に切り替わらないように固定するのが鉄則です。
+
+主なチェックポイントは以下の通りです：同意と公開範囲の分離：「端末内での録音への同意」と「外部リポジトリへの送信・公開への同意」は区別して扱い、モデルだけを公開し音声データを非公開にしたい場合はリポジトリを分離する / コミットハッシュとモデルバージョンの分離：同一リポジトリに収集データを追加するだけでもGitコミットは進むため、推論端末側はリポジトリのコミットではなく『配布モデルのバージョン番号』を見て更新有無を判定する / 仕組みの完成と精度向上の分離：「収集から再学習・配布までのパイプラインが動いたこと」と「実際に未知話者での認識精度が上がったこと」は別の成果として分けて検証・報告する。
+参照: [Hugging Face Hub Documentation: Upload files to the Hub](https://huggingface.co/docs/huggingface_hub/guides/upload)
+参照: [Hugging Face Hub Documentation: Downloading files (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+## 記事の範囲
+2026年10月16日にHugging Face Hub公式ドキュメント（upload、file_download）およびscikit-learnの評価ガイドを確認し、エッジAI端末における実利用データ収集・ラベリング・再学習・配布の安全な運用設計を整理した記事です。
+
+
+## 参考資料
+- [Hugging Face Hub Documentation: Upload files to the Hub](https://huggingface.co/docs/huggingface_hub/guides/upload)
+- [Hugging Face Hub Documentation: Downloading files (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
+- [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+## 次に考えたいこと
+- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html)
+- [合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls.html)
+- [展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html)
 
 
 ---
@@ -1185,6 +1439,272 @@ AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています
 - [常駐AI用ならラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
 - [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
 - [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+
+
+---
+
+# 機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方
+
+> 音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- 全体の件数加重Accuracy（正答率）だけを主指標にすると、データ件数が多い人物・撮影条件や簡単なクラス（5母音のみ等）の成績に引っ張られ、未知ユーザーや難クラスでの大幅な劣化を見落とす。
+- 実機向けのAI開発では、クラス別Recallを平均しさらに人物・条件間で均等平均した「グループ均等Balanced Accuracy」を主指標に置き、最も成績が低い人物・条件のスコア（最低値）を併記して監視する。
+- 混同行列（Confusion Matrix）はそのまま眺めるのではなく、「母音一致・子音誤認」や「検出点数の増減（マイナスなら指による隠れ、プラスなら背景誤検出または格子ズレ）」のように物理的な誤り方向へ集約することで、次に直すべき箇所（前処理・モデル・後処理）が特定できる。
+
+
+## 選択肢の比較表
+| 評価アプローチ | 計算の仕組み | 見落とすリスク | 適した用途・改善アクションへの繋がり |
+| --- | --- | --- | --- |
+| 全体件数加重Accuracy | 全正解数 ÷ 全サンプル数 | 録音・撮影件数が多い特定人物や簡単な部分課題の成績に支配され、少数派や未知条件の崩壊に気づけない | データ分布が完全に均一な閉集合テストの参考値のみ（主指標には不適） |
+| 全体まとめMacro-F1 | 全サンプルを合算してクラス別F1を単純平均 | クラス間の不均衡は補正できるが、サンプル数が多い人物・環境の支配は防げない | クラス別の見逃し・誤検出のバランス確認（人物間の均等性は別途必要） |
+| グループ均等Balanced Accuracy | 人物ごとにクラス別Recall平均（BA）を出し、人物間で均等平均 | 課題範囲（例：100クラス話者と5クラス話者）が異なるグループを混ぜると難易度が揃わない | 同一課題を持つ未知人物・未知端末間での汎用性比較の主指標（課題別に分離して集計） |
+| 構造化混同行列（エラー内訳分析） | 真値×予測値の行列を物理的・言語的特徴（子音/母音、点数の増減等）で集約 | 行列を生のまま眺めるだけでは100クラス超で傾向が読み取れない | 誤りの8割が「子音誤認」なら特徴プーリング改善、「点数減少」なら指の隠れ対策など直すべき層を特定 |
+
+## 詳細解説・原因分析
+### 全体の正答率（Accuracy）が上がったのに実機で悪化する仕組み
+機械学習モデルの改善サイクルで最も頻繁に起きる失敗の一つが、「テストデータ全体のAccuracy（正答率）が数ポイント上がったから新モデルを採用したのに、実機で別の人が使うと以前より当たらなくなった」という現象です。これはモデルの能力ではなく、評価指標の集計方法に原因があります。
+
+例えば計算例として、評価データに人物Aのサンプルが1,000件、人物Bのサンプルが100件含まれているとします。改善前のモデルが人物Aで85.0%（850件正解）、人物Bで60.0%（60件正解）だった場合、全体の件数加重Accuracyは 910 ÷ 1,100 ＝ 82.7% です。ここで新モデルが人物Aに特化して90.0%（900件正解）へ伸びる一方、人物Bで40.0%（40件正解）へ急落したとします。全体の件数加重Accuracyを計算すると 940 ÷ 1,100 ＝ 85.5% となり、見かけ上は「+2.8ポイントの改善」に見えてしまいます。
+
+さらに、評価データの中に「全100クラスを発声・撮影した人物」と「簡単な5クラス（5母音や基本図形のみ）だけを発声・撮影した人物」が混在している場合、それらを1つの平均値に混ぜてしまうと、簡単な課題のスコアが全体の数字をかさ上げします。主指標を作る際は、まず「同じ課題範囲（共通のクラス集合C）を持つ人物集合S」を予測結果を見る前に固定し、各人物のBalanced Accuracy（クラス別Recallの平均）を算出したうえで、人物間でも等しい重みで平均する「グループ均等Balanced Accuracy」を基準にする必要があります。
+
+主なチェックポイントは以下の通りです：全体の件数加重Accuracy：サンプル数が多い人物や環境の成績に支配されるため、主指標ではなく参考値として扱う / 課題の分離：100クラス課題と5クラス課題（基本母音のみ等）は難易度が異なるため、1つの主指標に混ぜず別スコアとして併記する / 最低グループ値の監視：平均値だけでなく「最も成績が低い人物・条件のスコア」を必ず併記し、特定層での回帰低下を見逃さない。
+参照: [scikit-learn Documentation: confusion_matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html)
+参照: [scikit-learn Documentation: balanced_accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
+
+### 混同行列（Confusion Matrix）を「誤りの物理的・構造的な内訳」へ変換する
+AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれますが、「なぜ外れたか」「次にコードのどこを直せばよいか」は教えてくれません。10クラス〜100クラス以上の分類問題では、scikit-learnの `confusion_matrix` 等で真値と予測値のペアを出力し、さらにそれをドメイン固有の「誤り構造」へ集約することが不可欠です。
+
+例えば日本語の単音節音声認識（約100クラス）で誤分類の内訳を混同行列から集計すると、「母音も子音も外れている誤り」は全体の1割強に過ぎず、誤認全体の80%以上が「母音は合っているが子音だけ取り違えている（ち↔し、つ↔す、k↔g、n↔mなど）」に集中しているといった構造が浮かび上がります。この事実が分かれば、「データを闇雲に増やす」のではなく、「音声区間検出（VAD）の切り出し境界ジッターで先頭の短い子音フレームが欠けているのではないか」「時間方向の平均プーリングで短い子音の特徴が長い母音に埋もれているのではないか（フレーム単位のLogit最大値プーリングや子音・母音マルチタスクヘッドが必要ではないか）」という具体的なアーキテクチャ改善へ直結します。
+
+同様に、カメラ画像から点字やドットパターンを認識するタスクでも、文字単位の混同行列に「検出された点数の増減（予測された点数 − 本来の点数）」という軸を加えるだけで原因が明確に分かれます。点数の増減が「マイナス（点が減って別の文字に化けた）」なら原因は指や影によるオクルージョン（隠れ）や検出閾値の高さであり、「プラス（点が増えて化けた）」なら背景ノイズの誤検出または隣接列の割り当てズレであると即座に切り分けられます。
+
+主なチェックポイントは以下の通りです：音声認識の混同行列集約例：「母音一致・子音誤認」「子音一致・母音誤認」「両方誤認」「同音異表記（ぢ↔じ、づ↔ず、を↔お）」に分類してボトルネックを特定する / 画像・ドット認識の混同行列集約例：「置換（文字化け）」「余分（背景からの湧き出し）」「欠落（見逃し）」「重複（同一対象の2回読み）」と点数の増減方向を分離する / 同音・同義ラベルの扱い：生の予測結果は上書きせず保存したうえで、評価目的に応じて「厳密ラベル一致率」と「同音統合後のスコア」の両方を記録する。
+参照: [scikit-learn Documentation: confusion_matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html)
+参照: [scikit-learn Documentation: balanced_accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
+参照: [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
+
+### 実機開発で導入すべき評価レポートの定型チェックリスト
+モデルや前処理を変更するたびに手作業で集計スクリプトを書き換えていると、都合の良い指標だけを見て採用判断を下す「チェリーピッキング」が起きやすくなります。評価パイプラインの出力フォーマットは以下の順序で固定しておくのが安全です。
+
+まず「1. データ分割と評価対象の検証範囲（人物数・件数・クラス範囲・欠落クラスの有無）」を出し、次に「2. 主指標（同一課題上のグループ均等Balanced Accuracy）」、続いて「3. 人物別・性別別・端末条件別のスコアと最低値」、「4. 基本課題（5母音等）の回帰確認」、「5. 対象外ノイズ（other）の誤受理率と発話の誤拒否率」、最後に「6. 混同行列の上位ペアとエラー種別内訳」を出力します。
+
+平均スコアが0.5ポイント上がっていても、特定の重要グループ（未知の女性話者や実機スピーカーフォン条件など）で数ポイントの悪化が起きている場合は自動採用せず、混同行列の差分を確認する運用ルールを徹底することで、実機での手戻りを劇的に減らすことができます。
+
+主なチェックポイントは以下の通りです：欠落クラスのゼロ埋め禁止：特定の評価話者に一部のクラスの正解データが存在しない場合、そのクラスを0点として平均に混ぜず、事前に固定した共通クラス集合上で比較する / 後付けの除外禁止：予測結果を見た後に「このクラスは難しいから評価から外そう」と集計範囲を変更しない / ValとTestの役割分離：閾値調整やエラー分析によるサンプラー調整はすべてVal（検証セット）で行い、Test（最終評価セット）の混同行列を見て学習設定を作り直さない。
+参照: [scikit-learn Documentation: confusion_matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html)
+参照: [scikit-learn Documentation: balanced_accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
+参照: [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
+
+## 記事の範囲
+2026年10月16日にscikit-learn公式ドキュメント（confusion_matrix、balanced_accuracy_score、f1_score）を確認し、多クラス分類および複数人物・複数環境データセットにおける集計バイアスと混同行列の分析手法を整理した記事です。文中のスコアや件数は指標の性質を比較するための計算例です。
+
+
+## 参考資料
+- [scikit-learn Documentation: confusion_matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html)
+- [scikit-learn Documentation: balanced_accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
+- [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
+
+## 次に考えたいこと
+- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html)
+- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html)
+- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html)
+
+
+---
+
+# 機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ
+
+> 検証環境では高精度なのに本番・展示会場で全く動かない最大の原因である「データリーク（Data Leakage）」と「ベンチマーク設計の不備」を解説。話者・セッション独立分割の崩壊、学習スクリプト内部で勝手に再分割するバグ、テスト結果のサンプラー逆流を防ぐ手順をまとめました。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ml-benchmark-data-leakage-group-split-pipeline-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- 未知条件を測るはずのVal/TestデータにTrainと同一の人物・同一の撮影セッション・派生データが混入する「グループリーク」があると、暗記だけで高スコアが出て実機で崩壊する。
+- 固定Split CSVを作ったにもかかわらず、学習ラッパースクリプトがTrainとValを結合して前処理し、学習コード内部の自動 `train_test_split` で8:2に再分割してしまい、未知話者の8割がTrainに漏洩する実装バグが頻発する。
+- Testセットの評価結果JSON（混同ペア）を学習時の重点サンプラーが読み込む逆流経路や、分割前のデータ拡張をコードレベルで遮断し、SHA-256ハッシュと人物台帳で交差ゼロを自動検証する必要がある。
+
+
+## 選択肢の比較表
+| リーク・計測不全のパターン | 発生しやすい実装箇所 | ベンチマークへの悪影響 | 確実な防止・監査方法 |
+| --- | --- | --- | --- |
+| 学習パイプライン内の勝手な再分割 | Colab用ラッパー等でTrain/Val CSVを結合して前処理し、train.py内部のstratified_splitで8:2に再分割する | 固定Valとして保留したはずの未知人物データの8割がTrainに混入し、Val精度が虚飾される | 前処理後も元CSVのsplit列またはファイルパス対応を引き継ぎ、学習時のランダム再分割を禁止する |
+| Test評価結果のサンプラー逆流 | 過去のTest評価JSON（混同ペア一覧）を既定パスから読み込み、学習時のWeightedRandomSamplerの重みに使う | Test話者固有の誤り傾向を直接オーバーサンプリングしてしまい、独立テストとしての意味が失われる | 重点サンプラーの参照元はTrain内部の交差検証または固定Valのみに限定し、基準実験ではオフにする |
+| 分割前のデータ拡張・切り出し | 元音声・元動画から音量変換やフレーム切り出しを作った後にファイル単位でランダム分割する | ほぼ同一の波形・画像がTrainとTestの両方に入り、暗記だけで90%以上の精度が出る | 必ず「元録音ID・人物ID・撮影セッションID」単位でTrain/Val/Testを確定させた後、Trainにのみ拡張を適用する |
+| Testセットの反復参照による過適合 | Testのスコアを毎回見ながらTTS追加量、学習率、エポック数、前処理パラメータを選び直す | 人間を介した情報リークが起き、Testが実質的な第2のVal（開発評価）に変質する | モデル・閾値・停止エポックはValだけで確定させ、反復参照した既存Testは『回帰ベンチマーク』と明記する |
+
+## 詳細解説・原因分析
+### 固定Split CSVを作ったのに学習コード内部でリークする「再分割バグ」
+音声認識やカメラ画像認識で「未知の人物・未知の紙面や照明条件でも動くか」を測るには、訓練データ（Train）と検証・評価データ（Val/Test）の間で人物IDや撮影セッションIDが絶対に重複しないGroup Split（scikit-learnの `GroupKFold` や `StratifiedGroupKFold` に相当する設計）が必要です。
+
+しかし実務やチーム開発で非常に多いのが、「データセット作成時には人物を分けた固定CSV（`train.csv` / `val.csv` / `test.csv`）を作ったのに、クラウドGPU（Google Colab等）へ渡す前処理スクリプトが `train.csv` と `val.csv` を1つのディレクトリに合流させ、学習スクリプト（`train.py`）が受け取った全ファイルを内部の `train_test_split`（例：80%対20%の層化分割）で再分割していた」というパイプラインバグです。
+
+例えばVal専用として1,058件保留していた未知話者のデータが、合流後の8:2再分割によって853件（約80.6%）もTrain側に混入してしまうと、モデルは「未知話者の声質やマイク特性」を訓練中に直接学習してしまいます。結果としてValスコアは跳ね上がりますが、本当に一度も見たことがないTest話者や本番環境に出した瞬間に精度が崩壊します。学習開始前には必ず「実際にDataLoaderへ渡されたTrainとValのファイルパス・SHA-256ハッシュ・人物IDの集合に交差（Intersection）が1件もないこと」を単体テストやアサーションで検査してください。
+
+主なチェックポイントは以下の通りです：ファイルパスとSHA-256の両面検査：ファイル名が別でも中身（バイト列やPCM波形）が同一のコピーファイルがTrainとValに跨がっていないかハッシュ値で検証する / 派生データの同一グループ束ね：元録音からの切り出し、増幅、ピッチ変更、別名保存などの派生データはすべて元の人物ID・セッションIDに紐づけ、分割後にTrainへだけ拡張を掛ける / 学習に使った動画・音声でのベンチマーク禁止：物体検出（YOLO等）の学習に使用した録画をそのまま連続認識ベンチマークに使うと、未知の紙面や照明条件での低下を測れないため、評価専用録画を分離する。
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices (Data leakage)](https://scikit-learn.org/stable/common_pitfalls.html)
+参照: [scikit-learn User Guide: Cross-validation: evaluating estimator performance (GroupKFold)](https://scikit-learn.org/stable/modules/cross_validation.html)
+
+### テスト結果が学習へ逆流する「重点サンプラー」と「前処理統計」の罠
+もう一つの巧妙なデータリークが、評価結果ファイルを通じた「情報の逆流」です。例えば、苦手ペア（混同しやすいクラス対）を重点的に学習させる『混同ペアサンプラー（Confusion Pair Sampler）』を実装したとします。このとき、サンプラーが読み込む評価結果JSONのデフォルトパスが「Testセットを含む評価結果」を指していると、Test話者で間違えたクラスの情報が学習時のサンプリング重みとして直接注入されてしまいます。
+
+同様に、特徴量の正規化統計（平均・分散）、クラス重み、データ拡張のパラメータ、早期停止（Early Stopping）のエポック選択、および分類閾値（Threshold）をTestセットの情報から決めるのも典型的なリークです。これらはすべてTrainまたはVal（開発検証セット）だけから算出しなければなりません。
+
+さらに注意すべき点として、「Valには男性話者しかおらず、女性話者がTestにしかいない」といった構成のまま開発を進めると、女性話者の精度を上げるためにTestセットのスコアを何度も確認しながらTTS（合成音声）の量やハイパーパラメータを調整することになります。一度でもモデル選択や設定変更の判断材料に使ったTestセットは、もはや『未知の盲検最終テスト』ではなく『第2の開発検証セット（回帰ベンチマーク）』になっていることを認識し、Val側にも評価したい属性（女性話者や対象デバイス条件）の独立人物を確保する必要があります。
+
+主なチェックポイントは以下の通りです：サンプラーの分離：重点サンプリングを使う場合でも、まずサンプラー無しの全件1回通過（シャッフルのみ・重複なし）で基準実験を行い、導入時はValの評価結果だけを入力にする / 全件通過の検証：「全データを毎エポック学習した」と主張する場合は、WeightedRandomSamplerの重複抽選で未抽選データが大量に発生していないか、エポックごとの実使用ID数を記録する / 比較条件の完全固定：2つのモデルや手法を比較する際は、同一のSplit CSV・ラベル定義・前処理・推論バックエンド・乱数シード（DataLoader workerやAugmentorのシード含む）で揃える。
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices (Data leakage)](https://scikit-learn.org/stable/common_pitfalls.html)
+参照: [scikit-learn User Guide: Cross-validation: evaluating estimator performance (GroupKFold)](https://scikit-learn.org/stable/modules/cross_validation.html)
+参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+## 記事の範囲
+2026年10月16日にscikit-learn公式ガイド（Common pitfalls: Data leakage、GroupKFold）を確認し、音声・画像認識プロジェクトにおけるデータ分割・前処理・サンプラー設計の監査項目を整理した記事です。文中の件数や比率はリーク構造を説明するための再現・計算例です。
+
+
+## 参考資料
+- [scikit-learn User Guide: Common pitfalls and recommended practices (Data leakage)](https://scikit-learn.org/stable/common_pitfalls.html)
+- [scikit-learn User Guide: Cross-validation: evaluating estimator performance (GroupKFold)](https://scikit-learn.org/stable/modules/cross_validation.html)
+- [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+## 次に考えたいこと
+- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html)
+- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html)
+- [合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls.html)
+
+
+---
+
+# 機械学習の不均衡データで「オーバーサンプリング」と「損失重み」を二重に掛けると何が起きるか：全件通過を守る学習設計
+
+> クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ml-class-imbalance-oversampling-loss-weight-double-correction.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- PyTorchの `WeightedRandomSampler(replacement=True)` は重複ありの確率抽選であるため、「全件学習した」と思っていても1エポック内で一度も抽選されない未使用データが大量に発生し、少数派データだけが何度も重複入力される。
+- さらにサンプラーでの出現頻度補正と、損失関数（CrossEntropyLoss等）のクラス重み補正を無自覚に二重掛けすると、特定クラスや特定話者への極端な過適合・他条件での回帰低下を引き起こす。
+- 基本の学習設計は「全Trainデータを毎エポック最低1回・重複なしでシャッフル通過」させる方式に置き、追加のオーバーサンプリングを使う場合は全件通過とは別枠で件数と実使用ID数を記録してValで検証する。
+
+
+## 選択肢の比較表
+| サンプリング・重み付け方式 | 1エポック内のデータ通過挙動 | 発生しやすい問題 | 推奨される使い分け |
+| --- | --- | --- | --- |
+| 全件シャッフル通過（重複なし・損失重み1倍） | 全Trainサンプルが毎エポック確実に1回ずつ使われる（未使用0件） | 極端な件数格差（例：100倍差）がある場合は多数派に引っ張られる | すべての実験のベースライン（基準）。クラス件数が65〜123件程度ならこれだけで十分安定する |
+| WeightedRandomSampler (replacement=True) 単独 | サンプル総数N回を確率抽選するため、重複抽選されるデータと未使用データ（約3割前後）が生じる | 『全データを学習した』と誤認しやすい。エポックごとに使われないデータがランダムに発生する | 使う場合はエポックごとの実使用ID数と未使用数を必ずログに記録して検証する |
+| 全件1回通過 ＋ 追加オーバーサンプリング枠 | 全Trainを確実に1回通した上で、不足群だけを明示的な別枠として追加投入する | エポックあたりのステップ数が少し増える | 全データの網羅性を100%保証しつつ特定条件を補強したい場合の安全な設計 |
+| WeightedRandomSampler ＋ 損失クラス重みの二重適用 | 出現頻度でも少数派を増やし、さらに1回あたりの勾配でも重みを掛ける | 実質的に重みの二乗で強調され、少数クラスのノイズや誤ラベルに過適合して全体精度が落ちる | 原則避ける。補正が必要な場合もサンプラーか損失重みのどちらか一方をValで検証して選ぶ |
+
+## 詳細解説・原因分析
+### WeightedRandomSamplerで「全件学習しているつもり」になる罠
+PyTorch等でクラス間や人物間のデータ件数の偏りを補正する際、`WeightedRandomSampler` を使う実装がよく見られます。しかし標準の `replacement=True`（復元抽出・重複あり）でデータセットサイズ $N$ 件分を抽選すると、統計的な性質上、1エポックの中で同じデータが複数回選ばれる一方、全体の約3割強（$1/e \approx 36.8\%$ 相当）のデータはそのエポックで1回もモデルに入力されません。
+
+もしクラスごとの件数がすでに65件〜123件程度と比較的に揃っているにもかかわらず、習慣的に重複ありサンプラーと損失関数のクラス重み（Class Weight）の両方をオンにしていると、貴重な生データの一部を毎エポック捨てながら、特定サンプルだけを二重に強調して学習することになります。
+
+したがって、「全件学習」のデフォルトは『全Trainサンプルを毎エポック確実に1回ずつ使う（重複なしシャッフル）』に固定すべきです。そのうえで、どうしても追加抽選やオーバーサンプリングが必要な場合は、全件1回通過の枠とは別枠として追加件数と重みを明示し、各エポックで実際に使われたサンプルID数（未使用0件であること）をログに記録して検証する設計が安全です。
+
+主なチェックポイントは以下の通りです：ファイル件数と実使用回数の区別：CSV上の行数、実際の人間話者数、サンプラーの期待比率、そしてエポック内の実使用回数を混同せず別々に記録する / 未分離プールの誤均等化防止：複数人が混ざった3,000件の収集プールを『1人の話者』とみなして人物均等化サンプラーにかけると、1人あたりの学習回数が極端に圧縮されてしまうため、確定した個人IDと混合プールは分けて扱う / 二重補正の廃止：クラス数が比較的均等な状態でサンプラーと損失重みを同時に掛けず、Val（検証セット）のグループ均等Balanced Accuracyで本当に補正が必要かを確かめる。
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+### モデル選択で「平均値だけ見て最低グループを見ない」リスクを防ぐ
+サンプリング比率や損失重みを変更した際、検証セット（Val）の全体平均スコアがわずか0.1〜0.2ポイント上がっただけで「改善した」と自動採用してしまうと、既存の重要なグループ（例えば基本の5母音課題や別マイク条件）で3〜4ポイントの大幅な劣化が起きていても見逃してしまいます。
+
+重みやサンプラーの実験を行う際は、必ず実験前にVal上で「どのグループで何ポイントまでの低下を許容するか」「主指標で何ポイント以上の改善が必要か」という採用基準を固定し、複数シードで再現性を確認してから本学習へ進める規律が不可欠です。
+
+主なチェックポイントは以下の通りです：群別許容差の事前設定：ターゲット条件（スピーカーフォン等）の改善だけでなく、既存条件の回帰幅を監視項目に入れる / Testでの重み調整禁止：Testセットのスコアを見て損失重みの倍率（1倍・2倍・4倍）を選び直さない / 再現性の確保：乱数シード、サンプラーの抽選方法、選択されたエポック番号、早期停止の理由をすべて実験マニフェストに保存する。
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+## 記事の範囲
+2026年10月16日にscikit-learnの評価・不均衡データガイドラインを確認し、エポック内の全件通過保証とサンプラー・損失重みの切り分け設計を整理した記事です。
+
+
+## 参考資料
+- [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+- [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+## 次に考えたいこと
+- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html)
+- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html)
+- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html)
+
+
+---
+
+# 学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計
+
+> クリーンな学習データだけで作ったAIモデルが、展示会場の雑音や操作中の無関係な動きに対して誤作動を連発する原因を解説。対象外クラス（other）の設計、環境音誤受理率・発話誤拒否率の分離集計、およびノイズデータのセッション単位保留の重要性を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ml-noise-other-class-false-acceptance-evaluation-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- 正解クラスだけの閉集合（Closed-set）データで学習した分類器は、環境音・咳払い・指の移動中といった「どの正解にも該当しない入力」に対しても無理やりいずれかの正解クラスへ高い確率を割り当てて暴発する。
+- 学習・評価データに対象外クラス（other）を組み込み、評価時はotherを人間のクラス平均Accuracyへ混ぜず「other再現率」「環境音誤受理率（FAR）」「有効入力の誤拒否率（FRR）」の3指標を独立して監視する。
+- 環境音サンプルを同じ収録セッションからランダム分割すると「その部屋の空調の定常音」を暗記してしまい未知環境のノイズ耐性が測れないため、ノイズはセッション・場所単位で保留（Holdout）する。
+
+
+## 選択肢の比較表
+| 評価指標・データ設計 | 定義（分子 ÷ 分母） | 実機体験への影響 | 運用・集計上の注意点 |
+| --- | --- | --- | --- |
+| other再現率 (Other Recall) | 正解otherをotherと予測した数 ÷ 評価other総数 | 環境音や無関係な操作を正しく無視できる基礎体力 | 人間の話者別・文字別Balanced Accuracyの平均には混ぜず独立指標として報告する |
+| 環境音誤受理率 (False Acceptance Rate) | 環境音（other）を有効クラスと予測した数 ÷ 評価環境音数 | 高いと、黙っていても会場の雑音や衣擦れ音で勝手に判定・読み上げが暴発する | 最も体験を壊しやすいため、確信度閾値や連続フレーム条件で抑え込む対象 |
+| 発話・対象誤拒否率 (False Rejection Rate) | 有効クラスの入力をotherと予測した数 ÷ 評価有効入力数 | 高いと、ユーザーが何度発声・操作しても無反応（無視）になりストレスを与える | 別クラスへの誤分類（置換エラー）とは区別して集計し、拒否閾値の厳しすぎを検知する |
+| セッション別ノイズ保留 | 収録場所・端末・時間帯ごとにノイズをTrainとVal/Testへ分離 | 未知の会場・未知のマイクでの本当の雑音耐性が分かる | 同じ部屋で録った100件の雑音から10件をランダム抽出してTestにしても、空調の定常音を暗記しているため未知環境評価にならない |
+
+## 詳細解説・原因分析
+### 静かな部屋のベンチマークで80%出ても展示会場や実機で暴発する理由
+開発室の静かな環境で録音した音声や、綺麗に固定されたカメラ画像だけで学習・評価を行うと、モデルは「入力されるデータは必ずN個の正解クラスのどれかである」という強い前提（閉集合仮定：Closed-set assumption）を学習します。
+
+しかし実機を展示会場やリビング、教室などの実環境へ持ち込むと、周囲の話し声、空調・ファン音、マイクのポップノイズ、スピーカーフォンからの反響、あるいはカメラの前で指を別の行へ移動させている途中のブレ画像など、「どの正解クラスでもない入力」が絶えず流れ込みます。閉集合モデルには「どれでもない（other）」という出口がないため、ソフトマックス層の出力が特定のクラス（例えば母音の『あ』『お』や、点1つだけで構成される文字『あ』『わ』など）へ偏り、何もしていないのに勝手に誤判定・誤発話を繰り返すことになります。
+
+これを防ぐには、前段の音声区間検出（ノイズ適応型VAD）や対象領域トラッキングで非対象区間を弾くだけでなく、分類モデル自体の学習・評価データに明示的な『other（対象外・環境音・不明音）』クラスを含め、さらに後段の確定ロジックで「第1候補がotherや低確信度の場合は判定を保留する」二段構えの設計が必要です。
+
+主なチェックポイントは以下の通りです：音声認識でのノイズ対策：無音だけでなく、生活雑音・咳払い・衣擦れ・複数人のざわめきをotherクラスとして収集し、室内インパルス応答（RIR）畳み込み等で空間残響への耐性を補う / カメラ画像認識でのノイズ対策：誤検出の点1つが数フレームだけ現れて消える現象や、指が行間を移動して複数文字が一気に視野から消える現象を『有効ななぞりではない』として棄却する / Validationにotherを必ず含める：TrainとTestだけにotherがありValにotherが0件だと、モデル選択や閾値決定の段階で雑音耐性を一切評価できない。
+参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+### 「環境音誤受理率」と「発話誤拒否率」を分けて測る方法
+otherクラスを導入した際、otherを通常の正解クラス（100個の音節や文字）と同列に並べて101クラスの平均Accuracyを計算してしまうと、また別の罠に陥ります。代わりに、人間の発話・文字に対する分類精度（Balanced Accuracy）とは切り離して、以下の3つの専用指標を定義して監視します。
+
+1つ目は『other再現率（正解otherをotherと予測した割合）』、2つ目は『環境音誤受理率（環境音であるotherを誤って有効な文字・音節として予測してしまった割合）』、3つ目は『発話誤拒否率（本来の有効な発話・文字を誤ってotherとして棄却してしまった割合）』です。なお、有効な発話を別の文字に言い間違えたケースは『誤拒否』ではなく『クラス間の分類誤り（置換エラー）』として保持します。
+
+また、環境音データをTrain/Val/Testへ振り分ける際、1回の収録セッションで録った雑音ファイルをランダムに分割して「Testで環境音誤受理率が下がった」と結論づけるのは危険です。同一セッションの雑音は同じ空調周波数や背景の定常ノイズを共有しているため、モデルがその部屋のノイズ波形を丸暗記しているだけだからです。環境音は話者ではなく「収録セッション・場所・端末条件」の単位で分割し、さらに少数の環境音サンプル（例：10件のみ）での改善を未知環境全般への保証と拡大解釈しない規律が求められます。
+
+主なチェックポイントは以下の通りです：環境音誤受理率（FAR）の抑制：実機体験で「触っていない・話していないのに勝手に反応する」のを防ぐ指標 / 発話誤拒否率（FRR）の抑制：拒否条件を厳しくしすぎて「何度やっても反応しない」状態になるのを防ぐ指標 / 閾値の事前決定：確信度閾値やフレーム継続数の条件は必ずVal（検証セット）のFAR/FRRバランスを見て固定し、Testの結果を見て後付けで誤予測を除外しない。
+参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+## 記事の範囲
+2026年10月16日にscikit-learnの分類評価指標リファレンスおよびCommon pitfallsガイドを確認し、閉集合分類モデルを実環境（連続ストリーム）へ適用する際の対象外クラス（other）設計と誤受理・誤拒否指標の定義を整理した記事です。
+
+
+## 参考資料
+- [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
+- [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+
+## 次に考えたいこと
+- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html)
+- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html)
+- [展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html)
 
 
 ---
@@ -1426,6 +1946,69 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 
 ---
 
+# オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離
+
+> カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/streaming-ai-offline-accuracy-vs-realtime-timing-guide.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- カメラ映像や音声ストリームのリアルタイム処理は「認識部（フレーム単位の検出・分類）」と「確定層（いつ音を鳴らすか決めるReadout層）」の2段で構成され、文字列の『内容だけの一致率』で選ぶと実機で破綻する。
+- 視野の右端に文字が見えた瞬間にまとめて鳴らす確定層は、内容一致率では70〜80%台で上位に見えるが、96%以上の発話が「まだ指が触れる前（通過前）」に鳴るため、タイミング込み一致率では0%になる。
+- 認識部と確定層は必ずペアの名前で登録してA/B比較し、通し番号（ID振り直し）への依存を排して「直前確定列の左端退出」や「フレーム間の点群移動量による位相ロック」でタイミングを制御する。
+
+
+## 選択肢の比較表
+| 認識器＋確定層の構成パターン | 内容だけの一致率（例） | 早すぎ率（通過前発火） | タイミング込み一致率 | 実機での挙動と採否判断 |
+| --- | --- | --- | --- | --- |
+| 構成A：視野内の全確定文字を即座にまとめて鳴らす確定層 | 73.8% 〜 82.2% | 95.8% 〜 96.8% | 0.0% 〜 1.2% | 不採用。カメラの右端に文字が見えた瞬間に先回りしてまとめて鳴るため、指の動きと音が全く合わない |
+| 構成B：通し番号（トラッキングID）の5フレーム連続一致で鳴らす確定層 | 68.8% | 77.7% | 17.5% | 不採用。地図の作り直しで通し番号が振り直されるたびに確定がリセットされ、タイミングも先走りやすい |
+| 構成C：直前確定列の左端文字を、新文字列確定時かつ逆行ガード付きで鳴らす確定層 | 77.8% 〜 79.9% | 1.6% 〜 3.8% | 78.6% 〜 79.8% | 採用候補。通し番号に依存せず、ちょうど指が離れて画面左端から抜けた文字と音が揃う |
+| 構成D：紙面上の移動量と格子位相ロックで通過を数える確定層 | 86.7% 〜 91.2% | 低水準（通過判定後） | 85.8% 〜 88.4% | 実機採用。フレーム間の点群移動量で格子の横ズレを半減させ、行飛びによる誤発火も防止 |
+
+## 詳細解説・原因分析
+### 「内容だけの一致率」で1位のアルゴリズムが実機で0点になる理由
+カメラで紙面上の文字や点字をなぞりながらリアルタイムに読み上げる装置や、ストリーミング音声認識システムを開発する際、最も陥りやすい罠が「録画や録音に対する最終出力テキストの一致率（内容だけの一致率）」だけでアルゴリズムの優劣を決めてしまうことです。
+
+連続認識システムは、各フレームから文字や候補を取り出す『認識部』と、複数フレームの推移を見て「今この文字を確定して音を鳴らす」と決める『確定層（Readout）』の2段で成り立っています。もし確定層が「画面内で文字の読みが落ち着いた瞬間に、新しく見えた文字をまとめて鳴らす」という実装になっていると、カメラの視野の右端に先の文字が写った時点で（ユーザーの指がまだそこに触れるよりもずっと前に）次々と先回りして読み上げてしまいます。
+
+この状態で出力された文字列だけを正解テキストと照合すると、一致率は73%〜82%といった高い数字が出ます。しかし、「鳴った瞬間にその文字がちょうど通過位置（左端）を経て画面から抜けたか」という『タイミング込み一致率』で測り直すと、発話の96%以上が「早すぎ（まだ画面内に残っている文字の先読み）」と判定され、実機でのタイミング込み一致率は0.0%〜1.2%まで暴落します。認識部と確定層は必ず1つの名前（ペア）に紐づけて登録し、既存の認識器を直接上書きせずA/B比較できる状態でタイミング込みの数字を測る必要があります。
+
+主なチェックポイントは以下の通りです：既存認識器の上書き禁止：大きな変更を既存の認識器名へ直接上書きすると劣化した際に切り戻せずA/B比較もできなくなるため、必ず別名で登録して比較後に既定を切り替える / 早すぎ（残留読み）の監視：まだ視野の先に残っている対象を鳴らしていないか、精度レポートに『残ったまま読んだ件数』の列を設けて監視する / インターフェース不整合の検出：認識部自体は1本あたり400文字以上検出できているのに、確定層が期待する属性（center_cells等）を渡していないために1文字も鳴らない『配線ミスによる0%』と『認識精度による0%』をログで区別する。
+参照: [ONNX Runtime Documentation: Performance and Model Optimizations](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+### 通し番号（トラッキングID）への依存を捨て、物理移動量で制御する
+確定層を設計するとき、「各対象に通し番号（トラッキングID）を振り、同じIDで同じ文字が5フレーム連続したら確定して、画面から消えた瞬間に鳴らす」という方式は一見合理的に思えます。しかし実機の映像では、手の影やブレでメモリ上の格子マップが作り直されるたびに通し番号が振り直されるため、「同じ通し番号が5フレーム以上維持される確率」自体が17%程度しかない、といった事態が起きます。確定が追いつかないまま発火契機だけを後ろへ遅らせると、今度は保留文字が積み上がって実機で2文字以上の遅延が発生します。
+
+これに対して強いのが、(1) 通し番号を一切使わず「新しく確定した文字列の並びが直前と矛盾しなければ、前回確定していた文字列の左端（いま抜けた文字）を鳴らす」方式や、(2) フレーム間の検出点群の重ね合わせから「紙面の物理的な移動量（ピクセル/フレーム）」を直接測り、一度確定した格子の位相をその移動量分だけスライドさせて固定する方式です。これにより、点が少ないフレームで格子が1列ズレる誤りを半減させることができます。
+
+また、誤検出の点が数フレームだけ現れて消えた場合や、ユーザーが指を別の行へ移して3文字以上が一度に画面から消えた場合に、文字列の変化だけで判断すると「読み違いが混ざった通常のなぞり」まで捨ててしまいます。ここでも『紙面の移動量で見て本当に指の境界線を越えたのか、それとも指を浮かせて別の場所へ飛んだのか』を物理量で切り分けることで、余分な暴発を半分以下に抑えられます。
+
+主なチェックポイントは以下の通りです：1フレーム1行のJSONLトレース出力：毎回重いモデル推論（YOLO等）や動画デコードを回し直すのではなく、まずフレームごとの検出・確定状態をJSONLに書き出し、そこから高速にHTML精度レポートを生成する / 置換・余分・欠落・重複の4分類：同じ一致率80%でも、誤りが「余分な発話」に寄っているか「読み落とし（欠落）」に寄っているかで調整すべき閾値が正反対になる / ベンチマーク判定器自体のバグ検証：評価文の中に同じ文字（例：『かがわ』の『か』）が複数回登場するとき、素朴に『画面内に同じ文字が見えるか』で早すぎ判定を行うと、2個目の『か』が見えているせいで1個目の正しい発話まで不合格にする判定バグが起きるため、残りの同一文字数を考慮して判定する。
+参照: [ONNX Runtime Documentation: Performance and Model Optimizations](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+## 記事の範囲
+2026年10月16日にONNX Runtimeおよびscikit-learnの評価ドキュメントを確認し、リアルタイム連続認識システムにおける認識部と確定層（Readout）の分離評価・トレース分析手法を整理した記事です。
+
+
+## 参考資料
+- [ONNX Runtime Documentation: Performance and Model Optimizations](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
+- [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
+
+## 次に考えたいこと
+- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html)
+- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html)
+- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html)
+
+
+---
+
 # Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する
 
 > 自宅NASやサーバーへのリモート接続が期待より遅いとき、光回線やルーターを疑う前に確認したい3つの接続方式（Direct / DERP / Peer Relay）の切り分け手順です。
@@ -1540,6 +2123,69 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 ## 次に考えたいこと
 - [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html)
 - [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
+
+
+---
+
+# 合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策
+
+> 不足している属性（女性音声や特定条件の画像など）をTTSや合成データで補う際に陥りやすい5つの罠を解説。同一音声IDの複数設定を独立話者と誤認する問題、合成データのTest混入、ゼロ波形・フォーマット偽装、前処理でのメタデータ消失を防ぐ手順を整理します。
+
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls.html
+- **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/tts-synthetic-data-augmentation-domain-gap-pitfalls.csv
+- **Category**: Architecture
+- **Article type**: 選び方・公式資料から整理（実測なし）
+- **Data Updated**: 2026-10-16
+
+## 選び方の要点
+- TTS（音声合成）や合成データの追加と、モデル構造の変更を1回の実験で同時に行うと、改善・悪化の原因がデータなのかモデルなのか一切区別できなくなる。
+- 同一TTS音声IDのピッチ・速度違い（3設定）は「3人の独立した人間話者」ではなく「未使用設定TTS」として区別し、Testセットでは実データと合成データを完全に分離して集計する。
+- 生成スクリプトがAPIエラー時に無音（ゼロ波形）を出力して学習を汚染するバグや、前処理がフォルダ名（`tts_augmented`）から話者IDを上書きして元メタデータを消すバグを品質ゲートで防ぐ。
+
+
+## 選択肢の比較表
+| 合成データ活用の失敗パターン | なぜ起きるか（原因） | 引き起こされる誤判断・バグ | 正しい実験・実装ルール |
+| --- | --- | --- | --- |
+| 合成データを実データTestに混ぜて合算評価 | Testセットの件数を増やそうとして合成データ104件を実データ620件に合流させる | モデルがTTS特有の音響特徴だけを簡単に当てて全体Accuracyが上昇し、実話者が改善したと錯覚する | 合成Testは実データTestと完全に分けて集計し、採用判断は実データTestの改善と既存群の非劣化で行う |
+| 1つのTTS音声の3設定を『3人の話者』とカウント | 同一音声ID（例：Nanami）で標準・高め・低めの3プロファイルを作って分割する | Trainに標準、Testに高めを入れて『未知話者への汎化』と誤認する（実際は同一声質のピッチ違い） | voice_id（音声種別）とprofile_id（設定）を分けて記録し、同一voice_idの別設定は『未使用設定TTS』と呼ぶ |
+| 生成エラー時のゼロ波形（無音）フォールバック | TTS生成スクリプトが通信失敗や空レスポンス時に例外で止めず長さ0やゼロ配列の音声を返して続行する | 正解ラベル付きの『無音データ』がTrainに混入し、無音区間を特定クラスへ誤分類する原因になる | 生成失敗時は明示的に未完了エラーで停止し、16kHz PCM_16デコード・無音検査・全ラベル網羅を検証する |
+| 前処理での話者メタデータ消失 | dataset_builderがCSVのspeaker列を引き継がず、保存先パス（dataset/tts_augmented/...）の親フォルダ名からspeakerを推定する | 異なるTTS音声やプロファイルがすべて『tts_augmented』という1人の話者IDに潰れ、人物別の集計や補正が壊れる | パスからの推測を廃止し、マニフェストCSVで明示されたspeaker / voice_id / profile_idを最優先で引き継ぐ |
+
+## 詳細解説・原因分析
+### 「TTS追加」と「モデル変更」を同時にやると改善・悪化の原因が分からなくなる
+「女性話者の認識精度が低いから、TTS（音声合成）で女性音声を生成して足そう。ついでに別ブランチで作った新しいマルチタスクモデルもマージして学習しよう」——このようにデータ追加とモデル構造（またはサンプラー・前処理）の変更を1回の実験に詰め込むと、結果が良くなっても悪くなっても、どちらが原因なのか一切区別できなくなります。
+
+特に既存のAudioAugmentor（データ拡張器）にピッチ変更や速度変更がすでに入っている場合、TTS側でピッチや話速を変えたデータを固定生成して足すことに本当に上積み効果があるのかは、対照実験なしには分かりません。最短で確実な実験順序は、(1) まずモデルのアーキテクチャを一切変えず、固定Splitを厳守した『生データのみ』の基準実験（Baseline）を取り、(2) 次に標準設定の小さなTTSデータを足した条件を同じモデル・同じシードで比較し、(3) 改善傾向が確認できた場合のみピッチ・速度違いのプロファイルを追加する、という段階的な切り分けです。
+
+そして最も重要なルールとして、『合成音声のTestスコアが上がったこと』を採用根拠にしてはいけません。TTSで学習すればTTSのTestが当たるのは当然であり、生データの女性話者Testで改善し、かつ既存の男性話者や実機マイク条件で大幅な回帰低下が起きていないことを確認して初めて採用を判断します。
+
+主なチェックポイントは以下の通りです：実データと合成データの役割分担：TTSやシミュレーションデータはあくまで『補助学習・補助評価』であり、生声や実機画像の評価の代用にはならない / 未知話者と設定違いを区別する：同じTTS音声のピッチを変えたデータは『別の人間』ではないため、評価レポートでは『未使用設定TTS』と表記して未知の実話者テストと明確に分ける / 性別不明データの勝手な割り当て禁止：収集データのうち話者属性が不明なプールを声質やファイル名から推測して女性データとしてカウントせず、『不明は不明』として分離集計する。
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+参照: [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
+
+### 合成データ生成スクリプトに潜む「ゼロ波形」「MP3偽装」「読み誤り」の防止
+外部のTTSサービスや生成ライブラリを使ってデータセットを自動生成するコードには、データ品質を静かに破壊するバグが潜みがちです。例えば、ネットワーク瞬断やレート制限で音声データが返らなかった際に、スクリプトを止めないために『長さ0の配列やゼロ波形（完全な無音）を返して処理を継続する』実装になっていると、正解ラベルが付いた無音ファイルが学習データに混入し、モデルの境界を破壊します。
+
+また、TTSライブラリの出力ストリームが実際にはMP3フォーマットであるにもかかわらず、デコード処理を通さずにファイル拡張子だけ `.wav` として保存してしまうミスや、単音節ラベル（例：『は』『へ』『を』や拗音）を渡したときにTTSエンジンの辞書が助詞や別単語のイントネーション・長音として読んでしまう問題も頻発します。
+
+そのため、合成データを学習へ投入する前には必ず以下の品質ゲートを通す必要があります。
+
+主なチェックポイントは以下の通りです：フォーマットと波形の厳密検査：16kHz・モノラル・PCM_16として正しくデコードできるか、無音（RMSエネルギー極小）・空ファイル・極端な短尺や長尺がないかを全件自動検査する / 小規模試聴による発音確認：全件生成を回す前に、単音節や特殊ラベルの発音が意図通りの音素になっているか小規模サンプルを試聴・確認し、生成設定と入力テキストをマニフェストに記録する / クラウド（Colab等）とのデータ同期検証：ローカルで生成した未コミットの合成データがクラウドGPU側へ同期されず、古いデータセットのまま学習が回っていたという事故を防ぐため、マニフェストとSHA-256ハッシュで実使用データを照合する。
+参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+参照: [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
+
+## 記事の範囲
+2026年10月16日にscikit-learnのCommon pitfallsおよびHugging Face Datasetsのドキュメントを確認し、合成データ（TTS等）を用いたデータ拡張時の実験管理・品質検査ルールを整理した記事です。
+
+
+## 参考資料
+- [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
+- [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
+
+## 次に考えたいこと
+- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide.html)
+- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html)
+- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html)
 
 
 ---
