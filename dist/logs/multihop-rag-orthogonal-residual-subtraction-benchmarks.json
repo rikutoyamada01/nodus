@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
+  "origin": "first_party_lab",
+  "recorded_at": "2026-10-03",
+  "environment": {
+    "corpus": "HotpotQA Wikipedia (66,635 documents)",
+    "evaluated_queries_n": 1395,
+    "step1_top1_hit_subset_n": 1029,
+    "compute_runtime": "Python 3.11 / PyTorch (CPU 16-thread batch evaluation + float32 causal state verification)",
+    "trajectory_pilot_model": "Qwen2.5-0.5B base (448 disjoint documents, 36,435 intermediate token states, 130.58 MB)"
+  },
+  "probe_reach_rate_metrics_n1029": {
+    "global_orthogonal_residual_r": {
+      "bridge_reach_at_10_pct": 18.45,
+      "bridge_reach_at_50_pct": 27.31,
+      "comparison_reach_at_10_pct": 83.26,
+      "comparison_reach_at_50_pct": 92.07,
+      "overall_reach_at_10_pct": 32.75,
+      "overall_reach_at_50_pct": 41.59
+    },
+    "first_hop_document_d1_only": {
+      "bridge_reach_at_10_pct": 41.9,
+      "bridge_reach_at_50_pct": 57.23,
+      "comparison_reach_at_10_pct": 4.85,
+      "comparison_reach_at_50_pct": 12.33,
+      "overall_reach_at_10_pct": 33.72,
+      "overall_reach_at_50_pct": 47.33
+    },
+    "local_sentence_residual_only": {
+      "bridge_reach_at_10_pct": 24.31,
+      "bridge_reach_at_50_pct": 34.54,
+      "comparison_reach_at_50_pct": 92.07,
+      "overall_reach_at_50_pct": 47.23
+    },
+    "global_blend_r_plus_05_d1": {
+      "bridge_reach_at_50_pct": 49.88,
+      "comparison_reach_at_50_pct": 94.27,
+      "overall_reach_at_50_pct": 59.67
+    },
+    "global_blend_r_plus_10_d1": {
+      "bridge_reach_at_10_pct": 46.26,
+      "bridge_reach_at_50_pct": 61.22,
+      "comparison_reach_at_50_pct": 89.43,
+      "overall_reach_at_50_pct": 67.44
+    },
+    "local_residual_plus_10_d1_hybrid": {
+      "bridge_reach_at_10_pct": 50.0,
+      "bridge_reach_at_50_pct": 62.84,
+      "overall_reach_at_50_pct": 68.32,
+      "gain_over_global_blend_at_50_pt": 1.62
+    },
+    "quad_probe_union_budget_36": {
+      "bridge_reach_at_50_pct": 66.08,
+      "comparison_reach_at_50_pct": 96.04,
+      "overall_reach_at_50_pct": 72.69
+    }
+  },
+  "negative_results_and_audit_diagnostics": {
+    "multi_slot_representation_collapse_exp31": {
+      "sampled_documents_n": 100,
+      "inter_slot_cosine_similarity_mean": 0.99900543,
+      "inter_slot_cosine_similarity_min": 0.99034917,
+      "max_slot_component_diff": 0.0277777,
+      "max_slot_attention_diff": 0.16343284,
+      "unconnected_query_projection_params": "4 / 4",
+      "train_test_gold_doc_overlap_found": 293
+    },
+    "autoregressive_trajectory_hidden_state_pilot_h1": {
+      "disjoint_documents_n": 448,
+      "evaluated_queries_n": 32,
+      "bootstrap_resamples": 10000,
+      "intermediate_states_captured": 36435,
+      "mrr_diff_vs_document_text": -0.84780663,
+      "mrr_diff_95ci_vs_document_text": [
+        -0.91435415,
+        -0.76957864
+      ],
+      "any_recall5_diff_vs_document_text": -0.8125,
+      "full_match2_diff_vs_document_text": -0.625,
+      "mrr_diff_vs_final_hidden_state": 0.04265682,
+      "hypothesis_h1_supported": false
+    }
+  }
+}

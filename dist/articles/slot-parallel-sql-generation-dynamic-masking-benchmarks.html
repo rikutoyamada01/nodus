@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁 | Nodus</title>
+  <meta name="description" content="トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。">
+  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html">
+  <meta property="og:title" content="自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁 | Nodus">
+  <meta property="og:description" content="トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html">
+  <meta property="og:site_name" content="Nodus">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="slot-parallel-sql-generation-dynamic-masking-benchmarks.md">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁", "description": "トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "keywords": "Text-to-SQL, 構造化出力 動的マスキング, スロット並列予測, LLM レイテンシ削減", "citation": ["https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json", "https://www.sqlite.org/lang.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html"}, {"@type": "Dataset", "name": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁 実測検証データセット (N=60)", "description": "SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。", "url": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-16", "dateModified": "2026-09-30", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。", "variableMeasured": ["測定カテゴリ", "正解率 / 成功率", "評価対象数", "失敗要因・技術的ボトルネック"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/slot-parallel-sql-generation-dynamic-masking-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Valid Execution（61.67%）と Execution Accuracy（10.00%）は何が違うのですか？", "acceptedAnswer": {"@type": "Answer", "text": "Valid Execution（VE）は「生成されたSQLが対象データベースのスキーマに対して構文エラーや存在しないカラム参照を起こさず、SQLite上で正常に実行完了した割合」です。Execution Accuracy（EX）は「実行した結果のデータ行が、正解SQLの実行結果と完全に一致した割合」を指します。"}}, {"@type": "Question", "name": "なぜ1パスで全スロットを並列予測するとカラム選択の精度が落ちるのですか？", "acceptedAnswer": {"@type": "Answer", "text": "本来、SELECT句やWHERE句のカラムは「どのテーブル（primary_table）を選んだか」に強く従属します。推論時にテーブル予測マスクを適用しても、エンコーダ内部の特徴量自体が「未知スキーマの全カラム候補と質問文の細かな対応関係」を1回のフォワードパスで解きほぐすには容量不足となるためです。"}}, {"@type": "Question", "name": "動的アクションマスキング自体はText-to-SQLに有効と言えますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。マスクなしでは未知スキーマに対して存在しないテーブル名やカラム名を出力してほぼ100%実行エラーになりますが、動的スキーママスクを入れることで61.67%を実行可能なクエリに収束させられます。LLMのConstrained Decoding（構造化出力制約）と組み合わせるのが最も効果的です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁", "item": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html"}]}]}</script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="../index.html">Nodus</a> &rsaquo; <span>Cloud &amp; AI Infrastructure</span>
+      </nav>
+
+      <div class="article-meta-top">
+        <span class="origin-badge origin-self">独自実機・AIチャット検証ログ</span>
+        <span class="category-pill">Cloud &amp; AI Infrastructure</span>
+      </div>
+
+      <h1 class="article-title">自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁</h1>
+      <p class="article-subtitle">SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。</p>
+
+      <div class="article-tags-row">
+        <span class="tag-chip">#Text-to-SQL</span><span class="tag-chip">#構造化出力 動的マスキング</span><span class="tag-chip">#スロット並列予測</span><span class="tag-chip">#LLM レイテンシ削減</span>
+      </div>
+
+      <div class="article-timestamps">
+        <span>公開: <time datetime="2026-10-16">2026-10-16</time></span>
+        <span>実測データ更新: <time datetime="2026-09-30">2026-09-30</time></span>
+        <span>サンプル数: <strong>N = 60</strong></span>
+      </div>
+
+      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
+        <div class="tldr-title">
+          <span>この記事の要点</span>
+          <div class="card-metrics-inline">
+            <a href="../logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
+            <a href="../datasets/slot-parallel-sql-generation-dynamic-masking-benchmarks.csv" download="slot-parallel-sql-generation-dynamic-masking-benchmarks.csv" class="csv-btn">CSVデータを取得</a>
+          </div>
+        </div>
+        <ul class="tldr-list">
+          <li>SQLの固定構文を1文字ずつ自己回帰生成せず、7つの構造スロット（主テーブル・SELECT列・集計関数・WHERE列・演算子・ソート順・件数上限）を1パスで並列予測し動的スキーママスクを掛けることで、未知DBでも61.67%のクエリがエラーなく実行（Valid Execution）できた。</li><li>しかし、未知スキーマにおける「SELECTカラム選択（18.33%）」と「WHEREカラム選択（31.67%）」が最大のボトルネックとなり、実行結果の完全一致（EX）は10.00%（Healthcareドメインでは0.0%）にとどまった。</li><li>スロット並列＋動的マスクは「既知スキーマでの高速ルーティング」や「ORDER/LIMIT句（86.67%）・主テーブル特定（55.00%）」には有効だが、未知のカラム名と自然言語の意味的アライメントにはCross-EncoderやLLMの文脈推論が不可欠である。</li>
+        </ul>
+        <div class="kpi-strip">
+
+        <div class="kpi-item">
+          <div class="kpi-label">構文有効実行率 (Valid Execution)</div>
+          <div class="kpi-value">61.67 %</div>
+          <div class="kpi-sub">未知4ドメイン60クエリでSQLiteエラーなく実行完了</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">ORDER方向 / LIMIT上限 正解率</div>
+          <div class="kpi-value">86.67 %</div>
+          <div class="kpi-sub">スキーマ非依存の意図スロットは1パスで高精度に予測</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">SELECTカラム選択 正解率</div>
+          <div class="kpi-value">18.33 %</div>
+          <div class="kpi-sub">未知テーブルの列特定が最大のボトルネック</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">未知DB 実行結果一致率 (Test EX)</div>
+          <div class="kpi-value">10.00 %</div>
+          <div class="kpi-sub">全スロット同時正解が必要なためカラム誤りで急落</div>
+        </div>
+
+        </div>
+      </section>
+
+
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>1. 条件別の比較表</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁 — 実測検証データ比較表</caption>
+            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>評価項目 / 構造スロット</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>測定カテゴリ</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>正解率 / 成功率</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>評価対象数</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>失敗要因・技術的ボトルネック</span><span aria-hidden="true">↕</span></button></th></tr></thead>
+            <tbody><tr><th scope="row">order_direction (ソート方向)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="86.670000">86.67 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td data-sort-value="3.000000">昇順・降順・指定なしの3値分類であり、未知DBでも安定</td></tr><tr><th scope="row">limit (取得件数上限)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="86.670000">86.67 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td>クエリ内の数値表現と直結しておりスキーマ変化の影響を受けにくい</td></tr><tr><th scope="row">Valid Execution (構文有効実行)</th><td>全体実行指標</td><td class="num-cell" data-sort-value="61.670000">61.67 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td data-sort-value="38.000000">動的マスクで存在しない識別子は排除されるが、型の不整合等で約38%は失敗</td></tr><tr><th scope="row">primary_table (主テーブル選択)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="55.000000">55.00 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td>複数テーブルが候補となるドメインで類似テーブル名と混同</td></tr><tr><th scope="row">operator (比較演算子)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="41.670000">41.67 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td>WHERE列や集計条件との組み合わせ依存で誤選択が発生</td></tr><tr><th scope="row">agg_func (集計関数)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="31.670000">31.67 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td>COUNT / SUM / AVG の選択が対象カラムの粒度に依存する</td></tr><tr><th scope="row">where_column (条件カラム選択)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="31.670000">31.67 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td>未知スキーマの列名と自然言語の条件表現のアライメント不足</td></tr><tr><th scope="row">select_column (出力カラム選択)</th><td>スロット個別精度</td><td class="num-cell" data-sort-value="18.330000">18.33 %</td><td class="num-cell" data-sort-value="60.000000">60 件</td><td data-sort-value="1.000000">最大のボトルネック。1パス並列予測ではテーブル選択後の列絞り込み文脈が不足</td></tr><tr><th scope="row">Automotive ドメイン EX</th><td>未知ドメイン別EX</td><td class="num-cell" data-sort-value="15.380000">15.38 %</td><td class="num-cell" data-sort-value="13.000000">13 件</td><td>比較的明快なテーブル構造だが列選択の取りこぼしが響く</td></tr><tr><th scope="row">Finance / Airline ドメイン EX</th><td>未知ドメイン別EX</td><td class="num-cell" data-sort-value="13.330000">13.33 %</td><td class="num-cell" data-sort-value="30.000000">30 件</td><td>金額・日付・ステータス列など類似カラム間の識別に失敗</td></tr><tr><th scope="row">Healthcare ドメイン EX</th><td>未知ドメイン別EX</td><td class="num-cell" data-sort-value="0.000000">0.00 %</td><td class="num-cell" data-sort-value="17.000000">17 件</td><td data-sort-value="0.000000">専門用語とカラム名の乖離が大きく、全スロット同時正解が0件</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>2. 未知4ドメイン（N=60）におけるSQL構造スロット別の正解率と全体精度のギャップ</span>
+          <span class="section-subnote">単位: %</span>
+        </h2>
+        <div class="gap-list">
+
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">構文有効実行率（VE） vs 実行結果一致率（EX）</span>
+                <span class="status-badge status-danger">大幅乖離・要注意</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">SQLite有効実行成功率 (Valid Execution): 61.67%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="SQLite有効実行成功率 (Valid Execution): 61.67%">
+                    <rect class="bar-rect-official" x="0" y="0" width="61.67" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>実行結果一致率 (Execution Accuracy): 10.00%</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="実行結果一致率 (Execution Accuracy): 10.00%">
+                    <rect class="bar-rect-measured" x="0" y="0" width="10.00" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">動的マスクにより「存在しないテーブル・カラムの幻覚」は防げるが、正しいカラムを選べなければ結果集合は一致しない。</div>
+            </div>
+
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">スキーマ非依存スロット（ORDER/LIMIT） vs 主テーブル選択</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">ORDER方向 / LIMIT句 正解率: 86.67%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="ORDER方向 / LIMIT句 正解率: 86.67%">
+                    <rect class="bar-rect-official" x="0" y="0" width="86.67" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>主テーブル (primary_table) 正解率: 55.00%</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="主テーブル (primary_table) 正解率: 55.00%">
+                    <rect class="bar-rect-measured" x="0" y="0" width="55.00" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">「上位5件」「降順」などの操作意図や主テーブルの特定は、30ms以下の1パス分類器でも過半〜8割以上機能する。</div>
+            </div>
+
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">主テーブル選択 vs SELECTカラム選択（従属引数の壁）</span>
+                <span class="status-badge status-danger">大幅乖離・要注意</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">主テーブル (primary_table) 正解率: 55.00%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="主テーブル (primary_table) 正解率: 55.00%">
+                    <rect class="bar-rect-official" x="0" y="0" width="55.00" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>SELECTカラム (select_column) 正解率: 18.33%</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="SELECTカラム (select_column) 正解率: 18.33%">
+                    <rect class="bar-rect-measured" x="0" y="0" width="18.33" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">テーブルが当たっても、その中のどの列を集計・表示すべきかの意味的マッピングで精度が3分の1に落ちる。</div>
+            </div>
+
+        </div>
+      </section>
+
+
+      <section id="sec-analysis" class="article-section">
+        <h2 class="section-h2">
+          <span>結果をどう読むか</span>
+        </h2>
+
+        <div class="prose-section">
+          <h3>検証の狙い：なぜSQLを1トークンずつ自己回帰生成したくないのか</h3>
+          <p>汎用LLMでデータベース操作やツール呼び出しを行う際、`SELECT` や `FROM` といった固定構文トークンを1文字ずつ自己回帰（Autoregressive）で生成すると、数百ミリ秒〜数秒のレイテンシとトークン課金が発生します。また、フラットな選択肢しか扱えない軽量分類器では「テーブルを選ぶと選べるカラムが変わり、カラムを選ぶと有効な演算子が変わる」という従属引数（Dependent Arguments）の組み合わせ爆発を扱えません。そこで本検証では、SQLクエリを7つの構造スロット（`primary_table`, `select_column`, `agg_func`, `where_column`, `operator`, `order_direction`, `limit`）に分解し、Slot-Parallel Multi-Head分類器と動的スキーママスキング（Dynamic Action Masking）を組み合わせて、30ms以下の単一〜極小フォワードパスで直接SQL構造を出力できるかを実験しました。</p>
+        </div>
+
+        <div class="prose-section">
+          <h3>効いた部分：動的アクションマスキングによる61.67%の実行保証と意図スロット</h3>
+          <p>16種類のドメインDB（CRM、DevOps、EC、人事、物流など）で学習させた後、学習時に一度も登場していない4つの未知ドメイン（Automotive、Finance、Healthcare、Airlineの計60クエリ）でゼロショット評価を行いました。スキーマに存在しないテーブル名やカラム名をサンプリング前にマスク（確率ゼロ化）する機構とSQLite実行検証（RLEV）により、自己回帰LLMを使わずとも61.67%のクエリが構文エラーなくSQLite上で有効実行（Valid Execution）されました。特にスキーマ構造に依存しない `order_direction`（86.67%）や `limit`（86.67%）、および最初の起点となる `primary_table`（55.00%）は、1パスの軽量ヘッドでも実用的な水準で予測できています。</p>
+        </div>
+
+        <div class="prose-section">
+          <h3>ぶつかった壁：なぜ未知スキーマのカラム選択（18.33%）で急落するのか</h3>
+          <p>一方で、クエリ全体の実行結果が正解と完全一致した割合（Execution Accuracy: EX）は10.00%（Exact Matchは1.67%）、専門用語が多いHealthcareドメインではEX 0.00%にとどまりました。スロット別の正解率を分解すると原因は明白で、`select_column` が18.33%、`where_column` と `agg_func` が31.67%と大きく落ち込んでいます。SQLは7つのスロットすべてが同時に正解しなければ正しい結果集合が返りません（例えば7スロットの平均正解率が50%でも、独立なら0.5^7 = 0.78%にしかなりません）。特に1パスで全スロットを並列予測する設計では、「どのテーブルを選んだか」が確定する前の共有表現からカラムを予測するため、未知DBの似たような列名（例：`amount` と `balance` と `fee`）を自然言語の微妙なニュアンスと照合する表現力が決定的に不足します。</p>
+        </div>
+
+        <div class="prose-section">
+          <h3>設計上の結論：1パス並列予測を使うべき場所、LLMに残すべき場所</h3>
+          <p>このネガティブリザルトから得られる実務上の境界線は明確です。（1）スキーマが固定された自社アプリの操作ルーティングや、フィルタ条件・ソート順・件数上限（`ORDER BY` / `LIMIT`）の高速抽出には、30ms以下のスロット並列＋動的マスクが非常に有効です。（2）しかし、未知のデータベーススキーマに対するText-to-SQLのように「初めて見るカラム名とユーザー意図の深い意味的アライメント」が求められるタスクでは、1パス並列分類器だけで完結させようとするとカラム選択（18.3%）がボトルネックになります。未知スキーマを扱う場合は、無理に自己回帰を全廃するのではなく、「テーブル特定と構文制約（Grammar / Schema Constrained Decoding）だけマスクで保証し、カラム選択にはCross-Attentionまたは小規模LLMの段階的推論を使う」ハイブリッド構成が現実的です。</p>
+        </div>
+
+      </section>
+
+
+
+      <section id="sec-faq" class="article-section">
+        <h2 class="section-h2"><span>よくある疑問</span></h2>
+        <div class="faq-list">
+
+        <div class="faq-item">
+          <h3 class="faq-q">Q. Valid Execution（61.67%）と Execution Accuracy（10.00%）は何が違うのですか？</h3>
+          <p class="faq-a">Valid Execution（VE）は「生成されたSQLが対象データベースのスキーマに対して構文エラーや存在しないカラム参照を起こさず、SQLite上で正常に実行完了した割合」です。Execution Accuracy（EX）は「実行した結果のデータ行が、正解SQLの実行結果と完全に一致した割合」を指します。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">Q. なぜ1パスで全スロットを並列予測するとカラム選択の精度が落ちるのですか？</h3>
+          <p class="faq-a">本来、SELECT句やWHERE句のカラムは「どのテーブル（primary_table）を選んだか」に強く従属します。推論時にテーブル予測マスクを適用しても、エンコーダ内部の特徴量自体が「未知スキーマの全カラム候補と質問文の細かな対応関係」を1回のフォワードパスで解きほぐすには容量不足となるためです。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">Q. 動的アクションマスキング自体はText-to-SQLに有効と言えますか？</h3>
+          <p class="faq-a">はい。マスクなしでは未知スキーマに対して存在しないテーブル名やカラム名を出力してほぼ100%実行エラーになりますが、動的スキーママスクを入れることで61.67%を実行可能なクエリに収束させられます。LLMのConstrained Decoding（構造化出力制約）と組み合わせるのが最も効果的です。</p>
+        </div>
+
+        </div>
+      </section>
+
+      <section id="sec-sources" class="article-section">
+        <h2 class="section-h2">
+          <span>検証条件と出典</span>
+        </h2>
+        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁」(2026-09-30更新, N=60) — <code>https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html</code></div>
+        <ul class="source-list">
+
+        <li class="source-item">
+          <a href="https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json" target="_blank" rel="noopener noreferrer">Nodus 一次検証生ログ：Slot-Parallel SQL生成エンジン クロスDB（未知4ドメイン60クエリ）評価データ (JSON)</a>
+          <span class="source-meta">サンプル: N=60 unseen test queries across 4 domains (trained on 16 domains) | 確認日: 2026-09-30</span>
+        </li>
+
+        <li class="source-item">
+          <a href="https://www.sqlite.org/lang.html" target="_blank" rel="noopener noreferrer">SQLite Official Documentation: Query Language Understood by SQLite</a>
+          <span class="source-meta">サンプル: 公式仕様 | 確認日: 2026-09-30</span>
+        </li>
+
+        </ul>
+      </section>
+
+
+        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
+          <h2 class="section-h2"><span>あわせて読みたい</span></h2>
+          <ul class="source-list">
+
+                <li class="source-item">
+                  <a href="multihop-rag-orthogonal-residual-subtraction-benchmarks.html"><strong>マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率</strong></a>
+                  <span class="source-meta">比較質問 Reach@50（直交残差）: 92.07 % (N=1029)</span>
+                </li>
+
+                <li class="source-item">
+                  <a href="always-on-personal-ai-raspberry-pi-vps-mini-pc.html"><strong>パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？</strong></a>
+                  <span class="source-meta">実測: - (N=0)</span>
+                </li>
+
+                <li class="source-item">
+                  <a href="personal-ai-vps-home-server-subscription.html"><strong>パーソナルAIは、どこに置く？</strong></a>
+                  <span class="source-meta">実測: - (N=0)</span>
+                </li>
+
+          </ul>
+        </section>
+
+    </main>
+
+    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
+      <div class="sidebar-box">
+        <div class="sidebar-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#sec-tldr">この記事の要点</a></li>
+
+          <li><a href="#sec-table">1. 条件別・比較データ表</a></li>
+          <li><a href="#sec-chart">2. 実測ギャップ・比較グラフ</a></li>
+
+          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
+          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
+          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">検証データ概要</div>
+        <div class="meta-kv-list">
+          <div class="meta-kv-row"><span>データ種別</span><strong>独自一次検証</strong></div>
+          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 60</strong></div>
+          <div class="meta-kv-row"><span>比較行数</span><strong>11 件</strong></div>
+          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-09-30</strong></div>
+          <div class="meta-kv-row"><span>生ログ SHA-256</span><strong>e20c7dbdb6...</strong></div>
+        </div>
+        <div class="card-takeaway-bar">
+          <a href="../logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
+          <a href="../datasets/slot-parallel-sql-generation-dynamic-masking-benchmarks.csv" download="slot-parallel-sql-generation-dynamic-masking-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="slot-parallel-sql-generation-dynamic-masking-benchmarks.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+
+</body>
+</html>

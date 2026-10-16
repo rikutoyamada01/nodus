@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ | Nodus</title>
+  <meta name="description" content="HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。">
+  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html">
+  <meta property="og:title" content="マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ | Nodus">
+  <meta property="og:description" content="HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html">
+  <meta property="og:site_name" content="Nodus">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="multihop-rag-orthogonal-residual-subtraction-benchmarks.md">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率", "description": "HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "keywords": "マルチホップRAG, ベクトル検索 直交残差, HotpotQA 検証, 隠れ状態インデックス", "citation": ["https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json", "https://hotpotqa.github.io/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html"}, {"@type": "Dataset", "name": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率 実測検証データセット (N=1029)", "description": "HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。", "url": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-16", "dateModified": "2026-10-03", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。", "variableMeasured": ["Bridge Reach@10", "Bridge Reach@50", "Comparison Reach@50", "全体 Reach@50", "挙動の特徴とボトルネック"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/multihop-rag-orthogonal-residual-subtraction-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "マルチホップRAGの2ホップ目では、結局どのベクトルで検索するのが最もコスパが良いですか？", "acceptedAnswer": {"@type": "Answer", "text": "クエリが比較質問か連鎖質問かを事前に完璧に分類するのは難しいため、文分割や追加学習を行わず「直交残差 r」「第1文書 d1」「両者の1:1線形結合（r + d1）」の複数プローブでそれぞれ上位10〜15件ずつ引いてマージ（Union）する方式が、追加のエンコード遅延ゼロでOverall Reach@50を72.69%まで引き上げられるため最も実用的です。"}}, {"@type": "Question", "name": "なぜLLMの要約途中の隠れ状態を使った検索はテキスト基準より精度が低かったのですか？", "acceptedAnswer": {"@type": "Answer", "text": "Qwen2.5-0.5Bのような因果的（Causal）自己回帰モデルの最終層状態は「次トークンの予測」に最適化されており、質問文とのコサイン類似度空間として整合していないためです。1文書あたり約80状態（計130MB超）のストレージと1,149秒の登録時間をかけても、双方向エンコーダによる標準的なテキスト検索には及びませんでした。"}}, {"@type": "Question", "name": "マルチベクトル（複数スロット）学習が縮退しているかどうかはどうすれば検知できますか？", "acceptedAnswer": {"@type": "Answer", "text": "検索精度（Recall）だけを見ていると、単一ベクトル相当の表現力でも一定のスコアが出るため縮退を見逃します。推論時に1文書から出力されるK個のスロットベクトル間のペアワイズ・コサイン類似度を計算し、平均が0.95を超えている場合はスロット分離が機能していません。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率", "item": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html"}]}]}</script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+
+  <div class="container article-layout">
+    <main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="../index.html">Nodus</a> &rsaquo; <span>Cloud &amp; AI Infrastructure</span>
+      </nav>
+
+      <div class="article-meta-top">
+        <span class="origin-badge origin-self">独自実機・AIチャット検証ログ</span>
+        <span class="category-pill">Cloud &amp; AI Infrastructure</span>
+      </div>
+
+      <h1 class="article-title">マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率</h1>
+      <p class="article-subtitle">HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。</p>
+
+      <div class="article-tags-row">
+        <span class="tag-chip">#マルチホップRAG</span><span class="tag-chip">#ベクトル検索 直交残差</span><span class="tag-chip">#HotpotQA 検証</span><span class="tag-chip">#隠れ状態インデックス</span>
+      </div>
+
+      <div class="article-timestamps">
+        <span>公開: <time datetime="2026-10-16">2026-10-16</time></span>
+        <span>実測データ更新: <time datetime="2026-10-03">2026-10-03</time></span>
+        <span>サンプル数: <strong>N = 1029</strong></span>
+      </div>
+
+      <section id="sec-tldr" class="tldr-box" aria-label="この記事の結論と要点">
+        <div class="tldr-title">
+          <span>この記事の要点</span>
+          <div class="card-metrics-inline">
+            <a href="../logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
+            <a href="../datasets/multihop-rag-orthogonal-residual-subtraction-benchmarks.csv" download="multihop-rag-orthogonal-residual-subtraction-benchmarks.csv" class="csv-btn">CSVデータを取得</a>
+          </div>
+        </div>
+        <ul class="tldr-list">
+          <li>クエリ内に比較対象が両方書かれている「比較質問（Comparison）」では、1ホップ目の文書ベクトルを直交射影で引き算すると第2文書へのReach@50が92.07%に達する。</li><li>一方、1ホップ目の文書内にしか第2の手がかりがない「連鎖質問（Bridge）」で文書全体を引き算すると、次ホップへの接点まで消去して自滅し、Reach@50が27.31%（第1文書単体検索57.23%の半分以下）に落ちる。</li><li>「充足した局所文だけを引き、第1文書全体の文脈を足す（局所残差＋文書加算）」ことでBridge Reach@10は18.45%→50.00%に改善するが、文分割・再エンコードの計算負荷に対して単純線形結合（r + d1）との差は+1.62 pt（@50）にとどまる。</li>
+        </ul>
+        <div class="kpi-strip">
+
+        <div class="kpi-item">
+          <div class="kpi-label">比較質問 Reach@50（直交残差）</div>
+          <div class="kpi-value">92.07 %</div>
+          <div class="kpi-sub">第1文書単体（12.33%）から+79.74 pt改善</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">連鎖質問 Reach@50（直交残差単体）</div>
+          <div class="kpi-value">27.31 %</div>
+          <div class="kpi-sub">第1文書単体（57.23%）から半減し自滅</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">連鎖質問 Reach@10（局所引き算＋文書加算）</div>
+          <div class="kpi-value">50.00 %</div>
+          <div class="kpi-sub">大域引き算（18.45%）から+31.55 pt改善</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">複数スロット隠れ状態の類似度（縮退）</div>
+          <div class="kpi-value">0.9990</div>
+          <div class="kpi-sub">100文書平均コサイン類似度（ほぼ同一方向へ潰れる）</div>
+        </div>
+
+        </div>
+      </section>
+
+
+      <section id="sec-table" class="article-section">
+        <h2 class="section-h2">
+          <span>1. 条件別の比較表</span>
+          <span class="section-subnote">列見出しクリックで数値ソート可能</span>
+        </h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率 — 実測検証データ比較表</caption>
+            <thead><tr><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>第2ホップ検索プローブ手法</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>Bridge Reach@10</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>Bridge Reach@50</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>Comparison Reach@50</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>全体 Reach@50</span><span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>挙動の特徴とボトルネック</span><span aria-hidden="true">↕</span></button></th></tr></thead>
+            <tbody><tr><th scope="row">大域直交残差単体 (r)</th><td class="num-cell" data-sort-value="18.450000">18.45 %</td><td class="num-cell" data-sort-value="27.310000">27.31 %</td><td class="num-cell" data-sort-value="92.070000">92.07 %</td><td class="num-cell" data-sort-value="41.590000">41.59 %</td><td data-sort-value="2.000000">比較質問には極めて強いが、連鎖質問で第2文書への接点を消去し自滅</td></tr><tr><th scope="row">第1文書ベクトル単体 (d1)</th><td class="num-cell" data-sort-value="41.900000">41.90 %</td><td class="num-cell" data-sort-value="57.230000">57.23 %</td><td class="num-cell" data-sort-value="12.330000">12.33 %</td><td class="num-cell" data-sort-value="47.330000">47.33 %</td><td>共起近傍により連鎖質問の過半を拾うが、比較質問では無力</td></tr><tr><th scope="row">局所充足引き算単体 (r_local)</th><td class="num-cell" data-sort-value="24.310000">24.31 %</td><td class="num-cell" data-sort-value="34.540000">34.54 %</td><td class="num-cell" data-sort-value="92.070000">92.07 %</td><td class="num-cell" data-sort-value="47.230000">47.23 %</td><td>クエリ内の未充足語は浮き出るが、クエリに無い固有名詞は引けない</td></tr><tr><th scope="row">大域ブレンド (r + 0.5 d1)</th><td class="num-cell" data-sort-value="39.500000">39.50 %</td><td class="num-cell" data-sort-value="49.880000">49.88 %</td><td class="num-cell" data-sort-value="94.270000">94.27 %</td><td class="num-cell" data-sort-value="59.670000">59.67 %</td><td>文書加算が弱いとBridgeの回復が不十分</td></tr><tr><th scope="row">大域ブレンド (r + 1.0 d1)</th><td class="num-cell" data-sort-value="46.260000">46.26 %</td><td class="num-cell" data-sort-value="61.220000">61.22 %</td><td class="num-cell" data-sort-value="89.430000">89.43 %</td><td class="num-cell" data-sort-value="67.440000">67.44 %</td><td>文分割なしで連鎖・比較の両方を高水準でカバーする現実解</td></tr><tr><th scope="row">局所引き算＋文書加算 (r_local + 1.0 d1)</th><td class="num-cell" data-sort-value="50.000000">50.00 %</td><td class="num-cell" data-sort-value="62.840000">62.84 %</td><td class="num-cell" data-sort-value="89.430000">89.43 %</td><td class="num-cell" data-sort-value="68.320000">68.32 %</td><td data-sort-value="10.000000">Bridge @10で50%に到達するが、文単位エンコードの計算負荷が高い</td></tr><tr><th scope="row">4プローブ和集合 (Quad Union / 約36件枠)</th><td class="num-cell" data-sort-value="52.100000">52.10 %</td><td class="num-cell" data-sort-value="66.080000">66.08 %</td><td class="num-cell" data-sort-value="96.040000">96.04 %</td><td class="num-cell" data-sort-value="72.690000">72.69 %</td><td>単一ベクトルではなく複数プローブに検索枠を配分した上限目安</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sec-chart" class="article-section">
+        <h2 class="section-h2">
+          <span>2. 第2ホップ文書への到達率（Reach@50）のクエリ種別・手法別ギャップ</span>
+          <span class="section-subnote">単位: %</span>
+        </h2>
+        <div class="gap-list">
+
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">直交残差単体（r）：比較質問 vs 連鎖質問</span>
+                <span class="status-badge status-danger">大幅乖離・要注意</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">比較質問（Comparison）Reach@50: 92.07%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="比較質問（Comparison）Reach@50: 92.07%">
+                    <rect class="bar-rect-official" x="0" y="0" width="92.07" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>連鎖質問（Bridge）Reach@50: 27.31%</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="連鎖質問（Bridge）Reach@50: 27.31%">
+                    <rect class="bar-rect-measured" x="0" y="0" width="27.31" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">比較質問では残りの対象が綺麗に浮き彫りになるが、連鎖質問では第1文書と第2文書の共起接点までマイナス方向へ吹き飛ばしてしまう。</div>
+            </div>
+
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">連鎖質問（Bridge）Reach@10：大域引き算 vs 局所引き算＋文書加算</span>
+                <span class="status-badge status-good">実測良好・高効率</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">大域直交残差単体 Reach@10: 18.45%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="大域直交残差単体 Reach@10: 18.45%">
+                    <rect class="bar-rect-official" x="0" y="0" width="18.45" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>局所充足引き算＋第1文書加算 Reach@10: 50.00%</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="局所充足引き算＋第1文書加算 Reach@10: 50.00%">
+                    <rect class="bar-rect-measured" x="0" y="0" width="50.00" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">クエリを充足した1文だけを引き算し、第1文書ベクトルを加算することで、BridgeのTop-10到達率が2.7倍に回復。</div>
+            </div>
+
+            <div class="gap-item">
+              <div class="gap-item-header">
+                <span class="gap-item-name">連鎖質問（Bridge）Reach@50：大域ブレンド vs 局所ブレンドの費用対効果</span>
+                <span class="status-badge status-warning">条件付き制限・乖離あり</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-row">
+                  <span class="bar-label">大域ブレンド（r + 1.0 d1）Reach@50: 61.22%</span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="大域ブレンド（r + 1.0 d1）Reach@50: 61.22%">
+                    <rect class="bar-rect-official" x="0" y="0" width="61.22" height="6"></rect>
+                  </svg>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><strong>局所ブレンド（r_local + 1.0 d1）Reach@50: 62.84%</strong></span>
+                  <svg class="bar-svg" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="局所ブレンド（r_local + 1.0 d1）Reach@50: 62.84%">
+                    <rect class="bar-rect-measured" x="0" y="0" width="62.84" height="6"></rect>
+                  </svg>
+                </div>
+              </div>
+              <div class="gap-note">文書を文単位に分割して再エンコードする計算負荷をかけても、Reach@50の上積みは+1.62 ptにとどまる。</div>
+            </div>
+
+        </div>
+      </section>
+
+
+      <section id="sec-analysis" class="article-section">
+        <h2 class="section-h2">
+          <span>結果をどう読むか</span>
+        </h2>
+
+        <div class="prose-section">
+          <h3>なぜ「取得済み文書の引き算」は連鎖質問（Bridge）で自滅するのか</h3>
+          <p>マルチホップ検索では、1ホップ目で取得した文書と同じ内容ばかりが2ホップ目でも上位に来るのを防ぐため、クエリベクトル q から第1文書ベクトル d1 の直交射影成分を引き算する（r = q - &lt;q, d1&gt; d1）手法が考案されます。実際にHotpotQAで測定すると、「AとBのどちらが先に設立されたか？」という比較質問（Comparison）では、クエリ内に最初からAとBの両方が含まれるため、Aの文書を引き算すればBが鮮明に残り、Reach@50で92.07%に達します。しかし、「映画『君の名は。』の監督が出身した大学はどこか？」のような連鎖質問（Bridge）では、クエリ内に第2ホップの固有名詞（新海誠）が存在しません。埋め込み空間上で第2文書は第1文書（『君の名は。』）の共起近傍に配置されているにもかかわらず、第1文書ベクトルを約0.75倍も強く引き算してしまうことで、第2文書との接着面まで逆方向へ吹き飛ばしてしまい、Reach@50が27.31%（d1単体検索57.23%の半分以下）へと急落します。</p>
+        </div>
+
+        <div class="prose-section">
+          <h3>「局所引き算＋文書加算」の回復効果とオーバーエンジニアリングの壁</h3>
+          <p>この自滅を防ぐため、第1文書全体を引くのではなく「クエリと最も内積が高い1文（充足文 v_sat）だけを直交射影で引き算する」局所残差 r_local を試すと、クエリ内に残っていた未充足の属性語（「監督」「大学」など）が浮き彫りになり、Bridge Reach@10は18.45%から24.31%へ改善します。さらにそこへ第1文書ベクトル d1 を1.0倍加算（r_local + 1.0 d1）すると、Bridge Reach@10は50.00%、Reach@50は62.84%まで到達します。ただし、ここには重要なエンジニアリング上の教訓があります。文書を文単位に分割してエンコードし直すパイプラインを組んでも、文分割を一切行わない単純な大域ブレンド（r + 1.0 d1、Reach@50 61.22%）に対して+1.62 ptの改善にとどまります。実運用では、文分割の再エンコード負荷をかけるよりも、大域残差プローブと第1文書プローブの検索枠を分けて和集合（Union）を取る方が計算効率・実装難度ともに優位です。</p>
+        </div>
+
+        <div class="prose-section">
+          <h3>ネガティブリザルト1：複数命題スロット学習における「コサイン類似度 0.999」の縮退</h3>
+          <p>1つの文書を単一ベクトルではなく複数の命題スロット（Multi-Slot / Multi-Vector）に分解して保持させる学習モデル（実験31）を内部監査したところ、乱数固定100文書におけるスロット間の平均コサイン類似度が0.999005（最小でも0.990349）、スロット間の成分差の最大値が0.0278となり、すべてのスロットが事実上ほぼ同じ方向へ縮退（Collapse）していることが判明しました。さらに計算グラフを点検すると、クエリ側の命題射影パラメータ4個すべてに損失関数からの勾配が届いておらず、旧評価データセットには訓練とテストの間で293文書の正解重複が存在していました。Attention重みにわずかな差（最大0.163）があっても意味的な分離が起きている証拠にはならず、学習型マルチスロット化を導入する際は「スロット間コサイン類似度の直接監視」と「訓練・テスト間の正解文書完全分離（Disjoint Split）」が必須です。</p>
+        </div>
+
+        <div class="prose-section">
+          <h3>ネガティブリザルト2：LLM要約の途中隠れ状態（36,435状態）はテキスト検索を超えられるか</h3>
+          <p>正解文書の重複を完全に排除した448文書・32クエリの厳密分離環境において、Qwen2.5-0.5B baseが文書を自己回帰的に要約する際のトークンごとの最終層隠れ状態（計36,435状態、130.58 MB、CPU float32で全文再計算との最大誤差0.000213以下を確認）をそのままインデックス化するパイロット検証（仮説H1）を実施しました。結果として、途中状態をすべて保持した検索は最終トークン単体の隠れ状態に対してはMRRで+0.0427とわずかに上回ったものの、通常の文書テキスト検索基準に対してはMRR差 -0.8478（95%信頼区間: -0.9144〜-0.7696）、Full Match@2差 -0.6250と大きく劣後しました。自己回帰LLMの生成途中状態を無加工でベクトル検索インデックスに流用しても、専用の双方向埋め込みやテキスト検索の代替にはならないことが実測で確認されました。</p>
+        </div>
+
+      </section>
+
+
+
+      <section id="sec-faq" class="article-section">
+        <h2 class="section-h2"><span>よくある疑問</span></h2>
+        <div class="faq-list">
+
+        <div class="faq-item">
+          <h3 class="faq-q">Q. マルチホップRAGの2ホップ目では、結局どのベクトルで検索するのが最もコスパが良いですか？</h3>
+          <p class="faq-a">クエリが比較質問か連鎖質問かを事前に完璧に分類するのは難しいため、文分割や追加学習を行わず「直交残差 r」「第1文書 d1」「両者の1:1線形結合（r + d1）」の複数プローブでそれぞれ上位10〜15件ずつ引いてマージ（Union）する方式が、追加のエンコード遅延ゼロでOverall Reach@50を72.69%まで引き上げられるため最も実用的です。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">Q. なぜLLMの要約途中の隠れ状態を使った検索はテキスト基準より精度が低かったのですか？</h3>
+          <p class="faq-a">Qwen2.5-0.5Bのような因果的（Causal）自己回帰モデルの最終層状態は「次トークンの予測」に最適化されており、質問文とのコサイン類似度空間として整合していないためです。1文書あたり約80状態（計130MB超）のストレージと1,149秒の登録時間をかけても、双方向エンコーダによる標準的なテキスト検索には及びませんでした。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-q">Q. マルチベクトル（複数スロット）学習が縮退しているかどうかはどうすれば検知できますか？</h3>
+          <p class="faq-a">検索精度（Recall）だけを見ていると、単一ベクトル相当の表現力でも一定のスコアが出るため縮退を見逃します。推論時に1文書から出力されるK個のスロットベクトル間のペアワイズ・コサイン類似度を計算し、平均が0.95を超えている場合はスロット分離が機能していません。</p>
+        </div>
+
+        </div>
+      </section>
+
+      <section id="sec-sources" class="article-section">
+        <h2 class="section-h2">
+          <span>検証条件と出典</span>
+        </h2>
+        <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。</div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率」(2026-10-03更新, N=1029) — <code>https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html</code></div>
+        <ul class="source-list">
+
+        <li class="source-item">
+          <a href="https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json" target="_blank" rel="noopener noreferrer">Nodus 一次検証生ログ：HotpotQA 多重プローブ到達率・局所残差・隠れ状態パイロット測定データ (JSON)</a>
+          <span class="source-meta">サンプル: N=1,029 queries (66,635 docs) + 32 disjoint pilot queries (448 docs) | 確認日: 2026-10-03</span>
+        </li>
+
+        <li class="source-item">
+          <a href="https://hotpotqa.github.io/" target="_blank" rel="noopener noreferrer">HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering</a>
+          <span class="source-meta">サンプル: 公式ベンチマーク仕様 | 確認日: 2026-10-03</span>
+        </li>
+
+        </ul>
+      </section>
+
+
+        <section id="sec-related" class="article-section" aria-label="関連する検証レポート">
+          <h2 class="section-h2"><span>あわせて読みたい</span></h2>
+          <ul class="source-list">
+
+                <li class="source-item">
+                  <a href="slot-parallel-sql-generation-dynamic-masking-benchmarks.html"><strong>自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁</strong></a>
+                  <span class="source-meta">構文有効実行率 (Valid Execution): 61.67 % (N=60)</span>
+                </li>
+
+                <li class="source-item">
+                  <a href="always-on-personal-ai-raspberry-pi-vps-mini-pc.html"><strong>パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？</strong></a>
+                  <span class="source-meta">実測: - (N=0)</span>
+                </li>
+
+                <li class="source-item">
+                  <a href="personal-ai-vps-home-server-subscription.html"><strong>パーソナルAIは、どこに置く？</strong></a>
+                  <span class="source-meta">実測: - (N=0)</span>
+                </li>
+
+          </ul>
+        </section>
+
+    </main>
+
+    <aside class="article-sidebar" aria-label="記事目次およびデータ概要">
+      <div class="sidebar-box">
+        <div class="sidebar-title">目次</div>
+        <ul class="toc-list">
+          <li><a href="#sec-tldr">この記事の要点</a></li>
+
+          <li><a href="#sec-table">1. 条件別・比較データ表</a></li>
+          <li><a href="#sec-chart">2. 実測ギャップ・比較グラフ</a></li>
+
+          <li><a href="#sec-analysis">3. 詳細解説・原因分析</a></li>
+          <li><a href="#sec-faq">4. よくある疑問 (FAQ)</a></li>
+          <li><a href="#sec-sources">5. 検証方法・一次情報出典</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">検証データ概要</div>
+        <div class="meta-kv-list">
+          <div class="meta-kv-row"><span>データ種別</span><strong>独自一次検証</strong></div>
+          <div class="meta-kv-row"><span>サンプル数</span><strong>N = 1029</strong></div>
+          <div class="meta-kv-row"><span>比較行数</span><strong>7 件</strong></div>
+          <div class="meta-kv-row"><span>最終検証日</span><strong>2026-10-03</strong></div>
+          <div class="meta-kv-row"><span>生ログ SHA-256</span><strong>97854aa362...</strong></div>
+        </div>
+        <div class="card-takeaway-bar">
+          <a href="../logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json" target="_blank" rel="noopener noreferrer" class="csv-btn">📄 一次検証の生ログ (JSON)</a>
+          <a href="../datasets/multihop-rag-orthogonal-residual-subtraction-benchmarks.csv" download="multihop-rag-orthogonal-residual-subtraction-benchmarks.csv" class="csv-btn">CSVをダウンロード</a>
+          <a href="multihop-rag-orthogonal-residual-subtraction-benchmarks.md" target="_blank" rel="noopener noreferrer" class="csv-btn">Markdown版 (AI/LLM用)</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+
+</body>
+</html>

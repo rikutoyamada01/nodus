@@ -9,6 +9,20 @@
     <name>Nodus Research Editorial</name>
   </author>
   <entry>
+    <title>マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率</title>
+    <link href="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html" />
+    <id>https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。</summary>
+  </entry>
+  <entry>
+    <title>自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁</title>
+    <link href="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html" />
+    <id>https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。</summary>
+  </entry>
+  <entry>
     <title>パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？</title>
     <link href="https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html" />
     <id>https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html</id>

@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "slot-parallel-sql-generation-dynamic-masking-benchmarks",
+  "origin": "first_party_lab",
+  "recorded_at": "2026-09-30",
+  "environment": {
+    "architecture": "Slot-Parallel Multi-Head Classifier + Dynamic Schema Action Masking + SQLite Execution Verifier (RLEV)",
+    "train_domains_n": 16,
+    "val_domains_n": 4,
+    "unseen_test_domains_n": 4,
+    "unseen_test_queries_n": 60,
+    "target_single_pass_latency_ms": 30.0
+  },
+  "aggregate_metrics": {
+    "best_epoch": 9,
+    "val_exact_match_pct": 5.0,
+    "val_execution_accuracy_pct": 10.0,
+    "test_valid_execution_rate_ve_pct": 61.67,
+    "test_execution_accuracy_ex_pct": 10.0,
+    "test_exact_match_em_pct": 1.67
+  },
+  "slot_level_accuracies_pct": {
+    "order_direction": 86.67,
+    "limit": 86.67,
+    "primary_table": 55.0,
+    "operator": 41.67,
+    "agg_func": 31.67,
+    "where_column": 31.67,
+    "select_column": 18.33
+  },
+  "unseen_domain_breakdown": [
+    {
+      "domain": "automotive",
+      "queries_n": 13,
+      "execution_accuracy_ex_pct": 15.38,
+      "exact_match_em_pct": 0.0
+    },
+    {
+      "domain": "finance",
+      "queries_n": 15,
+      "execution_accuracy_ex_pct": 13.33,
+      "exact_match_em_pct": 0.0
+    },
+    {
+      "domain": "airline",
+      "queries_n": 15,
+      "execution_accuracy_ex_pct": 13.33,
+      "exact_match_em_pct": 6.67
+    },
+    {
+      "domain": "healthcare",
+      "queries_n": 17,
+      "execution_accuracy_ex_pct": 0.0,
+      "exact_match_em_pct": 0.0
+    }
+  ]
+}
