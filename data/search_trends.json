@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T23:33:09.566262",
+  "generated_at": "2026-10-16T23:15:47.138796",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -44,6 +44,56 @@
       "uncovered_content_gaps": []
     },
     {
+      "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
+      "seed": "AIエージェント 常駐 VPS ミニPC",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "antigravity-quota-5-hour-weekly-ai-credits-guide",
+      "seed": "Antigravity 利用枠 上限",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "cloud-backup-100gb-restore-egress-cost-comparison",
+      "seed": "クラウドバックアップ 復元 料金 比較",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "cloudflare-pages-custom-domain-preview-url-indexing",
+      "seed": "Cloudflare Pages 独自ドメイン pages.dev 検索",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
+      "seed": "CO2センサー 自作 eCO2 違い",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
       "slug": "cross-model-peer-audit-bug-detection-benchmarks",
       "seed": "AI コードレビュー 比較",
       "dominant_market_intent": "comparison",
@@ -68,6 +118,46 @@
     {
       "slug": "diy-or-ready-made-total-cost",
       "seed": "自作 既製品 コスパ",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "docker-volume-bind-mount-backup-restore-scope",
+      "seed": "Docker バックアップ Volume フォルダコピー",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "dual-4k-dock-mac-mst-displaylink-thunderbolt-guide",
+      "seed": "Mac デュアルディスプレイ ドック 選び方",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide",
+      "seed": "ONNX INT8 量子化 精度低下",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "edge-ai-venue-wifi-congestion-offline-fallback-design",
+      "seed": "展示会 Wi-Fi 混雑 対策",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {},
       "total_suggestions": 0,
@@ -165,6 +255,36 @@
       ]
     },
     {
+      "slug": "esp32-c6-matter-thread-border-router-requirements",
+      "seed": "ESP32-C6 Matter Thread 必要機器",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "esp32-deep-sleep-battery-life-board-quiescent-current",
+      "seed": "ESP32 Deep Sleep 電池持ち 計算",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "esp32-s3-dual-usb-ports-uart-native-otg-guide",
+      "seed": "ESP32-S3 USB端子 2つ 違い",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
       "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
       "seed": "外付けSSD 自作 完成品 比較",
       "dominant_market_intent": "metric_cost_spec",
@@ -185,8 +305,104 @@
       "uncovered_content_gaps": []
     },
     {
+      "slug": "gemini-api-prompt-caching-implicit-explicit-cost-guide",
+      "seed": "Gemini API キャッシュ 条件",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "google-ai-family-sharing-antigravity-pro-ultra-guide",
+      "seed": "Google AI ファミリー共有 Antigravity",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "google ai pro ファミリー共有 antigravity"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "google ai pro ファミリー共有 antigravity",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "pro"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "google-ai-pro-ai-studio-api-billing-boundary",
+      "seed": "Google AI Pro AI Studio 課金 違い",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
       "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
       "seed": "Colab GPU CU 何時間",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide",
+      "seed": "Search Console アクセス解析 数字が合わない",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "hardware-change-camera-microphone-hyperparameter-regression-guide",
+      "seed": "スピーカーフォン 音声認識 精度",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "home-server-access-vpn-vs-cloudflare-tunnel-guide",
+      "seed": "Cloudflare Tunnel Tailscale 違い",
+      "dominant_market_intent": "comparison",
+      "intent_distribution": {
+        "comparison": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "cloudflare tunnel tailscale 違い"
+      ],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "human-in-the-loop-labeling-prompt-vs-actual-input-guide",
+      "seed": "継続学習 ラベリング 注意点",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "immich-backup-photos-database-restore-scope",
+      "seed": "Immich バックアップ 復元 方法",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {},
       "total_suggestions": 0,
@@ -220,9 +436,9 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
-        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
-        "mac ローカルllm コーディング"
+        "mac ローカルllm コーディング",
+        "mac ローカルllm mlx"
       ],
       "title_optimization_opportunities": [
         {
@@ -249,13 +465,6 @@
           ]
         },
         {
-          "query": "mac ローカルllm mlx",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mlx"
-          ]
-        },
-        {
           "query": "mac ローカルllm 構築",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -267,6 +476,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "コーディング"
+          ]
+        },
+        {
+          "query": "mac ローカルllm mlx",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mlx"
           ]
         }
       ]
@@ -284,6 +500,86 @@
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
       "seed": "自宅サーバー ミニPC 選び方",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide",
+      "seed": "混同行列 見方 改善",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "ml-benchmark-data-leakage-group-split-pipeline-guide",
+      "seed": "機械学習 データリーク 原因",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "ml-class-imbalance-oversampling-loss-weight-double-correction",
+      "seed": "WeightedRandomSampler 重複",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "ml-noise-other-class-false-acceptance-evaluation-guide",
+      "seed": "機械学習 ノイズ 誤認識",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
+      "seed": "マルチホップRAG ベクトル検索",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "nas-2bay-raid1-vs-external-backup-recovery-guide",
+      "seed": "2ベイNAS RAID1 バックアップ 違い",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "notebooklm-limits-sources-notebooks-sharing-guide",
+      "seed": "NotebookLM ソース 分割 上限",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "ollama-context-length-vram-default-memory-guide",
+      "seed": "Ollama コンテキスト長 デフォルト 変更",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {},
       "total_suggestions": 0,
@@ -316,6 +612,56 @@
       "uncovered_content_gaps": []
     },
     {
+      "slug": "slot-parallel-sql-generation-dynamic-masking-benchmarks",
+      "seed": "Text-to-SQL 自己回帰なし",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "streaming-ai-offline-accuracy-vs-realtime-timing-guide",
+      "seed": "リアルタイム認識 タイミング ズレ",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "tailscale-nas-slow-direct-derp-relay-check",
+      "seed": "Tailscale 遅い NAS 確認",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "tailscale-subnet-router-vs-exit-node-nas-guide",
+      "seed": "Tailscale Subnet Router Exit Node 違い",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
+      "slug": "tts-synthetic-data-augmentation-domain-gap-pitfalls",
+      "seed": "合成データ 機械学習 注意点",
+      "dominant_market_intent": "metric_cost_spec",
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
+      "title_optimization_opportunities": [],
+      "uncovered_content_gaps": []
+    },
+    {
       "slug": "wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation",
       "seed": "Wi-Fi 7 買い替え 必要",
       "dominant_market_intent": "metric_cost_spec",
@@ -329,17 +675,38 @@
   "zenn_daily_trending": [
     {
       "title": "良いテストを書き、良いテストを見分ける ─『単体テストの考え方/使い方』のエッセンス",
-      "liked_count": 109,
+      "liked_count": 126,
       "comments_count": 0,
       "url": "https://zenn.dev/nexta_/articles/unit-testing-principles-essence",
       "published_at": "2026-10-13"
     },
     {
       "title": "改めて考える、AIエンジニアリングの今",
-      "liked_count": 31,
-      "comments_count": 1,
+      "liked_count": 52,
+      "comments_count": 2,
       "url": "https://zenn.dev/r_kaga/articles/2fd185c50cea7c",
       "published_at": "2026-10-15"
+    },
+    {
+      "title": "有名 OSS が PR を閉じはじめた。何が起きていて、どう向き合うか",
+      "liked_count": 48,
+      "comments_count": 0,
+      "url": "https://zenn.dev/hand_dot/articles/ecb391d4322330",
+      "published_at": "2026-10-16"
+    },
+    {
+      "title": "国産モデル sarashina3-mini は日本語の推敲で何を変えるのか？",
+      "liked_count": 14,
+      "comments_count": 0,
+      "url": "https://zenn.dev/algoartis/articles/03ca12150ccbee",
+      "published_at": "2026-10-15"
+    },
+    {
+      "title": "『現場で役立つシステム設計の原則』を読んで学んだこと、実践したこと、これからやりたいこと",
+      "liked_count": 41,
+      "comments_count": 0,
+      "url": "https://zenn.dev/wwwave/articles/38b8284f96bd9e",
+      "published_at": "2026-10-14"
     },
     {
       "title": "レポ：mixi2のインターンに参加しました！",
@@ -349,50 +716,29 @@
       "published_at": "2026-10-15"
     },
     {
-      "title": "『現場で役立つシステム設計の原則』を読んで学んだこと、実践したこと、これからやりたいこと",
-      "liked_count": 29,
+      "title": "ポートフォリオをVoidで作り直したので、Voidの来歴と中身を整理する",
+      "liked_count": 3,
       "comments_count": 0,
-      "url": "https://zenn.dev/wwwave/articles/38b8284f96bd9e",
+      "url": "https://zenn.dev/nkzn/articles/my-first-void",
+      "published_at": "2026-10-16"
+    },
+    {
+      "title": "【セキュリティ】お客さんからの「うちは大丈夫？」に答えるため、IPAの点検項目をレガシーPHPのECサイトで上から順にやってみた",
+      "liked_count": 14,
+      "comments_count": 0,
+      "url": "https://zenn.dev/subara3/articles/b90ff538d87aa6",
       "published_at": "2026-10-14"
     },
     {
-      "title": "ICFPC2026 参加記",
+      "title": "jpstatで始めるe-Stat API入門",
       "liked_count": 8,
       "comments_count": 0,
-      "url": "https://zenn.dev/algoartis/articles/b5dd3c401d5dd4",
-      "published_at": "2026-10-15"
-    },
-    {
-      "title": "Gemini 4 Argonの日本語性能を検証してみた",
-      "liked_count": 26,
-      "comments_count": 0,
-      "url": "https://zenn.dev/algoartis/articles/19bb1705ea4b16",
-      "published_at": "2026-10-14"
-    },
-    {
-      "title": "WAF でブロックする前に確かめていること",
-      "liked_count": 66,
-      "comments_count": 0,
-      "url": "https://zenn.dev/azunyan/articles/7a105969d7d16c",
-      "published_at": "2026-10-10"
-    },
-    {
-      "title": "SQLite 本体にベクトル検索拡張 vec1 がやってきた",
-      "liked_count": 149,
-      "comments_count": 0,
-      "url": "https://zenn.dev/mattn/articles/6e9996319ac099",
-      "published_at": "2026-10-11"
-    },
-    {
-      "title": "国産モデル sarashina3-mini は日本語の推敲で何を変えるのか？",
-      "liked_count": 5,
-      "comments_count": 0,
-      "url": "https://zenn.dev/algoartis/articles/03ca12150ccbee",
+      "url": "https://zenn.dev/tyasuakwa/articles/3f6a1394323275",
       "published_at": "2026-10-15"
     },
     {
       "title": "Akinatorで始めるAgentic RL ー タスク設計と初期検証  ー",
-      "liked_count": 3,
+      "liked_count": 7,
       "comments_count": 0,
       "url": "https://zenn.dev/mkj/articles/8e1da67da67f98",
       "published_at": "2026-10-15"
@@ -400,64 +746,64 @@
   ],
   "hackernews_frontpage": [
     {
-      "title": "Muse Spark Open",
-      "points": 560,
-      "num_comments": 319,
-      "url": "https://research.meta.ai/blog/muse-spark-open"
+      "title": "Tesla Roadster",
+      "points": 1063,
+      "num_comments": 1932,
+      "url": "https://www.tesla.com/roadster"
     },
     {
-      "title": "Wayland desktop for Linux with skeuomorphic design",
-      "points": 467,
-      "num_comments": 184,
-      "url": "https://github.com/fyzugx/DEsk"
+      "title": "Claude reveals ECDSA curve origins",
+      "points": 554,
+      "num_comments": 235,
+      "url": "https://www.anthropic.com/research/ecdsa-curve-origins"
     },
     {
-      "title": "Neural networks are clean",
-      "points": 453,
-      "num_comments": 170,
-      "url": "https://already-clean.goodfire.com/"
+      "title": "90% of US working hours are spent on tasks not covered well by AI benchmarks",
+      "points": 356,
+      "num_comments": 306,
+      "url": "https://www.mercor.com/research/labor-index/benchmark-map/"
     },
     {
-      "title": "AdFection: Targeted ads turned into a pipeline for zero-click mercenary spyware",
-      "points": 357,
-      "num_comments": 525,
-      "url": "https://citizenlab.ca/research/how-discover-tech-turned-targeted-ads-into-a-pipeline-for-spyware/"
+      "title": "I Love Software Rendering",
+      "points": 276,
+      "num_comments": 183,
+      "url": "https://www.jamesfmackenzie.com/2026/10/13/i-love-software-rendering/"
     },
     {
-      "title": "Wanted to download an ISO, ended up writing a kernel exploit",
-      "points": 340,
-      "num_comments": 167,
-      "url": "https://blog.dfb.sh/blog/eap770-root-for-two-zeros/"
+      "title": "Apple ML Research: Muse Spark Open with MLX on Mac Studio",
+      "points": 247,
+      "num_comments": 109,
+      "url": "https://machinelearning.apple.com/research/mlx-distributed-inference"
     },
     {
-      "title": "I know why the mathematicians weep",
-      "points": 328,
-      "num_comments": 535,
-      "url": "https://www.derekthompson.org/p/i-know-why-the-mathematicians-weep"
+      "title": "Waymo in Toronto",
+      "points": 237,
+      "num_comments": 333,
+      "url": "https://waymo.com/blog/2026/10/waymo-in-toronto/"
     },
     {
-      "title": "Steam Client is now faster than Epic's new vibe coded launcher",
-      "points": 259,
-      "num_comments": 267,
-      "url": "https://respawnfirst.com/steam-client-is-now-faster-than-epics-new-vibe-coded-launcher/"
+      "title": "How the Claude Code team does code review",
+      "points": 184,
+      "num_comments": 175,
+      "url": "https://claude.dev/blog/solving-code-review-at-anthropic/"
     },
     {
-      "title": "Jev meets the Trolley Problem",
-      "points": 252,
-      "num_comments": 115,
-      "url": "https://zachlandes.com/trolley-problem/"
+      "title": "Anthropic assigned highest junk credit rating in June",
+      "points": 183,
+      "num_comments": 52,
+      "url": "https://www.ft.com/content/5a310aee-f555-4266-874c-b1b4db20186d"
     },
     {
-      "title": "Libreboot 26.10 \"Ominous Olive\" released with UEFI, Chromebook support",
-      "points": 245,
-      "num_comments": 142,
-      "url": "https://libreboot.org/news/libreboot2610.html"
+      "title": "Show HN: Gemini 4 Argon plays StarCraft",
+      "points": 177,
+      "num_comments": 82,
+      "url": "https://starskirmish.com/bench/v0-2/"
     },
     {
-      "title": "Show HN: Unfenced – Land for sale that borders public land",
-      "points": 244,
-      "num_comments": 166,
-      "url": "https://unfenced.land/"
+      "title": "JPEG XL vs. AVIF for web use-cases",
+      "points": 176,
+      "num_comments": 135,
+      "url": "https://jakearchibald.com/2026/jpeg-xl-vs-avif/"
     }
   ]
 }
