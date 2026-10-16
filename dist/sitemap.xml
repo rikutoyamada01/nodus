@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://nodus-lab.pages.dev/</loc><lastmod>2026-10-15</lastmod><priority>1.0</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/about.html</loc><lastmod>2026-10-15</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/</loc><lastmod>2026-10-16</lastmod><priority>1.0</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/about.html</loc><lastmod>2026-10-16</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html</loc><lastmod>2026-10-16</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
   <url><loc>https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html</loc><lastmod>2026-10-14</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html</loc><lastmod>2026-10-13</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html</loc><lastmod>2026-10-15</lastmod><priority>0.9</priority></url>
 </urlset>

@@ -1,0 +1,60 @@
+{
+  "target": "antigravity",
+  "review_kind": "writing",
+  "requested_model": "gemini-3.8-flash-high",
+  "conversation_id": "405aefc4-d472-4d52-9911-38465ca95cf6",
+  "origin_chat_id": "",
+  "snapshot_hash": "134b06a82873bc13cdef0220930c17ab2356857ba4dfdfadcb21c08b369a853b",
+  "audit": {
+    "findings": [
+      {
+        "evidence": "### ミニPCを選ぶ理由は、開発作業まで同居させたいか",
+        "line": 38,
+        "path": "nodus/dist/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.md",
+        "severity": "P2",
+        "suggestion": "「理由」と「〜か」で主述が対応しておらず、見出しとして座りが悪くなっています。「〜かどうか」で整えるか、条件節＋提案の形にすると自然です。\n\n書き換え例：\n### ミニPCを選ぶ基準は、開発作業まで同居させたいかどうか\n（または「### 開発作業まで同居させたいなら、ミニPCを検討する」）",
+        "title": "見出しにおける主述の不一致と文構造の破綻"
+      },
+      {
+        "evidence": "一方、ローカルモデルも動かすなら、そのモデルが必要とするメモリや計算性能まで要ります。",
+        "line": 30,
+        "path": "nodus/dist/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.md",
+        "severity": "P2",
+        "suggestion": "「必要とする」の直後に「〜まで要ります」が畳みかけられており、意味の重複と口語的なぎこちなさがあります。前後の対比（クラウドAPI vs ローカルモデル）を明確にするため、「手元で確保する必要があります」や「〜が求められます」と整理するのが自然です。\n\n書き換え例：\n一方、ローカルモデルも動かすなら、そのモデルに見合ったメモリや計算性能も手元で確保する必要があります。",
+        "title": "「必要とする〜まで要ります」の語彙重複と口語的表現"
+      },
+      {
+        "evidence": "ターミナルでコードを修正する入口なら、Aiderには公式のDocker導入案内があります。",
+        "line": 49,
+        "path": "nodus/dist/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.md",
+        "severity": "P2",
+        "suggestion": "「修正する入口なら、〜案内があります」という係り受けにねじれがあり、翻訳調のような引っかかりを覚えます。目的の動作やツールの位置づけを自然な助詞で繋ぐとスムーズになります。\n\n書き換え例：\nターミナルからコード修正を行いたいなら、Aiderには公式のDocker導入案内があります。",
+        "title": "「修正する入口なら」の主述のねじれ"
+      },
+      {
+        "evidence": "WALでも同時に書き込めるのは1つなので、保存処理の設計は機器選びとは別に確認します。",
+        "line": 58,
+        "path": "nodus/dist/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.md",
+        "severity": "P3",
+        "suggestion": "「1つ」が指す対象（プロセス、書き込みトランザクション、処理など）が省略されており、やや舌足らずです。技術的な文脈として何を指しているのか助数詞・名詞を補うと明瞭になります。\n\n書き換え例：\nWALモードでも同時に書き込める処理は1つだけなので、保存処理の設計は機器選びとは別に確認します。",
+        "title": "「同時に書き込めるのは1つ」の主語・単位の省略"
+      },
+      {
+        "evidence": "いずれも製品の価格や電力を測った結果ではなく、計算例です。ここにAPIなどの費用が加わります。VPSと比較するときは、",
+        "line": 73,
+        "path": "nodus/dist/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.md",
+        "severity": "P3",
+        "suggestion": "段落冒頭で「電気代、バックアップ、API、保守の費用を加えて考えます」と触れたあと、試算結果（1,168円）の直後に「ここにAPIなどの費用が加わります。」と短文が挟まれており、やや重複感と唐突さがあります。試算金額（ハードウェア＋電気代）に含まれていない点と結びつけて表現すると読者が費用の全体像を把握しやすくなります。\n\n書き換え例：\nいずれも製品の価格や電力を測った結果ではなく、計算例です。この試算に加えて、クラウドAPIなどの利用料が別途かかります。VPSと比較するときは、",
+        "title": "試算直後におけるAPI費用言及の重複と唐突さ"
+      }
+    ],
+    "limitations": [
+      "本レビューは提供された原稿テキストのみを対象とした日本語の文章・構成・表現に関する編集レビュー（Editorial Review）であり、記載されている製品仕様、公式発表内容、さくらのVPSの価格、Tailscale/Ollama等の仕様、電気代の仮定計算値などの事実関係について独自の独立検証は行っていません。",
+      "全体として、事実と仮定計算、公式資料の確認範囲、編集上の判断が明確に区別されており、過剰な煽りやAI特有の空虚な修飾語が排された誠実で読みやすい構成になっています。",
+      "一部の見出しや接続表現に口語的な揺らぎや助詞のねじれ（見出しの『〜か』、本文の『〜まで要ります』『入口なら』）が見受けられるため、該当箇所の推敲を行うことで、技術記事としての信頼性と伝わりやすさがより一層高まります。"
+    ],
+    "verdict": "changes_requested"
+  },
+  "report_directory": "C:\\Users\\yamadarikuto\\Mycode\\my-nexus\\runs\\peer-audit\\41e333bc50d249b789ec5ca72fbf3c2c",
+  "source_unchanged": true
+}

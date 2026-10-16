@@ -30,15 +30,24 @@
 
 ## 詳細解説・原因分析
 ### 手持ちのMacで動く？OSとチップを確認する
-Macでも、対応する実行ソフトとモデルを選べばローカルLLMを試せます。この記事ではOllamaを例にします。2026年10月15日確認の公式要件はmacOS Sonoma 14以降で、Apple MシリーズはCPUとGPU、Intelのx86 MacはCPUのみの対応です。Appleメニューの「このMacについて」でチップまたはプロセッサ、macOSの版、搭載メモリを確認し、モデルを保存するディスクの空き容量も用意します。これはOllamaの要件で、すべての推論ソフトに共通する条件ではありません。
+Macでも、対応する実行ソフトとモデルを選べばローカルLLMを試せます。この記事ではOllamaを例にします。2026年10月15日確認の公式要件はmacOS Sonoma 14以降で、Apple MシリーズはCPUとGPU、Intelのx86 MacはCPUのみの対応です。Appleメニューの「このMacについて」でチップまたはプロセッサ、macOSのバージョン、搭載メモリを確認し、モデルを保存するディスクの空き容量も用意します。これはOllamaの要件で、すべての推論ソフトに共通する条件ではありません。
 参照: [Ollama：macOSの要件とインストール](https://docs.ollama.com/macos)
 参照: [Apple：Appleシリコン搭載Macの確認方法](https://support.apple.com/en-us/116943)
 
-### OllamaでローカルLLMを試す手順
-①Ollama公式サイトのmacOS版をインストールしてアプリを起動します。②ターミナルで ollama run gemma3:1b を実行します。初回はモデルをダウンロードするため通信と保存領域が必要です。③短い日本語の質問を入力し、回答が返ることを確認します。このモデルは導入確認の例で、日本語の品質を保証する推奨モデルではありません。④別のターミナルで ollama ps を実行し、PROCESSOR欄でCPU・GPUの使用状況を確認します。会話は /bye で終了し、モデルをメモリから外す場合は ollama stop gemma3:1b を実行します。
+### 1. Ollamaをインストールする
+Ollama公式サイトからmacOS版をインストールし、アプリを起動します。
 参照: [Ollama：macOSの要件とインストール](https://docs.ollama.com/macos)
+参照: [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
+
+### 2. モデルを起動して質問する
+ターミナルで ollama run gemma3:1b を実行します。初回はモデルをダウンロードするため、通信と保存領域が必要です。短い日本語の質問を入力し、回答が返ることを確認します。このモデルは導入確認の例で、日本語の品質を保証する推奨モデルではありません。
 参照: [Ollama：CLIリファレンス](https://docs.ollama.com/cli)
 参照: [Ollama：Gemma 3 1Bの配布ページ](https://ollama.com/library/gemma3:1b)
+参照: [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
+
+### 3. 使用状況を確認して終了する
+別のターミナルで ollama ps を実行し、PROCESSOR欄でCPU・GPUの使用状況を確認します。会話は /bye で終了します。モデルをメモリから外す場合は ollama stop gemma3:1b を実行します。
+参照: [Ollama：CLIリファレンス](https://docs.ollama.com/cli)
 参照: [Ollama：文脈長と必要メモリ](https://docs.ollama.com/context-length)
 参照: [Ollama：FAQ](https://docs.ollama.com/faq)
 参照: [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
@@ -63,7 +72,7 @@ llama-benchの公式READMEでは、プロンプト処理のppと生成のtgを�
 参照: [llama.cpp：llama-bench README](https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md)
 
 ### 公開ログは、同じ条件かを確かめる
-llama.cppのApple Silicon向けディスカッションには利用者の報告があります。ただし投稿の機器、モデル、ソフトの版、設定は一定ではありません。個別の構成の参考として読めても、そのまま最近のすべてのMacやGPUの性能に一般化することはできません。今回も、その投稿群から比較中央値を再計算したわけではありません。
+llama.cppのApple Silicon向けディスカッションには利用者の報告があります。ただし投稿の機器、モデル、ソフトの版、設定は一定ではありません。個別の構成の参考として読めても、そのまま最近のすべてのMacやGPUの性能に一般化することはできません。この記事では、これらの投稿から比較用の中央値を再計算していません。
 参照: [llama.cpp：Apple Siliconの性能報告](https://github.com/ggml-org/llama.cpp/discussions/4167)
 
 ### 本体価格と、使い続ける費用

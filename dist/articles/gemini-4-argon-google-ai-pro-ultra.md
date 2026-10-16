@@ -29,7 +29,7 @@ Google AI Proを使っているなら、Argonを試す入口はGeminiアプリ�
 参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
 
 ### Ultra向けなのは、AntigravityでのArgon利用
-Googleは、独立したAntigravityデスクトップアプリとCLIでのArgon提供を、個人向けにはGoogle AI Ultra加入者向けと発表しています。ProにもAntigravityの特典はありますが、それだけでArgonを選べるとは限りません。Geminiアプリでコードを相談することと、Antigravityからプロジェクトのファイルや開発ツールを操作させることは、契約上も使い方も異なります。Ultra契約者はAntigravityを最新版に更新し、モデルの提供状況を確認しましょう。
+Googleの発表では、独立したAntigravityデスクトップアプリとCLIでArgonを利用できる個人サブスクはGoogle AI Ultraです。ProにもAntigravityの特典はありますが、それだけでArgonを選べるとは限りません。Geminiアプリでコードを相談することと、Antigravityからプロジェクトのファイルや開発ツールを操作させることは、契約上も使い方も異なります。Ultra契約者はAntigravityを最新版に更新し、モデルの提供状況を確認しましょう。
 参照: [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
 参照: [Antigravity：Argonのアプリ・CLI提供条件](https://antigravity.google/blog/gemini-4-argon-in-google-antigravity)
 
@@ -38,12 +38,12 @@ Googleの日本向け月額表示はProが2,900円、Ultraが14,500円からで�
 参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
 参照: [Antigravity：Argonのアプリ・CLI提供条件](https://antigravity.google/blog/gemini-4-argon-in-google-antigravity)
 
-### 追加料金を払うなら、月に何時間戻るかで考える
+### 追加料金に見合うだけの作業時間を短縮できるか
 仮に自分の作業時間を1時間3,000円と評価すると、月11,600円の追加費用に見合う時短は約3.9時間、29,100円なら約9.7時間です。これは賃金や実測効果ではなく、差額を時間に置き換えた判断例です。Proで同じ仕事をした場合との差を測り、回答の確認、修正、上限待ちまで含めて時間が減るかを見ます。すでにUltraを契約している人は、この差額を新たな負担と考える必要はありません。今の枠で終わらせられる仕事を確認するのが先です。
 参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
 
 ### 利用枠は、固定の質問回数として読まない
-英語版の公式ヘルプでは、Geminiアプリの使用量は質問の複雑さ、モデルや機能、会話の長さに依存し、5時間ごとの更新に加えて週間上限があると説明されています。短い質問と長い資料の分析を同じ1回として比べることはできません。確認時にはUltraの倍率が日本語ヘルプでProの4倍または20倍、英語版と日本向け料金ページで5倍または20倍と食い違っていました。倍率をArgonの保証回数には換算せず、Geminiの設定にある使用量上限と更新時刻を確認してください。このヘルプはGeminiアプリの説明で、Antigravityの枠にそのまま適用しません。
+英語版の公式ヘルプでは、Geminiアプリの使用量は質問の複雑さ、モデルや機能、会話の長さに依存し、5時間ごとの更新に加えて週間上限があると説明されています。短い質問と長い資料の分析を同じ1回として比べることはできません。確認時にはUltraの倍率が日本語ヘルプでProの4倍または20倍、英語版と日本向け料金ページで5倍または20倍と食い違っていました。倍率をArgonの保証回数には換算せず、Geminiの設定にある使用量上限と更新時刻を確認してください。このヘルプはGeminiアプリの説明であり、Antigravityの利用枠も同じ条件とは限りません。
 参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
 参照: [Geminiヘルプ：使用量上限（英語版）](https://support.google.com/gemini/answer/16275805?hl=en)
 参照: [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)
@@ -68,7 +68,7 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 参照: [Google AI for Developers：API料金](https://ai.google.dev/gemini-api/docs/pricing)
 
 ### 使えないときは、契約・利用場所・提供条件の順で確認する
-まずGoogle AI ProかUltraか、対象の個人アカウントでログインしているかを確認します。次にGeminiアプリなのか独立したAntigravityなのかを確認してください。Googleは順次提供と案内しており、日本向けプラン表も対象国や年齢などの条件を示しています。検索のAIモードにも固有の条件があります。ProとUltraを日本で契約できることだけで、すべての機能が同時に使えるとは判断できません。表示されない理由を確かめる前に、上位プランへの変更だけで解決すると考えないことが大切です。
+まずGoogle AI ProかUltraか、対象の個人アカウントでログインしているかを確認します。次にGeminiアプリなのか独立したAntigravityなのかを確認してください。Googleは順次提供と案内しており、日本向けプラン表も対象国や年齢などの条件を示しています。検索のAIモードにも固有の条件があります。日本でProやUltraを契約できても、すべての機能が同時に使えるとは限りません。表示されない理由を確かめる前に、上位プランへの変更だけで解決すると考えないことが大切です。
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 参照: [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
 参照: [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)

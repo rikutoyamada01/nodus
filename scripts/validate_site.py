@@ -118,6 +118,8 @@ def validate_all() -> dict[str, object]:
                 published_log = load_json(DIST_DIR / "logs" / raw_source.name)
                 if published_log.get("status") != "withdrawn_unverified" or "aggregate_telemetry" in published_log:
                     raise ValueError(f"{path.name}: unverified log is still published")
+                if published_log.get("reviewed_at") != article["data_updated_at"]:
+                    raise ValueError(f"{path.name}: log review date changed with an editorial update")
             bad_guide = copy.deepcopy(article)
             bad_guide["sample_size_n"] = 1
             try:

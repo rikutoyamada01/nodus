@@ -1370,7 +1370,7 @@ def build_all() -> dict[str, Any]:
                 raw_obj = {
                     "status": "withdrawn_unverified",
                     "article_url": f"{site_url}/articles/{slug}.html",
-                    "reviewed_at": article["updated_at"],
+                    "reviewed_at": article["data_updated_at"],
                     "notice": "旧集計値は母集団と集計手順を再現確認できないため公開を取り下げました。元ファイルは編集用に保存しています。",
                 }
             else:
