@@ -1,0 +1,450 @@
+[
+  {
+    "batch": 1,
+    "finding": 1,
+    "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+    "title": "助詞「〜ことだけで」の不自然な結合",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 2,
+    "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+    "title": "翻訳調の硬い表現",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 3,
+    "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+    "title": "行動宣言型の文末によるトーンの不一致",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 4,
+    "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+    "title": "自己言及的（メタ的）な表現",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 5,
+    "path": "nodus/dist/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md",
+    "title": "コロケーションの不自然さ",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 6,
+    "path": "nodus/dist/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md",
+    "title": "対比表現のぎこちなさ",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 7,
+    "path": "nodus/dist/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md",
+    "title": "編集方針の混入",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 8,
+    "path": "nodus/dist/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md",
+    "title": "見出し内の読点と体言止め",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 9,
+    "path": "nodus/dist/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md",
+    "title": "口語表現および並列文の乱れ",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 10,
+    "path": "nodus/dist/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md",
+    "title": "数式および箇条書き的文の寸断",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 11,
+    "path": "nodus/dist/articles/cross-model-peer-audit-bug-detection-benchmarks.md",
+    "title": "専門用語の直訳誤読リスク（「公開されている契約」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 12,
+    "path": "nodus/dist/articles/cross-model-peer-audit-bug-detection-benchmarks.md",
+    "title": "不自然な述語選択（「認定ではない」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 13,
+    "path": "nodus/dist/articles/cross-model-peer-audit-bug-detection-benchmarks.md",
+    "title": "主語の曖昧さと方針混入",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 14,
+    "path": "nodus/dist/articles/diy-or-ready-made-total-cost.md",
+    "title": "ぶつ切り文と表現の重複",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 15,
+    "path": "nodus/dist/articles/diy-or-ready-made-total-cost.md",
+    "title": "解説記事と社内実験メモの混同",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 16,
+    "path": "nodus/dist/articles/esp32-c3-s3-c6-which-board-to-choose.md",
+    "title": "見出しの口語調",
+    "decision": "見送り",
+    "reason": "「完成させたいもの」は読者に伝わる自然な表現。「目的と要件を明確にする」への硬い言い換えは不要。"
+  },
+  {
+    "batch": 1,
+    "finding": 17,
+    "path": "nodus/dist/articles/esp32-c3-s3-c6-which-board-to-choose.md",
+    "title": "口語的・粗雑な表現",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 18,
+    "path": "nodus/dist/articles/esp32-c3-s3-c6-which-board-to-choose.md",
+    "title": "安直な述語表現",
+    "decision": "見送り",
+    "reason": "費用を「足す」は自然で分かりやすい。「合算して評価する」への言い換えは不要。"
+  },
+  {
+    "batch": 1,
+    "finding": 19,
+    "path": "nodus/dist/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md",
+    "title": "用語不正確による見出しの違和感",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 20,
+    "path": "nodus/dist/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md",
+    "title": "語彙選択の不自然さ（「複数の候補」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 21,
+    "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+    "title": "同一語尾（「〜向け」）の密集重複",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 22,
+    "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+    "title": "英語直訳による意味の不明瞭さ（「何時間戻るか」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 23,
+    "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+    "title": "能動態・受動態の混同による主客の曖昧さ",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 1,
+    "finding": 24,
+    "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+    "title": "助詞「〜ことだけで」の不自然な結合",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 1,
+    "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+    "title": "リード文における常体と敬体の混在",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 2,
+    "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+    "title": "文末のぎこちなさ（「示しません」）と前提記述の改善",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 3,
+    "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+    "title": "見出し内の不要な読点と表現の改善",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 4,
+    "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+    "title": "試算例における主語・条件・単位の過度な省略",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 5,
+    "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+    "title": "述語接続の不自然さ（「〜と一緒に考えます」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 6,
+    "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+    "title": "思考メモ調の不自然な文末（「〜という整理です」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 7,
+    "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+    "title": "助詞の係り受け破綻（「モデルが違うtok/s」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 8,
+    "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+    "title": "唐突な命令口調と表現の曖昧さ",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 9,
+    "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+    "title": "論理のねじれによる意味の逆転",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 10,
+    "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+    "title": "無生物主語の直訳調構文",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 11,
+    "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+    "title": "不自然な用語選択（「macOSの版」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 12,
+    "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+    "title": "丸数字による手順のベタ打ちと可読性低下",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 13,
+    "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+    "title": "曖昧で口語的なタスク表現（「日本語の相談」）",
+    "decision": "見送り",
+    "reason": "「日本語の相談」はサイトの用途例として自然。「社内文書」など読者層を狭める情報は追加しない。"
+  },
+  {
+    "batch": 9,
+    "finding": 14,
+    "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+    "title": "メタ的・言い訳調の文末の唐突な挿入",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 15,
+    "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+    "title": "見出し内の不要な読点と語句不足",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 16,
+    "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+    "title": "技術説明として稚拙な表現（「1秒を8,000回に分けると」）",
+    "decision": "見送り",
+    "reason": "1秒を8,000回に分ける説明は理解しやすい。「格調を欠く」という評価は採用しない。"
+  },
+  {
+    "batch": 9,
+    "finding": 17,
+    "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+    "title": "同一名詞（「資料」）の近接重複",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 18,
+    "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+    "title": "主語と述語のねじれ（「困るのは〜書き出します」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 19,
+    "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+    "title": "表内の費用項目として意味不明瞭な表現",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 20,
+    "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+    "title": "執筆方針の宣言（メタ記述）の露出",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 21,
+    "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+    "title": "言葉足らずな表現（「回転の上下」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 22,
+    "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+    "title": "ぎこちない言い回し（「運用を引き受けたいかで変わります」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 23,
+    "path": "nodus/dist/articles/personal-ai-vps-home-server-subscription.md",
+    "title": "一般的でない用語（「予定実行」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 24,
+    "path": "nodus/dist/articles/personal-ai-vps-home-server-subscription.md",
+    "title": "口語的・随筆的な見出し表現",
+    "decision": "見送り",
+    "reason": "「手元にあることと、外に送らないことは別」は明快。専門用語を増やす必要はない。"
+  },
+  {
+    "batch": 9,
+    "finding": 25,
+    "path": "nodus/dist/articles/personal-ai-vps-home-server-subscription.md",
+    "title": "助詞・係り受けのねじれ（「どの処理がどこへ送信するか」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 26,
+    "path": "nodus/dist/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md",
+    "title": "助詞のぎこちなさ（「Whからの稼働時間は」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 27,
+    "path": "nodus/dist/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md",
+    "title": "論理破綻（仕様説明と測定行為の混同・比較）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 28,
+    "path": "nodus/dist/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md",
+    "title": "チェックリスト調の文末表現",
+    "decision": "見送り",
+    "reason": "損失を二重に差し引かない注意は自然で具体的。注意喚起であることを理由に変更しない。"
+  },
+  {
+    "batch": 9,
+    "finding": 29,
+    "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+    "title": "過度な省略による不自然さ（「別室の不満なら」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 30,
+    "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+    "title": "口語表現（「外向きの速度測定」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 31,
+    "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+    "title": "見出し内の読点と否定命令調",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  },
+  {
+    "batch": 9,
+    "finding": 32,
+    "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+    "title": "名詞並列のぎこちなさ（「必要な変更も含めます」）",
+    "decision": "趣旨を採用して調整",
+    "reason": "原文を確認し、意味を保って簡潔な表現に修正。提案文の一括適用はしていない。"
+  }
+]

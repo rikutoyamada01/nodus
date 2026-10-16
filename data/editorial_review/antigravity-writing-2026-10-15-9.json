@@ -1,0 +1,276 @@
+{
+  "target": "antigravity",
+  "review_kind": "writing",
+  "requested_model": "gemini-3.8-flash-high",
+  "conversation_id": "082cd919-d54c-45a1-ac9b-ff8a43807ef9",
+  "origin_chat_id": "",
+  "snapshot_hash": "e6469e9a7ff2a0b9de979ce0789a09204a1b7a327ff52c0d47847e0626d5ea13",
+  "audit": {
+    "findings": [
+      {
+        "evidence": "原文: 「> GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から見積もる。Colab、時間課金GPU、自宅PCの使い分けも整理します。」\n理由: 1文目が常体（「見積もる。」）、2文目が敬体（「整理します。」）となっており、導入リード文の文末スタイルが統一されていません。",
+        "line": 3,
+        "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+        "severity": "P3",
+        "suggestion": "> GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から見積もる考え方を提示し、Colab、時間課金GPU、自宅PCの使い分けを整理します。",
+        "title": "リード文における常体と敬体の混在"
+      },
+      {
+        "evidence": "原文: 「これは計算例で、実際の消費レート、連続実行可能時間、割り当て保証を示しません。」\n理由: 「〜を示しません」という述語は不自然です。また直前の「仮に100 CUを持ち」も口語的です。「〜を示すものではありません」と改める必要があります。",
+        "line": 36,
+        "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "目安時間 = 利用可能CU ÷ 表示されているCU/時。仮に100 CUの残高があり、表示レートが5 CU/時なら20時間相当となります。ただしこれは計算上の例であり、実際の消費レートや連続実行可能時間、割り当てを保証するものではありません。",
+        "title": "文末のぎこちなさ（「示しません」）と前提記述の改善"
+      },
+      {
+        "evidence": "原文: 「### 速いGPUが、安い処理になるとは限らない」\n理由: 見出しの主語の直後に不要な読点が挿入されており、可読性とリズムが損なわれています。",
+        "line": 38,
+        "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "### 高速なGPUが低コスト処理になるとは限らない",
+        "title": "見出し内の不要な読点と表現の改善"
+      },
+      {
+        "evidence": "原文: 「仮にAが1時間に2 CUで30分かかるなら1 CU、Bが1時間に6 CUで15分かかるなら1.5 CUです。」\n理由: 前提条件（GPU A/B）と消費レート、所要時間、結果の消費ユニットが極端に圧縮されており、意味の把握に負担がかかります。",
+        "line": 39,
+        "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "同じ成果物を得るまでの費用で比較します。仮にGPU A（消費レート2 CU/時）で処理に30分かかるなら消費量は1 CU、GPU B（消費レート6 CU/時）で15分かかるなら消費量は1.5 CUとなります。",
+        "title": "試算例における主語・条件・単位の過度な省略"
+      },
+      {
+        "evidence": "原文: 「GPUを使わない前処理を別で済ませられるかは、転送や準備が増える負担と一緒に考えます。」\n理由: 「別で済ませられるかは、〜と一緒に考えます」という述語の接続が口語的で稚拙です。",
+        "line": 42,
+        "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "GPUを必要としない前処理を別の環境で切り離せるかどうかは、データ転送や環境構築に伴う手間の増加と併せて検討します。",
+        "title": "述語接続の不自然さ（「〜と一緒に考えます」）"
+      },
+      {
+        "evidence": "原文: 「…という整理です。」\n理由: 「〜という整理です」は執筆者のメモや思考過程の露出のようになっており、読者向けの解説記事の結びとして不自然です。",
+        "line": 45,
+        "path": "nodus/dist/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCがそれぞれの候補となります。",
+        "title": "思考メモ調の不自然な文末（「〜という整理です」）"
+      },
+      {
+        "evidence": "原文: 「モデルが違うtok/sを同じ文章量として比べない」\n理由: 「モデルが違うtok/s」は助詞の係り受けが破綻しており、「トークナイザーが異なるモデル間のtok/s値」という意味が正確に伝わりません。",
+        "line": 28,
+        "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+        "severity": "P1",
+        "suggestion": "トークナイザーの異なるモデル同士のtok/sを同一の文章量として比較しない",
+        "title": "助詞の係り受け破綻（「モデルが違うtok/s」）"
+      },
+      {
+        "evidence": "原文: 「送信開始から測るのか、接続後から測るのかも決めてください。別の測定範囲の秒数を同じ列で比較しないことが出発点です。」\n理由: 客観解説のトーンの中に「決めてください」という命令口調が唐突に混入しています。また「同じ列で比較しない」という比喩表現も曖昧です。",
+        "line": 33,
+        "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "送信開始時点から測るのか、接続確立後から測るのかといった測定区間の定義をあらかじめ統一し、測定範囲の異なる秒数を同一の基準で並べて比較しないことが出発点となります。",
+        "title": "唐突な命令口調と表現の曖昧さ"
+      },
+      {
+        "evidence": "原文: 「エラーやタイムアウトを速いリクエストだけの集計から除外すると、運用上の待ち時間を過小評価するので、成功率と別々に示します。」\n理由: 「エラーやタイムアウトを速いリクエストだけの集計から除外すると」は論理がねじれています。「エラーやタイムアウトを除外し、正常終了したリクエストのみで集計すると」という意味が逆転しています。",
+        "line": 44,
+        "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+        "severity": "P1",
+        "suggestion": "エラーやタイムアウトを除外し、正常終了したリクエストのみで集計すると、運用上の実際の待ち時間を過小評価してしまうため、レイテンシは成功率と分けて提示します。",
+        "title": "論理のねじれによる意味の逆転"
+      },
+      {
+        "evidence": "原文: 「別モデルへの切替は品質・対応機能・料金・データの送信先も変えます。」\n理由: 「切替は〜データの送信先も変えます」が無生物主語の直訳調で日本語としてぎこちないです。",
+        "line": 47,
+        "path": "nodus/dist/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "別のモデルへ切り替える場合は、応答品質や対応機能、料金だけでなく、データの送信先（事業者やリージョン）も変わる点に留意する必要があります。",
+        "title": "無生物主語の直訳調構文"
+      },
+      {
+        "evidence": "原文: 「Appleメニューの「このMacについて」でチップまたはプロセッサ、macOSの版、搭載メモリを確認し、」\n理由: 「macOSの版」という言い回しは不自然です。「macOSのバージョン」が正確です。",
+        "line": 33,
+        "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+        "severity": "P2",
+        "suggestion": "Appleメニューの「このMacについて」でチップまたはプロセッサ、macOSのバージョン、搭載メモリを確認し、モデルを保存するストレージの空き容量も確保します。",
+        "title": "不自然な用語選択（「macOSの版」）"
+      },
+      {
+        "evidence": "原文: 「①Ollama公式サイトのmacOS版をインストールしてアプリを起動します。②ターミナルで ollama run gemma3:1b を実行します。…」\n理由: 操作手順が1段落内に丸数字で詰め込まれており、技術文書としての視認性・可読性が損なわれています。箇条書きリスト構造にすべきです。",
+        "line": 38,
+        "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+        "severity": "P2",
+        "suggestion": "1. Ollama公式サイトからmacOS版をインストールしてアプリを起動します。\n2. ターミナルで `ollama run gemma3:1b` を実行します（初回はモデルのダウンロードが発生するため、通信環境と保存領域が必要です）。\n3. 短い日本語のプロンプトを入力し、回答が返ることを確認します（※本モデルは動作確認用であり、日本語品質を保証する推奨モデルではありません）。\n4. 別のターミナルで `ollama ps` を実行し、PROCESSOR欄でCPU・GPUの割り当て状況を確認します。対話は `/bye` で終了し、モデルをメモリから解放する場合は `ollama stop gemma3:1b` を実行します。",
+        "title": "丸数字による手順のベタ打ちと可読性低下"
+      },
+      {
+        "evidence": "原文: 「日本語の相談、文書検索、コード補助など、毎週行いたい仕事を選びます。」\n理由: 「日本語の相談」というタスク表現は口語的で曖昧です。「日常的な質疑応答（チャット）」などと表現すると明確になります。",
+        "line": 47,
+        "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+        "severity": "P3",
+        "suggestion": "日常的な質疑応答、社内文書の検索、コード作成支援など、定期的に実行したい具体的なタスクを定めます。",
+        "title": "曖昧で口語的なタスク表現（「日本語の相談」）"
+      },
+      {
+        "evidence": "原文: 「今回も、その投稿群から比較中央値を再計算したわけではありません。」\n理由: 「今回も、〜わけではありません」というメタ的・言い訳調の文末が唐突に挿入されており、客観的な記事トーンを崩しています。",
+        "line": 66,
+        "path": "nodus/dist/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.md",
+        "severity": "P2",
+        "suggestion": "個別の構成における参考情報としては有用ですが、最新のすべてのMacやGPUの一般的な性能傾向として敷衍することはできません。本稿においても、それらのコミュニティ投稿から中央値を再計算して一般的な性能順位として示すことは行っていません。",
+        "title": "メタ的・言い訳調の文末の唐突な挿入"
+      },
+      {
+        "evidence": "原文: 「### 周期と、操作の遅延を分ける」\n理由: 見出しの中央に不要な読点が入っており、語感が不自然です。また「操作の遅延」も言葉足らずです。",
+        "line": 32,
+        "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+        "severity": "P2",
+        "suggestion": "### ポーリング周期と操作全体の入力遅延を分けて考える",
+        "title": "見出し内の不要な読点と語句不足"
+      },
+      {
+        "evidence": "原文: 「1秒を8,000回に分けると0.125msです。」\n理由: 「1秒を8,000回に分けると」は口語的・初等教育的であり、ハードウェアの技術解説記事として格調を欠きます。",
+        "line": 33,
+        "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+        "severity": "P2",
+        "suggestion": "ポーリングレート8000Hzは1秒間に8,000回の通信を行うため、理論上の周期は0.125msとなります。ただしこれはインターフェースの更新周期にすぎず、キーを押し始めてからスイッチが反応し、PC側のゲーム処理を経て画面に反映されるまでの全体遅延とは異なります。",
+        "title": "技術説明として稚拙な表現（「1秒を8,000回に分けると」）"
+      },
+      {
+        "evidence": "原文: 「これは当該製品の公称機能を確認する資料で、他機種より何ms速いかを同条件で比較した資料ではありません。」\n理由: 「〜資料で、〜資料ではありません」と同一名詞が近接重複しており文章が拙いです。",
+        "line": 36,
+        "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+        "severity": "P2",
+        "suggestion": "これは当該製品の公称機能を確認するための情報であり、他機種と同一条件下で応答時間をミリ秒単位で比較検証したものではありません。",
+        "title": "同一名詞（「資料」）の近接重複"
+      },
+      {
+        "evidence": "原文: 「現在のキーボードで困るのは、入力の切替、配列、打鍵の重さ、音、接続のどれなのかを書き出します。」\n理由: 「困るのは〜書き出します」と主語・述語がねじれています。",
+        "line": 43,
+        "path": "nodus/dist/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md",
+        "severity": "P1",
+        "suggestion": "現在使用しているキーボードについて、入力の切り替え速度、キー配列、押下圧（重さ）、打鍵音、接続方式のどの点に不満があるのかを具体的に整理します。",
+        "title": "主語と述語のねじれ（「困るのは〜書き出します」）"
+      },
+      {
+        "evidence": "原文: 「| ローカルAI | 推論ソフト、メモリ、GPU/NPUの対応 | 希望するモデルでの品質と待ち時間 | 機器全体と利用頻度 |」\n理由: 表の「追加費用」列に書かれた「機器全体と利用頻度」は、費用の項目として意味が通りません。",
+        "line": 28,
+        "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+        "severity": "P2",
+        "suggestion": "| ローカルAI | 推論ソフト、メモリ、GPU/NPUの対応 | 希望するモデルでの品質と待ち時間 | 機器一式の初期費用と稼働電気代 |",
+        "title": "表内の費用項目として意味不明瞭な表現"
+      },
+      {
+        "evidence": "原文: 「また、異なるメーカーの制御用語をひとまとめにして「最大TDPは短時間のブースト」と断定することは避けます。」\n理由: 「断定することは避けます」という執筆方針の表明（メタ記述）が本文に露出しており、読者向けの解説文として不自然です。",
+        "line": 36,
+        "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+        "severity": "P2",
+        "suggestion": "また、メーカーごとに異なる電力制御の用語を同一視し、「最大TDPは一律に短時間のブースト電力を指す」と断定することはできません。",
+        "title": "執筆方針の宣言（メタ記述）の露出"
+      },
+      {
+        "evidence": "原文: 「騒音の数値は距離と暗騒音の条件がないと比べにくく、音の高さや回転の上下も使い心地に関係します。」\n理由: 「回転の上下」という表現は言葉足らずであり、ファンの急激な回転数変動（風切り音の脈動など）を指していることが直感的に伝わりません。",
+        "line": 43,
+        "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+        "severity": "P2",
+        "suggestion": "騒音値のデシベル表記は測定距離や暗騒音の条件が揃っていなければ比較が難しく、実際の使い心地には音の周波数（高周波音）やファン回転数の急激な変動も大きく影響します。",
+        "title": "言葉足らずな表現（「回転の上下」）"
+      },
+      {
+        "evidence": "原文: 「機器を買う価値は、メモリや端子の要件を満たすことと、障害・更新の運用を引き受けたいかで変わります。」\n理由: 「運用を引き受けたいかで変わります」は主客が混ざっており、日本語としてぎこちないです。",
+        "line": 46,
+        "path": "nodus/dist/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.md",
+        "severity": "P2",
+        "suggestion": "実機を導入する価値があるかどうかは、メモリやインターフェースの拡張要件を満たせるかという点に加え、ハードウェア故障やOSアップデートに伴う保守・運用負担を許容できるかによって判断が分かれます。",
+        "title": "ぎこちない言い回し（「運用を引き受けたいかで変わります」）"
+      },
+      {
+        "evidence": "原文: 「パーソナルAIを、モデルによる推論、会話履歴や文書の保存、予定実行や外部ツール接続に分けると比較しやすくなります。」\n理由: 「予定実行」という表現は一般的ではなく不自然です。「定期タスクのスケジュール実行」などとするべきです。",
+        "line": 27,
+        "path": "nodus/dist/articles/personal-ai-vps-home-server-subscription.md",
+        "severity": "P2",
+        "suggestion": "パーソナルAIの機能を、「モデルによる推論」「会話履歴や文書の保存」「定期タスクのスケジュール実行・外部ツール連携」の各要素に切り分けて整理すると、構成を比較しやすくなります。",
+        "title": "一般的でない用語（「予定実行」）"
+      },
+      {
+        "evidence": "原文: 「### 手元にあることと、外に送らないことは別」\n理由: 見出しとして口語調・随筆的であり、記事全体の専門的なトーンから浮いています。",
+        "line": 38,
+        "path": "nodus/dist/articles/personal-ai-vps-home-server-subscription.md",
+        "severity": "P2",
+        "suggestion": "### ローカル環境で実行することと、外部へ送信しないことは同義ではない",
+        "title": "口語的・随筆的な見出し表現"
+      },
+      {
+        "evidence": "原文: 「どの処理がどこへ送信するかを確認し、公開する場合は認証、更新、バックアップまで運用の範囲に含めます。」\n理由: 「どの処理がどこへ送信するか」は係り受けが破綻しています（処理自体が送信するのではなく、どの処理においてデータがどこへ送信されるか）。",
+        "line": 39,
+        "path": "nodus/dist/articles/personal-ai-vps-home-server-subscription.md",
+        "severity": "P1",
+        "suggestion": "どの機能においてデータがどこへ送信されているのかを確認し、サービスを外部公開する場合は認証機構、セキュリティ更新、バックアップ体制までを運用の対象として見積もります。",
+        "title": "助詞・係り受けのねじれ（「どの処理がどこへ送信するか」）"
+      },
+      {
+        "evidence": "原文: 「- Whからの稼働時間は、利用できる電力量と機器の平均電力をそろえて計算する。」\n理由: 「Whからの稼働時間は」という助詞の使い方がぎこちなく、意味の重心がぶれています。",
+        "line": 19,
+        "path": "nodus/dist/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md",
+        "severity": "P2",
+        "suggestion": "- バッテリー容量（Wh）をもとに稼働時間を算出する際は、実際に取り出せる電力量と接続機器の平均消費電力を揃えて計算する。",
+        "title": "助詞のぎこちなさ（「Whからの稼働時間は」）"
+      },
+      {
+        "evidence": "原文: 「これは当該地域モデルの説明で、国内モデルや手元のPCとの互換性の測定ではありません。」\n理由: 「説明書は測定ではありません」という論理破綻（説明文と測定行為を同列に否定している）が生じています。",
+        "line": 36,
+        "path": "nodus/dist/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md",
+        "severity": "P1",
+        "suggestion": "これは当該地域向けモデルの公称仕様を説明したものであり、日本国内モデルや手元のPCとの互換性を実際に検証・測定した結果ではありません。",
+        "title": "論理破綻（仕様説明と測定行為の混同・比較）"
+      },
+      {
+        "evidence": "原文: 「AC側の実測電力量に変換損失や自己消費が含まれるなら、同じ損失をもう一度差し引かないようにします。」\n理由: 「差し引かないようにします」というマニュアルのチェックリスト調の文末が、客観解説文の中でやや浮いています。",
+        "line": 40,
+        "path": "nodus/dist/articles/portable-power-station-ups-switchover-time-idle-drain-tests.md",
+        "severity": "P2",
+        "suggestion": "測定されたAC側の電力量にすでにインバーターの変換損失や待機消費分が含まれている場合は、計算上で二重に損失を差し引かないよう注意が必要です。",
+        "title": "チェックリスト調の文末表現"
+      },
+      {
+        "evidence": "原文: 「- 別室の不満なら、世代の更新より先に設置場所と通信経路を調べる。」\n理由: 「別室の不満なら」は言葉が省略されすぎており、文章として乱暴です。",
+        "line": 20,
+        "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+        "severity": "P2",
+        "suggestion": "- 別の部屋で速度や接続性に不満がある場合は、規格を更新する前にまずルーターの設置場所や通信経路を見直す。",
+        "title": "過度な省略による不自然さ（「別室の不満なら」）"
+      },
+      {
+        "evidence": "原文: 「外向きの速度測定と、宅内のPC・NAS間の転送は別の結果として記録します。」\n理由: 「外向きの速度測定」という口語表現は「インターネット回線（WAN側）の通信速度」とする方が専門記事として正確かつ自然です。",
+        "line": 33,
+        "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+        "severity": "P2",
+        "suggestion": "インターネット回線（WAN側）の通信速度と、宅内LANにおけるPC・NAS間の転送速度は明確に区別して計測・記録します。",
+        "title": "口語表現（「外向きの速度測定」）"
+      },
+      {
+        "evidence": "原文: 「### 壁越しの速度を、固定の減衰率で見積もらない」\n理由: 見出し内の不要な読点、および「〜で見積もらない」という否定命令調が唐突です。",
+        "line": 39,
+        "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+        "severity": "P2",
+        "suggestion": "### 壁越しの通信速度を一律の減衰率で見積もることはできない",
+        "title": "見出し内の読点と否定命令調"
+      },
+      {
+        "evidence": "原文: 「買い替えの総額はルーターだけでなく、端末側の対応、スイッチ、ケーブルなど必要な変更も含めます。」\n理由: 「端末側の対応、スイッチ、ケーブルなど必要な変更」は名詞の並列として座りが悪いです。「周辺機器や配線の更新費用」とまとめると引き締まります。",
+        "line": 43,
+        "path": "nodus/dist/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.md",
+        "severity": "P2",
+        "suggestion": "買い替えに伴う総費用を見積もる際は、ルーター本体だけでなく、対応する端末の用意やハブ（スイッチ）、LANケーブルなど関連する設備更新の費用も合算します。",
+        "title": "名詞並列のぎこちなさ（「必要な変更も含めます」）"
+      }
+    ],
+    "limitations": [
+      "本レビューは編集・校正上の観点から日本語の自然さ・可読性を精査したものであり、記載されている事実関係・技術的仕様・外部リンク先等の内容については独自検証（independent verification）を行っていません。",
+      "各記事に共通する文体の癖：①文末における思考メモ調・メタ記述の多用（「〜という整理です」「〜は示しません」「〜と断定することは避けます」等）、②過度の省略による助詞・係り受けのねじれ（「別室の不満なら」「Whからの稼働時間は」「モデルが違うtok/s」等）、③論理の逆転・主客の混同（正常終了のみの集計を「速いリクエストだけの集計から除外すると」と記述するなど）、④見出しにおける不要な読点と随筆的口語（「速いGPUが、安い処理になるとは限らない」等）、⑤読者への唐突な命令・指示調（「決めてください」「書き出します」「読みます」等）の混在。",
+      "修正優先順位：【優先度1（P1: 意味・論理の破綻）】エラー除外集計の論理逆転や、「モデルが違うtok/s」「どの処理がどこへ送信するか」等の重大な係り受け破綻を最優先で解消（読者の誤認リスク排除）。【優先度2（P2: 可読性・メディア品質）】思考メモ調の文末正常化、見出しの読点・口語の適正化、丸数字インライン手順の構造化、曖昧な口語（「外向きの速度」「日本語の相談」等）の修正。【優先度3（P3: 文体統一・軽微な推敲）】リード文の常体・敬体混在解消、英字略語の初出定義補足、表組み内の体言止めの統一。"
+    ],
+    "verdict": "changes_requested"
+  },
+  "report_directory": "C:\\Users\\yamadarikuto\\Mycode\\my-nexus\\runs\\peer-audit\\cde62f9a8e3846429aac0cea78b2e41d",
+  "source_unchanged": true
+}

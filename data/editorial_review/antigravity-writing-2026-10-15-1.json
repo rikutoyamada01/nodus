@@ -1,0 +1,218 @@
+{
+  "target": "antigravity",
+  "review_kind": "writing",
+  "requested_model": "gemini-3.8-flash-high",
+  "conversation_id": "505c2b12-f304-48be-a7ae-4216913ba625",
+  "origin_chat_id": "",
+  "snapshot_hash": "fa4c1b17b16d0b65f1754be1b7d24f3664af959e3fe6281b31e6183df001fe75",
+  "audit": {
+    "findings": [
+      {
+        "evidence": "その規格に対応することだけで、すべてのPCで同じ電力を受けられるわけではありません。",
+        "line": 33,
+        "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】英語の「just by doing」の直訳とみられ、「対応することだけで」という助詞結合が不自然です。【修正案】「その規格に対応しているからといって、すべてのPCで同じ電力を受けられるわけではありません。」",
+        "title": "助詞「〜ことだけで」の不自然な結合"
+      },
+      {
+        "evidence": "端子の形がUSB-Cでも、ケーブルの電力・電圧への対応は同じとは限りません。充電器、ケーブル、受電機器の仕様を組にして確認してください。",
+        "line": 40,
+        "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「電力・電圧への対応は同じとは限りません」「組にして確認してください」が直訳的で硬いです。【修正案】「端子の形状がUSB-Cであっても、ケーブルが対応する電力や電圧は製品ごとに異なります。充電器・ケーブル・受電機器の仕様をセットで確認してください。」",
+        "title": "翻訳調の硬い表現"
+      },
+      {
+        "evidence": "表面温度だけで内部の制御や安全性を判断することも避けます。",
+        "line": 44,
+        "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】解説記事の中で突然「〜も避けます」と筆者の行動宣言が混ざり、読者向けトーンから浮いています。【修正案】「表面温度だけで内部の制御や安全性を判断することは避けるべきです。」",
+        "title": "行動宣言型の文末によるトーンの不一致"
+      },
+      {
+        "evidence": "すでに不便なく使えているなら、W数だけを理由に買い替える必要性は低いというのが編集上の判断です。",
+        "line": 47,
+        "path": "nodus/dist/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.md",
+        "severity": "P3",
+        "suggestion": "【不自然な理由】「〜というのが編集上の判断です」というメタ言及が自己防衛的・客観的トーンを損ねています。【修正案】「すでに不便なく使えているのであれば、公称W数の大きさだけを理由に買い替える必要性は低いと言えます。」",
+        "title": "自己言及的（メタ的）な表現"
+      },
+      {
+        "evidence": "必要な情報が別ファイルにあるのに短い断片だけで修正すると、再調査の往復が増えることがあります。",
+        "line": 33,
+        "path": "nodus/dist/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「再調査の往復が増える」という語の結びつきが不自然です。【修正案】「必要な情報が別ファイルにあるにもかかわらず短い断片だけで修正しようとすると、かえって調査と修正の往復が増えることがあります。」",
+        "title": "コロケーションの不自然さ"
+      },
+      {
+        "evidence": "入力の総量が減った割合を、そのままAPI料金や定額プランの利用枠が増える割合として扱わないでください。",
+        "line": 43,
+        "path": "nodus/dist/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「減った割合を、そのまま〜増える割合として」の因果対比がぎこちなく理解しにくいです。【修正案】「入力総量の削減割合が、そのままAPI料金の削減率や定額プランの利用可能枠の拡大に直結するとは考えないでください。」",
+        "title": "対比表現のぎこちなさ"
+      },
+      {
+        "evidence": "回数が少ない結果は個別事例として扱い、普遍的な削減率を出さないようにします。",
+        "line": 48,
+        "path": "nodus/dist/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「〜出さないようにします」と筆者の編集方針が読者向けアドバイスに混入しています。【修正案】「試行回数が少ない結果はあくまで個別事例として扱い、普遍的な削減率として一般化しないよう注意が必要です。」",
+        "title": "編集方針の混入"
+      },
+      {
+        "evidence": "### 月額と、使える量を分ける",
+        "line": 32,
+        "path": "nodus/dist/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md",
+        "severity": "P3",
+        "suggestion": "【不自然な理由】見出し内で「と、」と読点を挟むスタイルは不格好でメモ書き調に見えます。【修正案】「### 月額料金と実際に使える利用枠を区別する」",
+        "title": "見出し内の読点と体言止め"
+      },
+      {
+        "evidence": "会話が長くなった警告、契約上の利用制限、API経由の支出は同じ問題ではありません。上限に達した日時、選択モデル、実行内容、表示された説明を記録すると、契約を上げるべきか使い方を変えるべきか判断しやすくなります。",
+        "line": 40,
+        "path": "nodus/dist/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「契約を上げるべきか」は口語的すぎます（プランのアップグレード）。並列関係も粗雑です。【修正案】「会話の長期化による警告、サブスクリプション上の利用制限、API経由の従量課金は、それぞれ原因が異なる別の問題です。上限に達した日時、選択モデル、実行内容、表示された警告メッセージを記録しておくと、上位プランへ移行すべきか運用を見直すべきかを判断しやすくなります。」",
+        "title": "口語表現および並列文の乱れ"
+      },
+      {
+        "evidence": "月の総費用 = サブスク料金 + 追加使用料 + API料金 + 実行基盤代。これを完了したタスク数で割ると、1件あたり費用を比較できます。ただし同じ難易度と品質で比べることが前提です。仮に月3,000円で10件なら300円/件、APIで同じ10件を2,000円で完了すれば200円/件。いずれも仮定例で、現行価格や性能の推定ではありません。",
+        "line": 44,
+        "path": "nodus/dist/articles/ai-coding-subscriptions-real-rate-limits-token-economics.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】数式がピリオドでいきなり単独文として置かれ、直後に体言止めの試算文が続いて流れが寸断されています。【修正案】「『月の総費用 ＝ サブスク料金 ＋ 追加使用料 ＋ API料金 ＋ 実行基盤代』とし、これを完了タスク数で割ることで、1件あたりの費用を比較できます。ただし、同等の難易度と品質で完了していることが前提です。たとえば、月額3,000円で10件完了した場合は1件あたり300円、API利用で同等の10件を2,000円で完了した場合は1件あたり200円となります（いずれも計算手順を示す仮定例であり、現行価格や性能を保証するものではありません）。」",
+        "title": "数式および箇条書き的文の寸断"
+      },
+      {
+        "evidence": "差分、関連する呼び出し元、公開されている契約、期待する結果をそろえて渡します。",
+        "line": 36,
+        "path": "nodus/dist/articles/cross-model-peer-audit-bug-detection-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】APIコントラクト（インターフェース仕様）を「公開されている契約」と直訳しており、法的な契約と誤認されやすいです。【修正案】「コード差分だけでなく、関連する呼び出し元、公開インターフェースの仕様（事前・事後条件）、期待する実行結果を漏れなくそろえて渡します。」",
+        "title": "専門用語の直訳誤読リスク（「公開されている契約」）"
+      },
+      {
+        "evidence": "### MCPは、検出率を高める認定ではない",
+        "line": 41,
+        "path": "nodus/dist/articles/cross-model-peer-audit-bug-detection-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】プロトコル規格であるMCPに対して「〜認定ではない」とする述語が不自然です。【修正案】「### MCPの利用自体がバグ検出精度を保証するわけではない」",
+        "title": "不自然な述語選択（「認定ではない」）"
+      },
+      {
+        "evidence": "レビューが2回とも同じ不具合を見落とすこともあるので、テストや人の確認を置き換える根拠にはしません。",
+        "line": 47,
+        "path": "nodus/dist/articles/cross-model-peer-audit-bug-detection-benchmarks.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「レビューが2回とも」という主語の曖昧さと文末「〜根拠にはしません」という自己方針調が不自然です。【修正案】「異なるモデルによる複数回のレビューであっても同じ不具合を見落とす可能性はあるため、AIレビューの結果をもってテストや人間による目視確認を不要とする根拠にはできません。」",
+        "title": "主語の曖昧さと方針混入"
+      },
+      {
+        "evidence": "総費用 = 初期費用 + 維持費 + 作業時間 × 自分で置く時間単価。たとえば部品が既製品より2,000円安くても、追加で4時間かかり、時間単価を1,000円と置けば、時間込みでは自作側が2,000円高くなります。この単価は仮定です。",
+        "line": 33,
+        "path": "nodus/dist/articles/diy-or-ready-made-total-cost.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「自分で置く時間単価」「時間単価を1,000円と置けば」「この単価は仮定です」と短文の中で語句が重複し寸断されています。【修正案】「自作の総費用は『初期費用 ＋ 維持費 ＋ （作業時間 × 自身の時給換算額）』で見積もります。たとえば部品代が既製品より2,000円安くても、製作に追加で4時間かかり、自身の時間単価を仮に1,000円と設定するならば、作業時間を含めた総額では自作のほうが2,000円高くなります。」",
+        "title": "ぶつ切り文と表現の重複"
+      },
+      {
+        "evidence": "最初の検証題材は、ESP32とセンサーの自作温湿度計と既製のスマート温湿度計です。同じ設置場所で測定値、欠測、電池交換、設置までの時間を記録します。",
+        "line": 39,
+        "path": "nodus/dist/articles/diy-or-ready-made-total-cost.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】読者向けガイド記事の中に突如として実験室の実施計画メモのような文面が現れています。【修正案】「自作と既製品の具体的な比較例としては、ESP32とセンサーを用いた自作温湿度計と、市販のスマート温湿度計との比較が挙げられます。同一の設置環境において測定精度や欠測の有無、電池寿命、設置にかかる時間などを多角的に照らし合わせます。」",
+        "title": "解説記事と社内実験メモの混同"
+      },
+      {
+        "evidence": "### 最初に決めるのは、完成させたいもの",
+        "line": 25,
+        "path": "nodus/dist/articles/esp32-c3-s3-c6-which-board-to-choose.md",
+        "severity": "P3",
+        "suggestion": "【不自然な理由】「完成させたいもの」というくだけた表現が見出しとして座りが悪いです。【修正案】「### まず製作の目的と要件を明確にする」",
+        "title": "見出しの口語調"
+      },
+      {
+        "evidence": "同じS3でもPSRAMの有無・容量、Flash容量、USB端子、レギュレーター、ピンの引き出し方が異なります。製品ページのチップ名だけで決めず、正確なボード型番と回路図を確認してください。Bluetooth LE対応とBluetooth Classic対応も別の話です。",
+        "line": 29,
+        "path": "nodus/dist/articles/esp32-c3-s3-c6-which-board-to-choose.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「ピンの引き出し方が異なります」「別の話です」など口語表現が混ざり締まりを欠いています。【修正案】「同じESP32-S3搭載ボードであっても、PSRAMの有無や容量、Flash容量、USB端子、電源レギュレーター、引き出されているGPIOピンの配置は異なります。製品ページのチップ名だけで判断せず、正確なボード型番と回路図を確認してください。また、Bluetooth LEと従来のBluetooth Classicでは対応規格が異なる点にも注意が必要です。」",
+        "title": "口語的・粗雑な表現"
+      },
+      {
+        "evidence": "基板価格に、送料、電源、ケーブル、センサー、ケース、足りない工具を足します。",
+        "line": 32,
+        "path": "nodus/dist/articles/esp32-c3-s3-c6-which-board-to-choose.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「〜を足します」という表現がやや稚拙で記事トーンから浮いています。【修正案】「トータルコストを算出する際は、基板単価だけでなく、送料、電源、ケーブル、各種センサー、ケース、さらに不足している工具の購入費まで合算して評価します。」",
+        "title": "安直な述語表現"
+      },
+      {
+        "evidence": "### USB-Cという端子名から速度を決めない",
+        "line": 32,
+        "path": "nodus/dist/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md",
+        "severity": "P3",
+        "suggestion": "【不自然な理由】USB-Cは端子形状（コネクタ規格）であり「端子名から速度を決めない」は表現として不正確です。【修正案】「### USB-Cというコネクタ形状だけで転送速度を判断しない」",
+        "title": "用語不正確による見出しの違和感"
+      },
+      {
+        "evidence": "転送中の切断には、接続、給電、OS、ファームウェア、機器の不具合など複数の候補があります。",
+        "line": 43,
+        "path": "nodus/dist/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】不具合の原因に対して「複数の候補があります」とするのは不自然です。【修正案】「転送中の接続切断には、接触不良、給電不足、OSやファームウェアの相性、ハードウェアの故障など、複数の要因が考えられます。」",
+        "title": "語彙選択の不自然さ（「複数の候補」）"
+      },
+      {
+        "evidence": "### Ultra向けなのは、AntigravityでのArgon利用\nGoogleは、独立したAntigravityデスクトップアプリとCLIでのArgon提供を、個人向けにはGoogle AI Ultra加入者向けと発表しています。",
+        "line": 31,
+        "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】見出しと本文で「Ultra向けなのは」「個人向けには」「Ultra加入者向けと」と重複しています。【修正案】見出し：『### Antigravity環境でのArgon利用はUltra加入者が対象』／本文：『Googleの発表によると、独立したAntigravityデスクトップアプリおよびCLIにおけるArgonの提供は、個人ユーザーに関してはGoogle AI Ultra加入者限定となっています。』",
+        "title": "同一語尾（「〜向け」）の密集重複"
+      },
+      {
+        "evidence": "### 追加料金を払うなら、月に何時間戻るかで考える",
+        "line": 41,
+        "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+        "severity": "P1",
+        "suggestion": "【不自然な理由】英語の「get hours back」を直訳したような表現で、日本語として即座に意味を把握しづらいです。【修正案】「### 追加料金に見合うだけの作業時間を短縮できるかで判断する」",
+        "title": "英語直訳による意味の不明瞭さ（「何時間戻るか」）"
+      },
+      {
+        "evidence": "このヘルプはGeminiアプリの説明で、Antigravityの枠にそのまま適用しません。",
+        "line": 46,
+        "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「そのまま適用しません」と他動詞能動態になっており、主客が曖昧です。【修正案】「なお、この公式ヘルプはGeminiアプリに関する説明であり、Antigravityの利用枠にそのまま適用されるわけではありません。」",
+        "title": "能動態・受動態の混同による主客の曖昧さ"
+      },
+      {
+        "evidence": "ProとUltraを日本で契約できることだけで、すべての機能が同時に使えるとは判断できません。",
+        "line": 71,
+        "path": "nodus/dist/articles/gemini-4-argon-google-ai-pro-ultra.md",
+        "severity": "P2",
+        "suggestion": "【不自然な理由】「契約できることだけで、…判断できません」という不自然な助詞結合が見られます。【修正案】「日本国内でProやUltraを契約できるからといって、提供告知されたすべての機能が即座に使えるとは限りません。」",
+        "title": "助詞「〜ことだけで」の不自然な結合"
+      }
+    ],
+    "limitations": [
+      "本査読は提供された文章データに基づく編集面・文章表現上の査読（エディトリアルレビュー）であり、記事内の技術仕様やベンチマーク結果などの事実関係は独自に検証していません。",
+      "【共通する癖1：英語直訳調の不自然な助詞・語彙】「〜ことだけで（just by ...-ing）」「月に何時間戻るかで考える（get hours back）」「公開されている契約（public contract）」など直訳フレーズが散見されます。",
+      "【共通する癖2：「Aと、Bを〜する」パターンの見出し】「月額と、使える量を分ける」「短いベンチマークと、長いコピーを分ける」など見出し内に読点を打ち動詞を無理に並列させる癖が見られます。",
+      "【共通する癖3：メタ言及（「編集上の判断／提案」）の過剰な挿入】読者への客観的アドバイスの中に自己防衛的なメタ表現が混ざり説得力を損ねています。",
+      "【共通する癖4：読者向け解説と社内作業メモ・行動宣言の混線】「〜判断することも避けます」「〜記録したい項目です」など執筆者の内部記録調の文末が混入しています。",
+      "【共通する癖5：数式・箇条書き的記述による文章の寸断】数式や試算例が唐突に単独文として配置され、文章のリズムが損なわれています。",
+      "【修正優先順位（最優先：P1）】直訳により意味把握を阻害している表現（gemini-4-argon L41など）の修正。",
+      "【修正優先順位（高：P2）】不自然な助詞（「〜ことだけで」）、行動宣言文末、粗雑な口語表現、数式の文章化。",
+      "【修正優先順位（中：P3）】見出しの読点除去・名詞句化、メタ言及の整理。"
+    ],
+    "verdict": "changes_requested"
+  },
+  "report_directory": "C:\\Users\\yamadarikuto\\Mycode\\my-nexus\\runs\\peer-audit\\1b61541976df4f14803c9326f2d0afa9",
+  "source_unchanged": true
+}
