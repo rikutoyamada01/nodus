@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Immichのバックアップ範囲：写真フォルダとデータベースダンプの両方が必要な理由 | Nodus</title><meta name="description" content="セルフホスト写真管理ツールImmichのバックアップと復元仕様を公式ドキュメントから解説。ライブラリフォルダの自動スキャンを行わない仕様、自動DBダンプ（UPLOAD_LOCATION/backups）の保存先、復元手順を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html">
+      <meta property="og:title" content="Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認"><meta property="og:description" content="自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="immich-backup-photos-database-restore-scope.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認", "description": "自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html", "citation": ["https://immich.app/docs/administration/backup-and-restore/", "https://docs.docker.com/engine/storage/bind-mounts/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / AIとサーバー</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認</h1><p class="article-subtitle">自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式管理ドキュメントを確認 / 実機での障害復旧時間測定なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>Immichはファイルパスやユーザーのメタデータをデータベースで管理しており、後から写真の保存フォルダだけを置いても自動スキャンされないため、データベースのバックアップが不可欠である。</li><li>反対に、データベースの自動バックアップ（既定で毎日午前2時・直近14回分保持）には写真や動画の実体ファイルは含まれないため、両方をセットで保護する必要がある。</li><li>本番データが消える前に、UPLOAD_LOCATION内の画像ファイル群と backups フォルダ内のDBダンプ、および .env と docker-compose.yml を別ドライブや外部へ退避する仕組みを作る。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>2026年10月16日確認のImmich公式ドキュメント（Backup and Restore）に基づく整理。</caption><thead><tr><th scope="col">保存対象</th><th scope="col">含まれる情報</th><th scope="col">これだけを復元したときに起きること</th><th scope="col">公式ドキュメント上の位置づけ</th></tr></thead><tbody><tr><th scope="row">写真・動画の実体ファイル群（UPLOAD_LOCATION）</th><td>アップロードされた元の画像・動画データ等</td><td>Immichがフォルダを自動スキャンしないため画面に認識されない</td><td>DBダンプと組み合わせて外部へバックアップ必須</td></tr><tr><th scope="row">データベースダンプ（UPLOAD_LOCATION/backups）</th><td>ファイルパス、ユーザー、アルバム等のメタデータ</td><td>メタデータだけで写真・動画ファイル本体が存在しないため表示不可</td><td>既定で毎日2:00に自動作成（14世代保持）されるが外部退避が必要</td></tr><tr><th scope="row">設定ファイル（.env / docker-compose.yml）</th><td>保存先パス、DB接続情報、コンテナ構成</td><td>単体ではデータを持たないが新規環境での再構築手順で必要</td><td>Onboardingからの復元時に最初に配置する</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/immich-backup-photos-database-restore-scope.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">写真フォルダをコピーしただけではImmichの画面に元通り並ばない</h2><p>自宅サーバーやNASでImmichを動かす際、「写真の保存先フォルダさえ外付けHDDにコピーしておけば、サーバーが壊れてもそのフォルダを指定し直せば元に戻るだろう」と考えがちです。しかし、2026年10月16日確認のImmich公式ドキュメント（Backup and Restore）には、「Immichはファイルパスとユーザーのメタデータをデータベースに保存する。ライブラリフォルダをスキャンする動作は行わないため、データベースのバックアップが不可欠である」と明記されています。つまり、データベースを失った状態で画像フォルダだけを新しいImmichにつないでも、作成済みのアルバムやユーザー紐づけ、登録状態はそのままでは復元されません。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">自動作成されるDBダンプには写真ファイル本体が含まれない</h2><p>Immichには障害復旧のための自動データベースバックアップ機能が備わっており、既定では毎日午前2時にダンプが作成され、`UPLOAD_LOCATION/backups` 内に直近14回分が保存されます（管理画面のDatabase Dump Settingsから変更可能）。ただし、公式ドキュメントで注意喚起されている通り、このデータベースバックアップにはメタデータしか入っておらず、写真や動画のファイル本体は一切含まれていません。また、`UPLOAD_LOCATION/backups` は写真と同じドライブ上にあるため、SSDやHDD自体が故障すると写真もDBダンプも同時に失われます。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">Immichの準備機能と外部へのコピー（3-2-1ルール）を分ける</h2><p>公式ドキュメントでも冒頭で「このページの機能はImmichインスタンスをバックアップ可能な状態に整えるものであり、実際のバックアップツールを使って別場所へコピーする処理自体は利用者自身で行う必要がある」と強調され、3-2-1バックアップ戦略が推奨されています。具体的には、Immichが `UPLOAD_LOCATION/backups` に出力したデータベースダンプと、`UPLOAD_LOCATION` 内の元画像・動画フォルダ、そして構成ファイル（`.env` と `docker-compose.yml`）を、別ドライブや外部クラウドストレージへ定期的に退避させます。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore</a> <a href="https://docs.docker.com/engine/storage/bind-mounts/" target="_blank" rel="noopener noreferrer">Docker Docs：Bind mounts</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">Web画面からの復元機能と初期オンボーディング時の復元手順を確認する</h2><p>データベースダンプと実体ファイルの両方が揃っていれば、復元はWebインターフェースまたはコマンドラインから行えます。公式ドキュメントでは、既存環境なら管理画面の「Administration &gt; Maintenance」から利用可能なバックアップ一覧を選んで復元でき、実行前に自動でリストアポイント（ロールバック用）が作成される仕組みが説明されています。また、別マシンへ新規導入して初期画面（Onboarding）から復元する手順も用意されているため、写真データが数百GBに膨らむ前に、少量のテスト画像を入れた状態で一度「バックアップからの復元」を実際に試しておくと安心です。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にImmich公式ドキュメント（Backup and Restore）およびDocker公式ドキュメントを確認して整理した記事です。特定のNASやストレージ環境における復元所要時間の実測は行っていません。</p><ul class="source-list"><li class="source-item"><a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore</a><span class="source-meta">確認日: 2026-10-16 / ライブラリフォルダを自動スキャンしない仕様、UPLOAD_LOCATION/backupsへの自動DBダンプ（既定毎日2:00・14世代）、Web画面からの復元手順。</span></li><li class="source-item"><a href="https://docs.docker.com/engine/storage/bind-mounts/" target="_blank" rel="noopener noreferrer">Docker Docs：Bind mounts</a><span class="source-meta">確認日: 2026-10-16 / ホスト側ディレクトリ（UPLOAD_LOCATION等）をコンテナへマウントする仕組み。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="cloud-backup-100gb-restore-egress-cost-comparison.html">安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較</a></li><li class="source-item"><a href="always-on-personal-ai-raspberry-pi-vps-mini-pc.html">パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">写真フォルダをコピーしただけではImmichの画面に元通り並ばない</a></li><li><a href="#part-1">自動作成されるDBダンプには写真ファイル本体が含まれない</a></li><li><a href="#part-2">Immichの準備機能と外部へのコピー（3-2-1ルール）を分ける</a></li><li><a href="#part-3">Web画面からの復元機能と初期オンボーディング時の復元手順を確認する</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

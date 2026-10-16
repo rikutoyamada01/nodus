@@ -1,0 +1,4 @@
+﻿マウント方式（記述例）,ホスト上の実際の保存場所,作業フォルダのコピーに含まれるか,バックアップ時の注意点
+相対パスのBind mount（./data:/app/data）,作業フォルダ直下の ./data ディレクトリ,含まれる,権限（UID/GID）や稼働中DBの書き込み競合に注意
+絶対パスのBind mount（/mnt/nas/photos:/photos）,指定した外部パス（/mnt/nas/photos）,作業フォルダには含まれない（別パス）,マウント先ドライブも含めてバックアップ対象に指定する
+名前付きVolume（db_data:/var/lib/postgresql/data）,Docker Engine管理領域（/var/lib/docker/volumes/等）,含まれない（最も見落としやすい）,docker volume用の退避手順またはDBダンプ出力が必要

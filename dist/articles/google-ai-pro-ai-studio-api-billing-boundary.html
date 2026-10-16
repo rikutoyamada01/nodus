@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスクとAPIの境界 | Nodus</title><meta name="description" content="Google AI Pro/Ultraの月額サブスクリプションと、Google AI Studio・Gemini APIの従量課金（Free Tier / Paid Tier 1〜3）の違いを解説。入出力データの学習利用有無と請求境界を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html">
+      <meta property="og:title" content="Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界"><meta property="og:description" content="個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="google-ai-pro-ai-studio-api-billing-boundary.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界", "description": "個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html", "citation": ["https://ai.google.dev/gemini-api/docs/billing", "https://ai.google.dev/gemini-api/docs/pricing", "https://one.google.com/intl/ja_jp/about/google-ai-plans/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / AIとサーバー</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界</h1><p class="article-subtitle">個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式API課金・料金資料を確認 / 実請求での比較測定なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>個人向けのGoogle AI Pro / Ultra（Google Oneサブスク）と、開発者向けのGemini API従量課金（Google Cloud請求先リンク）は別の契約体系である。</li><li>Gemini APIとAI Studioは請求先未設定ならFree Tier（無料枠・レート制限あり）で始まるが、対象外モデルや高い制限枠を使うには有料Tierへの移行が必要。</li><li>公式Billing資料では、有料Tier（請求先アカウントをリンクした状態）に移行することで入出力がGoogle製品の改善（学習）に使われない扱いになる点も区別されている。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>2026年10月16日確認のGoogle AI for Developers公式Billing資料に基づく整理。Buildモード向けのGoogle Cloud Starter Tier（最大2アプリ公開）は別枠です。</caption><thead><tr><th scope="col">利用経路・階層</th><th scope="col">料金体系</th><th scope="col">主な利用条件・上限</th><th scope="col">確認すべきポイント</th></tr></thead><tbody><tr><th scope="row">Google AI Pro / Ultra</th><td>定額サブスク（月2,900円 / 14,500円〜）</td><td>GeminiアプリやAntigravity等の個人向け特典枠</td><td>APIキー経由の外部プログラム呼び出し枠ではない</td></tr><tr><th scope="row">Gemini API Free Tier</th><td>無料（請求先リンクなし）</td><td>対象モデルのみ・低いレート制限</td><td>入出力データの取り扱い条件（無料枠規約）を確認</td></tr><tr><th scope="row">Gemini API Paid Tier 1</th><td>従量課金（有効な請求先をリンク）</td><td>月間利用上限目安 250ドルまで</td><td>プロンプトと応答がGoogle製品改善に使われない</td></tr><tr><th scope="row">Gemini API Paid Tier 2 / 3</th><td>従量課金（累計支払額と経過日数で昇格）</td><td>Tier 2は累計100ドル＋3日、Tier 3は累計1,000ドル＋30日</td><td>大量バッチ処理や本番サービス運用時のレート上限</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/google-ai-pro-ai-studio-api-billing-boundary.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">コンシューマー向けサブスクと開発者向けAPI課金は別口座で動く</h2><p>Google AI ProやUltraは、Google Oneを通じて提供される個人向けの月額サブスクリプションであり、GeminiアプリやNotebookLM、Antigravityなどを利用するための契約です。一方、自作スクリプトや外部ツールにAPIキーを設定して呼び出すGemini APIは、Google AI for Developers（および紐づくGoogle Cloud請求アカウント）の従量課金体系で動きます。Proに加入しているからといって、Gemini APIの有料トークン消費が月額2,900円の中に自動的に含まれるわけではありません。</p><p class="source-meta">参照: <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Billing（請求とTier仕様）</a> <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Pricing（料金表）</a> <a href="https://one.google.com/intl/ja_jp/about/google-ai-plans/" target="_blank" rel="noopener noreferrer">Google One：日本向けGoogle AIプラン表</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">AI Studioは請求先をリンクするかどうかで無料枠と有料枠が分かれる</h2><p>公式Billing資料によると、新規アカウントはまずFree Tier（無料枠）から始まり、対象モデルを無料枠のレート制限内でGoogle AI StudioおよびGemini APIから試すことができます。また、AI StudioのBuildモードからフルスタックアプリを公開する用途では、Google Cloudプロジェクトや請求先を設定せずに最大2つまでアプリを公開できる「Google Cloud Starter Tier」も用意されています。請求が発生するのは、プロジェクトに有効なGoogle Cloud請求先アカウントをリンクしてPaid Tier（有料枠）へ移行した場合です。</p><p class="source-meta">参照: <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Billing（請求とTier仕様）</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">有料Tierへ移行する理由はレート制限とデータの取り扱いにある</h2><p>無料枠のままでも試作は可能ですが、公式資料では有料Tierへ移行する目的として「より高いレート制限へのアクセス」「上位モデルの利用」「プロンプトと応答がGoogle製品の改善に使用されないようにすること」の3点が挙げられています。社内資料や顧客データ、非公開のソースコードをAPI経由で送信する場合は、料金だけでなく無料枠と有料枠におけるデータ利用ポリシーの違いを必ず確認する必要があります。</p><p class="source-meta">参照: <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Billing（請求とTier仕様）</a> <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Pricing（料金表）</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">上位のレート制限（Tier 2・Tier 3）は課金履歴と日数で段階的に開く</h2><p>Gemini APIの有料枠は、請求先を登録した直後のTier 1（月間利用上限250ドル）から始まります。さらに高い同時リクエスト数が必要な場合でも、すぐ無制限になるわけではありません。公式基準では、Tier 2（上限2,000ドル）には「累計100ドルの支払い＋初回決済成功から3日経過」、Tier 3（上限20,000〜100,000ドル以上）には「累計1,000ドルの支払い＋30日経過」が必要です。大量のデータを一括処理する予定がある場合は、前もって少額の決済実績と経過日数を満たしておく必要があります。</p><p class="source-meta">参照: <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Billing（請求とTier仕様）</a> </p></section><section class="prose-section" id="part-4"><h2 class="section-h2">手元の用途がサブスク向きかAPI向きかを切り分ける</h2><p>ブラウザ上のGeminiアプリやAI Studioの画面で対話的にプロンプトを試すだけなら、Google AI Proの定額枠やAI Studioの無料枠で十分に収まります。一方、既存の業務システムや自作ツールから毎日自動でモデルを呼び出す場合や、非公開データを学習させずにAPI処理したい場合は、Paid Tier 1を設定した上でトークン単価とキャッシュ機能から月額費用を見積もるのが適切です。</p><p class="source-meta">参照: <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Billing（請求とTier仕様）</a> <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Pricing（料金表）</a> <a href="https://one.google.com/intl/ja_jp/about/google-ai-plans/" target="_blank" rel="noopener noreferrer">Google One：日本向けGoogle AIプラン表</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にGoogle AI for Developersの公式Billing・PricingドキュメントおよびGoogle Oneプラン表を確認して整理した記事です。各Tierの昇格条件や料金単価は確認時点の公式記載に基づいており、今後の改定や為替変動を含みません。</p><ul class="source-list"><li class="source-item"><a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Billing（請求とTier仕様）</a><span class="source-meta">確認日: 2026-10-16 / Free Tier、Starter Tier、Paid Tier 1〜3の昇格条件・利用上限、および有料枠でのデータ保護条件。</span></li><li class="source-item"><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener noreferrer">Google AI for Developers：Gemini API Pricing（料金表）</a><span class="source-meta">確認日: 2026-10-16 / モデルごとのトークン従量料金と無料枠・有料枠の区分。</span></li><li class="source-item"><a href="https://one.google.com/intl/ja_jp/about/google-ai-plans/" target="_blank" rel="noopener noreferrer">Google One：日本向けGoogle AIプラン表</a><span class="source-meta">確認日: 2026-10-16 / 個人向けGoogle AI Pro / Ultraに含まれる特典範囲。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="gemini-4-argon-google-ai-pro-ultra.html">Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認</a></li><li class="source-item"><a href="antigravity-quota-5-hour-weekly-ai-credits-guide.html">Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">コンシューマー向けサブスクと開発者向けAPI課金は別口座で動く</a></li><li><a href="#part-1">AI Studioは請求先をリンクするかどうかで無料枠と有料枠が分かれる</a></li><li><a href="#part-2">有料Tierへ移行する理由はレート制限とデータの取り扱いにある</a></li><li><a href="#part-3">上位のレート制限（Tier 2・Tier 3）は課金履歴と日数で段階的に開く</a></li><li><a href="#part-4">手元の用途がサブスク向きかAPI向きかを切り分ける</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

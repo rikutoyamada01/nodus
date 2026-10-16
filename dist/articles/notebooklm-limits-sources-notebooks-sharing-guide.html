@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>NotebookLM（Gemini Notebook）のノートブック分割と上限の考え方 | Nodus</title><meta name="description" content="NotebookLM（Gemini Notebook）において複数ノートブックが独立して動作する仕様、5ソース以上での自動ラベル分類、Studioパネルのデータテーブル出力や初回自動生成と使用量上限の関係を公式ヘルプから解説します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html">
+      <meta property="og:title" content="NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方"><meta property="og:description" content="複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="notebooklm-limits-sources-notebooks-sharing-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方", "description": "複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html", "citation": ["https://support.google.com/notebooklm/answer/16206563?hl=ja", "https://one.google.com/intl/ja_jp/about/google-ai-plans/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / サービスと費用</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方</h1><p class="article-subtitle">複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式ヘルプ・プラン表を確認 / 大量資料投入時の独自実測なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>各ノートブックは完全に独立して機能し、複数のノートブック内の情報へ同時にアクセスして横断検索することはできない。</li><li>5つ以上のソースを追加すると自動的にラベル付けとトピック分類が行われるため、一緒に比較したい資料は1つのノートブックにまとめる。</li><li>ノートブックへ初めてソースを追加した際に自動生成されるレポートや音声解説・スライド等は1回限りであり、使用量上限には影響しない。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>2026年10月16日確認のGemini Notebook（NotebookLM）公式ヘルプに基づく整理。モバイルアプリでは一部機能に制限がある場合があります。</caption><thead><tr><th scope="col">やりたいこと</th><th scope="col">推奨される構成</th><th scope="col">公式ヘルプ上の仕様</th><th scope="col">注意点</th></tr></thead><tbody><tr><th scope="row">複数の資料を横断して比較・質問する</th><td>同じ1つのノートブックにソースを集約する</td><td>複数ノートブックへの同時アクセスは不可</td><td>無関係な案件の資料まで混ぜるとノイズが増える</td></tr><tr><th scope="row">5件以上の関連資料を整理する</th><td>1つのノートブックに入れて自動ラベル分類を活用</td><td>5つ以上のソースで自動ラベル付け・分類が動作</td><td>特定のソースだけ除外したい時はチェックを外す</td></tr><tr><th scope="row">比較表をスプレッドシートへ書き出す</th><td>Studioパネルのデータテーブル機能を使う</td><td>1タブ目に表本体、2タブ目に引用文献を出力</td><td>レポート内の複数テーブルも別タブへ出力可能</td></tr><tr><th scope="row">初回投入時の上限消費を抑える</th><td>自動生成された初期出力をそのまま確認する</td><td>初回1回限りの自動生成は使用量上限に非計上</td><td>手動での再生成やカスタマイズは通常の利用枠対象</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/notebooklm-limits-sources-notebooks-sharing-guide.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">複数のノートブックをまたいだ横断質問はできないため単位をそろえる</h2><p>資料が増えてきた際に最も迷いやすいのが、ノートブックを細かく分けるか1つにまとめるかという点です。公式ヘルプには「各ノートブックは独立して機能します。Gemini Notebookでは、複数のノートブック内の情報に同時にアクセスすることはできません」と明記されています。たとえば年度ごとや章ごとにノートブックを別々に分けてしまうと、あとから全体を横断して比較質問することができません。一緒に比較・照合したい資料群は、最初から同じ1つのノートブックにアップロードする必要があります。</p><p class="source-meta">参照: <a href="https://support.google.com/notebooklm/answer/16206563?hl=ja" target="_blank" rel="noopener noreferrer">Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">5つ以上のソースを入れると自動ラベル分類が働き選択解除もできる</h2><p>1つのノートブックに多くの資料を入れると管理が煩雑になりそうですが、公式ヘルプでは「5つ以上のソースがある場合は、ソースに自動的にラベルを付けて分類するので、トピックごとにソースを整理しやすくなります」と案内されています。さらに、質問時に一時的に使いたくない資料がある場合は、ソースを削除しなくても「個々のソースの選択を解除」するだけで参照対象から外すことができます。普段はプロジェクト単位で1つのノートブックに集約し、質問に応じてチェックボックスで対象ソースを絞り込む運用が効率的です。</p><p class="source-meta">参照: <a href="https://support.google.com/notebooklm/answer/16206563?hl=ja" target="_blank" rel="noopener noreferrer">Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">初回ソース追加時の自動生成は使用量上限を消費しない</h2><p>ノートブックに初めてソースを追加した際、レポート、フラッシュカード、インフォグラフィック、スライド資料、音声解説、動画解説などが自動的に作成される場合があります。これによっていきなり1日の使用量上限が減ってしまうのではないかと心配になりますが、公式ヘルプでは「これらが生成されるのは1回で、上限には影響しません」と説明されています。まずは自動生成された概要やレポートを確認し、不足がある部分だけ追加で指示を出すことで利用枠を節約できます。</p><p class="source-meta">参照: <a href="https://support.google.com/notebooklm/answer/16206563?hl=ja" target="_blank" rel="noopener noreferrer">Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">Studioパネルのデータテーブルは引用文献付きでスプレッドシートへ出力できる</h2><p>複数の論文や仕様書から数値を比較したい場合、チャット欄で毎回表を作らせるよりも、Studioパネルの「データテーブル」機能が適しています。行と列の内容をプロンプトで指定してテーブルを作成でき、メニューから「Googleスプレッドシートにエクスポート」を選択すると、1番目のタブにデータテーブルの内容、2番目のタブに引用文献が自動的に分けて出力されます。後から自分の手で数値を検証したり計算式を足したりする作業へそのままつなげられます。</p><p class="source-meta">参照: <a href="https://support.google.com/notebooklm/answer/16206563?hl=ja" target="_blank" rel="noopener noreferrer">Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する</a> <a href="https://one.google.com/intl/ja_jp/about/google-ai-plans/" target="_blank" rel="noopener noreferrer">Google One：日本向けGoogle AIプラン表</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にGoogle公式ヘルプ（Gemini Notebookでノートブックを作成する）およびGoogle Oneプラン表を確認して整理した記事です。特定のPDFファイルでのOCR精度や応答速度の独自測定は行っていません。</p><ul class="source-list"><li class="source-item"><a href="https://support.google.com/notebooklm/answer/16206563?hl=ja" target="_blank" rel="noopener noreferrer">Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する</a><span class="source-meta">確認日: 2026-10-16 / ノートブックの独立性、5ソース以上での自動ラベル付け、初回自動生成の上限非計上、Googleスプレッドシートへのテーブル・引用出力仕様。</span></li><li class="source-item"><a href="https://one.google.com/intl/ja_jp/about/google-ai-plans/" target="_blank" rel="noopener noreferrer">Google One：日本向けGoogle AIプラン表</a><span class="source-meta">確認日: 2026-10-16 / Google AI Pro / UltraにおけるNotebookLM特典の位置づけ。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="google-ai-family-sharing-antigravity-pro-ultra-guide.html">Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件</a></li><li class="source-item"><a href="multihop-rag-orthogonal-residual-subtraction-benchmarks.html">マルチホップRAGの2段目検索、直交減算でどこまで改善する？</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">複数のノートブックをまたいだ横断質問はできないため単位をそろえる</a></li><li><a href="#part-1">5つ以上のソースを入れると自動ラベル分類が働き選択解除もできる</a></li><li><a href="#part-2">初回ソース追加時の自動生成は使用量上限を消費しない</a></li><li><a href="#part-3">Studioパネルのデータテーブルは引用文献付きでスプレッドシートへ出力できる</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

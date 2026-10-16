@@ -1,0 +1,4 @@
+﻿URLの種類,生成されるタイミング,初期状態での閲覧権限,検索・公開管理でやること
+カスタムドメイン（独自ドメイン）,Custom domainsで追加・DNS設定後,一般公開（本番URL）,canonicalタグとsitemap.xmlの基準URLに設定する
+本番 pages.dev（<project>.pages.dev）,プロジェクト作成時（mainブランチ等）,一般公開,独自ドメイン運用時はcanonical統一やリダイレクトを確認
+プレビューURL（<hash>.<project>.pages.dev）,開発ブランチ作成・PR更新時,既定で公開（URLを知っていれば閲覧可）,X-Robots-Tag: noindex の確認と、必要に応じCloudflare Accessで認証保護

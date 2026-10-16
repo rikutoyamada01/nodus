@@ -1,0 +1,4 @@
+﻿サービス / クラス,保存料金（公式単価）,下り転送（Egress）料金,データ取得・最低保持・API料金の条件
+Cloudflare R2（Standard）,$0.015 / GB-月（無料枠あり）,無料（$0）,取得費なし。Class A $4.50/100万回、Class B $0.36/100万回
+Cloudflare R2（Infrequent Access）,$0.010 / GB-月,無料（$0）,データ取得時に $0.01/GB の処理費＋最低保持期間の条件あり
+Backblaze B2（Pay-as-you-go）,最初の10GB無料、以降 $6/TB-月（$0.006/GB）,月間平均保存量の3倍まで無料（超過分 $0.01/GB）,最低ファイルサイズ・最低保持期間なし。Class A/B/C API無料

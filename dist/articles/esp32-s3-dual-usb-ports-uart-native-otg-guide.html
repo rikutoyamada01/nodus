@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>ESP32-S3のUSB端子が2つある理由：UART端子とUSB（OTG/JTAG）端子の違い | Nodus</title><meta name="description" content="ESP32-S3開発ボードに搭載された2つのUSBポート（USB-to-UARTブリッジ側とネイティブUSB GPIO19/20直結側）の役割の違い、書き込みやDeep Sleep時・USBデバイス動作時の注意点を公式資料から解説します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html">
+      <meta property="og:title" content="ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け"><meta property="og:description" content="ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="esp32-s3-dual-usb-ports-uart-native-otg-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け", "description": "ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html", "citation": ["https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-otg-console.html", "https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html", "https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / 道具と電子工作</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け</h1><p class="article-subtitle">ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式ESP-IDF技術資料を確認 / 個別互換ボードの実機測定なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>ESP32-S3開発ボードの2つのUSB端子は、外付け変換チップを通る「UART端子」と、S3チップ内部のUSB周辺回路（GPIO19/20）へ直結された「ネイティブUSB端子」に分かれている。</li><li>普段のプログラム書き込みやスリープを伴うシリアルログ確認で最もトラブルが少ないのは外付け変換チップ経由の「UART端子」である。</li><li>ESP32-S3をUSBキーボード・マウス（HID）やUSBストレージとしてPCに認識させたい場合や、内蔵JTAGデバッグを使う場合は「ネイティブUSB端子」を使う。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>2026年10月16日確認のEspressif公式ESP-IDF Programming Guide（USB Serial/JTAGおよびUSB OTG Console）に基づく整理。</caption><thead><tr><th scope="col">端子の種類（基板上の表記例）</th><th scope="col">内部の接続先</th><th scope="col">向いている用途</th><th scope="col">気をつける制限（公式資料より）</th></tr></thead><tbody><tr><th scope="row">UART端子（UART / COM）</th><td>ボード上のUSB-シリアル変換IC経由でUART0へ接続</td><td>初回の書き込み、Deep Sleepを含む開発時のログ監視</td><td>USBキーボード等のネイティブUSB機器としては動作しない</td></tr><tr><th scope="row">ネイティブUSB端子：Serial/JTAGモード</th><td>ESP32-S3内蔵のUSB Serial/JTAGコントローラ（GPIO19/20）</td><td>外付け変換ICなしでの書き込み、JTAGデバッグ、小型基板の自作</td><td>Deep Sleepやピン再設定を行うとPCとの通信が切れる</td></tr><tr><th scope="row">ネイティブUSB端子：USB OTGモード</th><td>ESP32-S3内蔵のUSB OTG周辺回路（ソフトウェアUSBスタック）</td><td>USB HID（キーボード等）、CDC、マスストレージ等の実装</td><td>アプリがクラッシュ・停止するとUSB通信も一緒に止まる</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/esp32-s3-dual-usb-ports-uart-native-otg-guide.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">外付け変換チップ経由の端子とチップ直結のネイティブ端子がある</h2><p>ESP32-S3の開発ボード（DevKitC系など）を手に取ると、「UART」と書かれた端子と「USB」と書かれた端子の2つが並んでいることがあります。これは単なる予備の電源端子ではありません。片方の「UART」端子は、基板上のUSB-シリアル変換チップ（CP2102NやCH343など）を経由してESP32-S3のシリアル通信ピンにつながっています。もう片方の「USB」端子は、ESP32-S3チップ自身が内蔵しているUSBインターフェース（GPIO19およびGPIO20のD-/D+信号線）へ直接つながっています。</p><p class="source-meta">参照: <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-otg-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB OTG Console (ESP32-S3)</a> <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)</a> <a href="https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html" target="_blank" rel="noopener noreferrer">Espressif：Chip Series Comparison</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">内蔵のUSB Serial/JTAGとUSB OTGは同じ物理ピンを共有する別の機能</h2><p>さらにESP-IDFの公式ドキュメントで区別されている通り、チップ直結の「USB」端子の奥には2つの異なる内部ハードウェアが存在します。1つはハードウェア固定の「USB Serial/JTAGコントローラ」で、プログラムの書き込みやシリアルモニター、JTAGデバッグを追加部品なしで行えます。もう1つは「USB OTGペリフェラル」で、TinyUSB等のソフトウェアスタックと組み合わせてESP32-S3自体をUSBキーボードやUSBメモリ、あるいはUSBホストとして動作させる機能です。両者は同じGPIO19/20ピンを共有しているため、用途に応じて切り替えて使います。</p><p class="source-meta">参照: <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-otg-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB OTG Console (ESP32-S3)</a> <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">Deep Sleepの実験やクラッシュ調査ではUART端子の方が切断されにくい</h2><p>どちらの端子でもプログラムの書き込みやログ出力は可能ですが、公式ガイドにはネイティブUSB側ならではの制限が明記されています。たとえば内蔵のUSB Serial/JTAGやUSB OTGを使っている場合、プログラム内でGPIO19/20を別用途に再設定したり、チップがDeep Sleep（深睡眠モード）に入ったりすると、PC側から見たUSBデバイス自体が消失し、シリアルポートが切断されます。さらにUSB OTGコンソールでは、ソフトウェアがクラッシュして動作を止めるとUSB通信も同時に止まってしまいます。これに対し、外付け変換チップを通る「UART」端子であれば、ESP32-S3がスリープや再起動を繰り返してもPC側のCOMポートが維持されるため、電池駆動の実験やデバッグではUART端子につなぐ方が安定します。</p><p class="source-meta">参照: <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-otg-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB OTG Console (ESP32-S3)</a> <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">小型ボードを買う前にどちらの方式で実装されているかを確認する</h2><p>手のひらサイズの超小型ESP32-S3ボードでは、基板面積を節約するために外付けのUART変換チップを省き、ネイティブUSB端子1つだけを搭載している製品が多くあります。そうしたボードでも書き込みや通常の利用は問題なく行えますが、「書き込みモードに入りにくいときにBOOTボタンを押しながらリセットする操作が必要になる場合がある」「Deep Sleep中にシリアルポートが一度消える」といった挙動の違いをあらかじめ理解して選ぶと、購入後に故障と勘違いせずに済みます。</p><p class="source-meta">参照: <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-otg-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB OTG Console (ESP32-S3)</a> <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)</a> <a href="https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html" target="_blank" rel="noopener noreferrer">Espressif：Chip Series Comparison</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にEspressif公式ESP-IDFプログラミングガイド（USB OTG Console、USB Serial/JTAG Controller Console、チップ比較表）を確認して整理した記事です。サードパーティ製互換ボードごとの回路差や給電電流の実測は行っていません。</p><ul class="source-list"><li class="source-item"><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-otg-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB OTG Console (ESP32-S3)</a><span class="source-meta">確認日: 2026-10-16 / USB OTGペリフェラルの仕組み、ソフトウェアUSBスタックへの依存、アプリ停止時の制限。</span></li><li class="source-item"><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html" target="_blank" rel="noopener noreferrer">Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)</a><span class="source-meta">確認日: 2026-10-16 / 内蔵USB Serial/JTAGコントローラの機能、GPIO19/20の再設定やスリープモード時の注意点。</span></li><li class="source-item"><a href="https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html" target="_blank" rel="noopener noreferrer">Espressif：Chip Series Comparison</a><span class="source-meta">確認日: 2026-10-16 / ESP32-S3とC3・C6等のUSB・周辺インターフェース比較。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="esp32-c3-s3-c6-which-board-to-choose.html">ESP32、結局どれを買えばいい？</a></li><li class="source-item"><a href="esp32-c6-matter-thread-border-router-requirements.html">ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">外付け変換チップ経由の端子とチップ直結のネイティブ端子がある</a></li><li><a href="#part-1">内蔵のUSB Serial/JTAGとUSB OTGは同じ物理ピンを共有する別の機能</a></li><li><a href="#part-2">Deep Sleepの実験やクラッシュ調査ではUART端子の方が切断されにくい</a></li><li><a href="#part-3">小型ボードを買う前にどちらの方式で実装されているかを確認する</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

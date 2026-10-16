@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>ESP32のDeep Sleepと電池持ちの計算：開発ボードの待機電流とESPHomeの注意点 | Nodus</title><meta name="description" content="ESP32で電池駆動センサーを自作する際に、チップ単体のDeep Sleep電流（µA）だけで計算すると電池持ちが大きくずれる理由を解説。USB変換ICや電源LED、Wi-Fi再接続時間、ESPHomeでのOTA・Unavailable表示の注意点を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html">
+      <meta property="og:title" content="ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方"><meta property="og:description" content="データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="esp32-deep-sleep-battery-life-board-quiescent-current.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方", "description": "データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html", "citation": ["https://esphome.io/components/deep_sleep/", "https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / 道具と電子工作</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方</h1><p class="article-subtitle">データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式資料・計算手順を整理 / 基板別の実測電流値なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>チップ単体のDeep Sleep電流（数〜数十µA）が小さくても、一般的なUSB開発ボードには電源LED・電圧レギュレーター・USBシリアル変換ICが載っており、基板全体では待機中もより大きな電流が流れ続ける。</li><li>電池持ちは「スリープ中の待機電流」と「起床してWi-Fi接続・送信する数秒間の消費電流」の合計で決まるため、送信間隔と起床時間の短縮が直結する。</li><li>ESPHomeのDeep Sleep中はネットワーク通信やOTA更新に一切応答しないため、運用前に保守手順とHome Assistant側の表示仕様を確認しておく必要がある。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>電池駆動の自作センサーにおける電力消費要素の整理。個別の開発ボードの実測ランキングではありません。</caption><thead><tr><th scope="col">電力を消費する要素</th><th scope="col">チップ単体の公称値だけで見えるか</th><th scope="col">電池持ちを悪化させる主な原因</th><th scope="col">対策の方向性</th></tr></thead><tbody><tr><th scope="row">ESP32チップ本体のスリープ</th><td>見える（データシート記載の対象）</td><td>起床ピン設定や内部周辺回路の保持設定</td><td>必要な起床方法（タイマー / RTCピン）だけに絞る</td></tr><tr><th scope="row">開発ボード上の周辺回路</th><td>見えない（基板設計に依存）</td><td>常時点灯の電源LED、LDOレギュレーターの自己消費、USB変換IC</td><td>電池駆動向け省電力基板を選ぶか3.3V直接給電を検討</td></tr><tr><th scope="row">起床時のWi-Fi接続・送信</th><td>見えない（通信環境に依存）</td><td>DHCP取得やWi-Fi再接続に毎回長い秒数がかかる</td><td>run_durationの最適化、固定IP化、送信間隔の見直し</td></tr><tr><th scope="row">接続したセンサーモジュール</th><td>見えない（外付け部品に依存）</td><td>スリープ中もセンサー側に通電し続けている</td><td>低消費電力センサーの選定や計測時のみの通電制御</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/esp32-deep-sleep-battery-life-board-quiescent-current.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">チップ単体のデータシート値と開発ボード全体の待機電流は別物として扱う</h2><p>ESP32シリーズのデータシートには、Deep Sleepモード時の消費電流として数µA〜数十µAという非常に小さな値が記載されています。しかし、これはあくまで「ESP32チップ（またはモジュール）単体」の数値です。USB端子が付いた一般的な開発ボードには、5Vを3.3Vへ下げる電源レギュレーター（LDO）、USBシリアル変換チップ、そして通電中に光り続ける電源LEDが搭載されています。ESP32チップ自体が深いスリープに入っていても、これらの周辺部品が常時数mA（数千µA）を消費していれば、電池寿命はチップ単体の計算値から1桁以上短くなります。ESPHomeの公式ドキュメントでも、一部のボードではオンボードのUSBチップがDeep Sleepからの復帰や動作に影響する場合があり、3.3VピンとGNDへの別電源供給で回避できるケースが注記されています。</p><p class="source-meta">参照: <a href="https://esphome.io/components/deep_sleep/" target="_blank" rel="noopener noreferrer">ESPHome Docs：Deep Sleep Component</a> <a href="https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html" target="_blank" rel="noopener noreferrer">Espressif：Chip Series Comparison</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">スリープ電流と起床時の通信電流を分けて平均電流を試算する</h2><p>電池が何日持つかを見積もる際は、スリープ中の待機分と、起床してWi-Fi送信を行う稼働分を分けて合算します。たとえば仮定の計算例として、10分（600秒）ごとに1回起き、1回の稼働時間（`run_duration`）が10秒でその間の平均電流を120mA、残り590秒のスリープ中の基板全体の待機電流を2mAと置いた場合、1サイクルの平均電流は `(120mA × 10秒 + 2mA × 590秒) ÷ 600秒 ＝ 3.97mA` となります。この仮定では、実効容量1,500mAhの電池を使っても `1,500mAh ÷ 3.97mA ≒ 約378時間（約15.7日）` で切れる計算になります。もし省電力設計の基板を使ってスリープ待機電流を0.1mA（100µA）まで下げ、稼働時間を3秒に短縮できれば、同じ仮定式で平均電流は約0.70mAとなり、約89日まで延びます（いずれも計算手順を示す仮定例であり、実機の保証値ではありません）。</p><p class="source-meta">参照: <a href="https://esphome.io/components/deep_sleep/" target="_blank" rel="noopener noreferrer">ESPHome Docs：Deep Sleep Component</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">Deep Sleep中はOTA更新や通信に応答しないため保守方法を決めておく</h2><p>ESPHomeの公式ドキュメント（Deep Sleep Component）には、「Deep Sleepモードの間、ノードはいかなる処理も行わず、OTA（無線アップデート）を含むすべてのネットワークトラフィックに応答しない」と明記されています。一度短い稼働時間と長いスリープ時間を書き込んでしまうと、次に設定を変更したくなったときにOTA書き込みのタイミングを合わせるのが難しくなります。高い場所やケース内に設置する前に、Home Assistant側からスリープ突入を一時停止させる仕組み（入力ヘルパーやMQTTフラグの監視など）を入れておくか、USBケーブルを挿し直しやすい配置にしておくことが重要です。</p><p class="source-meta">参照: <a href="https://esphome.io/components/deep_sleep/" target="_blank" rel="noopener noreferrer">ESPHome Docs：Deep Sleep Component</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">スリープ中にHome Assistant側で「利用不可」になる挙動を確認する</h2><p>もう一つの実務上の注意点として、デバイスがスリープに入った際にHome Assistantの画面上でセンサー値が「Unavailable（利用不可）」に変わってしまう現象があります。ESPHome公式ドキュメントでは、デバイスをHome Assistantへ登録した「あと」から `deep_sleep` コンポーネントを追加した場合にこの挙動が起きやすく、Home Assistant側で一度デバイスを削除して再登録することで防げると案内されています。電池持ちの測定を始める前に、まず10分程度の短い周期でスリープ復帰と画面表示が意図通り動くかを確かめます。</p><p class="source-meta">参照: <a href="https://esphome.io/components/deep_sleep/" target="_blank" rel="noopener noreferrer">ESPHome Docs：Deep Sleep Component</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にESPHome公式ドキュメント（Deep Sleep Component）およびEspressif公式資料を確認して整理した記事です。記事内の電池寿命試算は仮定の電流値・稼働時間に基づく計算例であり、特定の開発ボードや電池での実測結果ではありません。</p><ul class="source-list"><li class="source-item"><a href="https://esphome.io/components/deep_sleep/" target="_blank" rel="noopener noreferrer">ESPHome Docs：Deep Sleep Component</a><span class="source-meta">確認日: 2026-10-16 / run_durationとsleep_durationの設定、RTCピン起床、スリープ中のOTA非応答、Unavailable表示の対処、オンボードUSBチップの干渉注記。</span></li><li class="source-item"><a href="https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html" target="_blank" rel="noopener noreferrer">Espressif：Chip Series Comparison</a><span class="source-meta">確認日: 2026-10-16 / ESP32シリーズ各チップの基本構成比較。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="esp32-c3-s3-c6-which-board-to-choose.html">ESP32、結局どれを買えばいい？</a></li><li class="source-item"><a href="diy-or-ready-made-total-cost.html">自作は既製品より安い？ 部品代の外にある費用</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">チップ単体のデータシート値と開発ボード全体の待機電流は別物として扱う</a></li><li><a href="#part-1">スリープ電流と起床時の通信電流を分けて平均電流を試算する</a></li><li><a href="#part-2">Deep Sleep中はOTA更新や通信に応答しないため保守方法を決めておく</a></li><li><a href="#part-3">スリープ中にHome Assistant側で「利用不可」になる挙動を確認する</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

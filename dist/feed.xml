@@ -30,6 +30,111 @@
     <summary>ノートPCを閉じても記憶や定期処理を残したい。コードの修正も任せたい。推論・記憶・開発作業を分けて、常駐先の費用と選び方を考えます。</summary>
   </entry>
   <entry>
+    <title>Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係</title>
+    <link href="https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>作業の途中で利用上限に達したとき、5時間待てば戻るのか、週間上限なのか、追加クレジットを使うべきか。公式プラン仕様から確認手順を整理します。</summary>
+  </entry>
+  <entry>
+    <title>安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用</title>
+    <link href="https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison.html" />
+    <id>https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>自宅NASや写真サーバーの外部バックアップ先を選ぶとき、毎月の保存料金だけでなく、障害時に100GB〜1TBを一括ダウンロード（Egress）したときの料金条件を公式価格表から比較します。</summary>
+  </entry>
+  <entry>
+    <title>Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？</title>
+    <link href="https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing.html" />
+    <id>https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>GitHub連携でブランチごとに自動生成されるプレビューURLや元の .pages.dev サブドメインが、検索エンジンに重複登録されるのを防ぐ公式仕様と確認手順を整理します。</summary>
+  </entry>
+  <entry>
+    <title>CO₂センサーの「400ppm」は本物の二酸化炭素か推定値か？ 換気計を自作する前の選び方</title>
+    <link href="https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>ESP32で部屋の二酸化炭素濃度計を自作するとき、数百円のガスセンサー（eCO₂）と数千円の光学式センサー（SCD40/SCD41等）で測っているものがどう違うのかを公式資料から整理します。</summary>
+  </entry>
+  <entry>
+    <title>Dockerの作業フォルダをコピーしたのに復元できない理由：VolumeとBind Mountの保存範囲</title>
+    <link href="https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope.html" />
+    <id>https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>docker-compose.ymlがあるフォルダを丸ごとバックアップしたのに、別マシンへ移したらデータベースの中身が空になっていた。名前付きVolumeとBind Mountの保存場所の違いを整理します。</summary>
+  </entry>
+  <entry>
+    <title>「デュアル4K対応」のUSB-CドックでMacも2画面に拡張できる？ チップ上限と接続方式の確認</title>
+    <link href="https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>Windows向けに「USB-C 1本で4K 2画面出力」と書かれたドックをMacBookにつないだとき、2枚のモニターに同じ画面しか映らない（ミラーリングになる）原因と選び方を整理します。</summary>
+  </entry>
+  <entry>
+    <title>ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器</title>
+    <link href="https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html" />
+    <id>https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>Wi-Fi 6とThread（802.15.4）に対応するESP32-C6でスマートホーム機器を自作する前に、既存のWi-Fiルーターだけで動くのか、別途ボーダールーターが必要なのかを整理します。</summary>
+  </entry>
+  <entry>
+    <title>ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方</title>
+    <link href="https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html" />
+    <id>https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。</summary>
+  </entry>
+  <entry>
+    <title>ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け</title>
+    <link href="https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。</summary>
+  </entry>
+  <entry>
+    <title>長いシステムプロンプトを毎回払う？ Gemini APIのキャッシュ仕様と最小トークン条件</title>
+    <link href="https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>同じ指示文や参考資料を繰り返し送るとき、自動（Implicit）キャッシュと明示的（Explicit）キャッシュのどちらが使えるのか。モデル別の最小トークン数と設計の注意点を整理します。</summary>
+  </entry>
+  <entry>
+    <title>Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件</title>
+    <link href="https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>Google Oneのファミリー共有でAI特典を分け合える範囲と、AntigravityやAIクレジットの上限が家族全体で合算される仕組みを公式ヘルプから整理します。</summary>
+  </entry>
+  <entry>
+    <title>Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界</title>
+    <link href="https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html" />
+    <id>https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。</summary>
+  </entry>
+  <entry>
+    <title>Search Consoleに表示やクリックがあるのにアクセス解析がゼロになる理由：計測位置と匿名化の違い</title>
+    <link href="https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>個人サイトを公開した直後、Google Search Consoleとブラウザ側のアクセス解析（Cloudflare Web AnalyticsやGA4）で数値が食い違うときに、タグの設定ミスと仕様上の差を切り分ける手順です。</summary>
+  </entry>
+  <entry>
+    <title>家族だけに自宅アプリを見せたいとき、VPN（Tailscale）とCloudflare Tunnelで何が変わる？</title>
+    <link href="https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。</summary>
+  </entry>
+  <entry>
+    <title>Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認</title>
+    <link href="https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html" />
+    <id>https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。</summary>
+  </entry>
+  <entry>
     <title>自宅サーバー用ミニPC、CPU名だけで選んでいい？</title>
     <link href="https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html" />
     <id>https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html</id>
@@ -37,11 +142,46 @@
     <summary>RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。</summary>
   </entry>
   <entry>
+    <title>初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか</title>
+    <link href="https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。</summary>
+  </entry>
+  <entry>
+    <title>NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方</title>
+    <link href="https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。</summary>
+  </entry>
+  <entry>
+    <title>Ollamaで128k対応モデルを入れたのに何トークン読める？ VRAM別既定値と変更手順</title>
+    <link href="https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>128kや256k対応のローカルLLMをダウンロードしたのに長い文章を途中で忘れるとき、実際に割り当てられているコンテキスト長の確認方法と設定手順を公式資料から整理します。</summary>
+  </entry>
+  <entry>
     <title>パーソナルAIは、どこに置く？</title>
     <link href="https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html" />
     <id>https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html</id>
     <updated>2026-10-16T00:00:00Z</updated>
     <summary>VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。</summary>
+  </entry>
+  <entry>
+    <title>Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する</title>
+    <link href="https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html" />
+    <id>https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>自宅NASやサーバーへのリモート接続が期待より遅いとき、光回線やルーターを疑う前に確認したい3つの接続方式（Direct / DERP / Peer Relay）の切り分け手順です。</summary>
+  </entry>
+  <entry>
+    <title>NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか</title>
+    <link href="https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html" />
+    <id>https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <summary>アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。</summary>
   </entry>
   <entry>
     <title>100W・140W充電器は必要？ ポート配分と使い方から選ぶ</title>

@@ -1,0 +1,121 @@
+{
+  "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
+  "title": "CO₂センサーの「400ppm」は本物の二酸化炭素か推定値か？ 換気計を自作する前の選び方",
+  "display_title": "CO₂センサー、実測式と推定式の見分け方は？",
+  "subtitle": "ESP32で部屋の二酸化炭素濃度計を自作するとき、数百円のガスセンサー（eCO₂）と数千円の光学式センサー（SCD40/SCD41等）で測っているものがどう違うのかを公式資料から整理します。",
+  "category": "Hardware & Power Electronics",
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "選び方・公式資料から整理",
+  "illustration": "hardware",
+  "tags": [
+    "CO2センサー",
+    "ESPHome",
+    "SCD40",
+    "電子工作"
+  ],
+  "published_at": "2026-10-16",
+  "updated_at": "2026-10-16",
+  "data_updated_at": "2026-10-16",
+  "sample_size_n": 0,
+  "evidence_notice": "公式コンポーネント資料を確認 / センサー精度の実機比較測定なし",
+  "methodology_note": "2026年10月16日にESPHome公式ドキュメント（Sensirion SCD4XおよびSGP30コンポーネント仕様）を確認して整理した記事です。各センサーモジュールの実売価格調査や同一室内での数値比較テストは行っていません。",
+  "seo": {
+    "meta_title": "自作CO₂センサーの選び方：光学式（SCD40/SCD41）と推定eCO₂（SGP30等）の違い | Nodus",
+    "meta_description": "ESP32やESPHomeで室内の換気モニターを自作する際に知っておきたい、CO₂直接測定センサー（SCD4X等）とVOCから算出する推定二酸化炭素（eCO₂ / CO₂eq）センサー（SGP30等）の違い、校正・配置の注意点を解説します。",
+    "target_keywords": [
+      "CO2センサー 自作 SCD40",
+      "eCO2 NDIR 違い",
+      "ESPHome CO2センサー おすすめ",
+      "SCD41 SGP30 違い"
+    ],
+    "primary_seed": "CO2センサー 自作 eCO2 違い"
+  },
+  "summary_metrics": [],
+  "tldr": [
+    "通販で「CO₂センサー」として売られているモジュールには、二酸化炭素そのものを測る方式（SCD40/SCD41等）と、揮発性有機化合物（TVOC等）から換算した「推定CO₂（eCO₂ / CO₂eq）」を出す方式（SGP30等）の2種類がある。",
+    "アルコール消毒液や芳香剤、料理の匂いなどに反応して数値が跳ね上がるのを避け、純粋な換気指標として二酸化炭素濃度を見たいなら、eCO₂ではなくCO₂直接測定型を選ぶ。",
+    "高精度な光学式センサーであっても、基板上の保護膜（白いメンブレン）を剥がさないこと、マイコンの発熱による温度オフセット補正、定期的な外気校正の条件を守る必要がある。"
+  ],
+  "comparison_table": {
+    "headers": [
+      "センサー分類（代表例）",
+      "ESPHome等での出力項目",
+      "何を測っているか",
+      "換気モニター用途での注意点"
+    ],
+    "rows": [
+      [
+        "CO₂直接測定型（Sensirion SCD40 / SCD41等）",
+        "co2 / temperature / humidity",
+        "光音響（PAS）やNDIR等で空気中のCO₂分子による赤外線吸収を直接測定",
+        "センサー表面の白い保護膜を絶対に剥がさない。温度オフセット調整が可能"
+      ],
+      [
+        "ガス・VOC換算型（Sensirion SGP30等）",
+        "eco2（CO₂eq） / tvoc",
+        "マルチピクセルガスセンサーでTVOC等を測り、相当するCO₂換算値（eCO₂）を算出",
+        "アルコールや匂い成分でも数値が変動するため、実際のCO₂濃度とは一致しない場面がある"
+      ]
+    ]
+  },
+  "table_caption": "2026年10月16日確認のESPHome公式ドキュメント（SCD4X / SGP30）に基づく整理。",
+  "sections": [
+    {
+      "heading": "商品名の「CO₂」だけでなく仕様欄の「eCO₂ / CO₂eq」表記を確認する",
+      "body": "電子工作向けのパーツショップや通販サイトで「CO₂センサーモジュール」を検索すると、数百円で買える安価な基板と、数千円する基板の両方が見つかります。この価格差は単なるメーカーの違いではなく、測定している物理量が異なることに由来します。たとえばESPHome公式ドキュメントに掲載されている「SGP30」の項目を見ると、出力されるのは `co2` ではなく `eco2`（CO₂eq：二酸化炭素相当量）と `tvoc`（総揮発性有機化合物）であると明記されています。人が呼吸するとCO₂と一緒に微量の有機ガスも増えるという相関を利用した推定値であるため、室内の匂いやアルコール除菌スプレーの蒸気などが入ると、実際のCO₂濃度は低くても数値が大きく跳ね上がることがあります。",
+      "source_indices": [
+        1
+      ]
+    },
+    {
+      "heading": "換気のタイミングを正確に測りたいならSCD4X等のCO₂測定型を選ぶ",
+      "body": "閉め切った書斎や寝室で「純粋に二酸化炭素が何ppm溜まっているか」を知り、換気やエアコン制御の基準にしたい場合は、推定値（eCO₂）ではなくCO₂そのものを測るセンサー（Sensirion SCD40 / SCD41やNDIR方式のモジュール等）を選びます。ESPHomeのSCD4X公式ドキュメントにある通り、SCD4XシリーズはI²Cバス接続の1つのモジュールでCO₂濃度に加えて温度と相対湿度も同時に取得できるため、配線をシンプルに保ちながら室内環境モニターを組むことができます。",
+      "source_indices": [
+        0
+      ]
+    },
+    {
+      "heading": "センサー上部の白い保護フィルムを剥がさずマイコンの熱から離して配置する",
+      "body": "SCD4Xモジュールを扱う際に初心者がやりがちな失敗として、センサーの金属ケース上部にある白いシートを「保護シール」だと思って剥がしてしまうケースがあります。ESPHome公式ドキュメントにも「正常な動作を保証するため、センサー上の白いメンブレン（保護膜）は絶対に取り外したり傷つけたりしてはならない」と強い警告（WARNING）が記載されています。また、同じ小さなケースの中にESP32ボードとセンサーを密着させて閉じ込めると、ESP32の自己発熱によって温度が数度高く表示され、相対湿度や補正計算にも影響するため、通気スリットを設けるか `temperature_offset` 設定で補正を行います。",
+      "source_indices": [
+        0
+      ]
+    },
+    {
+      "heading": "部品代・ケース・校正の手間を市販のCO₂モニターと比較してから作る",
+      "body": "CO₂を直接測定できるSCD40/SCD41等のモジュールは単体でも数千円するため、ESP32開発ボード、USB電源、ケーブル、ケースまで揃えると、市販の卓上NDIR式CO₂モニターに近い総額になることがあります。単に机の上で数値を見たいだけなら市販の完成品を買う方が手軽ですが、「Home Assistantへ5分ごとにグラフ記録したい」「1,000ppmを超えたら換気扇のスマートプラグを自動でONにしたい」といった自動化連携が目的なら、自作する価値が明確になります。",
+      "source_indices": [
+        0,
+        1
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "ESPHome Docs：SCD4X CO₂, Temperature and Relative Humidity Sensor",
+      "url": "https://esphome.io/components/sensor/scd4x.html",
+      "verified_date": "2026-10-16",
+      "sample_size": 0,
+      "scope": "SCD4XによるCO₂・温度・湿度の取得、白いメンブレン（保護膜）に関する警告、temperature_offset設定。"
+    },
+    {
+      "title": "ESPHome Docs：SGP30 CO₂ and Volatile Organic Compound Sensor",
+      "url": "https://esphome.io/components/sensor/sgp30.html",
+      "verified_date": "2026-10-16",
+      "sample_size": 0,
+      "scope": "マルチピクセルガスセンサーによるeco2（CO₂eq）およびtvocの取得、ベースライン保存仕様。"
+    }
+  ],
+  "related_articles": [
+    {
+      "slug": "esp32-c3-s3-c6-which-board-to-choose",
+      "title": "ESP32、結局どれを買えばいい？"
+    },
+    {
+      "slug": "diy-or-ready-made-total-cost",
+      "title": "自作は既製品より安い？ 部品代の外にある費用"
+    }
+  ],
+  "faqs": []
+}

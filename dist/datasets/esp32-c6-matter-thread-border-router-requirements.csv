@@ -1,0 +1,4 @@
+﻿通信構成,ESP32側の候補チップ,自宅側に必要な中継・制御機器,向いているケース
+Matter over Wi-Fi,ESP32-C3 / S3 / C6等,既存の2.4GHz Wi-Fiルーター＋Matterコントローラー,ボーダールーターを買い足さずUSB給電等でまず試したいとき
+Matter over Thread,ESP32-C6 / ESP32-H2等,Threadボーダールーター＋Matterコントローラー（IPv6有効環境）,電池駆動センサーなどThreadメッシュで省電力運用したいとき
+ESPHome（通常のWi-Fi連携）,ESP32-C3 / S3 / C6等,既存のWi-Fiルーター＋Home Assistantサーバー,Matter規格にこだわらず最短手順で自作センサーを連携したいとき

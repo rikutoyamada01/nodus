@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>2ベイNASのRAID 1とバックアップの違い：HDD 2台の使い道と守れるデータの範囲 | Nodus</title><meta name="description" content="2ベイNASでHDD 2台をRAID 1（ミラーリング）にする構成と、1台運用＋外付けHDD/クラウドへの世代バックアップにする構成の違いを解説。誤削除やNAS本体故障時にデータが守れるかを整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html">
+      <meta property="og:title" content="初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか"><meta property="og:description" content="2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html">
+      <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="nas-2bay-raid1-vs-external-backup-recovery-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか", "description": "2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html", "citation": ["https://immich.app/docs/administration/backup-and-restore/", "https://www.backblaze.com/cloud-storage/pricing", "https://developers.cloudflare.com/r2/pricing/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+<a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand-logo">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>Nodus</span>
+      <span class="brand-tagline">買う、作る、その前に。</span>
+    </a>
+    <nav class="site-nav" aria-label="グローバルナビゲーション">
+      <a href="../index.html">記事を読む</a>
+      <a href="../about.html">Nodusについて</a>
+      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+<div class="pr-banner" role="note" aria-label="運営ステータス表示">
+  <div class="container">広告・アフィリエイトリンクは掲載していません。</div>
+</div>
+
+      <div class="container article-layout"><main id="main-content" class="article-sheet">
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / 道具と電子工作</nav>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <h1 class="article-title">初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか</h1><p class="article-subtitle">2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。</p>
+      <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式ガイド・バックアップ設計の整理 / HDD故障率の独自実測なし</span></div>
+
+      <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>RAID 1（ミラーリング）は「片方のHDDが物理故障したときにサービスを止めない仕組み（冗長化）」であり、誤ってファイルを削除・上書きした瞬間にもう片方のHDDからも同時に消える。</li><li>NAS本体の電源回路故障、落雷、水濡れ、ランサムウェア感染、ソフトウェアのバグによるデータ破損は、同じ筐体内のRAID 1では防げない。</li><li>予算がHDD 2台分に限られていて「家族の写真や重要書類を絶対に失いたくない」のが最優先なら、同じNAS内でRAID 1を組むより、別筐体（外付けHDDやクラウド）へ世代バックアップを残す方が守れる範囲が広い。</li></ul></section>
+      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>冗長化（RAID 1）と世代バックアップがそれぞれ防げる障害範囲の比較。</caption><thead><tr><th scope="col">トラブルの種類</th><th scope="col">2ベイNAS単体のRAID 1（外付け・外部退避なし）</th><th scope="col">1ベイ運用＋別ドライブ/クラウドへの世代バックアップ</th><th scope="col">違いが生じる理由</th></tr></thead><tbody><tr><th scope="row">HDD 1台の突然の物理故障</th><td>そのまま稼働継続（新しいHDDへ交換して再構築）</td><td>NASは停止するがバックアップからデータを復元可能</td><td>ダウンタイム（停止時間）をゼロにしたいかどうか</td></tr><tr><th scope="row">操作ミスによるファイル誤削除・上書き</th><td>守れない（2台同時に即座に削除・上書きされる）</td><td>過去世代のバックアップから復元可能</td><td>リアルタイム同期と履歴保持（バージョニング）の差</td></tr><tr><th scope="row">NAS本体の基板・電源故障や落下</th><td>本体修理・同系統機への移行が必要（同時破損リスクあり）</td><td>別筐体やクラウドに独立したデータが残る</td><td>同じ電源・同じケースに2台入っているか別場所か</td></tr><tr><th scope="row">ランサムウェアや同期ソフトの暴走</th><td>守れない（ミラー先も同時に暗号化・破壊される）</td><td>オフライン外付けHDDやImmutable保存なら復旧可能</td><td>常時同一ファイルシステムとして見えているかどうか</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/nas-2bay-raid1-vs-external-backup-recovery-guide.csv" download>比較表をCSVで保存</a></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">RAID 1が守るのは「データそのもの」ではなく「HDD 1台故障時の稼働継続」</h2><p>初めて2ベイNASを購入する際、「HDDを2台入れてRAID 1（ミラーリング）にしておけば、同じデータが2つ保存されるからバックアップは完璧だ」と誤解されがちです。しかしRAID 1の目的は「稼働の継続性（可用性）」にあります。2台のHDDにリアルタイムで全く同じ書き込みを行うため、1台のHDDが物理的に壊れても作業を止めずにファイルへアクセスし続けられます。その反面、自分が誤って大切な写真フォルダを消してしまったり、ファイルが壊れた状態で上書き保存されたりすると、その変更も0.1秒後にはもう片方のHDDへ忠実にミラーリングされます。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore（3-2-1バックアップ戦略と世代保持）</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">同じ筐体・同じ電源に入っている2台は同時にダメージを受けることがある</h2><p>また、2ベイNASの中の2台のHDDは、同じ電源アダプター、同じ基板、同じ設置場所を共有しています。落雷や停電時のサージ電流、ペットや子どもによる本体の転倒、あるいは夏場のファン停止による高温状態が起きた場合、2台のHDDが同時に故障するリスクはゼロではありません。さらに同時期に同じロットで買った2台のHDDを同じ時間だけ回し続けると、1台目が壊れて新しいHDDと入れ替え、数時間〜十数時間かけて全領域を読み出す「リビルド（再構築）」の高負荷の最中に、寿命が近づいていた2台目まで壊れてしまうケースも考慮する必要があります。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore（3-2-1バックアップ戦略と世代保持）</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">予算がHDD 2台分なら「1台をNAS、もう1台を別系統の履歴バックアップ」にする選択肢</h2><p>もし「自宅のNASが数時間〜1日止まること」よりも「撮りためた写真やデータが永久に消えること」の方が困るのであれば、Immichの公式ドキュメント等でも推奨されている「3-2-1バックアップ戦略（データを3つ持ち、2種類の媒体に分け、1つは別場所に置く）」に近づける方が安全です。予算がHDD 2台分しかない場合は、最初から2台とも同じNASに入れてRAID 1にするのではなく、1台をメインの保存先とし、もう1台は外付けUSBケースに入れて「夜間に自動で差分・世代バックアップを取る別ドライブ」にするか、あるいは特に重要な数百GB分だけをCloudflare R2やBackblaze B2などの安価なクラウドストレージへ暗号化バックアップする方が、誤削除にも本体故障にも対応できます。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore（3-2-1バックアップ戦略と世代保持）</a> <a href="https://www.backblaze.com/cloud-storage/pricing" target="_blank" rel="noopener noreferrer">Backblaze：B2 Cloud Storage Pricing</a> <a href="https://developers.cloudflare.com/r2/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare R2 Docs：Pricing</a> </p></section><section class="prose-section" id="part-3"><h2 class="section-h2">RAID 1を組む場合でも「外へのバックアップ」だけは必ず組み合わせる</h2><p>もちろん、家族全員が毎日アクセスしていてHDD交換中もサーバーを止めたくないなら、2ベイNASでRAID 1を組むこと自体は非常に便利です。大切なのは「RAID 1にしたからバックアップは終わり」で止めないことです。RAID 1で日常のディスク故障による停止を防ぎつつ、本当に消えたら困るデータだけは外付けドライブや月数百円のクラウドストレージへ世代バックアップする2段構えにすることで、初めて安心して運用できます。</p><p class="source-meta">参照: <a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore（3-2-1バックアップ戦略と世代保持）</a> <a href="https://www.backblaze.com/cloud-storage/pricing" target="_blank" rel="noopener noreferrer">Backblaze：B2 Cloud Storage Pricing</a> <a href="https://developers.cloudflare.com/r2/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare R2 Docs：Pricing</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にImmich公式バックアップガイド（3-2-1ルール）およびクラウドストレージ料金資料を参照し、RAID 1（冗長化）とバックアップ（履歴・別筐体退避）の役割分担を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://immich.app/docs/administration/backup-and-restore/" target="_blank" rel="noopener noreferrer">Immich Docs：Backup and Restore（3-2-1バックアップ戦略と世代保持）</a><span class="source-meta">確認日: 2026-10-16 / 3-2-1バックアップの基本原則、同一ドライブ内保存と外部退避の区別。</span></li><li class="source-item"><a href="https://www.backblaze.com/cloud-storage/pricing" target="_blank" rel="noopener noreferrer">Backblaze：B2 Cloud Storage Pricing</a><span class="source-meta">確認日: 2026-10-16 / NASの外部バックアップ先としてのクラウドストレージ単価（$6/TB-月・3倍無料Egress）。</span></li><li class="source-item"><a href="https://developers.cloudflare.com/r2/pricing/" target="_blank" rel="noopener noreferrer">Cloudflare R2 Docs：Pricing</a><span class="source-meta">確認日: 2026-10-16 / S3互換オブジェクトストレージの保存・復元料金体系。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="immich-backup-photos-database-restore-scope.html">Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認</a></li><li class="source-item"><a href="cloud-backup-100gb-restore-egress-cost-comparison.html">安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用</a></li></ul></section>
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">RAID 1が守るのは「データそのもの」ではなく「HDD 1台故障時の稼働継続」</a></li><li><a href="#part-1">同じ筐体・同じ電源に入っている2台は同時にダメージを受けることがある</a></li><li><a href="#part-2">予算がHDD 2台分なら「1台をNAS、もう1台を別系統の履歴バックアップ」にする選択肢</a></li><li><a href="#part-3">RAID 1を組む場合でも「外へのバックアップ」だけは必ず組み合わせる</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>Nodus</span>
+        </div>
+        <p class="footer-desc">
+          電子工作、AI、サーバー。買うか、作るか、借りるか。費用と手間、使い道をそろえて考える技術ノート。
+        </p>
+        <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">記事一覧</a>
+        <a href="../about.html">検証手法・免責事項</a>
+        <a href="../about.html#privacy">プライバシーポリシー</a>
+        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../sitemap.xml">Sitemap</a>
+        <a href="../llms.txt">LLMs.txt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Nodus Research Editorial. All rights reserved.</span>
+      <span>道具を選ぶ。仕組みを知る。</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/app.js" defer></script>
+</body></html>

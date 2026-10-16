@@ -1,0 +1,4 @@
+﻿キャッシュ方式 / モデル群,最小入力トークン数,事前のオブジェクト作成,主な制約・確認事項
+Implicit caching（Gemini 4 Argon / 3.x）,"4,096 トークン",不要（既定で自動有効）,共通プレフィックスを先頭に置き短時間内に連続送信する
+Implicit caching（Gemini 2.5 Pro / Flash）,"2,048 トークン",不要（既定で自動有効）,レスポンスの usage.total_cached_tokens でヒット数を確認
+Explicit caching（Gemini 3 / 2.5の対象モデル）,モデル・API仕様に準拠,必要（generateContent APIで作成）,保持時間に応じたストレージ費用が発生。Argon以降は非対応

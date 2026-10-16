@@ -1,0 +1,135 @@
+{
+  "slug": "tailscale-subnet-router-vs-exit-node-nas-guide",
+  "title": "NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか",
+  "display_title": "Subnet RouterとExit Node、どっちが必要？",
+  "subtitle": "アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。",
+  "category": "Cloud & AI Infrastructure",
+  "kind": "guide",
+  "origin": "editorial",
+  "origin_label": "選び方・公式資料から整理",
+  "illustration": "network",
+  "tags": [
+    "Tailscale",
+    "Subnet Router",
+    "Exit Node",
+    "NAS"
+  ],
+  "published_at": "2026-10-16",
+  "updated_at": "2026-10-16",
+  "data_updated_at": "2026-10-16",
+  "sample_size_n": 0,
+  "evidence_notice": "公式技術資料を確認 / 実機でのルーティング速度測定なし",
+  "methodology_note": "2026年10月16日にTailscale公式ドキュメント（Subnet routers、Exit nodes）およびPricingページを確認して整理した記事です。特定のルーターやNAS機種でのスループット測定は行っていません。",
+  "seo": {
+    "meta_title": "TailscaleのSubnet RouterとExit Nodeの違い：NAS接続で選ぶ基準 | Nodus",
+    "meta_description": "Tailscaleクライアントを直接インストールできないNASや宅内機器へアクセスする際のSubnet Router（サブネットルーター）とExit Node（出口ノード）の違い、デバイス数上限の扱いを公式資料から解説します。",
+    "target_keywords": [
+      "Tailscale Subnet Router Exit Node 違い",
+      "Tailscale NAS 接続",
+      "Tailscale サブネットルーター",
+      "Tailscale デバイス数上限"
+    ],
+    "primary_seed": "Tailscale Subnet Router Exit Node 違い"
+  },
+  "summary_metrics": [],
+  "tldr": [
+    "自宅のNASやプリンターなど特定のローカルIP機器にだけ外出先からアクセスしたいなら、Subnet Router（サブネットルーター）を選ぶ。",
+    "外出先の公衆Wi-Fi利用時などに、一般のWeb閲覧を含むすべてのインターネット通信を自宅回線経由にしたい場合はExit Node（出口ノード）を使う。",
+    "公式資料では、Subnet Routerの背後にある非Tailscale機器はプランのデバイス数上限にカウントされないと明記されている。"
+  ],
+  "comparison_table": {
+    "headers": [
+      "機能名",
+      "転送される通信の範囲",
+      "適している用途",
+      "プラン上限・運用上の特徴"
+    ],
+    "rows": [
+      [
+        "各端末へ直接導入",
+        "Tailscale導入済みの端末同士のみ",
+        "PC・スマホ・対応NAS間の最も基本的な通信",
+        "端末ごとにエンドツーエンド暗号化・最良の性能"
+      ],
+      [
+        "Subnet Router",
+        "指定したローカルサブネット（例：192.168.1.0/24）宛てのみ",
+        "アプリを入れられないNAS、プリンター、ルーター管理画面への接続",
+        "背後の機器はプランのデバイス数上限に非計上"
+      ],
+      [
+        "Exit Node",
+        "一般サイト閲覧を含むすべてのインターネット通信（0.0.0.0/0）",
+        "公衆Wi-Fiでの通信保護、海外から日本国内向けサービスへの接続",
+        "普段のWeb通信もすべて中継器を通るため帯域を消費"
+      ]
+    ]
+  },
+  "table_caption": "2026年10月16日確認のTailscale公式ドキュメント（Subnet routers / Exit nodes）に基づく整理。両機能ともすべての料金プランで利用可能です。",
+  "sections": [
+    {
+      "heading": "自宅のNASやプリンターへつなぐ目的ならSubnet Routerが基本になる",
+      "body": "専用アプリを追加できないエントリーモデルのNASやネットワークプリンター、スマートホーム機器に外出先からアクセスしたい場合、必要になるのは「Subnet Router（サブネットルーター）」です。公式ドキュメントによると、Subnet RouterはTailscaleネットワーク（tailnet）と物理的なローカルサブネットの間をつなぐゲートウェイとして機能します。自宅内で常時稼働しているラズパイやミニPC 1台にTailscaleを入れてSubnet Routerに設定すれば、外出先のスマホやPCから自宅LAN内の特定IPアドレスへそのままアクセスできるようになります。",
+      "source_indices": [
+        0
+      ]
+    },
+    {
+      "heading": "Exit Nodeは一般のWeb閲覧を含むすべての通信を自宅経由に変える",
+      "body": "一方、「Exit Node（出口ノード）」は目的が異なります。通常、Tailscaleはtailnet内の機器宛ての通信だけを通し、GoogleやSNSなどの一般サイトを見る通信には関与しません（オーバーレイネットワーク）。しかしExit Nodeを有効にすると、デフォルトルート（`0.0.0.0/0` および `::/0`）が書き換わり、すべてのインターネット通信がそのExit Nodeを経由して外へ出るようになります。カフェの信頼できないWi-Fiを使うときや、海外旅行中に自宅のIPアドレス経由で国内限定サービスへアクセスしたいときには便利ですが、単に自宅NASのファイルを開きたいだけの用途で常時ONにすると、無関係な動画視聴などの通信まで自宅回線を経由してしまいます。",
+      "source_indices": [
+        1
+      ]
+    },
+    {
+      "heading": "Subnet Routerの背後にある機器はデバイス数上限を消費しない",
+      "body": "個人プランやチームプランで気になるのが登録できるデバイス数の上限ですが、公式ドキュメント（Subnet routers）には「Subnet Routerの背後にあるデバイスは、料金プランのデバイス数上限にはカウントされない」と明記されています。たとえば自宅にNAS、ネットワークカメラ、プリンター、センサーなど10台の機器があっても、中継役となる1台のSubnet RouterだけをTailscaleに登録すれば、デバイス枠を1台分しか使わずにサブネット内の対象機器へ到達できます。",
+      "source_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "heading": "中継役にする機器の電源維持とアクセス制御の範囲を決める",
+      "body": "Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が落ちていたりスリープに入っていたりすると外出先から接続できなくなります。そのため、普段持ち歩くノートPCではなく、常時稼働しているミニPCやRaspberry Piなどを割り当てるのが適しています。また、Subnet Routerを使う場合は宅内LANと中継機器の間は通常のLAN通信になるため、不要な機器まで広く公開しすぎないようサブネットの範囲やアクセス制御ポリシー（ACL）を絞って運用します。",
+      "source_indices": [
+        0,
+        1
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Tailscale Docs：Subnet routers（サブネットルーターの仕組みと制限）",
+      "url": "https://tailscale.com/docs/features/subnet-routers",
+      "verified_date": "2026-10-16",
+      "sample_size": 0,
+      "scope": "非Tailscale機器へのゲートウェイ機能、全プラン対応、背後機器がデバイス上限にカウントされない仕様。"
+    },
+    {
+      "title": "Tailscale Docs：Exit nodes (route all traffic)",
+      "url": "https://tailscale.com/kb/1103/exit-nodes",
+      "verified_date": "2026-10-16",
+      "sample_size": 0,
+      "scope": "通常のオーバーレイ動作と全トラフィック転送（0.0.0.0/0）の違い、公衆Wi-Fiや海外利用時の用途。"
+    },
+    {
+      "title": "Tailscale：Pricing",
+      "url": "https://tailscale.com/pricing",
+      "verified_date": "2026-10-16",
+      "sample_size": 0,
+      "scope": "個人向け無料プランを含むプラン体系とデバイス枠。"
+    }
+  ],
+  "related_articles": [
+    {
+      "slug": "tailscale-nas-slow-direct-derp-relay-check",
+      "title": "Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する"
+    },
+    {
+      "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
+      "title": "パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？"
+    }
+  ],
+  "faqs": []
+}
