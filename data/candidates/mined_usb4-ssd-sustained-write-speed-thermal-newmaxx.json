@@ -1,9 +1,9 @@
 {
   "query": "USB4 SSD sustained write speed thermal",
   "subreddit": "NewMaxx",
-  "mined_at": "2026-10-16T23:15:35.834269",
+  "mined_at": "2026-10-17T22:53:53.342125",
   "status": "ok",
-  "total_quantitative_hits": 1,
+  "total_quantitative_hits": 2,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
@@ -16,6 +16,27 @@
       "extracted_numbers": [
         "16GB",
         "512GB"
+      ]
+    },
+    {
+      "source": "GitHub",
+      "title": "Document hardware used for training and evaluation",
+      "url": "https://github.com/dberweger2017/CFR-NLHE-6max/pull/322",
+      "created_at": "2026-10-17",
+      "measurement_count": 12,
+      "extracted_numbers": [
+        "500.28 GB",
+        "512.11 GB",
+        "2.00 TB",
+        "512 GB",
+        "120 GB/s",
+        "45.8 GB/s",
+        "64 GB",
+        "128 GB",
+        "51.2 GB/s",
+        "448 GB/s",
+        "215 W",
+        "220 MB/s"
       ]
     }
   ],
