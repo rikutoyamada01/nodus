@@ -2,7 +2,7 @@
 
 > 作業の途中で利用上限に達したとき、5時間待てば戻るのか、週間上限なのか、追加クレジットを使うべきか。公式プラン仕様から確認手順を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/antigravity-quota-5-hour-weekly-ai-credits-guide.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -56,5 +56,5 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html)
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
+- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)

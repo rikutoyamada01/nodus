@@ -2,7 +2,7 @@
 
 > docker-compose.ymlがあるフォルダを丸ごとバックアップしたのに、別マシンへ移したらデータベースの中身が空になっていた。名前付きVolumeとBind Mountの保存場所の違いを整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/docker-volume-bind-mount-backup-restore-scope.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -52,5 +52,5 @@ Docker公式ドキュメント（Bind mounts）で説明されている通り、
 - [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
+- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

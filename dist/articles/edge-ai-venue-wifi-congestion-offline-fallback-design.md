@@ -2,7 +2,7 @@
 
 > 開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/edge-ai-venue-wifi-congestion-offline-fallback-design.csv
 - **Category**: Architecture
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -54,6 +54,6 @@
 - [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 
 ## 次に考えたいこと
-- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide.html)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide.html)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html)
+- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
+- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)

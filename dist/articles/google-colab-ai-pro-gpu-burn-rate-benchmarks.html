@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>ColabのGPUは何時間使える？ CUと完了までの費用の考え方 | Nodus</title><meta name="description" content="GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html">
-      <meta property="og:title" content="ColabのGPUは何時間使える？ CUと完了までの費用の考え方"><meta property="og:description" content="GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html">
+      <title>ColabのGPUは何時間使える？ CUと完了までの費用の考え方 | Nodus</title><meta name="description" content="GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks">
+      <meta property="og:title" content="ColabのGPUは何時間使える？ CUと完了までの費用の考え方"><meta property="og:description" content="GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="google-colab-ai-pro-gpu-burn-rate-benchmarks.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
-      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方", "description": "GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。", "datePublished": "2026-10-12", "dateModified": "2026-10-15", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html", "citation": ["https://research.google.com/colaboratory/faq.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方", "description": "GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。", "datePublished": "2026-10-12", "dateModified": "2026-10-15", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks", "citation": ["https://research.google.com/colaboratory/faq.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -24,14 +24,14 @@
 </div>
 
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / AIとサーバー</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / AIとサーバー</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">ColabのGPUは何時間使える？ CUと完了までの費用の考え方</h1><p class="article-subtitle">GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。</p>
       <div class="article-timestamps"><span>公開 <time datetime="2026-10-12">2026-10-12</time></span><span>更新 <time datetime="2026-10-15">2026-10-15</time></span><span>公式資料に基づく整理。独自の比較実測値は掲載していません。</span></div>
       <aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>旧版の64セッション集計、GPU別CU/h、円換算と外部クラウドとの価格順位は、採用ログと料金条件を確認できないため撤回しました。実行時の表示と残高に基づく見積もりへ改訂しています。</p></aside>
       <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>ColabのGPU種類や実行可能時間は変動する。過去のCU/hを現在の保証値にしない。</li><li>比較するのは1時間の安さより、同じ処理を完了する費用と待ち時間。</li><li>保存と再開を先に用意し、途中停止でやり直す負担も見積もる。</li></ul></section>
       <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>用途と確認事項の比較表。製品ごとの実測ランキングではありません。</caption><thead><tr><th scope="col">選択肢</th><th scope="col">候補になる使い方</th><th scope="col">数える費用</th><th scope="col">確認事項</th></tr></thead><tbody><tr><th scope="row">Colab</th><td>ノートブックで試す、短い処理を行う</td><td>計算ユニットと契約料金</td><td>割り当てGPU、表示レート、実行制限、データ保存先</td></tr><tr><th scope="row">時間課金GPU</th><td>必要なGPU条件を選んで処理する</td><td>稼働時間、ディスク、転送など</td><td>在庫、停止中の課金、セットアップ時間</td></tr><tr><th scope="row">手元のPC</th><td>既存機器で収まる処理を繰り返す</td><td>追加電力と必要な増設</td><td>メモリ、速度、占有時間、運用負担</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv" download>比較表をCSVで保存</a></section>
-      <section class="prose-section" id="part-0"><h2 class="section-h2">GPUが選べることと、確保できることは違う</h2><p>Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変動し、有料プランでもリソースの状況が変わると説明しています。希望するGPUを常に使える前提で予定を立てず、実行時の選択肢と条件を確認します。固定した資源が必要な場合は、別の提供形態も比較対象です。</p><p class="source-meta">参照: <a href="https://research.google.com/colaboratory/faq.html" target="_blank" rel="noopener noreferrer">Google Colab：FAQとリソース制限</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">残高からの見積もりは、そのときのレートで</h2><p>目安時間 = 利用可能CU ÷ 表示されているCU/時。仮に残高が100 CUで、レートが5 CU/時なら20時間相当です。これは計算例で、実際の消費レートや連続実行できる時間、GPUの割り当てを保証するものではありません。表示、実行前後の残高、実行時刻を記録し、実際の消費と照合します。</p></section><section class="prose-section" id="part-2"><h2 class="section-h2">速いGPUでも、処理費用が安いとは限らない</h2><p>同じ成果物を得るまでの費用で比較します。仮にGPU Aの消費レートが2 CU/時で処理に30分かかるなら、消費量は1 CUです。GPU Bが6 CU/時で同じ処理を15分で終えるなら、1.5 CUを消費します。Bは早く終わりますがCUは多く消費します。この数値は仮定例です。準備、データ読み込み、失敗後のやり直しを含めて判断します。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">処理の途中でも、成果を残せるようにする</h2><p>ランタイムが止まっても戻れるよう、学習のチェックポイント、処理済みファイルの一覧、実行条件を永続的な保存先に残します。環境の準備を毎回繰り返しているなら、その時間も比較に含めます。GPUを使わない前処理を別の環境で済ませる方法もあります。ただし、データ転送や環境の準備にかかる手間も含めて比べます。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">Colab、クラウド、自宅の境界</h2><p>ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCが候補になります。最安の順位は、実行する仕事、必要なGPU、契約、利用頻度を決めてから検証します。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://research.google.com/colaboratory/faq.html" target="_blank" rel="noopener noreferrer">Google Colab：FAQとリソース制限</a><span class="source-meta">確認日: 2026-10-13 / 利用条件と資源の変動性。GPU別の固定CU消費や割り当てを保証しません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="personal-ai-vps-home-server-subscription.html">パーソナルAIは、どこに置く？</a></li><li class="source-item"><a href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">ローカルLLM用に買うなら、MacかGPUか</a></li></ul></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">GPUが選べることと、確保できることは違う</h2><p>Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変動し、有料プランでもリソースの状況が変わると説明しています。希望するGPUを常に使える前提で予定を立てず、実行時の選択肢と条件を確認します。固定した資源が必要な場合は、別の提供形態も比較対象です。</p><p class="source-meta">参照: <a href="https://research.google.com/colaboratory/faq.html" target="_blank" rel="noopener noreferrer">Google Colab：FAQとリソース制限</a> </p></section><section class="prose-section" id="part-1"><h2 class="section-h2">残高からの見積もりは、そのときのレートで</h2><p>目安時間 = 利用可能CU ÷ 表示されているCU/時。仮に残高が100 CUで、レートが5 CU/時なら20時間相当です。これは計算例で、実際の消費レートや連続実行できる時間、GPUの割り当てを保証するものではありません。表示、実行前後の残高、実行時刻を記録し、実際の消費と照合します。</p></section><section class="prose-section" id="part-2"><h2 class="section-h2">速いGPUでも、処理費用が安いとは限らない</h2><p>同じ成果物を得るまでの費用で比較します。仮にGPU Aの消費レートが2 CU/時で処理に30分かかるなら、消費量は1 CUです。GPU Bが6 CU/時で同じ処理を15分で終えるなら、1.5 CUを消費します。Bは早く終わりますがCUは多く消費します。この数値は仮定例です。準備、データ読み込み、失敗後のやり直しを含めて判断します。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">処理の途中でも、成果を残せるようにする</h2><p>ランタイムが止まっても戻れるよう、学習のチェックポイント、処理済みファイルの一覧、実行条件を永続的な保存先に残します。環境の準備を毎回繰り返しているなら、その時間も比較に含めます。GPUを使わない前処理を別の環境で済ませる方法もあります。ただし、データ転送や環境の準備にかかる手間も含めて比べます。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">Colab、クラウド、自宅の境界</h2><p>ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCが候補になります。最安の順位は、実行する仕事、必要なGPU、契約、利用頻度を決めてから検証します。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://research.google.com/colaboratory/faq.html" target="_blank" rel="noopener noreferrer">Google Colab：FAQとリソース制限</a><span class="source-meta">確認日: 2026-10-13 / 利用条件と資源の変動性。GPU別の固定CU消費や割り当てを保証しません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="personal-ai-vps-home-server-subscription">パーソナルAIは、どこに置く？</a></li><li class="source-item"><a href="local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt">ローカルLLM用に買うなら、MacかGPUか</a></li></ul></section>
       </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">GPUが選べることと、確保できることは違う</a></li><li><a href="#part-1">残高からの見積もりは、そのときのレートで</a></li><li><a href="#part-2">速いGPUでも、処理費用が安いとは限らない</a></li><li><a href="#part-3">処理の途中でも、成果を残せるようにする</a></li><li><a href="#part-4">Colab、クラウド、自宅の境界</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
@@ -47,10 +47,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

@@ -2,7 +2,7 @@
 
 > Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ai-coding-subscriptions-real-rate-limits-token-economics.csv
 
 ## 訂正について
@@ -55,5 +55,5 @@ Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管
 - [Claude Code：Manage costs effectively](https://code.claude.com/docs/en/costs)
 
 ## 次に考えたいこと
-- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)

@@ -2,7 +2,7 @@
 
 > GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/google-colab-ai-pro-gpu-burn-rate-benchmarks.csv
 
 ## 訂正について
@@ -52,5 +52,5 @@ Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変�
 - [Google Colab：FAQとリソース制限](https://research.google.com/colaboratory/faq.html)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
-- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

@@ -2,7 +2,7 @@
 
 > 自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/home-server-access-vpn-vs-cloudflare-tunnel-guide.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -53,5 +53,5 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 - [Tailscale：Pricing](https://tailscale.com/pricing)
 
 ## 次に考えたいこと
-- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html)
-- [NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html)
+- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
+- [NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide)

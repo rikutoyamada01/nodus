@@ -2,7 +2,7 @@
 
 > SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks
 - **CSV Dataset**: https://nodus-lab.pages.dev/datasets/slot-parallel-sql-generation-dynamic-masking-benchmarks.csv
 - **Raw Verification Log (JSON)**: https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json
 - **Category**: Cloud & AI Infrastructure

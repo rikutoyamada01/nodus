@@ -2,7 +2,7 @@
 
 > MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.csv
 
 ## 訂正について
@@ -53,5 +53,5 @@ TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なる�
 - [TP-Link：Deco BE9300の仕様と条件注記](https://www.tp-link.com/uk/home-networking/deco/deco-be9300/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)

@@ -342,15 +342,15 @@ def render_header(config: dict[str, Any], root_prefix: str = "") -> str:
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="{root_prefix}index.html" class="brand-logo">
+    <a href="{root_prefix}" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>{esc(site["name"])}</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="{root_prefix}index.html">記事を読む</a>
-      <a href="{root_prefix}about.html">Nodusについて</a>
-      <a href="{root_prefix}about.html#privacy">ポリシー</a>
+      <a href="{root_prefix}">記事を読む</a>
+      <a href="{root_prefix}about">Nodusについて</a>
+      <a href="{root_prefix}about#privacy">ポリシー</a>
       <a href="{root_prefix}feed.xml">RSS</a>
     </nav>
   </div>
@@ -390,10 +390,10 @@ def render_footer(config: dict[str, Any], root_prefix: str = "") -> str:
         <p class="footer-amazon-notice">{esc(footer_notice)}</p>
       </div>
       <div class="footer-links">
-        <a href="{root_prefix}index.html">記事一覧</a>
-        <a href="{root_prefix}about.html">検証手法・免責事項</a>
-        <a href="{root_prefix}about.html#privacy">プライバシーポリシー</a>
-        <a href="{root_prefix}about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="{root_prefix}">記事一覧</a>
+        <a href="{root_prefix}about">検証手法・免責事項</a>
+        <a href="{root_prefix}about#privacy">プライバシーポリシー</a>
+        <a href="{root_prefix}about#contact">運営者情報・訂正ポリシー</a>
         <a href="{root_prefix}sitemap.xml">Sitemap</a>
         <a href="{root_prefix}llms.txt">LLMs.txt</a>
       </div>
@@ -467,7 +467,7 @@ def render_article_page(
     seo = article["seo"]
     slug = validate_slug(article["slug"])
     base_url = validate_url(site["base_url"]).rstrip("/")
-    canonical_url = f"{base_url}/articles/{slug}.html"
+    canonical_url = f"{base_url}/articles/{slug}"
     data_updated_at = article.get("data_updated_at", article["updated_at"])
     methodology_note = article.get("methodology_note", "")
     origin = article.get("origin", "community")
@@ -540,7 +540,7 @@ def render_article_page(
                 "author": {
                     "@type": "Organization",
                     "name": site["organization"],
-                    "url": f"{base_url}/about.html",
+                    "url": f"{base_url}/about",
                 },
                 "publisher": {
                     "@type": "Organization",
@@ -566,7 +566,7 @@ def render_article_page(
                 "creator": {
                     "@type": "Organization",
                     "name": site["organization"],
-                    "url": f"{base_url}/about.html",
+                    "url": f"{base_url}/about",
                 },
                 "measurementTechnique": methodology_note or "実機・一次計測ログに基づく中央値および条件別定量比較",
                 "variableMeasured": measured_vars,
@@ -589,7 +589,7 @@ def render_article_page(
                         "@type": "ListItem",
                         "position": 2,
                         "name": article["category"],
-                        "item": f"{base_url}/index.html",
+                        "item": f"{base_url}/",
                     },
                     {
                         "@type": "ListItem",
@@ -989,7 +989,7 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
     site = config["site"]
     base_url = validate_url(site["base_url"]).rstrip("/")
     slug = validate_slug(article["slug"])
-    canonical_url = f"{base_url}/articles/{slug}.html"
+    canonical_url = f"{base_url}/articles/{slug}"
     csv_url = f"{base_url}/datasets/{slug}.csv"
     has_raw_log = article.get("kind") != "guide" and (RAW_LOGS_DIR / f"{slug}.json").exists()
     data_updated = article.get("data_updated_at", article["updated_at"])
@@ -1066,7 +1066,7 @@ def render_article_markdown(article: dict[str, Any], config: dict[str, Any]) -> 
         lines = [line.replace("結論・実測サマリー (TL;DR)", "選び方の要点").replace("主要実測指標 (Key Metrics)", "判断の軸").replace("条件別の比較表", "選択肢の比較表").replace("検証環境・集計メソドロジー", "記事の範囲") for line in lines]
     lines.extend(["", "## 参考資料"] + [f"- [{src['title']}]({validate_url(src['url'])})" for src in article.get("sources", [])])
     if article.get("related_articles"):
-        lines.extend(["", "## 次に考えたいこと"] + [f"- [{r['title']}]({base_url}/articles/{validate_slug(r['slug'])}.html)" for r in article["related_articles"]])
+        lines.extend(["", "## 次に考えたいこと"] + [f"- [{r['title']}]({base_url}/articles/{validate_slug(r['slug'])})" for r in article["related_articles"]])
     return "\n".join(lines).strip() + "\n"
 
 
@@ -1098,11 +1098,11 @@ def render_index(articles, config):
     features = []
     for i, a in enumerate(featured[:3], 1):
         features.append(f'''<article class="feature-story">
-          <a href="articles/{esc(a['slug'])}.html" tabindex="-1" aria-hidden="true"><div class="feature-art {esc(a['illustration'])}">{illustration(a['illustration'])}</div></a>
+          <a href="articles/{esc(a['slug'])}" tabindex="-1" aria-hidden="true"><div class="feature-art {esc(a['illustration'])}">{illustration(a['illustration'])}</div></a>
           <div class="feature-number">0{i} / {esc(category_label(a['category']))}</div>
-          <h3><a href="articles/{esc(a['slug'])}.html">{esc(a['title'])}</a></h3>
+          <h3><a href="articles/{esc(a['slug'])}">{esc(a['title'])}</a></h3>
           <p>{esc(a['subtitle'])}</p>
-          <a class="feature-link" href="articles/{esc(a['slug'])}.html">選び方を読む <span aria-hidden="true">↗</span></a>
+          <a class="feature-link" href="articles/{esc(a['slug'])}">選び方を読む <span aria-hidden="true">↗</span></a>
         </article>''')
     buttons = ['<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて</button>']
     for c in sorted({a['category'] for a in articles}):
@@ -1112,7 +1112,7 @@ def render_index(articles, config):
         label = '選び方・公式資料から整理' if a.get('kind') == 'guide' else ('独自検証' if a.get('origin') in {'first_party', 'hybrid'} else '公開ログの調査')
         cards.append(f'''<article class="article-card" data-category="{esc(a['category'])}" data-origin="{esc(a.get('origin', 'community'))}">
           <div class="card-meta"><span class="category-pill">{esc(category_label(a['category']))}</span><span class="origin-badge">{label}</span><time class="date-text" datetime="{esc(a['updated_at'])}">{esc(a['updated_at'])}</time></div>
-          <h2><a class="card-title-link" href="articles/{esc(a['slug'])}.html">{esc(a.get('display_title', a['title']))}</a></h2>
+          <h2><a class="card-title-link" href="articles/{esc(a['slug'])}">{esc(a.get('display_title', a['title']))}</a></h2>
           <p>{esc(a['subtitle'])}</p></article>''')
     description = '電子工作、AI、サーバー。買うか、作るか、借りるかを、費用と使い道から考える技術ノート。'
     return f'''<!DOCTYPE html><html lang="ja"><head>
@@ -1140,7 +1140,7 @@ def render_index(articles, config):
 
 def render_guide(article, config):
     a = article
-    url = validate_url(config['site']['base_url']).rstrip('/') + '/articles/' + a['slug'] + '.html'
+    url = validate_url(config['site']['base_url']).rstrip('/') + '/articles/' + a['slug']
     schema = {"@context": "https://schema.org", "@type": "TechArticle", "headline": a['title'], "description": a['subtitle'], "datePublished": a['published_at'], "dateModified": a['updated_at'], "inLanguage": "ja", "mainEntityOfPage": url, "citation": [validate_url(s['url']) for s in a['sources']], "author": {"@type": "Organization", "name": config['site']['organization']}}
     headers = ''.join(f'<th scope="col">{esc(h)}</th>' for h in a['comparison_table']['headers'])
     rows = ''.join('<tr>' + ''.join(f'<th scope="row">{esc(c)}</th>' if i == 0 else f'<td>{esc(c)}</td>' for i, c in enumerate(r)) + '</tr>' for r in a['comparison_table']['rows'])
@@ -1156,7 +1156,7 @@ def render_guide(article, config):
         correction = f'<aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>{esc(a["revision_note"])}</p></aside>'
     related = ''
     if a.get('related_articles'):
-        links = ''.join(f'<li class="source-item"><a href="{esc(validate_slug(r["slug"]))}.html">{esc(r["title"])}</a></li>' for r in a['related_articles'])
+        links = ''.join(f'<li class="source-item"><a href="{esc(validate_slug(r["slug"]))}">{esc(r["title"])}</a></li>' for r in a['related_articles'])
         related = f'<section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list">{links}</ul></section>'
     return f'''<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>{esc(a['seo']['meta_title'])}</title><meta name="description" content="{esc(a['seo']['meta_description'])}"><link rel="canonical" href="{esc(url)}">
@@ -1164,7 +1164,7 @@ def render_guide(article, config):
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="{esc(a['slug'])}.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
       <script type="application/ld+json">{safe_json_ld(schema)}</script></head><body>{render_header(config, '../')}
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / {esc(category_label(a['category']))}</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / {esc(category_label(a['category']))}</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">{esc(a['title'])}</h1><p class="article-subtitle">{esc(a['subtitle'])}</p>
       <div class="article-timestamps"><span>公開 <time datetime="{esc(a['published_at'])}">{esc(a['published_at'])}</time></span><span>更新 <time datetime="{esc(a['updated_at'])}">{esc(a['updated_at'])}</time></span><span>{esc(a.get('evidence_notice', '実機テスト・実売価格調査は未実施'))}</span></div>
@@ -1194,7 +1194,7 @@ def render_about_page(config: dict[str, Any]) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>調査手法・運営情報・プライバシーポリシー・免責事項 | {esc(site["name"])}</title>
   <meta name="description" content="{esc(site['name'])}のデータ集計メソドロジー、出典明記ポリシー、ステルスマーケティング規制対応、プライバシーポリシー、および運営者情報。">
-  <link rel="canonical" href="{esc(base_url)}/about.html">
+  <link rel="canonical" href="{esc(base_url)}/about">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -1291,7 +1291,7 @@ def render_atom_feed(articles: list[dict[str, Any]], config: dict[str, Any]) -> 
     entries = []
     for a in articles:
         slug = validate_slug(a["slug"])
-        url = f"{base_url}/articles/{slug}.html"
+        url = f"{base_url}/articles/{slug}"
         entries.append(
             f"""  <entry>
     <title>{esc(a["title"])}</title>
@@ -1417,7 +1417,7 @@ def build_all() -> dict[str, Any]:
             if article.get("kind") == "guide":
                 raw_obj = {
                     "status": "withdrawn_unverified",
-                    "article_url": f"{site_url}/articles/{slug}.html",
+                    "article_url": f"{site_url}/articles/{slug}",
                     "reviewed_at": article["data_updated_at"],
                     "notice": "旧集計値は母集団と集計手順を再現確認できないため公開を取り下げました。元ファイルは編集用に保存しています。",
                 }
@@ -1439,11 +1439,11 @@ def build_all() -> dict[str, Any]:
     latest_date = articles[0]["updated_at"] if articles else datetime.now().strftime("%Y-%m-%d")
     urls = [
         f"  <url><loc>{esc(site_url)}/</loc><lastmod>{esc(latest_date)}</lastmod><priority>1.0</priority></url>",
-        f"  <url><loc>{esc(site_url)}/about.html</loc><lastmod>{esc(latest_date)}</lastmod><priority>0.5</priority></url>",
+        f"  <url><loc>{esc(site_url)}/about</loc><lastmod>{esc(latest_date)}</lastmod><priority>0.5</priority></url>",
     ]
     for a in articles:
         urls.append(
-            f"  <url><loc>{esc(site_url)}/articles/{esc(a['slug'])}.html</loc><lastmod>{esc(a['updated_at'])}</lastmod><priority>0.9</priority></url>"
+            f"  <url><loc>{esc(site_url)}/articles/{esc(a['slug'])}</loc><lastmod>{esc(a['updated_at'])}</lastmod><priority>0.9</priority></url>"
         )
     sitemap_xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -1494,7 +1494,7 @@ def build_all() -> dict[str, Any]:
             else ""
         )
         llms_lines.append(
-            f"- [{a['title']}]({site_url}/articles/{slug}.html) "
+            f"- [{a['title']}]({site_url}/articles/{slug}) "
             f"([Markdown]({site_url}/articles/{slug}.md) | [{'CSV Comparison Table' if a.get('kind') == 'guide' else 'CSV Dataset'}]({site_url}/datasets/{slug}.csv){raw_suffix}): "
             f"{'公式資料に基づく選び方・実測なし' if a.get('kind') == 'guide' else f'N={n_val}'}{f' | {kpi_summary}' if kpi_summary else ''} — {a['subtitle']}"
         )

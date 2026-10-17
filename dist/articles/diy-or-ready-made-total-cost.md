@@ -2,7 +2,7 @@
 
 > 温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/diy-or-ready-made-total-cost.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）

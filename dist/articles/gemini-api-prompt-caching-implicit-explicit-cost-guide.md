@@ -2,7 +2,7 @@
 
 > 同じ指示文や参考資料を繰り返し送るとき、自動（Implicit）キャッシュと明示的（Explicit）キャッシュのどちらが使えるのか。モデル別の最小トークン数と設計の注意点を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/gemini-api-prompt-caching-implicit-explicit-cost-guide.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -48,5 +48,5 @@ Implicit cachingは設定不要で有効化されていますが、ヒットが�
 - [Google AI for Developers：Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 ## 次に考えたいこと
-- [Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界](https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html)
-- [AIコーディングのトークン節約、AST抽出でどこまで減らせるか](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html)
+- [Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界](https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary)
+- [AIコーディングのトークン節約、AST抽出でどこまで減らせるか](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)

@@ -2,7 +2,7 @@
 
 > 2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/nas-2bay-raid1-vs-external-backup-recovery-guide.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -53,5 +53,5 @@
 - [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html)
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison.html)
+- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)

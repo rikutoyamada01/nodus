@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離 | Nodus</title><meta name="description" content="カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html">
-      <meta property="og:title" content="オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離"><meta property="og:description" content="カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html">
+      <title>オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離 | Nodus</title><meta name="description" content="カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide">
+      <meta property="og:title" content="オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離"><meta property="og:description" content="カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="streaming-ai-offline-accuracy-vs-realtime-timing-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
-      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離", "description": "カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide.html", "citation": ["https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html", "https://scikit-learn.org/stable/modules/model_evaluation.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離", "description": "カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide", "citation": ["https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html", "https://scikit-learn.org/stable/modules/model_evaluation.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -24,7 +24,7 @@
 </div>
 
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / Architecture</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / Architecture</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</h1><p class="article-subtitle">カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。</p>
       <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式推論・評価ドキュメントを確認 / 掲載数値は設計構造を説明するモデルケース</span></div>
@@ -43,7 +43,7 @@
 
 また、誤検出の点が数フレームだけ現れて消えた場合や、ユーザーが指を別の行へ移して3文字以上が一度に画面から消えた場合に、文字列の変化だけで判断すると「読み違いが混ざった通常のなぞり」まで捨ててしまいます。ここでも『紙面の移動量で見て本当に指の境界線を越えたのか、それとも指を浮かせて別の場所へ飛んだのか』を物理量で切り分けることで、余分な暴発を半分以下に抑えられます。
 
-主なチェックポイントは以下の通りです：1フレーム1行のJSONLトレース出力：毎回重いモデル推論（YOLO等）や動画デコードを回し直すのではなく、まずフレームごとの検出・確定状態をJSONLに書き出し、そこから高速にHTML精度レポートを生成する / 置換・余分・欠落・重複の4分類：同じ一致率80%でも、誤りが「余分な発話」に寄っているか「読み落とし（欠落）」に寄っているかで調整すべき閾値が正反対になる / ベンチマーク判定器自体のバグ検証：評価文の中に同じ文字（例：『かがわ』の『か』）が複数回登場するとき、素朴に『画面内に同じ文字が見えるか』で早すぎ判定を行うと、2個目の『か』が見えているせいで1個目の正しい発話まで不合格にする判定バグが起きるため、残りの同一文字数を考慮して判定する。</p><p class="source-meta">参照: <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Performance and Model Optimizations</a> <a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Metrics and scoring</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にONNX Runtimeおよびscikit-learnの評価ドキュメントを確認し、リアルタイム連続認識システムにおける認識部と確定層（Readout）の分離評価・トレース分析手法を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Performance and Model Optimizations</a><span class="source-meta">確認日: 2026-10-16 / エッジ・リアルタイム推論におけるランタイム最適化と評価。</span></li><li class="source-item"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Metrics and scoring</a><span class="source-meta">確認日: 2026-10-16 / 予測品質の定量化とタスク固有の評価指標設計。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html">機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方</a></li><li class="source-item"><a href="hardware-change-camera-microphone-hyperparameter-regression-guide.html">カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正</a></li><li class="source-item"><a href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</a></li></ul></section>
+主なチェックポイントは以下の通りです：1フレーム1行のJSONLトレース出力：毎回重いモデル推論（YOLO等）や動画デコードを回し直すのではなく、まずフレームごとの検出・確定状態をJSONLに書き出し、そこから高速にHTML精度レポートを生成する / 置換・余分・欠落・重複の4分類：同じ一致率80%でも、誤りが「余分な発話」に寄っているか「読み落とし（欠落）」に寄っているかで調整すべき閾値が正反対になる / ベンチマーク判定器自体のバグ検証：評価文の中に同じ文字（例：『かがわ』の『か』）が複数回登場するとき、素朴に『画面内に同じ文字が見えるか』で早すぎ判定を行うと、2個目の『か』が見えているせいで1個目の正しい発話まで不合格にする判定バグが起きるため、残りの同一文字数を考慮して判定する。</p><p class="source-meta">参照: <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Performance and Model Optimizations</a> <a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Metrics and scoring</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にONNX Runtimeおよびscikit-learnの評価ドキュメントを確認し、リアルタイム連続認識システムにおける認識部と確定層（Readout）の分離評価・トレース分析手法を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Performance and Model Optimizations</a><span class="source-meta">確認日: 2026-10-16 / エッジ・リアルタイム推論におけるランタイム最適化と評価。</span></li><li class="source-item"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Metrics and scoring</a><span class="source-meta">確認日: 2026-10-16 / 予測品質の定量化とタスク固有の評価指標設計。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide">機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方</a></li><li class="source-item"><a href="hardware-change-camera-microphone-hyperparameter-regression-guide">カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正</a></li><li class="source-item"><a href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</a></li></ul></section>
       </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">「内容だけの一致率」で1位のアルゴリズムが実機で0点になる理由</a></li><li><a href="#part-1">通し番号（トラッキングID）への依存を捨て、物理移動量で制御する</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
@@ -59,10 +59,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

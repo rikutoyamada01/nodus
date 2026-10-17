@@ -2,7 +2,7 @@
 
 > ノートPCとスマホを一緒に充電したい人へ。最大出力、複数ポート時の配分、ケーブル、持ち運びまで含めて考えます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/100w-140w-gan-charger-thermal-throttling-real-world-tests.csv
 
 ## 訂正について
@@ -54,5 +54,5 @@ PCの指定する充電要件を現在の構成で満たせない、2台同時�
 - [USB-IF：USB Charger / USB Power Delivery](https://www.usb.org/usb-charger-pd)
 
 ## 次に考えたいこと
-- [外付けSSDは完成品か、ケースと中身を別々に買うか](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html)
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+- [外付けSSDは完成品か、ケースと中身を別々に買うか](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
+- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)

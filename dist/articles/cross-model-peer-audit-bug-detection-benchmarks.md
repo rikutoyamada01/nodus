@@ -2,7 +2,7 @@
 
 > セルフレビュー、新しい会話、別モデル。追加の費用と手間に見合うかを、指摘の再現性と修正後の確認で考えます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/cross-model-peer-audit-bug-detection-benchmarks.csv
 
 ## 訂正について
@@ -55,5 +55,5 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 - [Claude Code：Code Review](https://code.claude.com/docs/en/code-review)
 
 ## 次に考えたいこと
-- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html)
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
+- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)

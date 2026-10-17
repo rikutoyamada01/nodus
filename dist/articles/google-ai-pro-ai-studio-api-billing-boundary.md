@@ -2,7 +2,7 @@
 
 > 個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/google-ai-pro-ai-studio-api-billing-boundary.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -58,5 +58,5 @@ Gemini APIの有料枠は、請求先を登録した直後のTier 1（月間利�
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html)
-- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide.html)
+- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)

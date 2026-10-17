@@ -2,7 +2,7 @@
 
 > 個人サイトを公開した直後、Google Search Consoleとブラウザ側のアクセス解析（Cloudflare Web AnalyticsやGA4）で数値が食い違うときに、タグの設定ミスと仕様上の差を切り分ける手順です。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -49,4 +49,4 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 - [Cloudflare Web Analytics Docs：Data origin and collection](https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/)
 
 ## 次に考えたいこと
-- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing.html)
+- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)

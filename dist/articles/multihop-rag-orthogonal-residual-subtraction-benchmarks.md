@@ -2,7 +2,7 @@
 
 > HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks
 - **CSV Dataset**: https://nodus-lab.pages.dev/datasets/multihop-rag-orthogonal-residual-subtraction-benchmarks.csv
 - **Raw Verification Log (JSON)**: https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json
 - **Category**: Cloud & AI Infrastructure

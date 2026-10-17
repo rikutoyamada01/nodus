@@ -32,7 +32,7 @@ def collect_canonical_urls(base_url: str) -> list[str]:
     urls = [
         f"{base}/",
         f"{base}/index.html",
-        f"{base}/about.html",
+        f"{base}/about",
         f"{base}/sitemap.xml",
         f"{base}/llms.txt",
         f"{base}/llms-full.txt",
@@ -41,7 +41,7 @@ def collect_canonical_urls(base_url: str) -> list[str]:
         try:
             art = json.loads(path.read_text(encoding="utf-8"))
             slug = art.get("slug", path.stem)
-            urls.append(f"{base}/articles/{slug}.html")
+            urls.append(f"{base}/articles/{slug}")
             urls.append(f"{base}/articles/{slug}.md")
         except Exception:
             continue

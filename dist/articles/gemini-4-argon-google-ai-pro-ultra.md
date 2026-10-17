@@ -2,7 +2,7 @@
 
 > Google AI Proを契約している人へ。GeminiアプリとAntigravityの提供条件、Ultraへの追加費用、公開評価から分かる得意分野を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/gemini-4-argon-google-ai-pro-ultra.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -91,5 +91,5 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 - [Google AI for Developers：API料金](https://ai.google.dev/gemini-api/docs/pricing)
 
 ## 次に考えたいこと
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
-- [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)

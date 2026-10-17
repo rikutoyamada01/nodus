@@ -2,7 +2,7 @@
 
 > C3・S3・C6を、温湿度計・音声・スマートホームの用途から比較。ボード単価だけでは見えない費用も整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/esp32-c3-s3-c6-which-board-to-choose.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）

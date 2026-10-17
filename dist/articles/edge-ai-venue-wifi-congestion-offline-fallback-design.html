@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計 | Nodus</title><meta name="description" content="開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html">
-      <meta property="og:title" content="展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計"><meta property="og:description" content="開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html">
+      <title>展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計 | Nodus</title><meta name="description" content="開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design">
+      <meta property="og:title" content="展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計"><meta property="og:description" content="開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="edge-ai-venue-wifi-congestion-offline-fallback-design.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
-      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計", "description": "開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design.html", "citation": ["https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download", "https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計", "description": "開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design", "citation": ["https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download", "https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -24,7 +24,7 @@
 </div>
 
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / Architecture</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / Architecture</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計</h1><p class="article-subtitle">開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。</p>
       <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式Hugging Face・ONNX Runtime仕様資料を確認 / 会場設計の実践ガイド整理</span></div>
@@ -43,7 +43,7 @@
 
 実機デモを成功させるには、(1) 背景ノイズレベルを動的に推定するノイズ適応型VADで雑音区間を切り分け、(2) 第1候補が `other`（環境音・不明音）のときは即座に不正解にせず判定を待ち、(3) 上位3候補（Top-3）以内に出題文字が一定スコア以上で入っていれば正解として進行させる救済ロジックを入れ、(4) 万が一マイク認識が通らない環境でもスタッフのキー操作やボタン1つで即座にフォールバック進行できる設計にしておくことが不可欠です。
 
-主なチェックポイントは以下の通りです：デモ審査の目的を意識する：スライド発表とは異なり、実機審査は『実機が止まらずに一連の体験として動くか』を確かめる場であるため、単一モジュールの通信エラーで全体が止まる構造を避ける / 機械の判定だけで利用者の誤りと断定しない：会場騒音による誤認識が起き得ることを踏まえ、UIや案内で再発声やスキップを自然に促せる導線を作る / 救済有無の正確な記録：Top-3救済を使って体験をスムーズに通した場合でも、内部ログには元のTop-1予測とスコアをそのまま残し、展示後のモデル改善（混同行列分析）に活用する。</p><p class="source-meta">参照: <a href="https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download" target="_blank" rel="noopener noreferrer">Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)</a> <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にHugging Face Hubのオフライン・キャッシュ取得仕様およびONNX Runtimeのローカル推論仕様を確認し、展示会場・フィールド環境におけるネットワーク遮断耐性と騒音耐性のアーキテクチャ設計を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download" target="_blank" rel="noopener noreferrer">Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)</a><span class="source-meta">確認日: 2026-10-16 / ローカルキャッシュ利用とオフライン環境（local_files_only）でのモデル読み込み仕様。</span></li><li class="source-item"><a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference</a><span class="source-meta">確認日: 2026-10-16 / ネットワーク非依存のエッジCPU推論に向けたモデル軽量化・高速化仕様。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="human-in-the-loop-labeling-prompt-vs-actual-input-guide.html">実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計</a></li><li class="source-item"><a href="ml-noise-other-class-false-acceptance-evaluation-guide.html">学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計</a></li><li class="source-item"><a href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</a></li></ul></section>
+主なチェックポイントは以下の通りです：デモ審査の目的を意識する：スライド発表とは異なり、実機審査は『実機が止まらずに一連の体験として動くか』を確かめる場であるため、単一モジュールの通信エラーで全体が止まる構造を避ける / 機械の判定だけで利用者の誤りと断定しない：会場騒音による誤認識が起き得ることを踏まえ、UIや案内で再発声やスキップを自然に促せる導線を作る / 救済有無の正確な記録：Top-3救済を使って体験をスムーズに通した場合でも、内部ログには元のTop-1予測とスコアをそのまま残し、展示後のモデル改善（混同行列分析）に活用する。</p><p class="source-meta">参照: <a href="https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download" target="_blank" rel="noopener noreferrer">Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)</a> <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にHugging Face Hubのオフライン・キャッシュ取得仕様およびONNX Runtimeのローカル推論仕様を確認し、展示会場・フィールド環境におけるネットワーク遮断耐性と騒音耐性のアーキテクチャ設計を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download" target="_blank" rel="noopener noreferrer">Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)</a><span class="source-meta">確認日: 2026-10-16 / ローカルキャッシュ利用とオフライン環境（local_files_only）でのモデル読み込み仕様。</span></li><li class="source-item"><a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference</a><span class="source-meta">確認日: 2026-10-16 / ネットワーク非依存のエッジCPU推論に向けたモデル軽量化・高速化仕様。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="human-in-the-loop-labeling-prompt-vs-actual-input-guide">実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計</a></li><li class="source-item"><a href="ml-noise-other-class-false-acceptance-evaluation-guide">学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計</a></li><li class="source-item"><a href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</a></li></ul></section>
       </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">会場のローカルネットワーク混雑がAIの「認識精度」まで悪化させる理由</a></li><li><a href="#part-1">会場騒音で誤認識しても「体験を止めない」UIとTop-3救済設計</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
@@ -59,10 +59,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

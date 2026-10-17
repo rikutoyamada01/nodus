@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方 | Nodus</title><meta name="description" content="ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html">
-      <meta property="og:title" content="磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方"><meta property="og:description" content="ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html">
+      <title>磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方 | Nodus</title><meta name="description" content="ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests">
+      <meta property="og:title" content="磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方"><meta property="og:description" content="ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
-      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方", "description": "ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。", "datePublished": "2026-10-12", "dateModified": "2026-10-15", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html", "citation": ["https://wooting.io/wooting-80he"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方", "description": "ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。", "datePublished": "2026-10-12", "dateModified": "2026-10-15", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests", "citation": ["https://wooting.io/wooting-80he"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -24,14 +24,14 @@
 </div>
 
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / 道具と電子工作</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / 道具と電子工作</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方</h1><p class="article-subtitle">ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。</p>
       <div class="article-timestamps"><span>公開 <time datetime="2026-10-12">2026-10-12</time></span><span>更新 <time datetime="2026-10-15">2026-10-15</time></span><span>公式資料に基づく整理。独自の比較実測値は掲載していません。</span></div>
       <aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>旧版の38件集計と機種別の遅延、安定する感度、温度ドリフト耐性の順位は、採用ログを追跡できないため撤回しました。ポーリング周期と操作全体の遅延を分けた選び方へ改訂しました。</p></aside>
       <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list"><li>8000Hzの周期は0.125msという計算になるが、操作全体の実測遅延ではない。</li><li>ラピッドトリガーは最小設定にすれば必ず有利になるわけではない。</li><li>ゲーム用途が中心でなければ、配列、打鍵感、音、設定の手間も優先する。</li></ul></section>
       <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>用途と確認事項の比較表。製品ごとの実測ランキングではありません。</caption><thead><tr><th scope="col">見る項目</th><th scope="col">確認したいこと</th><th scope="col">購入前に試すこと</th><th scope="col">数字だけでは分からないこと</th></tr></thead><tbody><tr><th scope="row">ポーリング周期</th><td>USB報告の公称頻度</td><td>利用設定とPC側の動作</td><td>打鍵からゲームの反応までの遅延</td></tr><tr><th scope="row">ラピッドトリガー</th><td>解除と再入力の設定範囲</td><td>長押し、連打、意図しない入力</td><td>自分に合う感度</td></tr><tr><th scope="row">配列と打鍵感</th><td>JIS/ANSI、キー配置、重さ</td><td>日本語入力、ショートカット</td><td>仕事とゲームの両立</td></tr><tr><th scope="row">設定と保証</th><td>ソフト対応、保存、保証窓口</td><td>使うOSで設定できるか</td><td>長く使うときの手間</td></tr></tbody></table></div><a class="csv-btn" href="../datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv" download>比較表をCSVで保存</a></section>
-      <section class="prose-section" id="part-0"><h2 class="section-h2">ポーリング周期と操作全体の遅延を分ける</h2><p>1秒を8,000回に分けると0.125msです。これは周期の計算であり、指で動かし始めてからキーが認識され、ゲームが処理して画面に出るまでの時間とは違います。モデル別の入力遅延を並べる場合は、測定の開始点と終了点、ファームウェア、設定、PC側の条件をそろえる必要があります。</p></section><section class="prose-section" id="part-1"><h2 class="section-h2">公称機能から分かる範囲</h2><p>Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソフトとオンボードプロファイルの説明があります。このページで確認できるのは当該製品の公称機能です。他機種より何ms速いかを、同じ条件で比較した結果ではありません。設定ソフトが手元のOSやブラウザで使えるかも確認します。</p><p class="source-meta">参照: <a href="https://wooting.io/wooting-80he" target="_blank" rel="noopener noreferrer">Wooting：80HE公式機能・仕様</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">感度は、普段の操作で調整する</h2><p>入力を早く切り替えたいキーと、長押しを安定させたいキーでは望ましい設定が違う可能性があります。実際のゲームや文章入力で、意図した押し方と解除ができるか確認してください。全機種・全員に共通する安定設定のmm値や、必ず誤動作する境界値は、今回の資料からは示していません。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">買い替え前に、困っていることを具体化する</h2><p>現在のキーボードについて、入力の切替、配列、打鍵の重さ、音、接続のどこに不満があるかを書き出します。ゲームの操作を調整したいならアナログ機能が比較対象になりますが、執筆やプログラミング中心なら配列や打ちやすさで満足する可能性もあります。実売価格や送料、交換キーなどを含めて見積もります。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">機能を増やした後も、結果を確かめる</h2><p>ポーリングや入力補助の設定を変えたら、普段使うアプリで動作を確認します。高い頻度なら常にFPSが落ちる、低くすれば必ず安定する、とは断定できません。競技で使う補助機能はゲームや大会の現行ルールも確認してください。製品間の遅延・誤入力率の順位は、再現できる測定が用意できるまで付けません。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://wooting.io/wooting-80he" target="_blank" rel="noopener noreferrer">Wooting：80HE公式機能・仕様</a><span class="source-meta">確認日: 2026-10-13 / 当該製品の公称機能。独自の遅延・誤入力測定ではありません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="diy-or-ready-made-total-cost.html">それ、自作したほうが安い？</a></li><li class="source-item"><a href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html">自宅サーバー用ミニPC、CPU名だけで選んでいい？</a></li></ul></section>
+      <section class="prose-section" id="part-0"><h2 class="section-h2">ポーリング周期と操作全体の遅延を分ける</h2><p>1秒を8,000回に分けると0.125msです。これは周期の計算であり、指で動かし始めてからキーが認識され、ゲームが処理して画面に出るまでの時間とは違います。モデル別の入力遅延を並べる場合は、測定の開始点と終了点、ファームウェア、設定、PC側の条件をそろえる必要があります。</p></section><section class="prose-section" id="part-1"><h2 class="section-h2">公称機能から分かる範囲</h2><p>Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソフトとオンボードプロファイルの説明があります。このページで確認できるのは当該製品の公称機能です。他機種より何ms速いかを、同じ条件で比較した結果ではありません。設定ソフトが手元のOSやブラウザで使えるかも確認します。</p><p class="source-meta">参照: <a href="https://wooting.io/wooting-80he" target="_blank" rel="noopener noreferrer">Wooting：80HE公式機能・仕様</a> </p></section><section class="prose-section" id="part-2"><h2 class="section-h2">感度は、普段の操作で調整する</h2><p>入力を早く切り替えたいキーと、長押しを安定させたいキーでは望ましい設定が違う可能性があります。実際のゲームや文章入力で、意図した押し方と解除ができるか確認してください。全機種・全員に共通する安定設定のmm値や、必ず誤動作する境界値は、今回の資料からは示していません。</p></section><section class="prose-section" id="part-3"><h2 class="section-h2">買い替え前に、困っていることを具体化する</h2><p>現在のキーボードについて、入力の切替、配列、打鍵の重さ、音、接続のどこに不満があるかを書き出します。ゲームの操作を調整したいならアナログ機能が比較対象になりますが、執筆やプログラミング中心なら配列や打ちやすさで満足する可能性もあります。実売価格や送料、交換キーなどを含めて見積もります。</p></section><section class="prose-section" id="part-4"><h2 class="section-h2">機能を増やした後も、結果を確かめる</h2><p>ポーリングや入力補助の設定を変えたら、普段使うアプリで動作を確認します。高い頻度なら常にFPSが落ちる、低くすれば必ず安定する、とは断定できません。競技で使う補助機能はゲームや大会の現行ルールも確認してください。製品間の遅延・誤入力率の順位は、再現できる測定が用意できるまで付けません。</p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。</p><ul class="source-list"><li class="source-item"><a href="https://wooting.io/wooting-80he" target="_blank" rel="noopener noreferrer">Wooting：80HE公式機能・仕様</a><span class="source-meta">確認日: 2026-10-13 / 当該製品の公称機能。独自の遅延・誤入力測定ではありません。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="diy-or-ready-made-total-cost">それ、自作したほうが安い？</a></li><li class="source-item"><a href="mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests">自宅サーバー用ミニPC、CPU名だけで選んでいい？</a></li></ul></section>
       </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">ポーリング周期と操作全体の遅延を分ける</a></li><li><a href="#part-1">公称機能から分かる範囲</a></li><li><a href="#part-2">感度は、普段の操作で調整する</a></li><li><a href="#part-3">買い替え前に、困っていることを具体化する</a></li><li><a href="#part-4">機能を増やした後も、結果を確かめる</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
@@ -47,10 +47,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

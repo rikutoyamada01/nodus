@@ -2,7 +2,7 @@
 
 > 自宅NASや写真サーバーの外部バックアップ先を選ぶとき、毎月の保存料金だけでなく、障害時に100GB〜1TBを一括ダウンロード（Egress）したときの料金条件を公式価格表から比較します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/cloud-backup-100gb-restore-egress-cost-comparison.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -53,5 +53,5 @@
 - [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html)
-- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing.html)
+- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)

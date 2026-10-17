@@ -228,7 +228,7 @@ def validate_all() -> dict[str, object]:
     llms_raw = (DIST_DIR / "llms.txt").read_text(encoding="utf-8")
     llms_full_raw = (DIST_DIR / "llms-full.txt").read_text(encoding="utf-8")
     for slug in expected_slugs:
-        art_url = f"{base_url}/articles/{slug}.html"
+        art_url = f"{base_url}/articles/{slug}"
         md_url = f"{base_url}/articles/{slug}.md"
         csv_url = f"{base_url}/datasets/{slug}.csv"
         md_file = DIST_DIR / "articles" / f"{slug}.md"

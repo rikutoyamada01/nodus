@@ -2,7 +2,7 @@
 
 > 複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/notebooklm-limits-sources-notebooks-sharing-guide.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -49,5 +49,5 @@
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件](https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide.html)
-- [マルチホップRAGの2段目検索、直交減算でどこまで改善する？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html)
+- [Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件](https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide)
+- [マルチホップRAGの2段目検索、直交減算でどこまで改善する？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)

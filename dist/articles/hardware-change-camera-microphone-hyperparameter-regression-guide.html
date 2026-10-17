@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正 | Nodus</title><meta name="description" content="ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html">
-      <meta property="og:title" content="カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正"><meta property="og:description" content="ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html">
+      <title>カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正 | Nodus</title><meta name="description" content="ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide">
+      <meta property="og:title" content="カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正"><meta property="og:description" content="ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="hardware-change-camera-microphone-hyperparameter-regression-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
-      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正", "description": "ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide.html", "citation": ["https://scikit-learn.org/stable/modules/model_evaluation.html", "https://scikit-learn.org/stable/common_pitfalls.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正", "description": "ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide", "citation": ["https://scikit-learn.org/stable/modules/model_evaluation.html", "https://scikit-learn.org/stable/common_pitfalls.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -24,7 +24,7 @@
 </div>
 
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / Architecture</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / Architecture</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正</h1><p class="article-subtitle">ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。</p>
       <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式scikit-learn仕様資料を確認 / 文中の数値は設計上のモデルケース・予備実験例</span></div>
@@ -43,7 +43,7 @@
 
 また、「未更新の初期モデル（73.02%）」と「4倍重みで学習したモデル（76.49%）」だけを比べて「重みを4倍にしたおかげで+3.47ポイント改善した」と説明するのも誤りです。なぜなら、重み1倍のまま全データを1回ずつ通して分類層を更新するだけでも 76.28% まで改善するからです。「学習を回したこと自体の効果」と「重みを増やした効果」を混同せず、端末の音響特性に適応させるなら重みは1倍を維持したまま、Encoderの一部（上位層）を小さな学習率で一緒にファインチューニングする方針を選ぶべきです。
 
-主なチェックポイントは以下の通りです：初期値との差と対照実験の差を混同しない：重み4倍で初期値から上がった分をすべて重み付けの効果と呼ばず、必ず同一条件の『重み1倍（Control）』との差分で評価する / 最終エポック比較の罠：1倍重みはエポック6〜10でVal最良に達し、4倍重みはエポック18〜19で最良に達するなど学習速度が異なるため、最終20エポック時点だけを切り取って比較しない / 複数シードでの一貫性確認：0.2〜0.5ポイント程度の微差は乱数シード1つで簡単に逆転するため、ハイパーパラメータの採用判断には複数シードまたはグループ交差検証を用いる。</p><p class="source-meta">参照: <a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Cross-validation and Model Evaluation</a> <a href="https://scikit-learn.org/stable/common_pitfalls.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Common pitfalls and recommended practices</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にscikit-learnの評価・交差検証ガイドラインを確認し、カメラ幾何条件・マイク音響条件の変更に伴うハイパーパラメータ再校正と対照実験の手順を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Cross-validation and Model Evaluation</a><span class="source-meta">確認日: 2026-10-16 / ハイパーパラメータ選択時の分散・複数分割評価の原則。</span></li><li class="source-item"><a href="https://scikit-learn.org/stable/common_pitfalls.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Common pitfalls and recommended practices</a><span class="source-meta">確認日: 2026-10-16 / 対照実験の設計と過適合防止。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="streaming-ai-offline-accuracy-vs-realtime-timing-guide.html">オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</a></li><li class="source-item"><a href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</a></li><li class="source-item"><a href="ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide.html">機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方</a></li></ul></section>
+主なチェックポイントは以下の通りです：初期値との差と対照実験の差を混同しない：重み4倍で初期値から上がった分をすべて重み付けの効果と呼ばず、必ず同一条件の『重み1倍（Control）』との差分で評価する / 最終エポック比較の罠：1倍重みはエポック6〜10でVal最良に達し、4倍重みはエポック18〜19で最良に達するなど学習速度が異なるため、最終20エポック時点だけを切り取って比較しない / 複数シードでの一貫性確認：0.2〜0.5ポイント程度の微差は乱数シード1つで簡単に逆転するため、ハイパーパラメータの採用判断には複数シードまたはグループ交差検証を用いる。</p><p class="source-meta">参照: <a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Cross-validation and Model Evaluation</a> <a href="https://scikit-learn.org/stable/common_pitfalls.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Common pitfalls and recommended practices</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にscikit-learnの評価・交差検証ガイドラインを確認し、カメラ幾何条件・マイク音響条件の変更に伴うハイパーパラメータ再校正と対照実験の手順を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Cross-validation and Model Evaluation</a><span class="source-meta">確認日: 2026-10-16 / ハイパーパラメータ選択時の分散・複数分割評価の原則。</span></li><li class="source-item"><a href="https://scikit-learn.org/stable/common_pitfalls.html" target="_blank" rel="noopener noreferrer">scikit-learn User Guide: Common pitfalls and recommended practices</a><span class="source-meta">確認日: 2026-10-16 / 対照実験の設計と過適合防止。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="streaming-ai-offline-accuracy-vs-realtime-timing-guide">オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</a></li><li class="source-item"><a href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</a></li><li class="source-item"><a href="ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide">機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方</a></li></ul></section>
       </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">ハードを変えたとき、なぜ「かつて精度を上げた工夫」が足を引っ張るのか</a></li><li><a href="#part-1">マイク変更（スピーカーフォン適応）と「1シード・最終エポック比較」の罠</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
@@ -59,10 +59,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

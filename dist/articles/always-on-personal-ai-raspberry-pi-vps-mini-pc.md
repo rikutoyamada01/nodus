@@ -2,7 +2,7 @@
 
 > ノートPCを閉じても記憶や定期処理を残したい。コードの修正も任せたい。推論・記憶・開発作業を分けて、常駐先の費用と選び方を考えます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/always-on-personal-ai-raspberry-pi-vps-mini-pc.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -95,6 +95,6 @@ Dockerのバインドマウントは、ホスト側のフォルダをコンテ�
 - [Docker：Engineのセキュリティ](https://docs.docker.com/engine/security/)
 
 ## 次に考えたいこと
-- [パーソナルAIのサブスク・API・自宅運用を比べる](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
-- [自宅サーバー用ミニPCの電力・端子・保守を確認する](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
-- [手持ちのMacでローカルLLMを試す](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+- [パーソナルAIのサブスク・API・自宅運用を比べる](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの電力・端子・保守を確認する](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [手持ちのMacでローカルLLMを試す](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

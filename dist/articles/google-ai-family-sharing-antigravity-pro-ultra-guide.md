@@ -2,7 +2,7 @@
 
 > Google Oneのファミリー共有でAI特典を分け合える範囲と、AntigravityやAIクレジットの上限が家族全体で合算される仕組みを公式ヘルプから整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/google-ai-family-sharing-antigravity-pro-ultra-guide.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -57,5 +57,5 @@ Google Oneの公式ヘルプによると、ファミリーグループの全員�
 - [Google Antigravity Docs：Plans](https://antigravity.google/docs/plans/)
 
 ## 次に考えたいこと
-- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide.html)
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra.html)
+- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
+- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)

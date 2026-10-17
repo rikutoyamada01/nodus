@@ -2,7 +2,7 @@
 
 > ESP32で部屋の二酸化炭素濃度計を自作するとき、数百円のガスセンサー（eCO₂）と数千円の光学式センサー（SCD40/SCD41等）で測っているものがどう違うのかを公式資料から整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/co2-sensor-ndir-vs-eco2-tvoc-selection-guide.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -47,5 +47,5 @@ CO₂を直接測定できるSCD40/SCD41等のモジュールは単体でも数�
 - [ESPHome Docs：SGP30 CO₂ and Volatile Organic Compound Sensor](https://esphome.io/components/sensor/sgp30.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)

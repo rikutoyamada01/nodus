@@ -2,7 +2,7 @@
 
 > USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.csv
 
 ## 訂正について
@@ -53,5 +53,5 @@ SSDとケースの値段に、送料、必要なケーブル、放熱パッド�
 - [OWC：Express 1M2の仕様と構成](https://www.owc.com/solutions/express-1m2)
 
 ## 次に考えたいこと
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
-- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

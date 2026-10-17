@@ -2,7 +2,7 @@
 
 > アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/tailscale-subnet-router-vs-exit-node-nas-guide.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -50,5 +50,5 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 - [Tailscale：Pricing](https://tailscale.com/pricing)
 
 ## 次に考えたいこと
-- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
+- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
+- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

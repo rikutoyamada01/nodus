@@ -2,7 +2,7 @@
 
 > 128kや256k対応のローカルLLMをダウンロードしたのに長い文章を途中で忘れるとき、実際に割り当てられているコンテキスト長の確認方法と設定手順を公式資料から整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ollama-context-length-vram-default-memory-guide.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -53,5 +53,5 @@
 - [Ollama Docs：CLI Reference](https://docs.ollama.com/cli)
 
 ## 次に考えたいこと
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
+- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

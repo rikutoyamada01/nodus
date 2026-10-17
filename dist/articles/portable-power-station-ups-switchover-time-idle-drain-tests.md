@@ -2,7 +2,7 @@
 
 > 防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/portable-power-station-ups-switchover-time-idle-drain-tests.csv
 
 ## 訂正について
@@ -53,5 +53,5 @@ Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間
 - [Anker SOLIX：C1000 米国向け公式仕様](https://www.ankersolix.com/products/c1000)
 
 ## 次に考えたいこと
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)

@@ -5,32 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ | Nodus</title>
   <meta name="description" content="HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。">
-  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html">
+  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks">
   <meta property="og:title" content="マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ | Nodus">
   <meta property="og:description" content="HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html">
+  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks">
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="multihop-rag-orthogonal-residual-subtraction-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率", "description": "HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "keywords": "マルチホップRAG, ベクトル検索 直交残差, HotpotQA 検証, 隠れ状態インデックス", "citation": ["https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json", "https://hotpotqa.github.io/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html"}, {"@type": "Dataset", "name": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率 実測検証データセット (N=1029)", "description": "HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。", "url": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-16", "dateModified": "2026-10-03", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。", "variableMeasured": ["Bridge Reach@10", "Bridge Reach@50", "Comparison Reach@50", "全体 Reach@50", "挙動の特徴とボトルネック"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/multihop-rag-orthogonal-residual-subtraction-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "マルチホップRAGの2ホップ目では、結局どのベクトルで検索するのが最もコスパが良いですか？", "acceptedAnswer": {"@type": "Answer", "text": "クエリが比較質問か連鎖質問かを事前に完璧に分類するのは難しいため、文分割や追加学習を行わず「直交残差 r」「第1文書 d1」「両者の1:1線形結合（r + d1）」の複数プローブでそれぞれ上位10〜15件ずつ引いてマージ（Union）する方式が、追加のエンコード遅延ゼロでOverall Reach@50を72.69%まで引き上げられるため最も実用的です。"}}, {"@type": "Question", "name": "なぜLLMの要約途中の隠れ状態を使った検索はテキスト基準より精度が低かったのですか？", "acceptedAnswer": {"@type": "Answer", "text": "Qwen2.5-0.5Bのような因果的（Causal）自己回帰モデルの最終層状態は「次トークンの予測」に最適化されており、質問文とのコサイン類似度空間として整合していないためです。1文書あたり約80状態（計130MB超）のストレージと1,149秒の登録時間をかけても、双方向エンコーダによる標準的なテキスト検索には及びませんでした。"}}, {"@type": "Question", "name": "マルチベクトル（複数スロット）学習が縮退しているかどうかはどうすれば検知できますか？", "acceptedAnswer": {"@type": "Answer", "text": "検索精度（Recall）だけを見ていると、単一ベクトル相当の表現力でも一定のスコアが出るため縮退を見逃します。推論時に1文書から出力されるK個のスロットベクトル間のペアワイズ・コサイン類似度を計算し、平均が0.95を超えている場合はスロット分離が機能していません。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率", "item": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html"}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率", "description": "HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "keywords": "マルチホップRAG, ベクトル検索 直交残差, HotpotQA 検証, 隠れ状態インデックス", "citation": ["https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json", "https://hotpotqa.github.io/"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks"}, {"@type": "Dataset", "name": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率 実測検証データセット (N=1029)", "description": "HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。", "url": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-16", "dateModified": "2026-10-03", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about"}, "measurementTechnique": "HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。", "variableMeasured": ["Bridge Reach@10", "Bridge Reach@50", "Comparison Reach@50", "全体 Reach@50", "挙動の特徴とボトルネック"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/multihop-rag-orthogonal-residual-subtraction-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "マルチホップRAGの2ホップ目では、結局どのベクトルで検索するのが最もコスパが良いですか？", "acceptedAnswer": {"@type": "Answer", "text": "クエリが比較質問か連鎖質問かを事前に完璧に分類するのは難しいため、文分割や追加学習を行わず「直交残差 r」「第1文書 d1」「両者の1:1線形結合（r + d1）」の複数プローブでそれぞれ上位10〜15件ずつ引いてマージ（Union）する方式が、追加のエンコード遅延ゼロでOverall Reach@50を72.69%まで引き上げられるため最も実用的です。"}}, {"@type": "Question", "name": "なぜLLMの要約途中の隠れ状態を使った検索はテキスト基準より精度が低かったのですか？", "acceptedAnswer": {"@type": "Answer", "text": "Qwen2.5-0.5Bのような因果的（Causal）自己回帰モデルの最終層状態は「次トークンの予測」に最適化されており、質問文とのコサイン類似度空間として整合していないためです。1文書あたり約80状態（計130MB超）のストレージと1,149秒の登録時間をかけても、双方向エンコーダによる標準的なテキスト検索には及びませんでした。"}}, {"@type": "Question", "name": "マルチベクトル（複数スロット）学習が縮退しているかどうかはどうすれば検知できますか？", "acceptedAnswer": {"@type": "Answer", "text": "検索精度（Recall）だけを見ていると、単一ベクトル相当の表現力でも一定のスコアが出るため縮退を見逃します。推論時に1文書から出力されるK個のスロットベクトル間のペアワイズ・コサイン類似度を計算し、平均が0.95を超えている場合はスロット分離が機能していません。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 3, "name": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率", "item": "https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks"}]}]}</script>
 </head>
 <body>
 
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -252,7 +252,7 @@
           <span>検証条件と出典</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率」(2026-10-03更新, N=1029) — <code>https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks.html</code></div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率」(2026-10-03更新, N=1029) — <code>https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks</code></div>
         <ul class="source-list">
 
         <li class="source-item">
@@ -340,10 +340,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

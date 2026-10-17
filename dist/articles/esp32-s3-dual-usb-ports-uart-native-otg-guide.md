@@ -2,7 +2,7 @@
 
 > ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/esp32-s3-dual-usb-ports-uart-native-otg-guide.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -54,5 +54,5 @@ ESP32-S3の開発ボード（DevKitC系など）を手に取ると、「UART」�
 - [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html)
-- [ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html)
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)

@@ -2,7 +2,7 @@
 
 > VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/personal-ai-vps-home-server-subscription.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -49,6 +49,6 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 - [Ollama：ローカル実行、クラウド、メモリとサーバー設定のFAQ](https://docs.ollama.com/faq)
 
 ## 次に考えたいこと
-- [パーソナルAIを24時間動かす常駐先を選ぶ](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
+- [パーソナルAIを24時間動かす常駐先を選ぶ](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)

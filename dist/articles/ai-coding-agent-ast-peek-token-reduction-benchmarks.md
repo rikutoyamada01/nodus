@@ -2,7 +2,7 @@
 
 > 全文を何度も読む、テストログを大量に渡す。その前にできることと、情報を削りすぎて手戻りになる境界を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/ai-coding-agent-ast-peek-token-reduction-benchmarks.csv
 
 ## 訂正について
@@ -57,5 +57,5 @@ Claude Codeの公式資料は、コンテキスト管理、モデル選択、キ
 - [OpenAI：Prompt Caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
 ## 次に考えたいこと
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics.html)
-- [AIコードレビューを別の会話・モデルに任せる価値は？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks.html)
+- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [AIコードレビューを別の会話・モデルに任せる価値は？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks)

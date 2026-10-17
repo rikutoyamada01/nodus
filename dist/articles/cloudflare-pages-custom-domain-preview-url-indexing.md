@@ -2,7 +2,7 @@
 
 > GitHub連携でブランチごとに自動生成されるプレビューURLや元の .pages.dev サブドメインが、検索エンジンに重複登録されるのを防ぐ公式仕様と確認手順を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/cloudflare-pages-custom-domain-preview-url-indexing.csv
 - **Category**: Software & SaaS Economics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -44,4 +44,4 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 - [Cloudflare Pages Docs：Custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
 ## 次に考えたいこと
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison.html)
+- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)

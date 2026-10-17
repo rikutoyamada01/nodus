@@ -2,7 +2,7 @@
 
 > 自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/immich-backup-photos-database-restore-scope.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -48,5 +48,5 @@ Immichには障害復旧のための自動データベースバックアップ�
 - [Docker Docs：Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
 
 ## 次に考えたいこと
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison.html)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
+- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

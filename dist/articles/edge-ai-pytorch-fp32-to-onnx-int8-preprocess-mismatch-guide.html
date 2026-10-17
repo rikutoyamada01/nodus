@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証 | Nodus</title><meta name="description" content="GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html">
-      <meta property="og:title" content="PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証"><meta property="og:description" content="GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html">
+      <title>PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証 | Nodus</title><meta name="description" content="GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。"><link rel="canonical" href="https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide">
+      <meta property="og:title" content="PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証"><meta property="og:description" content="GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。"><meta property="og:type" content="article"><meta property="og:url" content="https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
-      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証", "description": "GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide.html", "citation": ["https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html", "https://pytorch.org/docs/stable/onnx.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証", "description": "GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide", "citation": ["https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html", "https://pytorch.org/docs/stable/onnx.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial"}}</script></head><body>
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -24,7 +24,7 @@
 </div>
 
       <div class="container article-layout"><main id="main-content" class="article-sheet">
-      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../index.html">Nodus</a> / Architecture</nav>
+      <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / Architecture</nav>
       <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
       <h1 class="article-title">PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証</h1><p class="article-subtitle">GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。</p>
       <div class="article-timestamps"><span>公開 <time datetime="2026-10-16">2026-10-16</time></span><span>更新 <time datetime="2026-10-16">2026-10-16</time></span><span>公式ONNX Runtime・PyTorch資料を確認 / 記載のレイテンシ比率は一般的な構造例</span></div>
@@ -43,7 +43,7 @@
 
 これを防ぐには、モデルクラスに推論用グラフ抽出メソッド（例：`extract_inference_model()`）を用意し、学習完了後に補助ヘッドを切り離して「既存のベースラインモデルと入出力の型・ラベル体系が100%同一のモデル」に変換してからONNXエクスポートとINT8量子化を実行します。こうすることで、学習側の工夫を本番ランタイムに対して完全なドロップイン置換（レイテンシ増加ゼロ・呼び出し側コード変更ゼロ）として安全に届けることができます。
 
-主なチェックポイントは以下の通りです：学習コードと推論依存の分離：エッジ端末側にはONNX Runtime等の軽量な推論依存だけを持たせ、PyTorch本体やラベリング・学習用の重い依存関係を本番環境へ持ち込まない / セットでのアトミック公開：採用基準を満たしたモデルを公開する際は、INT8 ONNXファイル単体ではなく『ONNXモデル・ラベル定義JSON・前処理設定』を必ず1セットとして配布する / 実運用アーティファクトでの最終回帰確認：量子化後のONNXファイルを使って最終的なVal/Test評価とCPUレイテンシ計測を行い、その数値を正式なリリース記録として残す。</p><p class="source-meta">参照: <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models</a> <a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch Documentation: torch.onnx</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にONNX Runtime Quantization公式ドキュメントおよびPyTorch `torch.onnx` 公式ドキュメントを確認し、音声・画像モデルのONNX変換・INT8量子化時における前処理一致検証と推論グラフ分離の設計手順を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models</a><span class="source-meta">確認日: 2026-10-16 / Dynamic / Static INT8量子化の仕組みと精度・パフォーマンス最適化仕様。</span></li><li class="source-item"><a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch Documentation: torch.onnx</a><span class="source-meta">確認日: 2026-10-16 / PyTorchモデルのONNXエクスポート仕様と入出力検証。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="streaming-ai-offline-accuracy-vs-realtime-timing-guide.html">オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</a></li><li class="source-item"><a href="hardware-change-camera-microphone-hyperparameter-regression-guide.html">カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正</a></li><li class="source-item"><a href="human-in-the-loop-labeling-prompt-vs-actual-input-guide.html">実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計</a></li></ul></section>
+主なチェックポイントは以下の通りです：学習コードと推論依存の分離：エッジ端末側にはONNX Runtime等の軽量な推論依存だけを持たせ、PyTorch本体やラベリング・学習用の重い依存関係を本番環境へ持ち込まない / セットでのアトミック公開：採用基準を満たしたモデルを公開する際は、INT8 ONNXファイル単体ではなく『ONNXモデル・ラベル定義JSON・前処理設定』を必ず1セットとして配布する / 実運用アーティファクトでの最終回帰確認：量子化後のONNXファイルを使って最終的なVal/Test評価とCPUレイテンシ計測を行い、その数値を正式なリリース記録として残す。</p><p class="source-meta">参照: <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models</a> <a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch Documentation: torch.onnx</a> </p></section><section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">2026年10月16日にONNX Runtime Quantization公式ドキュメントおよびPyTorch `torch.onnx` 公式ドキュメントを確認し、音声・画像モデルのONNX変換・INT8量子化時における前処理一致検証と推論グラフ分離の設計手順を整理した記事です。</p><ul class="source-list"><li class="source-item"><a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html" target="_blank" rel="noopener noreferrer">ONNX Runtime Documentation: Quantize ONNX Models</a><span class="source-meta">確認日: 2026-10-16 / Dynamic / Static INT8量子化の仕組みと精度・パフォーマンス最適化仕様。</span></li><li class="source-item"><a href="https://pytorch.org/docs/stable/onnx.html" target="_blank" rel="noopener noreferrer">PyTorch Documentation: torch.onnx</a><span class="source-meta">確認日: 2026-10-16 / PyTorchモデルのONNXエクスポート仕様と入出力検証。</span></li></ul></section><section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list"><li class="source-item"><a href="streaming-ai-offline-accuracy-vs-realtime-timing-guide">オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離</a></li><li class="source-item"><a href="hardware-change-camera-microphone-hyperparameter-regression-guide">カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正</a></li><li class="source-item"><a href="human-in-the-loop-labeling-prompt-vs-actual-input-guide">実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計</a></li></ul></section>
       </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li><li><a href="#part-0">「PyTorchのスコア」をそのまま実機の性能として報告してはいけない理由</a></li><li><a href="#part-1">学習時の工夫（マルチタスク補助ヘッド等）を推論時にゼロコストで切り離す設計</a></li><li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>
 <footer class="site-footer">
   <div class="container">
@@ -59,10 +59,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

@@ -2,7 +2,7 @@
 
 > 自宅NASやサーバーへのリモート接続が期待より遅いとき、光回線やルーターを疑う前に確認したい3つの接続方式（Direct / DERP / Peer Relay）の切り分け手順です。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/tailscale-nas-slow-direct-derp-relay-check.csv
 - **Category**: Cloud & AI Infrastructure
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -52,5 +52,5 @@ Tailscale公式ドキュメント（Connection types）によると、tailnet内
 - [Tailscale Docs：Subnet routers](https://tailscale.com/docs/features/subnet-routers)
 
 ## 次に考えたいこと
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc.html)
-- [Wi-Fi 7ルーター、買い替える前に確認すること](https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation.html)
+- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Wi-Fi 7ルーター、買い替える前に確認すること](https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation)

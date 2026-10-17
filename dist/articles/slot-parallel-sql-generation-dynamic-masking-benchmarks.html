@@ -5,32 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁 | Nodus</title>
   <meta name="description" content="トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。">
-  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html">
+  <link rel="canonical" href="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks">
   <meta property="og:title" content="自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁 | Nodus">
   <meta property="og:description" content="トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html">
+  <meta property="og:url" content="https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks">
   <meta property="og:site_name" content="Nodus">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="alternate" type="application/atom+xml" title="Nodus Feed" href="../feed.xml">
   <link rel="alternate" type="text/markdown" title="Markdown (AI/LLM Citation)" href="slot-parallel-sql-generation-dynamic-masking-benchmarks.md">
   <link rel="stylesheet" href="../assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁", "description": "トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "keywords": "Text-to-SQL, 構造化出力 動的マスキング, スロット並列予測, LLM レイテンシ削減", "citation": ["https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json", "https://www.sqlite.org/lang.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html"}, {"@type": "Dataset", "name": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁 実測検証データセット (N=60)", "description": "SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。", "url": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-16", "dateModified": "2026-09-30", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about.html"}, "measurementTechnique": "訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。", "variableMeasured": ["測定カテゴリ", "正解率 / 成功率", "評価対象数", "失敗要因・技術的ボトルネック"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/slot-parallel-sql-generation-dynamic-masking-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Valid Execution（61.67%）と Execution Accuracy（10.00%）は何が違うのですか？", "acceptedAnswer": {"@type": "Answer", "text": "Valid Execution（VE）は「生成されたSQLが対象データベースのスキーマに対して構文エラーや存在しないカラム参照を起こさず、SQLite上で正常に実行完了した割合」です。Execution Accuracy（EX）は「実行した結果のデータ行が、正解SQLの実行結果と完全に一致した割合」を指します。"}}, {"@type": "Question", "name": "なぜ1パスで全スロットを並列予測するとカラム選択の精度が落ちるのですか？", "acceptedAnswer": {"@type": "Answer", "text": "本来、SELECT句やWHERE句のカラムは「どのテーブル（primary_table）を選んだか」に強く従属します。推論時にテーブル予測マスクを適用しても、エンコーダ内部の特徴量自体が「未知スキーマの全カラム候補と質問文の細かな対応関係」を1回のフォワードパスで解きほぐすには容量不足となるためです。"}}, {"@type": "Question", "name": "動的アクションマスキング自体はText-to-SQLに有効と言えますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。マスクなしでは未知スキーマに対して存在しないテーブル名やカラム名を出力してほぼ100%実行エラーになりますが、動的スキーママスクを入れることで61.67%を実行可能なクエリに収束させられます。LLMのConstrained Decoding（構造化出力制約）と組み合わせるのが最も効果的です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/index.html"}, {"@type": "ListItem", "position": 3, "name": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁", "item": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html"}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁", "description": "トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。", "datePublished": "2026-10-16", "dateModified": "2026-10-16", "inLanguage": "ja", "keywords": "Text-to-SQL, 構造化出力 動的マスキング, スロット並列予測, LLM レイテンシ削減", "citation": ["https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json", "https://www.sqlite.org/lang.html"], "author": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about"}, "publisher": {"@type": "Organization", "name": "Nodus", "url": "https://nodus-lab.pages.dev/"}, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]}, "mainEntityOfPage": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks"}, {"@type": "Dataset", "name": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁 実測検証データセット (N=60)", "description": "SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。", "url": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks", "inLanguage": "ja", "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": true, "datePublished": "2026-10-16", "dateModified": "2026-09-30", "creator": {"@type": "Organization", "name": "Nodus Research Editorial", "url": "https://nodus-lab.pages.dev/about"}, "measurementTechnique": "訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。", "variableMeasured": ["測定カテゴリ", "正解率 / 成功率", "評価対象数", "失敗要因・技術的ボトルネック"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://nodus-lab.pages.dev/datasets/slot-parallel-sql-generation-dynamic-masking-benchmarks.csv"}, {"@type": "DataDownload", "encodingFormat": "text/markdown", "contentUrl": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.md"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Valid Execution（61.67%）と Execution Accuracy（10.00%）は何が違うのですか？", "acceptedAnswer": {"@type": "Answer", "text": "Valid Execution（VE）は「生成されたSQLが対象データベースのスキーマに対して構文エラーや存在しないカラム参照を起こさず、SQLite上で正常に実行完了した割合」です。Execution Accuracy（EX）は「実行した結果のデータ行が、正解SQLの実行結果と完全に一致した割合」を指します。"}}, {"@type": "Question", "name": "なぜ1パスで全スロットを並列予測するとカラム選択の精度が落ちるのですか？", "acceptedAnswer": {"@type": "Answer", "text": "本来、SELECT句やWHERE句のカラムは「どのテーブル（primary_table）を選んだか」に強く従属します。推論時にテーブル予測マスクを適用しても、エンコーダ内部の特徴量自体が「未知スキーマの全カラム候補と質問文の細かな対応関係」を1回のフォワードパスで解きほぐすには容量不足となるためです。"}}, {"@type": "Question", "name": "動的アクションマスキング自体はText-to-SQLに有効と言えますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。マスクなしでは未知スキーマに対して存在しないテーブル名やカラム名を出力してほぼ100%実行エラーになりますが、動的スキーママスクを入れることで61.67%を実行可能なクエリに収束させられます。LLMのConstrained Decoding（構造化出力制約）と組み合わせるのが最も効果的です。"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Nodus", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "Cloud \u0026 AI Infrastructure", "item": "https://nodus-lab.pages.dev/"}, {"@type": "ListItem", "position": 3, "name": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁", "item": "https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks"}]}]}</script>
 </head>
 <body>
 
 <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a href="../index.html" class="brand-logo">
+    <a href="../" class="brand-logo">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span>Nodus</span>
       <span class="brand-tagline">買う、作る、その前に。</span>
     </a>
     <nav class="site-nav" aria-label="グローバルナビゲーション">
-      <a href="../index.html">記事を読む</a>
-      <a href="../about.html">Nodusについて</a>
-      <a href="../about.html#privacy">ポリシー</a>
+      <a href="../">記事を読む</a>
+      <a href="../about">Nodusについて</a>
+      <a href="../about#privacy">ポリシー</a>
       <a href="../feed.xml">RSS</a>
     </nav>
   </div>
@@ -252,7 +252,7 @@
           <span>検証条件と出典</span>
         </h2>
         <div class="methodology-box"><strong>検証環境・集計メソドロジー:</strong> 訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。</div>
-        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁」(2026-09-30更新, N=60) — <code>https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks.html</code></div>
+        <div class="methodology-box"><strong>データ引用・出典フォーマット (CC BY 4.0):</strong> Nodus Research Editorial「自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁」(2026-09-30更新, N=60) — <code>https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks</code></div>
         <ul class="source-list">
 
         <li class="source-item">
@@ -340,10 +340,10 @@
         <p class="footer-amazon-notice">広告・アフィリエイトリンクは掲載していません。</p>
       </div>
       <div class="footer-links">
-        <a href="../index.html">記事一覧</a>
-        <a href="../about.html">検証手法・免責事項</a>
-        <a href="../about.html#privacy">プライバシーポリシー</a>
-        <a href="../about.html#contact">運営者情報・訂正ポリシー</a>
+        <a href="../">記事一覧</a>
+        <a href="../about">検証手法・免責事項</a>
+        <a href="../about#privacy">プライバシーポリシー</a>
+        <a href="../about#contact">運営者情報・訂正ポリシー</a>
         <a href="../sitemap.xml">Sitemap</a>
         <a href="../llms.txt">LLMs.txt</a>
       </div>

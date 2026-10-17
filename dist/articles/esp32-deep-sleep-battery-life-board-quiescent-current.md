@@ -2,7 +2,7 @@
 
 > データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/esp32-deep-sleep-battery-life-board-quiescent-current.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -49,5 +49,5 @@ ESPHomeの公式ドキュメント（Deep Sleep Component）には、「Deep Sle
 - [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)

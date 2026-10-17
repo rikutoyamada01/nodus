@@ -2,7 +2,7 @@
 
 > ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests.csv
 
 ## 訂正について
@@ -53,5 +53,5 @@ Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソ�
 - [Wooting：80HE公式機能・仕様](https://wooting.io/wooting-80he)
 
 ## 次に考えたいこと
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests.html)
+- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)

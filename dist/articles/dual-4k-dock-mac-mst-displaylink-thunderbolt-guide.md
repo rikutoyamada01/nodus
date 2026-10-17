@@ -2,7 +2,7 @@
 
 > Windows向けに「USB-C 1本で4K 2画面出力」と書かれたドックをMacBookにつないだとき、2枚のモニターに同じ画面しか映らない（ミラーリングになる）原因と選び方を整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -42,5 +42,5 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 - [Apple Support：How many displays can be connected to MacBook Pro](https://support.apple.com/en-us/101571)
 
 ## 次に考えたいこと
-- [USB4外付けSSD、公称40Gbpsだけで選んでいい？](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling.html)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html)
+- [USB4外付けSSD、公称40Gbpsだけで選んでいい？](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
+- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

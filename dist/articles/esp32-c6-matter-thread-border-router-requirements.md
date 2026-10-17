@@ -2,7 +2,7 @@
 
 > Wi-Fi 6とThread（802.15.4）に対応するESP32-C6でスマートホーム機器を自作する前に、既存のWi-Fiルーターだけで動くのか、別途ボーダールーターが必要なのかを整理します。
 
-- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements.html
+- **Canonical URL**: https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements
 - **CSV Comparison Table**: https://nodus-lab.pages.dev/datasets/esp32-c6-matter-thread-border-router-requirements.csv
 - **Category**: Hardware & Power Electronics
 - **Article type**: 選び方・公式資料から整理（実測なし）
@@ -53,5 +53,5 @@ ESP32-C6の大きな特徴は、2.4GHz Wi-Fi 6（802.11ax）とBluetooth 5（LE�
 - [Home Assistant：Thread Integration Documentation](https://www.home-assistant.io/integrations/thread/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose.html)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost.html)
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
