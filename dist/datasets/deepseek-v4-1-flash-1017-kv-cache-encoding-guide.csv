@@ -1,0 +1,7 @@
+﻿検証観点 / コンポーネント,DeepSeek-V4.1-Flash / 1017 の仕様値,従来世代（V4-Flash / V4-Pro）との違い,実装・運用上の確認事項
+アクティブパラメータ（CED構造）,入力（Prefill）8B / 出力（Decode）16B,V4-Flashは13B、V4-Proは49B（入出力対称）,長文読込が多いエージェント処理ほどPrefill軽量化の恩恵が大きい
+グローバルKVキャッシュ容量,890 Bytes / token（FP4 E2M1 + CSA2）,V4-Flash比で約1/4（HBM）、SSD永続化は約1/8,メインKV生成層は第2・8・14・20層の4層のみ（kv_source_layer_ids）
+API入力単価（100万トークン）,Hit: $0.003〜$0.006 / Miss: $0.15〜$0.30,キャッシュヒット時はミス時の1/50（98%減）,UTC平日のピーク時間帯（計7時間）以外はオフピーク半額料金が適用
+チャットテンプレートとDSMLタグ,Jinja非同梱 / <｜DSML｜ calls>（空白あり）,V4は<｜DSML｜tool_calls>（空白なし）,自前推論時はencoding.pyまたはRust製deepseek-recipeの利用が前提
+Search / Fetch API連携,"成功1,000リクエストあたり $0.75（各5 QPS）",10月17日に一般公開（モデル内の特殊トークンと連動）,Harness / Claude Code / Codex経由のサーバー側呼び出しは2026年10月31日16:00 UTCまで無料
+長文脈での修正作業とツール呼び出し,公称1Mコンテキスト（実運用では125k付近に境界報告あり）,drop_thinking無効化により履歴が膨張しやすい,125k超での引数スキーマ逸脱や、reasoning_contentによるmax_tokens枯渇に注意

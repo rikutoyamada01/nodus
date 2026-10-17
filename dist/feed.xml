@@ -3,11 +3,18 @@
   <title>Nodus — 買う、作る、その前に。費用と使い道から考える技術ノート</title>
   <link href="https://nodus-lab.pages.dev/feed.xml" rel="self" />
   <link href="https://nodus-lab.pages.dev/" />
-  <updated>2026-10-16T00:00:00Z</updated>
+  <updated>2026-10-17T00:00:00Z</updated>
   <id>https://nodus-lab.pages.dev/</id>
   <author>
     <name>Nodus Research Editorial</name>
   </author>
+  <entry>
+    <title>DeepSeek-V4.1-Flash-1017は何が異常なのか：890B/tokenのKV圧縮とencoding.pyの内部仕様</title>
+    <link href="https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide" />
+    <id>https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide</id>
+    <updated>2026-10-17T00:00:00Z</updated>
+    <summary>2026年10月17日公開のDeepSeek-V4.1-Flash-1017について、表面的なベンチマーク順位だけでなく、config.jsonとencoding.pyから読み解ける非対称CED構造、KVキャッシュ圧縮、プロトコル仕様、Search/Fetch APIの課金境界を整理します。</summary>
+  </entry>
   <entry>
     <title>マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率</title>
     <link href="https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks" />
