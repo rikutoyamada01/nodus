@@ -70,14 +70,32 @@ def fetch_cloudflare(config: dict) -> dict:
             collection_enabled = bool(project.get("build_config", {}).get("web_analytics_token"))
         except RuntimeError:
             pass
-    end_dt = datetime.now(timezone.utc).date() - timedelta(days=1)
+    end_dt = datetime.now(timezone.utc).date()
     start = (end_dt - timedelta(days=13)).isoformat()
     split = (end_dt - timedelta(days=6)).isoformat()
     end = end_dt.isoformat()
     query = """query($account: String!, $host: String!, $start: Date!, $end: Date!) {
       viewer { accounts(filter: {accountTag: $account}) {
-        rumPageloadEventsAdaptiveGroups(limit: 100, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [date_ASC]) {
+        daily: rumPageloadEventsAdaptiveGroups(limit: 100, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [date_ASC]) {
           dimensions { date } count sum { visits }
+        }
+        pages: rumPageloadEventsAdaptiveGroups(limit: 50, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [count_DESC]) {
+          dimensions { requestPath } count sum { visits }
+        }
+        referrers: rumPageloadEventsAdaptiveGroups(limit: 50, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [count_DESC]) {
+          dimensions { refererHost } count sum { visits }
+        }
+        countries: rumPageloadEventsAdaptiveGroups(limit: 50, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [count_DESC]) {
+          dimensions { countryName } count sum { visits }
+        }
+        devices: rumPageloadEventsAdaptiveGroups(limit: 20, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [count_DESC]) {
+          dimensions { deviceType } count sum { visits }
+        }
+        browsers: rumPageloadEventsAdaptiveGroups(limit: 20, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [count_DESC]) {
+          dimensions { userAgentBrowser } count sum { visits }
+        }
+        operating_systems: rumPageloadEventsAdaptiveGroups(limit: 20, filter: {requestHost: $host, date_geq: $start, date_leq: $end}, orderBy: [count_DESC]) {
+          dimensions { userAgentOS } count sum { visits }
         }
       } }
     }"""
@@ -85,10 +103,42 @@ def fetch_cloudflare(config: dict) -> dict:
     accounts = result.get("data", {}).get("viewer", {}).get("accounts", [])
     if not accounts:
         raise RuntimeError("Cloudflare returned no accessible account; this is not zero traffic")
-    groups = accounts[0]["rumPageloadEventsAdaptiveGroups"]
+    acct = accounts[0]
+    groups = acct.get("daily") or acct.get("rumPageloadEventsAdaptiveGroups") or []
     rows = [{"date": g["dimensions"]["date"], "pageviews": g["count"], "visits": g["sum"]["visits"]} for g in groups]
+
+    def _parse_breakdown(nodes: list[dict], dim_key: str, out_key: str, default: str) -> list[dict]:
+        return [
+            {
+                out_key: g.get("dimensions", {}).get(dim_key) or default,
+                "pageviews": g.get("count", 0),
+                "visits": g.get("sum", {}).get("visits", 0),
+            }
+            for g in nodes
+            if g.get("count", 0) > 0
+        ]
+
+    breakdowns = {
+        "page": _parse_breakdown(acct.get("pages", []), "requestPath", "page", "/"),
+        "referer": _parse_breakdown(acct.get("referrers", []), "refererHost", "referer", "(direct / none)"),
+        "country": _parse_breakdown(acct.get("countries", []), "countryName", "country", "Unknown"),
+        "device": _parse_breakdown(acct.get("devices", []), "deviceType", "device", "unknown"),
+        "browser": _parse_breakdown(acct.get("browsers", []), "userAgentBrowser", "browser", "unknown"),
+        "operating_system": _parse_breakdown(acct.get("operating_systems", []), "userAgentOS", "operating_system", "unknown"),
+    }
     status = "live" if rows else "collection_disabled" if collection_enabled is False else "no_observations"
-    return {"status": status, "source": "Cloudflare Web Analytics / RUM", "host": host, "timezone": "UTC", "window": {"start": start, "end": end}, "collection_enabled": collection_enabled, "rows": rows, "comparison": compare_days(rows, start, split, end, ["pageviews", "visits"]) if rows else None, "note": "Adaptive estimates of recorded browser beacons. Visits are not unique users. No historical backfill before collection was enabled."}
+    return {
+        "status": status,
+        "source": "Cloudflare Web Analytics / RUM",
+        "host": host,
+        "timezone": "UTC",
+        "window": {"start": start, "end": end},
+        "collection_enabled": collection_enabled,
+        "rows": rows,
+        "comparison": compare_days(rows, start, split, end, ["pageviews", "visits"]) if rows else None,
+        "breakdowns": breakdowns,
+        "note": "Adaptive estimates of recorded browser beacons. Visits are not unique users. Self-traffic and internal browsing are not filtered automatically by RUM; referer '(direct / none)' and matching owner browser/OS environment indicate potential self-visits. No historical backfill before collection was enabled."
+    }
 
 
 def fetch_gsc_table(prop: str, token: str, request: dict, dimensions: list[str]) -> dict:

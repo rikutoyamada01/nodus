@@ -42,6 +42,36 @@ class AnalyticsChecks(unittest.TestCase):
         self.assertEqual(result["rows"], [])
         self.assertIn("start", result["window"])
 
+    @patch.dict(os.environ, {"CLOUDFLARE_API_TOKEN": "test-only", "CLOUDFLARE_ACCOUNT_ID": "test-account"}, clear=True)
+    @patch.object(analytics, "cloudflare_request")
+    def test_cloudflare_breakdowns_and_aliased_queries(self, request):
+        account_data = {
+            "daily": [{"dimensions": {"date": "2026-10-16"}, "count": 10, "sum": {"visits": 10}}],
+            "pages": [{"dimensions": {"requestPath": "/articles/foo.html"}, "count": 6, "sum": {"visits": 6}}, {"dimensions": {"requestPath": "/"}, "count": 4, "sum": {"visits": 4}}],
+            "referrers": [{"dimensions": {"refererHost": None}, "count": 8, "sum": {"visits": 8}}, {"dimensions": {"refererHost": "google.com"}, "count": 2, "sum": {"visits": 2}}],
+            "countries": [{"dimensions": {"countryName": "Japan"}, "count": 10, "sum": {"visits": 10}}],
+            "devices": [{"dimensions": {"deviceType": "desktop"}, "count": 10, "sum": {"visits": 10}}],
+            "browsers": [{"dimensions": {"userAgentBrowser": "Chrome"}, "count": 10, "sum": {"visits": 10}}],
+            "operating_systems": [{"dimensions": {"userAgentOS": "Windows"}, "count": 10, "sum": {"visits": 10}}],
+        }
+        request.side_effect = [
+            {"result": {"build_config": {"web_analytics_token": "test-beacon"}}},
+            {"data": {"viewer": {"accounts": [account_data]}}},
+        ]
+        result = analytics.fetch_cloudflare({"site": {"base_url": "https://nodus-lab.pages.dev"}})
+        self.assertEqual(result["status"], "live")
+        self.assertEqual(len(result["rows"]), 1)
+        self.assertEqual(result["rows"][0]["pageviews"], 10)
+        self.assertIn("breakdowns", result)
+        self.assertEqual(result["breakdowns"]["page"][0], {"page": "/articles/foo.html", "pageviews": 6, "visits": 6})
+        self.assertEqual(result["breakdowns"]["referer"][0], {"referer": "(direct / none)", "pageviews": 8, "visits": 8})
+        self.assertEqual(result["breakdowns"]["referer"][1], {"referer": "google.com", "pageviews": 2, "visits": 2})
+        self.assertEqual(result["breakdowns"]["country"][0], {"country": "Japan", "pageviews": 10, "visits": 10})
+        self.assertEqual(result["breakdowns"]["device"][0], {"device": "desktop", "pageviews": 10, "visits": 10})
+        self.assertEqual(result["breakdowns"]["browser"][0], {"browser": "Chrome", "pageviews": 10, "visits": 10})
+        self.assertEqual(result["breakdowns"]["operating_system"][0], {"operating_system": "Windows", "pageviews": 10, "visits": 10})
+
+
     @patch.object(analytics, "datetime", wraps=datetime)
     @patch.object(analytics, "resolve_gsc_access_token", return_value="test-only")
     @patch.object(analytics, "_gsc_query_rest")
