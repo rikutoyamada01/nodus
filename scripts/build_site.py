@@ -159,6 +159,54 @@ def build_js() -> str:
 (function () {
   "use strict";
 
+  /* Self-traffic / Admin analytics exclusion */
+  try {
+    var search = window.location.search || "";
+    if (search.indexOf("admin=1") !== -1 || search.indexOf("admin=true") !== -1 || search.indexOf("preview=1") !== -1) {
+      localStorage.setItem("nodus_admin_mode", "1");
+    } else if (search.indexOf("admin=0") !== -1) {
+      localStorage.removeItem("nodus_admin_mode");
+    }
+
+    var isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    if (isLocal || localStorage.getItem("nodus_admin_mode") === "1") {
+      if (typeof console !== "undefined" && console.info) {
+        console.info("[Nodus] Admin mode: Analytics beacon suppressed.");
+      }
+      if (navigator && navigator.sendBeacon) {
+        var rawSendBeacon = navigator.sendBeacon.bind(navigator);
+        navigator.sendBeacon = function (url, data) {
+          if (typeof url === "string" && url.indexOf("cloudflareinsights.com") !== -1) {
+            return true;
+          }
+          return rawSendBeacon(url, data);
+        };
+      }
+      if (window.fetch) {
+        var rawFetch = window.fetch.bind(window);
+        window.fetch = function (input, init) {
+          var url = typeof input === "string" ? input : (input && input.url ? input.url : "");
+          if (typeof url === "string" && url.indexOf("cloudflareinsights.com") !== -1) {
+            return Promise.resolve(new Response("", { status: 204, statusText: "No Content" }));
+          }
+          return rawFetch(input, init);
+        };
+      }
+      if (window.XMLHttpRequest) {
+        var rawOpen = window.XMLHttpRequest.prototype.open;
+        window.XMLHttpRequest.prototype.open = function (method, url) {
+          if (typeof url === "string" && url.indexOf("cloudflareinsights.com") !== -1) {
+            this.send = function () {};
+            return;
+          }
+          return rawOpen.apply(this, arguments);
+        };
+      }
+    }
+  } catch (e) {
+    /* Ignore storage/sandbox restrictions */
+  }
+
   function initIndexFilters() {
     var filterBtns = document.querySelectorAll(".filter-btn[data-filter]");
     var searchInput = document.getElementById("datasetSearch");

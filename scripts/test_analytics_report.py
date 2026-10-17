@@ -70,6 +70,30 @@ class AnalyticsChecks(unittest.TestCase):
         self.assertEqual(result["breakdowns"]["device"][0], {"device": "desktop", "pageviews": 10, "visits": 10})
         self.assertEqual(result["breakdowns"]["browser"][0], {"browser": "Chrome", "pageviews": 10, "visits": 10})
         self.assertEqual(result["breakdowns"]["operating_system"][0], {"operating_system": "Windows", "pageviews": 10, "visits": 10})
+        self.assertIn("audit", result)
+        self.assertEqual(result["audit"]["clean_external_traffic"]["visits"], 10)
+
+    @patch.dict(os.environ, {"CLOUDFLARE_API_TOKEN": "test-only", "CLOUDFLARE_ACCOUNT_ID": "test-account"}, clear=True)
+    @patch.object(analytics, "cloudflare_request")
+    def test_cloudflare_audit_detects_pure_self_verification(self, request):
+        account_data = {
+            "daily": [{"dimensions": {"date": "2026-10-16"}, "count": 10, "sum": {"visits": 10}}],
+            "pages": [{"dimensions": {"requestPath": "/"}, "count": 10, "sum": {"visits": 10}}],
+            "referrers": [{"dimensions": {"refererHost": None}, "count": 10, "sum": {"visits": 10}}],
+            "countries": [{"dimensions": {"countryName": "JP"}, "count": 10, "sum": {"visits": 10}}],
+            "devices": [{"dimensions": {"deviceType": "desktop"}, "count": 10, "sum": {"visits": 10}}],
+            "browsers": [{"dimensions": {"userAgentBrowser": "Chrome"}, "count": 10, "sum": {"visits": 10}}],
+            "operating_systems": [{"dimensions": {"userAgentOS": "Windows"}, "count": 10, "sum": {"visits": 10}}],
+        }
+        request.side_effect = [
+            {"result": {"build_config": {"web_analytics_token": "test-beacon"}}},
+            {"data": {"viewer": {"accounts": [account_data]}}},
+        ]
+        result = analytics.fetch_cloudflare({"site": {"base_url": "https://nodus-lab.pages.dev"}})
+        self.assertEqual(result["audit"]["verified_self_traffic"]["visits"], 10)
+        self.assertEqual(result["audit"]["clean_external_traffic"]["visits"], 0)
+        self.assertIsNotNone(result["audit"]["verified_self_traffic"]["detected_signature"])
+
 
 
     @patch.object(analytics, "datetime", wraps=datetime)

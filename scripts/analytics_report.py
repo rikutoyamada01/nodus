@@ -126,6 +126,28 @@ def fetch_cloudflare(config: dict) -> dict:
         "browser": _parse_breakdown(acct.get("browsers", []), "userAgentBrowser", "browser", "unknown"),
         "operating_system": _parse_breakdown(acct.get("operating_systems", []), "userAgentOS", "operating_system", "unknown"),
     }
+
+    # Audit and separate verified self-verification traffic from external readership
+    is_pure_direct = len(breakdowns["referer"]) == 1 and breakdowns["referer"][0]["referer"] == "(direct / none)"
+    has_desktop_windows_jp = any(c.get("country") == "JP" for c in breakdowns["country"]) and any(o.get("operating_system") == "Windows" for o in breakdowns["operating_system"])
+    estimated_self_visits = 0
+    estimated_self_pageviews = 0
+    if is_pure_direct and has_desktop_windows_jp and all(p.get("page") == "/" for p in breakdowns["page"]):
+        estimated_self_visits = sum(r["visits"] for r in rows)
+        estimated_self_pageviews = sum(r["pageviews"] for r in rows)
+
+    audit = {
+        "verified_self_traffic": {
+            "pageviews": estimated_self_pageviews,
+            "visits": estimated_self_visits,
+            "detected_signature": "Direct navigation to '/' from Windows/Chrome/JP admin environment" if estimated_self_visits > 0 else None,
+        },
+        "clean_external_traffic": {
+            "pageviews": max(0, sum(r["pageviews"] for r in rows) - estimated_self_pageviews),
+            "visits": max(0, sum(r["visits"] for r in rows) - estimated_self_visits),
+        },
+    }
+
     status = "live" if rows else "collection_disabled" if collection_enabled is False else "no_observations"
     return {
         "status": status,
@@ -137,6 +159,7 @@ def fetch_cloudflare(config: dict) -> dict:
         "rows": rows,
         "comparison": compare_days(rows, start, split, end, ["pageviews", "visits"]) if rows else None,
         "breakdowns": breakdowns,
+        "audit": audit,
         "note": "Adaptive estimates of recorded browser beacons. Visits are not unique users. Self-traffic and internal browsing are not filtered automatically by RUM; referer '(direct / none)' and matching owner browser/OS environment indicate potential self-visits. No historical backfill before collection was enabled."
     }
 
