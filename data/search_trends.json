@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-18T22:47:20.430974",
+  "generated_at": "2026-10-20T00:07:00.209208",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -446,9 +446,9 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
-        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
-        "mac ローカルllm コーディング"
+        "mac ローカルllm コーディング",
+        "mac ローカルllm mlx"
       ],
       "title_optimization_opportunities": [
         {
@@ -475,13 +475,6 @@
           ]
         },
         {
-          "query": "mac ローカルllm mlx",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mlx"
-          ]
-        },
-        {
           "query": "mac ローカルllm 構築",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -493,6 +486,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "コーディング"
+          ]
+        },
+        {
+          "query": "mac ローカルllm mlx",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mlx"
           ]
         }
       ]
@@ -684,136 +684,136 @@
   ],
   "zenn_daily_trending": [
     {
-      "title": "良いテストを書き、良いテストを見分ける ─『単体テストの考え方/使い方』のエッセンス",
-      "liked_count": 146,
+      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
+      "liked_count": 16,
       "comments_count": 1,
-      "url": "https://zenn.dev/nexta_/articles/unit-testing-principles-essence",
-      "published_at": "2026-10-13"
+      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
+      "published_at": "2026-10-19"
     },
     {
-      "title": "ベクトルDBを使わない「階層ナビゲーション型RAG」を作って、ベクトルDB版RAGと比較してみた",
-      "liked_count": 26,
-      "comments_count": 0,
-      "url": "https://zenn.dev/aiforall/articles/8e1803396534de",
+      "title": "有名 OSS が PR を閉じはじめた。何が起きていて、どう向き合うか",
+      "liked_count": 87,
+      "comments_count": 2,
+      "url": "https://zenn.dev/hand_dot/articles/ecb391d4322330",
       "published_at": "2026-10-16"
     },
     {
       "title": "ポートフォリオをVoidで作り直したので、Voidの来歴と中身を整理する",
-      "liked_count": 29,
+      "liked_count": 46,
       "comments_count": 0,
       "url": "https://zenn.dev/nkzn/articles/my-first-void",
       "published_at": "2026-10-16"
     },
     {
       "title": "技術書を年に数冊しか買わない自分に、O'Reillyのサブスク年$150は割に合うか（ACM経由で契約してMCPまで）",
-      "liked_count": 20,
-      "comments_count": 0,
+      "liked_count": 41,
+      "comments_count": 1,
       "url": "https://zenn.dev/sonicmoov/articles/oreilly-subscription-acm",
       "published_at": "2026-10-16"
     },
     {
       "title": "改めて考える、AIエンジニアリングの今",
-      "liked_count": 77,
+      "liked_count": 89,
       "comments_count": 2,
       "url": "https://zenn.dev/r_kaga/articles/2fd185c50cea7c",
       "published_at": "2026-10-15"
     },
     {
-      "title": "有名 OSS が PR を閉じはじめた。何が起きていて、どう向き合うか",
-      "liked_count": 78,
-      "comments_count": 1,
-      "url": "https://zenn.dev/hand_dot/articles/ecb391d4322330",
+      "title": "ベクトルDBを使わない「階層ナビゲーション型RAG」を作って、ベクトルDB版RAGと比較してみた",
+      "liked_count": 35,
+      "comments_count": 0,
+      "url": "https://zenn.dev/aiforall/articles/8e1803396534de",
       "published_at": "2026-10-16"
     },
     {
-      "title": "コネクタも API も無いサービスを、Claude Code に操作させる",
-      "liked_count": 18,
+      "title": "「止まっている案件はどれ?」にSQLで答える。Snowflake Cortex AIで議事録を自動分類する",
+      "liked_count": 2,
       "comments_count": 0,
-      "url": "https://zenn.dev/edash_tech_blog/articles/6250fc61ccf009",
-      "published_at": "2026-10-16"
+      "url": "https://zenn.dev/fusic/articles/snowflake-ai-parse-document-minutes",
+      "published_at": "2026-10-19"
     },
     {
-      "title": "国産モデル sarashina3-mini は日本語の推敲で何を変えるのか？",
-      "liked_count": 18,
-      "comments_count": 0,
-      "url": "https://zenn.dev/algoartis/articles/03ca12150ccbee",
-      "published_at": "2026-10-15"
-    },
-    {
-      "title": "リトルの法則で考える障害時のキャパシティプランニング",
+      "title": "クエリキーも型安全に変換するユーティリティを作った",
       "liked_count": 0,
       "comments_count": 0,
-      "url": "https://zenn.dev/rea9r/articles/littles-law-capacity-planning",
-      "published_at": "2026-10-18"
+      "url": "https://zenn.dev/castingone_dev/articles/typesafe_query_key_converter",
+      "published_at": "2026-10-19"
     },
     {
-      "title": "ClaudeにiOSシミュレーターのスクリーンショットを読ませるのをやめて、操作で増えるコンテキストを43%削減した",
-      "liked_count": 1,
+      "title": "ドメインの境界を引くだけでは、業務はつながらない",
+      "liked_count": 11,
       "comments_count": 0,
-      "url": "https://zenn.dev/eai/articles/dont-let-agents-see-the-ios-sim-screen",
-      "published_at": "2026-10-18"
+      "url": "https://zenn.dev/dress_code/articles/4a76f1b88e360d",
+      "published_at": "2026-10-19"
+    },
+    {
+      "title": "個人で使うClaude Codeの権限設定についてざっくり見直してみた",
+      "liked_count": 2,
+      "comments_count": 0,
+      "url": "https://zenn.dev/takyshu98/articles/915702cf8c84f3",
+      "published_at": "2026-10-19"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "DeepSeek search and fetch – $0.75 per 1000 successful requests",
-      "points": 517,
-      "num_comments": 249,
-      "url": "https://api-docs.deepseek.com/guides/search/"
+      "title": "Timestral: Mistral's time-series foundation models",
+      "points": 531,
+      "num_comments": 98,
+      "url": "https://mistral.ai/news/timestral/"
     },
     {
-      "title": "How the Elizabeth Holmes documentary “You Can See Everything” is deceiving",
-      "points": 346,
-      "num_comments": 484,
-      "url": "https://www.readtheprofile.com/p/elizabeth-holmes-documentary-you-can-see-everything"
-    },
-    {
-      "title": "Namecheap just seized and disabled all my domains",
-      "points": 337,
+      "title": "Wine ported to OpenBSD",
+      "points": 485,
       "num_comments": 162,
-      "url": "https://www.reddit.com/r/sysadmin/comments/1x8cycd/namecheap_just_seized_and_disabled_all_my_domains/"
+      "url": "https://marc.info/?l=openbsd-ports&m=179236125692175"
     },
     {
-      "title": "RepRapMicron",
-      "points": 311,
-      "num_comments": 47,
-      "url": "https://github.com/VikOlliver/RepRapMicron/wiki"
+      "title": "It's still ok to enjoy programming",
+      "points": 403,
+      "num_comments": 384,
+      "url": "https://chriskiehl.com/article/it-is-still-ok-to-enjoy-programming"
     },
     {
-      "title": "Someone behind the software",
-      "points": 253,
-      "num_comments": 109,
-      "url": "https://karrisaarinen.com/posts/someone-behind-the-software/"
+      "title": "MiniMax M3.1 Flash",
+      "points": 348,
+      "num_comments": 151,
+      "url": "https://www.minimax.io/blog/minimax-m31f"
     },
     {
-      "title": "Show HN: Sphinx – A hook that quizzes you on your AI's code before shipping",
-      "points": 237,
-      "num_comments": 80,
-      "url": "https://sphinx-six-theta.vercel.app/"
+      "title": "I built a drone with only one motor [video]",
+      "points": 341,
+      "num_comments": 64,
+      "url": "https://www.youtube.com/watch?v=Ndftcft6XhU"
     },
     {
-      "title": "Parser Combinators",
-      "points": 214,
-      "num_comments": 77,
-      "url": "https://t3.at/blog/2026-10-17-parser-combinators/"
+      "title": "Alternatives to animal testing are finally taking off",
+      "points": 309,
+      "num_comments": 92,
+      "url": "https://spectrum.ieee.org/alternatives-to-animal-testing"
     },
     {
-      "title": "Open MicroManipulator – A sub-micrometer 3D motion control plattform",
-      "points": 166,
-      "num_comments": 13,
-      "url": "https://github.com/0x23/MicroManipulatorStepper"
+      "title": "Starcraft: Ashfall",
+      "points": 277,
+      "num_comments": 96,
+      "url": "https://starcraft-shooter-2026.pages.dev/"
     },
     {
-      "title": "Teal – A statically-typed dialect of Lua",
-      "points": 153,
-      "num_comments": 63,
-      "url": "https://teal-language.org/"
+      "title": "Android apps running native on macOS",
+      "points": 241,
+      "num_comments": 113,
+      "url": "https://github.com/kksimp/Mac.apk"
     },
     {
-      "title": "Show HN: The Zelda timeline to catch up before the Ocarina of Time remake",
-      "points": 149,
-      "num_comments": 88,
-      "url": "https://legendofhyrule.com/"
+      "title": "Let's Encrypt is adding two additional remote perspectives for domain validation",
+      "points": 238,
+      "num_comments": 76,
+      "url": "https://community.letsencrypt.org/t/lets-encrypt-is-adding-two-additional-remote-perspectives-for-domain-validation/252166"
+    },
+    {
+      "title": "Ask HN: How to deal with shipping AI-written code you don't understand?",
+      "points": 226,
+      "num_comments": 366,
+      "url": "https://news.ycombinator.com/item?id=50151036"
     }
   ]
 }
