@@ -45,3 +45,9 @@
 ## 参考資料
 - [Home Assistant：ESPHome連携と完成済みデバイス](https://www.home-assistant.io/integrations/esphome/)
 - [Home Assistant：ハードウェア選びと導入](https://www.home-assistant.io/getting-started/)
+
+## 次に考えたいこと
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
+- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)

@@ -18,7 +18,7 @@
   "sample_size_n": 1029,
   "methodology_note": "HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。",
   "seo": {
-    "meta_title": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ | Nodus",
+    "meta_title": "??????RAG??????????????????????????????? | Nodus",
     "meta_description": "HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。",
     "target_keywords": [
       "マルチホップRAG ベクトル検索",
@@ -204,6 +204,23 @@
       "verified_date": "2026-10-03",
       "sample_size": "公式ベンチマーク仕様",
       "scope": "BridgeおよびComparisonの2種類からなるマルチホップ質問応答データセットの定義"
+    }
+  ],
+  "related_articles": [
+    {
+      "slug": "slot-parallel-sql-generation-dynamic-masking-benchmarks",
+      "title": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
+      "title": "DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "slug": "notebooklm-limits-sources-notebooks-sharing-guide",
+      "title": "NotebookLM、資料はどう分けて入れる？",
+      "category": "Software & SaaS Economics"
     }
   ]
 }

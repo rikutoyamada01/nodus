@@ -110,6 +110,16 @@
     {
       "slug": "cloud-backup-100gb-restore-egress-cost-comparison",
       "title": "安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較"
+    },
+    {
+      "slug": "gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide",
+      "title": "Search Consoleとアクセス解析、なぜ数字が合わない？",
+      "category": "Software & SaaS Economics"
+    },
+    {
+      "slug": "home-server-access-vpn-vs-cloudflare-tunnel-guide",
+      "title": "自宅アプリの共有、VPNとTunnelどっち？",
+      "category": "Cloud & AI Infrastructure"
     }
   ],
   "faqs": []

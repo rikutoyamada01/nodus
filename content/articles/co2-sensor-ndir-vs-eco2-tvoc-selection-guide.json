@@ -21,7 +21,7 @@
   "evidence_notice": "公式コンポーネント資料を確認 / センサー精度の実機比較測定なし",
   "methodology_note": "2026年10月16日にESPHome公式ドキュメント（Sensirion SCD4XおよびSGP30コンポーネント仕様）を確認して整理した記事です。各センサーモジュールの実売価格調査や同一室内での数値比較テストは行っていません。",
   "seo": {
-    "meta_title": "自作CO₂センサーの選び方：光学式（SCD40/SCD41）と推定eCO₂（SGP30等）の違い | Nodus",
+    "meta_title": "??CO2?????????????SCD40/SCD41????eCO2?SGP30????? | Nodus",
     "meta_description": "ESP32やESPHomeで室内の換気モニターを自作する際に知っておきたい、CO₂直接測定センサー（SCD4X等）とVOCから算出する推定二酸化炭素（eCO₂ / CO₂eq）センサー（SGP30等）の違い、校正・配置の注意点を解説します。",
     "target_keywords": [
       "CO2センサー 自作 SCD40",

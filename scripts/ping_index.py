@@ -31,7 +31,6 @@ def collect_canonical_urls(base_url: str) -> list[str]:
     base = base_url.rstrip("/")
     urls = [
         f"{base}/",
-        f"{base}/index.html",
         f"{base}/about",
         f"{base}/sitemap.xml",
         f"{base}/llms.txt",

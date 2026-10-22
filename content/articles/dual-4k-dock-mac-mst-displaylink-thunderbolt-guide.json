@@ -21,7 +21,7 @@
   "evidence_notice": "公式Appleサポート仕様を確認 / 個別ドックの実機測定なし",
   "methodology_note": "2026年10月16日にApple公式サポート文書（MacBook Proに接続できるディスプレイの台数）を確認して整理した記事です。特定のサードパーティ製ドック製品での相性テストは行っていません。",
   "seo": {
-    "meta_title": "Macでデュアル4Kドックを使う注意点：外部ディスプレイ台数上限とThunderboltの確認 | Nodus",
+    "meta_title": "Mac????????????4K?????????????Thunderbolt??? | Nodus",
     "meta_description": "Windows用の「デュアル4K対応USB-Cドック」をMacBookにつなぐと別々の画面に拡張できない場合がある理由を解説。Appleシリコン（無印チップとPro/Maxチップ）の外部ディスプレイ台数上限の確認方法を公式サポート情報から整理します。",
     "target_keywords": [
       "Mac デュアルディスプレイ ドック 映らない",

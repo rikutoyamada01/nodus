@@ -282,6 +282,8 @@ def validate_all() -> dict[str, object]:
                 raise ValueError(f"{html_path.name}: contains inline executable <script> tag")
         if "example.com" in content:
             raise ValueError(f"{html_path.name}: contains placeholder 'example.com'")
+        if re.search(r'href="(?:[^"]*articles/[^"]+\.html|(?:\.\./)?index\.html)"', content):
+            raise ValueError(f"{html_path.name}: contains non-canonical .html internal link")
         if "rikutoyamada" in content.lower():
             raise ValueError(f"{html_path.name}: leaks personal GitHub username or private repo link")
         if monetized:

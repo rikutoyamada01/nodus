@@ -83,7 +83,14 @@ jobs:
           GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
         run: |
           if [ -n "$GSC_ACCESS_TOKEN" ] || { [ -n "$GSC_CLIENT_ID" ] && [ -n "$GSC_CLIENT_SECRET" ] && [ -n "$GSC_REFRESH_TOKEN" ]; }; then
-            python scripts/seo_loop.py --apply
+            python scripts/seo_loop.py --apply || {
+              rc=$?
+              if [ "$rc" -eq 2 ]; then
+                echo "::warning::Live GSC telemetry unavailable (exit 2); skipping SEO article rewrites and continuing pipeline."
+              else
+                exit "$rc"
+              fi
+            }
           else
             echo "::warning::Search Console credentials are missing. SEO changes were skipped; no sample data was used."
           fi

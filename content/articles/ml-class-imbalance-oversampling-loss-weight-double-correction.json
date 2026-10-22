@@ -22,7 +22,7 @@
   "evidence_notice": "公式scikit-learn・PyTorch設計原則を確認 / 特定データセットの普遍保証なし",
   "methodology_note": "2026年10月16日にscikit-learnの評価・不均衡データガイドラインを確認し、エポック内の全件通過保証とサンプラー・損失重みの切り分け設計を整理した記事です。",
   "seo": {
-    "meta_title": "機械学習の不均衡データで「オーバーサンプリング」と「損失重み」を二重に掛けると何が起きるか：全件通過を守る学習設計 | Nodus",
+    "meta_title": "???????WeightedRandomSampler???????????PyTorch???? | Nodus",
     "meta_description": "クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。",
     "target_keywords": [
       "WeightedRandomSampler 重複",

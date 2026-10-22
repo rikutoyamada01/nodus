@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の41件集計、機種別の持続速度・温度・キャッシュ容量、Mac全機種への速度の一般化は、採用データと条件を追跡できないため撤回しました。完成品と組み合わせ型の選び方へ改訂しました。",
   "seo": {
-    "meta_title": "外付けSSDは完成品か、ケースと中身を別々に買うか | Nodus",
+    "meta_title": "???SSD???????????????USB4???????????? | Nodus",
     "meta_description": "USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。",
     "target_keywords": [
       "外付けSSD 自作 完成品 比較",
@@ -117,6 +117,16 @@
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
       "title": "ローカルLLM用に買うなら、MacかGPUか"
+    },
+    {
+      "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
+      "title": "100W・140W充電器は必要？ ポート配分と使い方から選ぶ",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests",
+      "title": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方",
+      "category": "Hardware & Power Electronics"
     }
   ]
 }

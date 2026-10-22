@@ -52,3 +52,4 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 ## 次に考えたいこと
 - [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
 - [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)

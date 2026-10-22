@@ -21,7 +21,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の74環境集計、機種別tok/s、ワット効率、VRAMに収まる条件の断定は、採用した測定と集計手順を再現できないため撤回しました。必要なメモリと測定条件を確認する選び方へ改訂しました。",
   "seo": {
-    "meta_title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方 | Nodus",
+    "meta_title": "Mac?????LLM?Ollama???????????GPU????? | Nodus",
     "meta_description": "MacでローカルLLMを始めるOllamaの手順、Apple SiliconとIntelの対応、必要メモリの考え方、メモリ不足の確認方法を解説。GPU搭載PCとの比較は、使うモデル・待ち時間・費用をそろえて判断します。",
     "target_keywords": [
       "Mac ローカルLLM",
@@ -232,6 +232,16 @@
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
       "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+    },
+    {
+      "slug": "ollama-context-length-vram-default-memory-guide",
+      "title": "Ollamaの文脈長、既定値は何トークン？",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "slug": "dual-4k-dock-mac-mst-displaylink-thunderbolt-guide",
+      "title": "デュアル4Kドック、Macでも2画面になる？",
+      "category": "Hardware & Power Electronics"
     }
   ]
 }

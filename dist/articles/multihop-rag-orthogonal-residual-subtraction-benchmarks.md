@@ -61,3 +61,8 @@ HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエ�
 ## 参考資料
 - [Nodus 一次検証生ログ：HotpotQA 多重プローブ到達率・局所残差・隠れ状態パイロット測定データ (JSON)](https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json)
 - [HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering](https://hotpotqa.github.io/)
+
+## 次に考えたいこと
+- [自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁](https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks)
+- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [NotebookLM、資料はどう分けて入れる？](https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide)

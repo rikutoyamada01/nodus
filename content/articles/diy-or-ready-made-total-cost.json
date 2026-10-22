@@ -19,8 +19,8 @@
   "sample_size_n": 0,
   "methodology_note": "公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。",
   "seo": {
-    "meta_title": "それ、自作したほうが安い？ | Nodus",
-    "meta_description": "温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。",
+    "meta_title": "????????????????????????????????? | Nodus",
+    "meta_description": "??????????????????ESP32?????????????????????????????????????????????????????????????",
     "target_keywords": [
       "それ、自作したほうが安い？"
     ],
@@ -98,5 +98,27 @@
       "sample_size": 0
     }
   ],
-  "faqs": []
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "esp32-c3-s3-c6-which-board-to-choose",
+      "title": "ESP32、結局どれを買えばいい？",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
+      "title": "CO₂センサー、実測式と推定式の見分け方は？",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
+      "title": "100W・140W充電器は必要？ ポート配分と使い方から選ぶ",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
+      "title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
+      "category": "Hardware & Power Electronics"
+    }
+  ]
 }

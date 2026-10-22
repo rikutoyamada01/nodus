@@ -93,3 +93,5 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 ## 次に考えたいこと
 - [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
 - [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [ColabのGPUは何時間使える？ CUと完了までの費用の考え方](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks)
+- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)

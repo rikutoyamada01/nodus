@@ -160,6 +160,11 @@ HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエ�
 - [Nodus 一次検証生ログ：HotpotQA 多重プローブ到達率・局所残差・隠れ状態パイロット測定データ (JSON)](https://nodus-lab.pages.dev/logs/multihop-rag-orthogonal-residual-subtraction-benchmarks.json)
 - [HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering](https://hotpotqa.github.io/)
 
+## 次に考えたいこと
+- [自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁](https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks)
+- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [NotebookLM、資料はどう分けて入れる？](https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide)
+
 
 ---
 
@@ -230,6 +235,11 @@ A. はい。マスクなしでは未知スキーマに対して存在しない�
 ## 参考資料
 - [Nodus 一次検証生ログ：Slot-Parallel SQL生成エンジン クロスDB（未知4ドメイン60クエリ）評価データ (JSON)](https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json)
 - [SQLite Official Documentation: Query Language Understood by SQLite](https://www.sqlite.org/lang.html)
+
+## 次に考えたいこと
+- [マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
+- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [LLM APIの速さは、何を測って比べればいい？](https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks)
 
 
 ---
@@ -459,6 +469,8 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 ## 次に考えたいこと
 - [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
 - [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
+- [HDD 2台、ミラーリングと別バックアップどっち？](https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide)
+- [Dockerのバックアップ、フォルダコピーで戻る？](https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope)
 
 
 ---
@@ -510,6 +522,8 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 
 ## 次に考えたいこと
 - [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [Search Consoleとアクセス解析、なぜ数字が合わない？](https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide)
+- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
 
 
 ---
@@ -1531,6 +1545,7 @@ AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています
 - [常駐AI用ならラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
 - [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
 - [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
 
 
 ---
@@ -1608,6 +1623,7 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 - [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
 - [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
 - [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
+- [不均衡データの二重補正と未抽選データの罠](https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction)
 
 
 ---
@@ -2215,6 +2231,7 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 ## 次に考えたいこと
 - [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
 - [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
 
 
 ---
@@ -2583,6 +2600,12 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 - [Home Assistant：ESPHome連携と完成済みデバイス](https://www.home-assistant.io/integrations/esphome/)
 - [Home Assistant：ハードウェア選びと導入](https://www.home-assistant.io/getting-started/)
 
+## 次に考えたいこと
+- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
+- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
+
 
 ---
 
@@ -2632,6 +2655,12 @@ C6は2.4GHzのWi-Fi 6と802.15.4を備えます。ThreadやZigbeeを使いたい
 ## 参考資料
 - [Espressif：ESP32シリーズの機能比較](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 - [Espressif：ESP32-C6 データシート](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf)
+
+## 次に考えたいこと
+- [ESP32の電池駆動、なぜ計算より早く切れる？](https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current)
+- [ESP32-S3の2つのUSB端子、どっちに挿す？](https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide)
+- [ESP32-C6、単体でThreadにつながる？](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
+- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
 
 
 ---
@@ -2693,6 +2722,8 @@ SSDとケースの値段に、送料、必要なケーブル、放熱パッド�
 ## 次に考えたいこと
 - [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
 - [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方](https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests)
 
 
 ---
@@ -2792,6 +2823,8 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 ## 次に考えたいこと
 - [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
 - [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [ColabのGPUは何時間使える？ CUと完了までの費用の考え方](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks)
+- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
 
 
 ---
@@ -3018,6 +3051,8 @@ GPUの増設では、必要な電源、ケース、冷却、騒音も含めま�
 ## 次に考えたいこと
 - [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
 - [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [Ollamaの文脈長、既定値は何トークン？](https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide)
+- [デュアル4Kドック、Macでも2画面になる？](https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide)
 
 
 ---

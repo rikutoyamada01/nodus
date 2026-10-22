@@ -21,7 +21,7 @@
   "evidence_notice": "公式ドキュメント・FAQを確認 / 実機でのVRAM消費量測定なし",
   "methodology_note": "2026年10月16日にOllama公式ドキュメント（Context length、FAQ、CLI Reference）を確認して整理した記事です。コンテキスト長ページ（VRAM別4k/32k/256k）とFAQページ（4096トークン）の記載差も含めて照合しています。各モデルでの実測メモリ消費量や生成速度は測定していません。",
   "seo": {
-    "meta_title": "Ollamaのコンテキスト長（num_ctx）既定値と変更方法：VRAM別上限と確認手順 | Nodus",
+    "meta_title": "Ollama?????????num_ctx?????????VRAM???????? | Nodus",
     "meta_description": "OllamaでローカルLLMを使う際のコンテキスト長（Context length）の既定値（VRAM 24GiB未満は4k等）、OLLAMA_CONTEXT_LENGTHやnum_ctxでの変更方法、ollama psでのGPU/CPU割当確認手順を解説します。",
     "target_keywords": [
       "Ollama コンテキスト長",

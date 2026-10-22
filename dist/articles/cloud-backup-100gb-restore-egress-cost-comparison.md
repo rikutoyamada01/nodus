@@ -55,3 +55,5 @@
 ## 次に考えたいこと
 - [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
 - [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
+- [HDD 2台、ミラーリングと別バックアップどっち？](https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide)
+- [Dockerのバックアップ、フォルダコピーで戻る？](https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope)

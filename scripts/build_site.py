@@ -880,7 +880,7 @@ def render_article_page(
   <div class="container article-layout">
     <main id="main-content" class="article-sheet">
       <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="../index.html">Nodus</a> &rsaquo; <span>{esc(article["category"])}</span>
+        <a href="../">Nodus</a> &rsaquo; <span>{esc(article["category"])}</span>
       </nav>
 
       <div class="article-meta-top">
@@ -1127,7 +1127,7 @@ def render_index(articles, config):
           <div class="intro-kicker">NODUS / NOTES ON MAKING &amp; CHOOSING</div>
           <h1>買う、作る、<br>その前に。</h1>
           <p>安いボードを買って、結局高くついた。<br>便利なサブスク。でも、自分で動かしたらどうだろう。<br>そんな迷いを、費用と使い道からほどく技術ノートです。</p>
-        </div><div class="intro-note"><strong>値札の先まで、考える。</strong>部品代だけでなく、電気代、作る時間、使い続ける手間まで。自分に合う選択のために、条件をそろえて比べます。<p>手持ちのMacから試したい人へ。<a href="articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt.html">MacでローカルLLMを使うには</a>で、必要メモリと機器選びを整理しました。</p></div></div></section>
+        </div><div class="intro-note"><strong>値札の先まで、考える。</strong>部品代だけでなく、電気代、作る時間、使い続ける手間まで。自分に合う選択のために、条件をそろえて比べます。<p>手持ちのMacから試したい人へ。<a href="articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt">MacでローカルLLMを使うには</a>で、必要メモリと機器選びを整理しました。</p></div></div></section>
         <div class="container"><section class="featured" aria-labelledby="featured-title">
           <div class="featured-heading"><h2 id="featured-title">いま、考えたいこと</h2><span>まずは、この3つから</span></div>
           <div class="feature-grid">{''.join(features)}</div></section>

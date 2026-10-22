@@ -21,7 +21,7 @@
   "evidence_notice": "公式技術資料を確認 / 回線別の転送速度実測なし",
   "methodology_note": "2026年10月16日にTailscale公式ドキュメント（Connection types、Subnet routers）を確認して整理した記事です。特定のISPやモバイル回線における実測スループットやレイテンシの測定は行っていません。",
   "seo": {
-    "meta_title": "TailscaleでNAS転送が遅い原因の切り分け：Direct接続とDERP中継の確認 | Nodus",
+    "meta_title": "Tailscale?NAS???????????Direct???DERP????? | Nodus",
     "meta_description": "Tailscale経由で自宅NASやサーバーへのアクセスが遅いときに確認すべき3つの接続形態（Direct、DERPリレー、Peer Relay）を公式資料から解説。回線やNASを買い替える前の切り分け手順を整理します。",
     "target_keywords": [
       "Tailscale 遅い",

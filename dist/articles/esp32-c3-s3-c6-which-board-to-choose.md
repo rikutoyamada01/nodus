@@ -44,3 +44,9 @@ C6は2.4GHzのWi-Fi 6と802.15.4を備えます。ThreadやZigbeeを使いたい
 ## 参考資料
 - [Espressif：ESP32シリーズの機能比較](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 - [Espressif：ESP32-C6 データシート](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf)
+
+## 次に考えたいこと
+- [ESP32の電池駆動、なぜ計算より早く切れる？](https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current)
+- [ESP32-S3の2つのUSB端子、どっちに挿す？](https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide)
+- [ESP32-C6、単体でThreadにつながる？](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
+- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)

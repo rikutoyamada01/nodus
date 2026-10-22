@@ -121,6 +121,11 @@
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
       "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方"
+    },
+    {
+      "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
+      "title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
+      "category": "Hardware & Power Electronics"
     }
   ]
 }

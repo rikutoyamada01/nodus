@@ -1,15 +1,67 @@
 {
-  "generated_at": "2026-10-22T05:12:26.679601",
+  "generated_at": "2026-10-22T14:28:23.631286",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
       "seed": "USB-C 充電器 100W 140W 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 9,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "usb-c 充電器",
+        "usb-c 充電器 65w",
+        "usb-c 充電器 ダイソー",
+        "usb-c 充電器 100w",
+        "usb-c 充電器 複数ポート",
+        "usb-c 充電器 おすすめ",
+        "usb-c 充電器 薄型",
+        "usb-c 充電器 ケーブル付き",
+        "usb-c 充電器 3ポート",
+        "usb-c 充電器 iphone"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "usb-c 充電器 複数ポート",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "複数"
+          ]
+        },
+        {
+          "query": "usb-c 充電器 ケーブル付き",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ケーブル",
+            "付"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "usb-c 充電器 ダイソー",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ダイソー"
+          ]
+        },
+        {
+          "query": "usb-c 充電器 薄型",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "薄型"
+          ]
+        },
+        {
+          "query": "usb-c 充電器 iphone",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "iphone"
+          ]
+        }
+      ]
     },
     {
       "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
@@ -37,61 +89,292 @@
       "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
       "seed": "AIコーディング サブスク API 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 7,
+        "question_troubleshoot": 2,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "aiコーディング",
+        "aiコーディングとは",
+        "aiコーディングエージェント",
+        "aiコーディングツール",
+        "aiコーディング 無料",
+        "aiコーディング やり方",
+        "aiコーディング おすすめ",
+        "aiコーディングエージェント 無料",
+        "aiコーディング ランキング",
+        "aiコーディングエージェントとは"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "aiコーディング やり方",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "方"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "aiコーディングエージェント",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "コーディングエージェント"
+          ]
+        },
+        {
+          "query": "aiコーディングツール",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "コーディングツール"
+          ]
+        },
+        {
+          "query": "aiコーディング 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料"
+          ]
+        },
+        {
+          "query": "aiコーディングエージェント 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "コーディングエージェント",
+            "無料"
+          ]
+        },
+        {
+          "query": "aiコーディング ランキング",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ランキング"
+          ]
+        },
+        {
+          "query": "aiコーディングエージェントとは",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "コーディングエージェント"
+          ]
+        }
+      ]
     },
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
       "seed": "AIエージェント 常駐 VPS ミニPC",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
+      "intent_distribution": {
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "aiエージェント 常駐"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "aiエージェント 常駐",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "エージェント",
+            "常駐"
+          ]
+        }
+      ],
       "uncovered_content_gaps": []
     },
     {
       "slug": "antigravity-quota-5-hour-weekly-ai-credits-guide",
       "seed": "Antigravity 利用枠 上限",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
+      "intent_distribution": {
+        "metric_cost_spec": 3
+      },
+      "total_suggestions": 3,
+      "top_suggestions": [
+        "antigravity 利用枠",
+        "antigravity 利用枠 確認",
+        "google antigravity 利用枠"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "antigravity 利用枠 確認",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "確認"
+          ]
+        }
+      ],
       "uncovered_content_gaps": []
     },
     {
       "slug": "cloud-backup-100gb-restore-egress-cost-comparison",
       "seed": "クラウドバックアップ 復元 料金 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 5
+      },
+      "total_suggestions": 5,
+      "top_suggestions": [
+        "クラウドバックアップ 復元",
+        "iphone クラウドバックアップ 復元",
+        "ノートン クラウドバックアップ 復元",
+        "microsoft authenticator クラウドバックアップ 復元",
+        "キキ navi クラウドバックアップ 復元"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "iphone クラウドバックアップ 復元",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "iphone"
+          ]
+        },
+        {
+          "query": "ノートン クラウドバックアップ 復元",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ノートン"
+          ]
+        },
+        {
+          "query": "microsoft authenticator クラウドバックアップ 復元",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "microsoft",
+            "authenticator"
+          ]
+        },
+        {
+          "query": "キキ navi クラウドバックアップ 復元",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "キキ",
+            "navi"
+          ]
+        }
+      ]
     },
     {
       "slug": "cloudflare-pages-custom-domain-preview-url-indexing",
       "seed": "Cloudflare Pages 独自ドメイン pages.dev 検索",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 7,
+        "question_troubleshoot": 2,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "cloudflare pages",
+        "cloudflare pages 無料枠",
+        "cloudflare pages 使い方",
+        "cloudflare pages 廃止",
+        "cloudflare pagesとは",
+        "cloudflare pages 料金",
+        "cloudflare pages workers 違い",
+        "cloudflare pages 動的サイト",
+        "cloudflare pages 商用利用",
+        "cloudflare pages ドメイン"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "cloudflare pages 動的サイト",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "動的",
+            "サイト"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "cloudflare pages 無料枠",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料",
+            "枠"
+          ]
+        },
+        {
+          "query": "cloudflare pages 使い方",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "方"
+          ]
+        },
+        {
+          "query": "cloudflare pages 廃止",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "廃止"
+          ]
+        },
+        {
+          "query": "cloudflare pages 料金",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "料金"
+          ]
+        },
+        {
+          "query": "cloudflare pages workers 違い",
+          "intent": "comparison",
+          "missing_in_body": [
+            "workers",
+            "違"
+          ]
+        },
+        {
+          "query": "cloudflare pages 商用利用",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "商用利用"
+          ]
+        }
+      ]
     },
     {
       "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
       "seed": "CO2センサー 自作 eCO2 違い",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 4
+      },
+      "total_suggestions": 4,
+      "top_suggestions": [
+        "co2センサー 自作",
+        "co2センサー 自作 キット",
+        "co2センサー 自作 ラズパイ",
+        "co2センサー 自作 arduino"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "co2センサー 自作 キット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "キット"
+          ]
+        },
+        {
+          "query": "co2センサー 自作 ラズパイ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ラズパイ"
+          ]
+        },
+        {
+          "query": "co2センサー 自作 arduino",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "arduino"
+          ]
+        }
+      ]
     },
     {
       "slug": "cross-model-peer-audit-bug-detection-benchmarks",
@@ -119,60 +402,415 @@
       "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
       "seed": "DeepSeek Flash 最新 仕様",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 9
+      },
+      "total_suggestions": 9,
+      "top_suggestions": [
+        "deepseek flash v4",
+        "deepseek flash 0731",
+        "deepseek flash v4.1",
+        "deepseek flash 4.1",
+        "deepseek flash pro",
+        "deepseek flash v4 0731",
+        "deepseek flash api",
+        "deepseek flash vision",
+        "deepseek flash 价格"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "deepseek flash pro",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "pro"
+          ]
+        },
+        {
+          "query": "deepseek flash api",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "api"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "deepseek flash 0731",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "0731"
+          ]
+        },
+        {
+          "query": "deepseek flash v4 0731",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "0731"
+          ]
+        },
+        {
+          "query": "deepseek flash vision",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "vision"
+          ]
+        },
+        {
+          "query": "deepseek flash 价格",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "价格"
+          ]
+        }
+      ]
     },
     {
       "slug": "diy-or-ready-made-total-cost",
       "seed": "自作 既製品 コスパ",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 3
+      },
+      "total_suggestions": 3,
+      "top_suggestions": [
+        "pc 自作 既製品",
+        "ゲーミングpc 自作 既製品",
+        "nas 自作 既製品"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "pc 自作 既製品",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "pc"
+          ]
+        },
+        {
+          "query": "ゲーミングpc 自作 既製品",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ゲーミング",
+            "pc"
+          ]
+        },
+        {
+          "query": "nas 自作 既製品",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "nas"
+          ]
+        }
+      ]
     },
     {
       "slug": "docker-volume-bind-mount-backup-restore-scope",
       "seed": "Docker バックアップ Volume フォルダコピー",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "docker バックアップ",
+        "docker バックアップ方法",
+        "docker バックアップ リストア",
+        "docker volume バックアップ",
+        "docker コンテナ バックアップ",
+        "gitlab docker バックアップ",
+        "growi docker バックアップ",
+        "redmine docker バックアップ",
+        "ubuntu docker バックアップ",
+        "nextcloud docker バックアップ"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "バックアップ"
+          ]
+        },
+        {
+          "query": "docker volume バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "バックアップ"
+          ]
+        },
+        {
+          "query": "docker コンテナ バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "コンテナ",
+            "バックアップ"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "docker バックアップ方法",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "方法"
+          ]
+        },
+        {
+          "query": "docker バックアップ リストア",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "リストア"
+          ]
+        },
+        {
+          "query": "gitlab docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "gitlab"
+          ]
+        },
+        {
+          "query": "growi docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "growi"
+          ]
+        },
+        {
+          "query": "redmine docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "redmine"
+          ]
+        },
+        {
+          "query": "ubuntu docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ubuntu"
+          ]
+        },
+        {
+          "query": "nextcloud docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "nextcloud"
+          ]
+        }
+      ]
     },
     {
       "slug": "dual-4k-dock-mac-mst-displaylink-thunderbolt-guide",
       "seed": "Mac デュアルディスプレイ ドック 選び方",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 1,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "mac デュアルディスプレイ",
+        "mac デュアルディスプレイ dock 移動",
+        "mac デュアルディスプレイ 設定",
+        "mac デュアルディスプレイ dock 固定",
+        "mac デュアルディスプレイ設定 できない",
+        "mac デュアルディスプレイ 配置がない",
+        "mac デュアルディスプレイ ウィンドウ移動 ショートカット",
+        "mac デュアルディスプレイ dock 両方",
+        "mac デュアルディスプレイ 画面移動",
+        "mac デュアルディスプレイ おすすめ"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "mac デュアルディスプレイ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "デュアルディスプレイ"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ おすすめ",
+          "intent": "comparison",
+          "missing_in_title": [
+            "デュアルディスプレイ"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "mac デュアルディスプレイ dock 移動",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "dock",
+            "移動"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ 設定",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "設定"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ dock 固定",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "dock",
+            "固定"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ設定 できない",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "設定"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ 配置がない",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "配置"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ ウィンドウ移動 ショートカット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ウィンドウ",
+            "移動",
+            "ショートカット"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ dock 両方",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "dock",
+            "両方"
+          ]
+        },
+        {
+          "query": "mac デュアルディスプレイ 画面移動",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "画面移動"
+          ]
+        }
+      ]
     },
     {
       "slug": "edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide",
       "seed": "ONNX INT8 量子化 精度低下",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "onnx int8",
+        "onnx int8 quantization",
+        "onnx quantization int8",
+        "onnx int8 量化",
+        "onnx int8 calibration",
+        "onnx int8 inference",
+        "onnx int8 model",
+        "bge m3 onnx int8",
+        "kokoro onnx int8",
+        "sherpa onnx int8"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "onnx int8 quantization",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "quantization"
+          ]
+        },
+        {
+          "query": "onnx quantization int8",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "quantization"
+          ]
+        },
+        {
+          "query": "onnx int8 inference",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "inference"
+          ]
+        },
+        {
+          "query": "onnx int8 model",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "model"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "onnx int8 量化",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "量化"
+          ]
+        },
+        {
+          "query": "onnx int8 calibration",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "calibration"
+          ]
+        },
+        {
+          "query": "bge m3 onnx int8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "bge",
+            "m3"
+          ]
+        },
+        {
+          "query": "kokoro onnx int8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "kokoro"
+          ]
+        },
+        {
+          "query": "sherpa onnx int8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "sherpa"
+          ]
+        }
+      ]
     },
     {
       "slug": "edge-ai-venue-wifi-congestion-offline-fallback-design",
       "seed": "展示会 Wi-Fi 混雑 対策",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
+      "intent_distribution": {
+        "metric_cost_spec": 2
+      },
+      "total_suggestions": 2,
+      "top_suggestions": [
+        "展示会 wi-fi 干渉",
+        "展示会 wi-fi"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "展示会 wi-fi 干渉",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "干渉"
+          ]
+        }
+      ],
       "uncovered_content_gaps": []
     },
     {
@@ -268,61 +906,491 @@
       "slug": "esp32-c6-matter-thread-border-router-requirements",
       "seed": "ESP32-C6 Matter Thread 必要機器",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "esp32-c6 matter",
+        "esp32 c6 matter border router",
+        "esp32 c6 matter router",
+        "esp32 c6 matter over thread example",
+        "esp32 c6 matter device",
+        "esp32 c6 matter gateway",
+        "esp32 c6 matter over wifi",
+        "esp32 c6 matter arduino",
+        "esp32-c6 matter controller",
+        "esp32 c6 matter switch"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "esp32 c6 matter border router",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "border",
+            "router"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter router",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "router"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "esp32 c6 matter over thread example",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "example"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter device",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "device"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter gateway",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "gateway"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter over wifi",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "wifi"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter arduino",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "arduino"
+          ]
+        },
+        {
+          "query": "esp32-c6 matter controller",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "controller"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter switch",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "switch"
+          ]
+        }
+      ]
     },
     {
       "slug": "esp32-deep-sleep-battery-life-board-quiescent-current",
       "seed": "ESP32 Deep Sleep 電池持ち 計算",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "esp32 deepsleep",
+        "esp32 deepsleep 消費電力",
+        "esp32 deepsleep gpio",
+        "esp32 deepsleep rtc",
+        "esp32 deepsleep 復帰",
+        "esp32 deepsleep 復帰 しない",
+        "esp32 deep sleep consumption",
+        "esp32 deepseek",
+        "esp32 deep sleep wake",
+        "esp32 deep sleep gpio wakeup"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "esp32 deepsleep",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepsleep"
+          ]
+        },
+        {
+          "query": "esp32 deepsleep 消費電力",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepsleep"
+          ]
+        },
+        {
+          "query": "esp32 deepsleep gpio",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepsleep",
+            "gpio"
+          ]
+        },
+        {
+          "query": "esp32 deepsleep rtc",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepsleep"
+          ]
+        },
+        {
+          "query": "esp32 deepsleep 復帰",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepsleep"
+          ]
+        },
+        {
+          "query": "esp32 deepsleep 復帰 しない",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepsleep"
+          ]
+        },
+        {
+          "query": "esp32 deep sleep consumption",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "consumption"
+          ]
+        },
+        {
+          "query": "esp32 deepseek",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "deepseek"
+          ]
+        }
+      ]
     },
     {
       "slug": "esp32-s3-dual-usb-ports-uart-native-otg-guide",
       "seed": "ESP32-S3 USB端子 2つ 違い",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "esp32-s3",
+        "esp32-s31",
+        "esp32-s3-wroom-1",
+        "esp32-s3-devkitc-1",
+        "esp32-s3-wroom-1-n16r8",
+        "esp32-s3-devkitc-1-n8r8",
+        "esp32-s3r8",
+        "esp32-s3 ピン配置",
+        "esp32-s3fn8",
+        "esp32-s3-wroom"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "esp32-s31",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s31"
+          ]
+        },
+        {
+          "query": "esp32-s3-wroom-1",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3-wroom-1"
+          ]
+        },
+        {
+          "query": "esp32-s3-devkitc-1",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3-devkitc-1"
+          ]
+        },
+        {
+          "query": "esp32-s3-wroom-1-n16r8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3-wroom-1-n16r8"
+          ]
+        },
+        {
+          "query": "esp32-s3-devkitc-1-n8r8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3-devkitc-1-n8r8"
+          ]
+        },
+        {
+          "query": "esp32-s3r8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3r8"
+          ]
+        },
+        {
+          "query": "esp32-s3 ピン配置",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "配置"
+          ]
+        },
+        {
+          "query": "esp32-s3fn8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3fn8"
+          ]
+        }
+      ]
     },
     {
       "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
       "seed": "外付けSSD 自作 完成品 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 6,
+        "comparison": 1
+      },
+      "total_suggestions": 7,
+      "top_suggestions": [
+        "外付けssd 自作",
+        "外付けssd 自作 デメリット",
+        "外付けssd 自作 おすすめ",
+        "外付けssd 自作 mac",
+        "外付けssd 自作pc",
+        "外付けssd 自作 メリット",
+        "macbook 外付けssd 自作"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "外付けssd 自作",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "自作"
+          ]
+        },
+        {
+          "query": "外付けssd 自作 おすすめ",
+          "intent": "comparison",
+          "missing_in_title": [
+            "自作"
+          ]
+        },
+        {
+          "query": "外付けssd 自作pc",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "自作",
+            "pc"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "外付けssd 自作 デメリット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "デメリット"
+          ]
+        },
+        {
+          "query": "外付けssd 自作 mac",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mac"
+          ]
+        },
+        {
+          "query": "外付けssd 自作 メリット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "メリット"
+          ]
+        },
+        {
+          "query": "macbook 外付けssd 自作",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "macbook"
+          ]
+        }
+      ]
     },
     {
       "slug": "gemini-4-argon-google-ai-pro-ultra",
       "seed": "Gemini 4 Argon Pro Ultra 違い",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 9,
+        "question_troubleshoot": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "gemini 4 argon",
+        "gemini 4",
+        "gemini 4 argon 性能",
+        "gemini 4 flash",
+        "gemini 4 argon 料金",
+        "gemini 4 argon 評価",
+        "gemini 4 carbon",
+        "gemini 4 argon 使い方",
+        "gemini 4 アルゴン",
+        "gemini 4 argon ai pro"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "gemini 4 argon 評価",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "評価"
+          ]
+        },
+        {
+          "query": "gemini 4 argon 使い方",
+          "intent": "question_troubleshoot",
+          "missing_in_title": [
+            "方"
+          ]
+        },
+        {
+          "query": "gemini 4 argon ai pro",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ai"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "gemini 4 argon 性能",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "性能"
+          ]
+        },
+        {
+          "query": "gemini 4 flash",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "flash"
+          ]
+        },
+        {
+          "query": "gemini 4 carbon",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "carbon"
+          ]
+        },
+        {
+          "query": "gemini 4 アルゴン",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "アルゴン"
+          ]
+        }
+      ]
     },
     {
       "slug": "gemini-api-prompt-caching-implicit-explicit-cost-guide",
       "seed": "Gemini API キャッシュ 条件",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "gemini api",
+        "gemini apiキー",
+        "gemini api key",
+        "gemini api 料金",
+        "gemini api 無料枠",
+        "gemini apiキー 取得方法",
+        "gemini api 無料",
+        "gemini api 無料枠 制限",
+        "gemini api モデル",
+        "gemini api 無料枠 超えたら"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "gemini apiキー",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "キー"
+          ]
+        },
+        {
+          "query": "gemini api モデル",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "モデル"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "gemini api key",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "key"
+          ]
+        },
+        {
+          "query": "gemini api 料金",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "料金"
+          ]
+        },
+        {
+          "query": "gemini api 無料枠",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料",
+            "枠"
+          ]
+        },
+        {
+          "query": "gemini apiキー 取得方法",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "取得方法"
+          ]
+        },
+        {
+          "query": "gemini api 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料"
+          ]
+        },
+        {
+          "query": "gemini api 無料枠 制限",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料",
+            "枠",
+            "制限"
+          ]
+        },
+        {
+          "query": "gemini api 無料枠 超えたら",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料",
+            "枠"
+          ]
+        }
+      ]
     },
     {
       "slug": "google-ai-family-sharing-antigravity-pro-ultra-guide",
@@ -335,56 +1403,324 @@
       "top_suggestions": [
         "google ai pro ファミリー共有 antigravity"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "google ai pro ファミリー共有 antigravity",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "pro"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": []
     },
     {
       "slug": "google-ai-pro-ai-studio-api-billing-boundary",
       "seed": "Google AI Pro AI Studio 課金 違い",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "google ai",
+        "google ai studio",
+        "google ai pro",
+        "google ai plus",
+        "google aiモード",
+        "google aiモード 使えない",
+        "google ai studio 日本語",
+        "google ai 無料",
+        "google ai studio アプリ",
+        "google ai studio 日本語にする方法"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "google aiモード",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "モード"
+          ]
+        },
+        {
+          "query": "google aiモード 使えない",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "モード",
+            "使"
+          ]
+        },
+        {
+          "query": "google ai 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "無料"
+          ]
+        },
+        {
+          "query": "google ai studio アプリ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "アプリ"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "google ai plus",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "plus"
+          ]
+        },
+        {
+          "query": "google ai studio 日本語",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "日本語"
+          ]
+        },
+        {
+          "query": "google ai studio 日本語にする方法",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "日本語",
+            "方法"
+          ]
+        }
+      ]
     },
     {
       "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
       "seed": "Colab GPU CU 何時間",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 1,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "colab gpu",
+        "colab gpu 種類",
+        "colab gpu 上限",
+        "colab gpu 性能",
+        "colab gpu 使い方",
+        "colab gpu 使用量上限 リセット",
+        "colab gpu 無料",
+        "colab gpu vscode",
+        "colab gpu t4",
+        "colab gpu ram"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "colab gpu 種類",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "種類"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "colab gpu 上限",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "上限"
+          ]
+        },
+        {
+          "query": "colab gpu 性能",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "性能"
+          ]
+        },
+        {
+          "query": "colab gpu 使用量上限 リセット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "使用量上限",
+            "リセット"
+          ]
+        },
+        {
+          "query": "colab gpu 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料"
+          ]
+        },
+        {
+          "query": "colab gpu vscode",
+          "intent": "comparison",
+          "missing_in_body": [
+            "vscode"
+          ]
+        },
+        {
+          "query": "colab gpu t4",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "t4"
+          ]
+        },
+        {
+          "query": "colab gpu ram",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ram"
+          ]
+        }
+      ]
     },
     {
       "slug": "gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide",
       "seed": "Search Console アクセス解析 数字が合わない",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 7,
+        "question_troubleshoot": 2,
+        "dataset_benchmark": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "search console",
+        "search consoleとは",
+        "search console ログイン",
+        "search console 使い方",
+        "search console api",
+        "search console google",
+        "search console 生成ai",
+        "search console sns",
+        "search console url検査",
+        "search console mcp"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "search console 使い方",
+          "intent": "question_troubleshoot",
+          "missing_in_title": [
+            "使",
+            "方"
+          ]
+        },
+        {
+          "query": "search console api",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "api"
+          ]
+        },
+        {
+          "query": "search console google",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "google"
+          ]
+        },
+        {
+          "query": "search console sns",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "sns"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "search console ログイン",
+          "intent": "dataset_benchmark",
+          "missing_in_body": [
+            "ログイン"
+          ]
+        },
+        {
+          "query": "search console 生成ai",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "生成",
+            "ai"
+          ]
+        },
+        {
+          "query": "search console url検査",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "url",
+            "検査"
+          ]
+        },
+        {
+          "query": "search console mcp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mcp"
+          ]
+        }
+      ]
     },
     {
       "slug": "hardware-change-camera-microphone-hyperparameter-regression-guide",
       "seed": "スピーカーフォン 音声認識 精度",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 7,
+        "question_troubleshoot": 2,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "スピーカーフォン",
+        "スピーカーフォンとは",
+        "スピーカーフォン おすすめ",
+        "スピーカーフォン 使い方",
+        "スピーカーフォンにするには",
+        "スピーカーフォン 小型",
+        "スピーカーフォン スマホ",
+        "スピーカーフォン jabra",
+        "スピーカーフォン 会議",
+        "スピーカーフォン 連結"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "スピーカーフォン 使い方",
+          "intent": "question_troubleshoot",
+          "missing_in_title": [
+            "使",
+            "方"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "スピーカーフォン 小型",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "小型"
+          ]
+        },
+        {
+          "query": "スピーカーフォン スマホ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "スマホ"
+          ]
+        },
+        {
+          "query": "スピーカーフォン jabra",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "jabra"
+          ]
+        },
+        {
+          "query": "スピーカーフォン 会議",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "会議"
+          ]
+        },
+        {
+          "query": "スピーカーフォン 連結",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "連結"
+          ]
+        }
+      ]
     },
     {
       "slug": "home-server-access-vpn-vs-cloudflare-tunnel-guide",
@@ -404,31 +1740,212 @@
       "slug": "human-in-the-loop-labeling-prompt-vs-actual-input-guide",
       "seed": "継続学習 ラベリング 注意点",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 9,
+        "question_troubleshoot": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "継続学習",
+        "継続学習 ai",
+        "継続学習とは",
+        "継続学習 英語",
+        "継続学習制度",
+        "継続学習センター",
+        "継続学習 llm",
+        "継続学習制度(cpds)のガイドライン",
+        "継続学習と知能の創発研究会",
+        "継続学習 ファイン チューニング"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "継続学習 ai",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ai"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "継続学習 英語",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "英語"
+          ]
+        },
+        {
+          "query": "継続学習制度",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "継続学習制度"
+          ]
+        },
+        {
+          "query": "継続学習センター",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "センター"
+          ]
+        },
+        {
+          "query": "継続学習 llm",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "llm"
+          ]
+        },
+        {
+          "query": "継続学習制度(cpds)のガイドライン",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "継続学習制度",
+            "cpds",
+            "ガイドライン"
+          ]
+        },
+        {
+          "query": "継続学習と知能の創発研究会",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "知能",
+            "創発研究会"
+          ]
+        },
+        {
+          "query": "継続学習 ファイン チューニング",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ファイン",
+            "チューニング"
+          ]
+        }
+      ]
     },
     {
       "slug": "immich-backup-photos-database-restore-scope",
       "seed": "Immich バックアップ 復元 方法",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 4
+      },
+      "total_suggestions": 4,
+      "top_suggestions": [
+        "immich バックアップ",
+        "immich バックアップ リストア",
+        "immich 自動 バックアップ",
+        "immich iphone バックアップ"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "immich バックアップ リストア",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "リストア"
+          ]
+        },
+        {
+          "query": "immich 自動 バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "自動"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "immich iphone バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "iphone"
+          ]
+        }
+      ]
     },
     {
       "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
       "seed": "LLM API 速度 比較",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 1,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "llm api",
+        "llm api 無料",
+        "llm apiとは",
+        "llm api 料金 比較",
+        "llm api 料金",
+        "llm api 無料枠",
+        "llm api コスパ",
+        "llm apiキー",
+        "llm api 安い",
+        "llm api サブスク"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "llm api 料金 比較",
+          "intent": "comparison",
+          "missing_in_title": [
+            "料金",
+            "比較"
+          ]
+        },
+        {
+          "query": "llm api 料金",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "料金"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "llm api 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料"
+          ]
+        },
+        {
+          "query": "llm api 無料枠",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料",
+            "枠"
+          ]
+        },
+        {
+          "query": "llm api コスパ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "コスパ"
+          ]
+        },
+        {
+          "query": "llm apiキー",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "キー"
+          ]
+        },
+        {
+          "query": "llm api 安い",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "安"
+          ]
+        },
+        {
+          "query": "llm api サブスク",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "サブスク"
+          ]
+        }
+      ]
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
@@ -446,19 +1963,11 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
-        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
-        "mac ローカルllm コーディング"
+        "mac ローカルllm コーディング",
+        "mac ローカルllm mlx"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "mac ローカルllm ollama",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ollama"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "mac ローカルllm 画像生成",
@@ -475,13 +1984,6 @@
           ]
         },
         {
-          "query": "mac ローカルllm mlx",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mlx"
-          ]
-        },
-        {
           "query": "mac ローカルllm 構築",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -494,6 +1996,13 @@
           "missing_in_body": [
             "コーディング"
           ]
+        },
+        {
+          "query": "mac ローカルllm mlx",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mlx"
+          ]
         }
       ]
     },
@@ -501,69 +2010,299 @@
       "slug": "mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests",
       "seed": "磁気式 キーボード 必要",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 6,
+        "comparison": 2
+      },
+      "total_suggestions": 8,
+      "top_suggestions": [
+        "磁気式 キーボード",
+        "磁気式 キーボード おすすめ",
+        "磁気式 キーボード自作",
+        "磁気式 キーボード デメリット",
+        "光学式 磁気式 キーボード",
+        "キーボード 磁気式 静電容量",
+        "キーボード 磁気式 メカニカル 違い",
+        "キーボード 静電容量無接点方式 磁気式"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "磁気式 キーボード自作",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "自作"
+          ]
+        },
+        {
+          "query": "磁気式 キーボード デメリット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "デメリット"
+          ]
+        },
+        {
+          "query": "光学式 磁気式 キーボード",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "光学式"
+          ]
+        },
+        {
+          "query": "キーボード 磁気式 静電容量",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "静電容量"
+          ]
+        },
+        {
+          "query": "キーボード 磁気式 メカニカル 違い",
+          "intent": "comparison",
+          "missing_in_body": [
+            "メカニカル"
+          ]
+        },
+        {
+          "query": "キーボード 静電容量無接点方式 磁気式",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "静電容量無接点方式"
+          ]
+        }
+      ]
     },
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
       "seed": "自宅サーバー ミニPC 選び方",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 2,
+        "comparison": 1
+      },
+      "total_suggestions": 3,
+      "top_suggestions": [
+        "自宅サーバー ミニpc",
+        "自宅サーバー ミニpc おすすめ",
+        "マイクラ 自宅サーバー ミニpc"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "マイクラ 自宅サーバー ミニpc",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "マイクラ"
+          ]
+        }
+      ]
     },
     {
       "slug": "ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide",
       "seed": "混同行列 見方 改善",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "混同行列 見方"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "混同行列 見方",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "見方"
+          ]
+        }
+      ]
     },
     {
       "slug": "ml-benchmark-data-leakage-group-split-pipeline-guide",
       "seed": "機械学習 データリーク 原因",
-      "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
+      "dominant_market_intent": "dataset_benchmark",
+      "intent_distribution": {
+        "dataset_benchmark": 1,
+        "question_troubleshoot": 1
+      },
+      "total_suggestions": 2,
+      "top_suggestions": [
+        "機械学習 データリーク",
+        "機械学習 データリークとは"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "機械学習 データリーク",
+          "intent": "dataset_benchmark",
+          "missing_in_title": [
+            "データ"
+          ]
+        },
+        {
+          "query": "機械学習 データリークとは",
+          "intent": "question_troubleshoot",
+          "missing_in_title": [
+            "データ"
+          ]
+        }
+      ],
       "uncovered_content_gaps": []
     },
     {
       "slug": "ml-class-imbalance-oversampling-loss-weight-double-correction",
       "seed": "WeightedRandomSampler 重複",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "weightedrandomsampler",
+        "weightedrandomsampler pytorch",
+        "weightedrandomsampler pytorch documentation",
+        "weightedrandomsampler documentation",
+        "weightedrandomsampler example",
+        "weightedrandomsampler pytorch example",
+        "weightedrandomsampler docs",
+        "weightedrandomsampler replacement",
+        "weightedrandomsampler shuffle",
+        "weightedrandomsampler torch"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "weightedrandomsampler replacement",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "replacement"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "weightedrandomsampler pytorch documentation",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "documentation"
+          ]
+        },
+        {
+          "query": "weightedrandomsampler documentation",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "documentation"
+          ]
+        },
+        {
+          "query": "weightedrandomsampler example",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "example"
+          ]
+        },
+        {
+          "query": "weightedrandomsampler pytorch example",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "example"
+          ]
+        },
+        {
+          "query": "weightedrandomsampler docs",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "docs"
+          ]
+        },
+        {
+          "query": "weightedrandomsampler shuffle",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "shuffle"
+          ]
+        }
+      ]
     },
     {
       "slug": "ml-noise-other-class-false-acceptance-evaluation-guide",
       "seed": "機械学習 ノイズ 誤認識",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 4,
+        "question_troubleshoot": 1,
+        "dataset_benchmark": 1
+      },
+      "total_suggestions": 6,
+      "top_suggestions": [
+        "機械学習 ノイズ除去",
+        "機械学習 ノイズ",
+        "機械学習 ノイズ付加",
+        "機械学習 ノイズとは",
+        "機械学習 ノイズ除去 音声",
+        "機械学習 データ拡張 ノイズの追加"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "機械学習 ノイズ除去",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "機械学習",
+            "除去"
+          ]
+        },
+        {
+          "query": "機械学習 ノイズ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "機械学習"
+          ]
+        },
+        {
+          "query": "機械学習 ノイズ付加",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "機械学習",
+            "付加"
+          ]
+        },
+        {
+          "query": "機械学習 ノイズとは",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "機械学習"
+          ]
+        },
+        {
+          "query": "機械学習 ノイズ除去 音声",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "機械学習",
+            "除去"
+          ]
+        },
+        {
+          "query": "機械学習 データ拡張 ノイズの追加",
+          "intent": "dataset_benchmark",
+          "missing_in_body": [
+            "機械学習",
+            "拡張",
+            "追加"
+          ]
+        }
+      ]
     },
     {
       "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
       "seed": "マルチホップRAG ベクトル検索",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "マルチホップrag"
+      ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": []
     },
@@ -571,41 +2310,283 @@
       "slug": "nas-2bay-raid1-vs-external-backup-recovery-guide",
       "seed": "2ベイNAS RAID1 バックアップ 違い",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 3,
+        "comparison": 1
+      },
+      "total_suggestions": 4,
+      "top_suggestions": [
+        "2ベイnas",
+        "2ベイnasストレージ - 最大60tbのローカルストレージ dh2300",
+        "2ベイnas おすすめ",
+        "synology 2ベイnas"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "2ベイnasストレージ - 最大60tbのローカルストレージ dh2300",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "最大",
+            "60tb",
+            "ローカルストレージ",
+            "dh2300"
+          ]
+        },
+        {
+          "query": "synology 2ベイnas",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "synology"
+          ]
+        }
+      ]
     },
     {
       "slug": "notebooklm-limits-sources-notebooks-sharing-guide",
       "seed": "NotebookLM ソース 分割 上限",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 2
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "notebooklm ソース 上限",
+        "notebooklm ソース ダウンロード",
+        "notebooklm ソース 一括削除",
+        "notebooklm ソース 削除",
+        "notebooklm ソース",
+        "notebooklm ソース 更新",
+        "notebooklm ソース追加できない",
+        "notebooklm ソース 自動更新",
+        "notebooklm ソース数",
+        "notebooklm ソースのアップロード中にエラーが発生しました"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "notebooklm ソース 上限",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ソース",
+            "上限"
+          ]
+        },
+        {
+          "query": "notebooklm ソース 削除",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ソース",
+            "削除"
+          ]
+        },
+        {
+          "query": "notebooklm ソース",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ソース"
+          ]
+        },
+        {
+          "query": "notebooklm ソース追加できない",
+          "intent": "question_troubleshoot",
+          "missing_in_title": [
+            "ソース",
+            "追加"
+          ]
+        },
+        {
+          "query": "notebooklm ソース数",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ソース",
+            "数"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "notebooklm ソース ダウンロード",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ダウンロード"
+          ]
+        },
+        {
+          "query": "notebooklm ソース 一括削除",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "一括削除"
+          ]
+        },
+        {
+          "query": "notebooklm ソース 更新",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "更新"
+          ]
+        },
+        {
+          "query": "notebooklm ソース 自動更新",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "自動更新"
+          ]
+        },
+        {
+          "query": "notebooklm ソースのアップロード中にエラーが発生しました",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "中",
+            "エラー",
+            "発生"
+          ]
+        }
+      ]
     },
     {
       "slug": "ollama-context-length-vram-default-memory-guide",
       "seed": "Ollama コンテキスト長 デフォルト 変更",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 5
+      },
+      "total_suggestions": 5,
+      "top_suggestions": [
+        "ollama コンテキスト長 変更",
+        "ollama コンテキスト長",
+        "ollama コンテキスト長 確認",
+        "ollama コンテキスト長 設定",
+        "ollama コンテキスト長 デフォルト"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "ollama コンテキスト長 変更",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "コンテキスト",
+            "長"
+          ]
+        },
+        {
+          "query": "ollama コンテキスト長",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "コンテキスト",
+            "長"
+          ]
+        },
+        {
+          "query": "ollama コンテキスト長 確認",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "コンテキスト",
+            "長",
+            "確認"
+          ]
+        },
+        {
+          "query": "ollama コンテキスト長 設定",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "コンテキスト",
+            "長",
+            "設定"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "ollama コンテキスト長 デフォルト",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "デフォルト"
+          ]
+        }
+      ]
     },
     {
       "slug": "personal-ai-vps-home-server-subscription",
       "seed": "パーソナルAI VPS 自宅サーバー",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 2
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "パーソナルai",
+        "パーソナルアイテムとは",
+        "パーソナルaiエージェント",
+        "パーソナルaiとは",
+        "パーソナルアイデンティティ",
+        "パーソナルai 作り方",
+        "パーソナルaiマーケティング",
+        "パーソナルアイス",
+        "パーソナルアイテム",
+        "パーソナルアイテック"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "パーソナルai 作り方",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "作",
+            "方"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "パーソナルアイテムとは",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "パーソナルアイテム"
+          ]
+        },
+        {
+          "query": "パーソナルaiエージェント",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "エージェント"
+          ]
+        },
+        {
+          "query": "パーソナルアイデンティティ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイデンティティ"
+          ]
+        },
+        {
+          "query": "パーソナルaiマーケティング",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "マーケティング"
+          ]
+        },
+        {
+          "query": "パーソナルアイス",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイス"
+          ]
+        },
+        {
+          "query": "パーソナルアイテム",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイテム"
+          ]
+        },
+        {
+          "query": "パーソナルアイテック",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイテック"
+          ]
+        }
+      ]
     },
     {
       "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
@@ -625,49 +2606,295 @@
       "slug": "slot-parallel-sql-generation-dynamic-masking-benchmarks",
       "seed": "Text-to-SQL 自己回帰なし",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 9,
+        "question_troubleshoot": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "text-to-sql",
+        "text-to-sqlとは",
+        "text to sql rag",
+        "text to sql llm",
+        "text to sql aws",
+        "text to sql langchain",
+        "text to sql mcp",
+        "text to sql snowflake",
+        "text to sql agent",
+        "text to sql ai"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "text to sql ai",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ai"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "text to sql rag",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "rag"
+          ]
+        },
+        {
+          "query": "text to sql aws",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "aws"
+          ]
+        },
+        {
+          "query": "text to sql langchain",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "langchain"
+          ]
+        },
+        {
+          "query": "text to sql mcp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mcp"
+          ]
+        },
+        {
+          "query": "text to sql snowflake",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "snowflake"
+          ]
+        },
+        {
+          "query": "text to sql agent",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "agent"
+          ]
+        }
+      ]
     },
     {
       "slug": "streaming-ai-offline-accuracy-vs-realtime-timing-guide",
       "seed": "リアルタイム認識 タイミング ズレ",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "intent_distribution": {
+        "metric_cost_spec": 7
+      },
+      "total_suggestions": 7,
+      "top_suggestions": [
+        "リアルタイム認識af+",
+        "リアルタイム認識af(プラス)",
+        "リアルタイム認識af+ 設定",
+        "リアルタイム認識af 追いかける瞳af",
+        "sony リアルタイム認識af+",
+        "provoxt リアルタイム認識",
+        "ソニー リアルタイム認識af"
+      ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "リアルタイム認識af+",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "af"
+          ]
+        },
+        {
+          "query": "リアルタイム認識af(プラス)",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "af",
+            "プラス"
+          ]
+        },
+        {
+          "query": "リアルタイム認識af+ 設定",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "af",
+            "設定"
+          ]
+        },
+        {
+          "query": "リアルタイム認識af 追いかける瞳af",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "af",
+            "瞳"
+          ]
+        },
+        {
+          "query": "sony リアルタイム認識af+",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "sony",
+            "af"
+          ]
+        },
+        {
+          "query": "provoxt リアルタイム認識",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "provoxt"
+          ]
+        },
+        {
+          "query": "ソニー リアルタイム認識af",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ソニー",
+            "af"
+          ]
+        }
+      ]
     },
     {
       "slug": "tailscale-nas-slow-direct-derp-relay-check",
       "seed": "Tailscale 遅い NAS 確認",
-      "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "dominant_market_intent": "question_troubleshoot",
+      "intent_distribution": {
+        "question_troubleshoot": 4,
+        "metric_cost_spec": 1
+      },
+      "total_suggestions": 5,
+      "top_suggestions": [
+        "tailscale 遅い",
+        "tailscale exit node 遅い",
+        "tailscale 速度 遅い",
+        "tailscale smb 遅い",
+        "tailscale dns 遅い"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "tailscale 速度 遅い",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "速度"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "tailscale exit node 遅い",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "exit",
+            "node"
+          ]
+        },
+        {
+          "query": "tailscale smb 遅い",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "smb"
+          ]
+        },
+        {
+          "query": "tailscale dns 遅い",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "dns"
+          ]
+        }
+      ]
     },
     {
       "slug": "tailscale-subnet-router-vs-exit-node-nas-guide",
       "seed": "Tailscale Subnet Router Exit Node 違い",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 10
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "tailscale subnet router",
+        "tailscale subnet router 設定",
+        "tailscale subnet",
+        "tailscale subnet 設定",
+        "tailscale subnet router raspberry pi",
+        "tailscale subnet router windows",
+        "tailscale subnets",
+        "tailscale subnet routes",
+        "tailscale subnet router synology",
+        "tailscale subnet windows"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "tailscale subnet router 設定",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "設定"
+          ]
+        },
+        {
+          "query": "tailscale subnet 設定",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "設定"
+          ]
+        },
+        {
+          "query": "tailscale subnet router raspberry pi",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "raspberry",
+            "pi"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "tailscale subnet router windows",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "windows"
+          ]
+        },
+        {
+          "query": "tailscale subnets",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "subnets"
+          ]
+        },
+        {
+          "query": "tailscale subnet routes",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "routes"
+          ]
+        },
+        {
+          "query": "tailscale subnet router synology",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "synology"
+          ]
+        },
+        {
+          "query": "tailscale subnet windows",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "windows"
+          ]
+        }
+      ]
     },
     {
       "slug": "tts-synthetic-data-augmentation-domain-gap-pitfalls",
       "seed": "合成データ 機械学習 注意点",
-      "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
+      "dominant_market_intent": "dataset_benchmark",
+      "intent_distribution": {
+        "dataset_benchmark": 1
+      },
+      "total_suggestions": 1,
+      "top_suggestions": [
+        "合成データ 機械学習"
+      ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": []
     },
@@ -675,11 +2902,85 @@
       "slug": "wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation",
       "seed": "Wi-Fi 7 買い替え 必要",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {},
-      "total_suggestions": 0,
-      "top_suggestions": [],
-      "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "intent_distribution": {
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 1,
+        "comparison": 1
+      },
+      "total_suggestions": 10,
+      "top_suggestions": [
+        "wi-fi 7",
+        "wi-fi 7 とは",
+        "wi-fi 7 ルーター",
+        "wi-fi 7と6の違い",
+        "wi-fi 7 対応スマホ",
+        "wi-fi 7対応ルーター",
+        "wi-fi 7 iphone",
+        "wi-fi 7対応",
+        "wi-fi 7 (11be)",
+        "wi-fi 7 中継器"
+      ],
+      "title_optimization_opportunities": [
+        {
+          "query": "wi-fi 7 ルーター",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ルーター"
+          ]
+        },
+        {
+          "query": "wi-fi 7対応ルーター",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "対応",
+            "ルーター"
+          ]
+        },
+        {
+          "query": "wi-fi 7対応",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "対応"
+          ]
+        }
+      ],
+      "uncovered_content_gaps": [
+        {
+          "query": "wi-fi 7と6の違い",
+          "intent": "comparison",
+          "missing_in_body": [
+            "違"
+          ]
+        },
+        {
+          "query": "wi-fi 7 対応スマホ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "スマホ"
+          ]
+        },
+        {
+          "query": "wi-fi 7 iphone",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "iphone"
+          ]
+        },
+        {
+          "query": "wi-fi 7 (11be)",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "11be"
+          ]
+        },
+        {
+          "query": "wi-fi 7 中継器",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "中継器"
+          ]
+        }
+      ]
     }
   ],
   "zenn_daily_trending": [
@@ -706,7 +3007,7 @@
     },
     {
       "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
-      "liked_count": 21,
+      "liked_count": 22,
       "comments_count": 0,
       "url": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
       "published_at": "2026-10-22"
@@ -741,7 +3042,7 @@
     },
     {
       "title": "Cloudflare + EmDash の自サイトを点検したら Server-Timing から内部情報が見えていた話",
-      "liked_count": 20,
+      "liked_count": 21,
       "comments_count": 0,
       "url": "https://zenn.dev/masaru21/articles/2100616bb5110d",
       "published_at": "2026-10-19"
@@ -757,63 +3058,63 @@
   "hackernews_frontpage": [
     {
       "title": "PHP 8.2.35",
-      "points": 990,
+      "points": 992,
       "num_comments": 534,
       "url": "https://github.com/php/php-src/releases/tag/php-8.2.35"
     },
     {
-      "title": "Eight Bits of Trust: eMudhra's CA keys cracked in milliseconds",
-      "points": 864,
-      "num_comments": 412,
-      "url": "https://scotthelme.co.uk/eight-bits-of-trust-emudhras-ca-keys-cracked-in-milliseconds/"
-    },
-    {
       "title": "Today's PHP security release, and how we're strengthening security",
-      "points": 703,
-      "num_comments": 347,
+      "points": 704,
+      "num_comments": 346,
       "url": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/"
     },
     {
       "title": "EA is shutting down BioWare",
-      "points": 583,
-      "num_comments": 350,
+      "points": 585,
+      "num_comments": 362,
       "url": "https://www.theverge.com/games/1015647/ea-is-shutting-down-bioware"
     },
     {
       "title": "Compromised LiteLLM 1.107.0 on PyPI Installs a Credential Stealer and Backdoor",
-      "points": 467,
-      "num_comments": 158,
+      "points": 470,
+      "num_comments": 159,
       "url": "https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/"
     },
     {
       "title": "Meta ordered to pay $25B penalty in New Mexico Cambridge Analytica case",
-      "points": 458,
-      "num_comments": 287,
+      "points": 466,
+      "num_comments": 292,
       "url": "https://www.cnbc.com/2026/10/21/meta-new-mexico-cambridge-analytica-penalty.html"
     },
     {
       "title": "DuckDB 2.0.0 LTS “Cinnamon Teal”",
-      "points": 386,
-      "num_comments": 49,
+      "points": 388,
+      "num_comments": 50,
       "url": "https://duckdb.org/2026/10/21/announcing-duckdb-200"
     },
     {
       "title": "Security Disclosure",
-      "points": 381,
-      "num_comments": 224,
+      "points": 386,
+      "num_comments": 228,
       "url": "https://blog.railway.com/p/security-disclosure-wednesday-october-21st"
     },
     {
       "title": "mitmproxy adds --emudhra option",
-      "points": 353,
-      "num_comments": 94,
+      "points": 362,
+      "num_comments": 95,
       "url": "https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b"
     },
     {
       "title": "There isn't an easy exploit for this PHP vulnerability",
-      "points": 311,
-      "num_comments": 148,
+      "points": 329,
+      "num_comments": 154,
       "url": "https://eliastaylor.com/noexploit/"
+    },
+    {
+      "title": "GitLab critical patch release",
+      "points": 292,
+      "num_comments": 71,
+      "url": "https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/"
     }
   ]
 }

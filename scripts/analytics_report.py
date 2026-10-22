@@ -133,8 +133,8 @@ def fetch_cloudflare(config: dict) -> dict:
     estimated_self_visits = 0
     estimated_self_pageviews = 0
     if is_pure_direct and has_desktop_windows_jp and all(p.get("page") == "/" for p in breakdowns["page"]):
-        estimated_self_visits = sum(r["visits"] for r in rows)
-        estimated_self_pageviews = sum(r["pageviews"] for r in rows)
+        estimated_self_visits = min(sum(c["visits"] for c in breakdowns["country"] if c.get("country") == "JP"), sum(o["visits"] for o in breakdowns["operating_system"] if o.get("operating_system") == "Windows"))
+        estimated_self_pageviews = min(sum(c["pageviews"] for c in breakdowns["country"] if c.get("country") == "JP"), sum(o["pageviews"] for o in breakdowns["operating_system"] if o.get("operating_system") == "Windows"))
 
     audit = {
         "verified_self_traffic": {

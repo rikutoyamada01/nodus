@@ -894,8 +894,7 @@ def run_seo_loop(apply_changes: bool = False, allow_sample: bool = False) -> dic
 
         article = load_json(article_path)
         # Guide copy must not inherit the benchmark-only title/description variants.
-        if article.get("kind") == "guide":
-            continue
+        is_guide = article.get("kind") == "guide"
         seo = article.setdefault("seo", {})
         ensure_immutable_originals(article)
 
@@ -926,7 +925,7 @@ def run_seo_loop(apply_changes: bool = False, allow_sample: bool = False) -> dic
 
         market_signals = collect_market_signals_for_article(article, top_queries, trends_data)
 
-        if force_rotate or needs_initial_opt:
+        if not is_guide and (force_rotate or needs_initial_opt):
             bundle, prediction = predict_best_variant_bundle(article, market_signals, site_name=site_name)
             old_title = seo.get("meta_title", article.get("title", ""))
             old_desc = seo.get("meta_description", article.get("subtitle", ""))

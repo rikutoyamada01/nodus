@@ -65,3 +65,8 @@ A. はい。マスクなしでは未知スキーマに対して存在しない�
 ## 参考資料
 - [Nodus 一次検証生ログ：Slot-Parallel SQL生成エンジン クロスDB（未知4ドメイン60クエリ）評価データ (JSON)](https://nodus-lab.pages.dev/logs/slot-parallel-sql-generation-dynamic-masking-benchmarks.json)
 - [SQLite Official Documentation: Query Language Understood by SQLite](https://www.sqlite.org/lang.html)
+
+## 次に考えたいこと
+- [マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
+- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [LLM APIの速さは、何を測って比べればいい？](https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks)

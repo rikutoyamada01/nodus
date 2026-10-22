@@ -45,3 +45,5 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 
 ## 次に考えたいこと
 - [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [Search Consoleとアクセス解析、なぜ数字が合わない？](https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide)
+- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)

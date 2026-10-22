@@ -122,6 +122,16 @@
     {
       "slug": "cloudflare-pages-custom-domain-preview-url-indexing",
       "title": "Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？"
+    },
+    {
+      "slug": "nas-2bay-raid1-vs-external-backup-recovery-guide",
+      "title": "HDD 2台、ミラーリングと別バックアップどっち？",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "docker-volume-bind-mount-backup-restore-scope",
+      "title": "Dockerのバックアップ、フォルダコピーで戻る？",
+      "category": "Cloud & AI Infrastructure"
     }
   ],
   "faqs": []

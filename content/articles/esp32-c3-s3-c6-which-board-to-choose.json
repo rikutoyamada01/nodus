@@ -19,7 +19,7 @@
   "sample_size_n": 0,
   "methodology_note": "公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。",
   "seo": {
-    "meta_title": "ESP32、結局どれを買えばいい？ | Nodus",
+    "meta_title": "ESP32???C3?S3?C6???????????????????? | Nodus",
     "meta_description": "C3・S3・C6を、温湿度計・音声・スマートホームの用途から比較。ボード単価だけでは見えない費用も整理します。",
     "target_keywords": [
       "ESP32、結局どれを買えばいい？"
@@ -97,5 +97,27 @@
       "sample_size": 0
     }
   ],
-  "faqs": []
+  "faqs": [],
+  "related_articles": [
+    {
+      "slug": "esp32-deep-sleep-battery-life-board-quiescent-current",
+      "title": "ESP32の電池駆動、なぜ計算より早く切れる？",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "esp32-s3-dual-usb-ports-uart-native-otg-guide",
+      "title": "ESP32-S3の2つのUSB端子、どっちに挿す？",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "esp32-c6-matter-thread-border-router-requirements",
+      "title": "ESP32-C6、単体でThreadにつながる？",
+      "category": "Hardware & Power Electronics"
+    },
+    {
+      "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
+      "title": "CO₂センサー、実測式と推定式の見分け方は？",
+      "category": "Hardware & Power Electronics"
+    }
+  ]
 }

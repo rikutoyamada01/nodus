@@ -18,7 +18,7 @@
   "sample_size_n": 60,
   "methodology_note": "訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。",
   "seo": {
-    "meta_title": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁 | Nodus",
+    "meta_title": "Text-to-SQL?????LLM???1????????????????????????? | Nodus",
     "meta_description": "トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。",
     "target_keywords": [
       "Text-to-SQL 自己回帰なし",
@@ -224,6 +224,23 @@
       "verified_date": "2026-09-30",
       "sample_size": "公式仕様",
       "scope": "実行検証（RLEV）および動的構文マスクの対象となるSQLiteクエリ構文仕様"
+    }
+  ],
+  "related_articles": [
+    {
+      "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
+      "title": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
+      "title": "DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
+      "title": "LLM APIの速さは、何を測って比べればいい？",
+      "category": "Cloud & AI Infrastructure"
     }
   ]
 }

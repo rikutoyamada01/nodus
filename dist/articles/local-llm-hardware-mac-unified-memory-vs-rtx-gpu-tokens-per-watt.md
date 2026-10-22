@@ -97,3 +97,5 @@ GPUの増設では、必要な電源、ケース、冷却、騒音も含めま�
 ## 次に考えたいこと
 - [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
 - [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [Ollamaの文脈長、既定値は何トークン？](https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide)
+- [デュアル4Kドック、Macでも2画面になる？](https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide)

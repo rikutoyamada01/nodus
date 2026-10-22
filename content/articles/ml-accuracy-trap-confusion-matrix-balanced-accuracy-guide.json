@@ -136,6 +136,11 @@
     {
       "slug": "streaming-ai-offline-accuracy-vs-realtime-timing-guide",
       "title": "オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離"
+    },
+    {
+      "slug": "ml-class-imbalance-oversampling-loss-weight-double-correction",
+      "title": "不均衡データの二重補正と未抽選データの罠",
+      "category": "Architecture"
     }
   ],
   "faqs": []

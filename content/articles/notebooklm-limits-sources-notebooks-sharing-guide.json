@@ -21,7 +21,7 @@
   "evidence_notice": "公式ヘルプ・プラン表を確認 / 大量資料投入時の独自実測なし",
   "methodology_note": "2026年10月16日にGoogle公式ヘルプ（Gemini Notebookでノートブックを作成する）およびGoogle Oneプラン表を確認して整理した記事です。特定のPDFファイルでのOCR精度や応答速度の独自測定は行っていません。",
   "seo": {
-    "meta_title": "NotebookLM（Gemini Notebook）のノートブック分割と上限の考え方 | Nodus",
+    "meta_title": "NotebookLM?????????????????????? | Nodus",
     "meta_description": "NotebookLM（Gemini Notebook）において複数ノートブックが独立して動作する仕様、5ソース以上での自動ラベル分類、Studioパネルのデータテーブル出力や初回自動生成と使用量上限の関係を公式ヘルプから解説します。",
     "target_keywords": [
       "NotebookLM ノートブック 分割",

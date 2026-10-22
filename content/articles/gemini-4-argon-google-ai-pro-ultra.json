@@ -8,7 +8,11 @@
   "origin": "editorial",
   "origin_label": "選び方・公式資料から整理",
   "illustration": "ai",
-  "tags": ["Gemini", "Google AI Pro", "Google AI Ultra"],
+  "tags": [
+    "Gemini",
+    "Google AI Pro",
+    "Google AI Ultra"
+  ],
   "published_at": "2026-10-14",
   "updated_at": "2026-10-15",
   "data_updated_at": "2026-10-14",
@@ -18,7 +22,11 @@
   "seo": {
     "meta_title": "Gemini 4 ArgonはProで使える？ Ultra限定の範囲と料金差 | Nodus",
     "meta_description": "Google AI Pro契約者向けに、Gemini 4 Argonを使える場所とAntigravityのUltra条件を整理。日本の月額料金差、使用量上限、公開ベンチマークを確認します。",
-    "target_keywords": ["Gemini 4 Argon Pro", "Argon Ultra限定", "Google AI Pro Antigravity"],
+    "target_keywords": [
+      "Gemini 4 Argon Pro",
+      "Argon Ultra限定",
+      "Google AI Pro Antigravity"
+    ],
     "primary_seed": "Gemini 4 Argon Pro Ultra 違い"
   },
   "summary_metrics": [],
@@ -28,12 +36,37 @@
     "日本向け月額表示はPro 2,900円、Ultra 14,500円から。最小構成でも月11,600円の差があるため、使いたい場所と不足している利用枠から判断します。"
   ],
   "comparison_table": {
-    "headers": ["Argonを使う場所", "Google AI Pro", "Google AI Ultra", "確認する条件"],
+    "headers": [
+      "Argonを使う場所",
+      "Google AI Pro",
+      "Google AI Ultra",
+      "確認する条件"
+    ],
     "rows": [
-      ["Geminiアプリ", "提供対象", "提供対象", "対象国・アカウント条件・順次提供"],
-      ["Google検索のAIモード", "提供対象（地域等の条件あり）", "提供対象（地域等の条件あり）", "検索のAIモード固有の地域・言語条件"],
-      ["独立したAntigravityアプリ・CLI", "Argonのサブスク提供対象として記載なし", "個人サブスクの提供対象", "Antigravity自体へのアクセスとArgonへのアクセスは別"],
-      ["Gemini API", "有料APIを別途利用", "サブスク特典と従量課金を区別", "APIの課金設定・利用枠を確認"]
+      [
+        "Geminiアプリ",
+        "提供対象",
+        "提供対象",
+        "対象国・アカウント条件・順次提供"
+      ],
+      [
+        "Google検索のAIモード",
+        "提供対象（地域等の条件あり）",
+        "提供対象（地域等の条件あり）",
+        "検索のAIモード固有の地域・言語条件"
+      ],
+      [
+        "独立したAntigravityアプリ・CLI",
+        "Argonのサブスク提供対象として記載なし",
+        "個人サブスクの提供対象",
+        "Antigravity自体へのアクセスとArgonへのアクセスは別"
+      ],
+      [
+        "Gemini API",
+        "有料APIを別途利用",
+        "サブスク特典と従量課金を区別",
+        "APIの課金設定・利用枠を確認"
+      ]
     ]
   },
   "table_caption": "2026年10月14日確認。Googleの提供開始告知、Antigravity公式告知、日本向けGoogle AIプラン表に基づく個人向けの整理。対象Enterprise契約は別枠です。",
@@ -41,70 +74,182 @@
     {
       "heading": "Pro契約者は、まずGeminiアプリで使える範囲を確認する",
       "body": "Google AI Proを使っているなら、Argonを試す入口はGeminiアプリです。日本向けの公式プラン表でもProの対象モデルにArgonが含まれています。今の契約を継続して使う範囲なら、Argon用に別の上位契約を結ぶ必要はありません。Google Oneの保存容量だけの契約や、名前の似たGoogle AI PlusはProと別です。まずGoogle Oneでプラン名とログイン中のアカウントを確認してください。",
-      "source_indices": [0, 1]
+      "source_indices": [
+        0,
+        1
+      ]
     },
     {
       "heading": "Ultra向けなのは、AntigravityでのArgon利用",
       "body": "Googleの発表では、独立したAntigravityデスクトップアプリとCLIでArgonを利用できる個人サブスクはGoogle AI Ultraです。ProにもAntigravityの特典はありますが、それだけでArgonを選べるとは限りません。Geminiアプリでコードを相談することと、Antigravityからプロジェクトのファイルや開発ツールを操作させることは、契約上も使い方も異なります。Ultra契約者はAntigravityを最新版に更新し、モデルの提供状況を確認しましょう。",
-      "source_indices": [2, 3]
+      "source_indices": [
+        2,
+        3
+      ]
     },
     {
       "heading": "Ultraへの追加費用は、最小構成でも月11,600円",
       "body": "Googleの日本向け月額表示はProが2,900円、Ultraが14,500円からで、32,000円の構成もあります。Proとの差額はそれぞれ月11,600円と29,100円。これは月額表示同士の計算で、契約変更日に請求される精算額ではありません。割引終了後や年払い・通信会社経由の契約では、自分の更新料金で比べてください。アプリのArgon利用だけが目的ならProがすでに対象なので、追加費用の理由はAntigravityでの利用や必要な利用枠にあるかを確認します。",
-      "source_indices": [1, 3]
+      "source_indices": [
+        1,
+        3
+      ]
     },
     {
       "heading": "追加料金に見合うだけの作業時間を短縮できるか",
       "body": "仮に自分の作業時間を1時間3,000円と評価すると、月11,600円の追加費用に見合う時短は約3.9時間、29,100円なら約9.7時間です。これは賃金や実測効果ではなく、差額を時間に置き換えた判断例です。Proで同じ仕事をした場合との差を測り、回答の確認、修正、上限待ちまで含めて時間が減るかを見ます。すでにUltraを契約している人は、この差額を新たな負担と考える必要はありません。今の枠で終わらせられる仕事を確認するのが先です。",
-      "source_indices": [1]
+      "source_indices": [
+        1
+      ]
     },
     {
       "heading": "利用枠は、固定の質問回数として読まない",
       "body": "英語版の公式ヘルプでは、Geminiアプリの使用量は質問の複雑さ、モデルや機能、会話の長さに依存し、5時間ごとの更新に加えて週間上限があると説明されています。短い質問と長い資料の分析を同じ1回として比べることはできません。確認時にはUltraの倍率が日本語ヘルプでProの4倍または20倍、英語版と日本向け料金ページで5倍または20倍と食い違っていました。倍率をArgonの保証回数には換算せず、Geminiの設定にある使用量上限と更新時刻を確認してください。このヘルプはGeminiアプリの説明であり、Antigravityの利用枠も同じ条件とは限りません。",
-      "source_indices": [1, 4, 5]
+      "source_indices": [
+        1,
+        4,
+        5
+      ]
     },
     {
       "heading": "長い資料の処理は、公開評価でも強みが見える",
       "body": "Googleの公開表では、長文の関係をたどるGraphWalksの256k〜1Mトークン区間でArgonのF1は84.2%、比較先の最高値は71.8%で、差は12.4ポイントでした。業務自動化のAutomationBenchも51.3%対42.5%で8.8ポイント上回っています。複数資料の情報整理や段階の多い作業を試す根拠にはなりますが、これらは日本語の会話満足度や日常作業の時短率ではありません。公開表には旧Geminiとの同条件比較がそろっていないため、普段使っていたモデルから何%改善するかは断定しません。",
-      "source_indices": [6, 7]
+      "source_indices": [
+        6,
+        7
+      ]
     },
     {
       "heading": "コーディングの数値だけでUltraを選ばない",
       "body": "同じ公開表でも、ソフトウェア修正のDeepSWE v1.1はArgon 77.9%、比較先の最高値74.2%ですが、FrontierSWE v2は55.0%対65.5%で逆転します。さらにDeepSWEはArgonの自社測定と競合の公開値が混在しています。第三者のArtificial AnalysisではArgon highの総合指数は53、確認時の掲載順位は216モデル中8位でした。指数は正答率ではありません。上位のモデルであることと、自分の開発環境で追加料金分の仕事が進むことは、別に確かめる必要があります。",
-      "source_indices": [6, 7, 8]
+      "source_indices": [
+        6,
+        7,
+        8
+      ]
     },
     {
       "heading": "100万トークンの仕様と、サブスクの使用量を区別する",
       "body": "Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トークン。通常の同期出力の上限は65,536トークンで、最大約100万トークンの出力にはlong decodeの仕組みを使います。これはAPIの仕様で、GeminiアプリやAntigravityで毎回同じ長さを出せるという保証ではありません。一度に扱える情報量と、一定期間に使える計算量も別の制限です。長い資料が入るから使い放題、という理解では利用枠を見積もれません。",
-      "source_indices": [9]
+      "source_indices": [
+        9
+      ]
     },
     {
       "heading": "APIの発売価格は、サブスクの値下げではない",
       "body": "有料Gemini APIはサブスクとは別の利用経路です。Standardの100万トークン当たり料金は2026年11月30日まで入力2ドル・出力10ドル、12月1日以降は入力4ドル・出力20ドル。出力には思考トークンを含みます。この料金変更をProやUltraの月額変更と混同しないでください。アプリで対話したい既存Pro利用者が、ArgonのためにAPI課金を設定する必要はありません。独自ツールから使う場合は、サブスクの利用枠と分けて費用を管理します。",
-      "source_indices": [10]
+      "source_indices": [
+        10
+      ]
     },
     {
       "heading": "使えないときは、契約・利用場所・提供条件の順で確認する",
       "body": "まずGoogle AI ProかUltraか、対象の個人アカウントでログインしているかを確認します。次にGeminiアプリなのか独立したAntigravityなのかを確認してください。Googleは順次提供と案内しており、日本向けプラン表も対象国や年齢などの条件を示しています。検索のAIモードにも固有の条件があります。日本でProやUltraを契約できても、すべての機能が同時に使えるとは限りません。表示されない理由を確かめる前に、上位プランへの変更だけで解決すると考えないことが大切です。",
-      "source_indices": [0, 2, 5]
+      "source_indices": [
+        0,
+        2,
+        5
+      ]
     }
   ],
   "sources": [
-    {"title": "Google One：日本向けGoogle AIプラン表", "url": "https://one.google.com/intl/ja_jp/about/google-ai-plans/", "verified_date": "2026-10-14", "sample_size": 0, "scope": "Pro・UltraのArgon特典と提供条件"},
-    {"title": "Gemini：日本向けサブスクリプション料金", "url": "https://gemini.google/jp/subscriptions/?hl=ja", "verified_date": "2026-10-14", "sample_size": 0, "scope": "月額表示：Pro 2,900円、Ultra 14,500円／32,000円"},
-    {"title": "Google：Gemini 4 Argonの提供開始告知", "url": "https://blog.google/intl/en-in/products/introducing-gemini-4-argon/", "verified_date": "2026-10-14", "sample_size": 0, "scope": "Geminiアプリ・検索・Antigravityの提供先"},
-    {"title": "Antigravity：Argonのアプリ・CLI提供条件", "url": "https://antigravity.google/blog/gemini-4-argon-in-google-antigravity", "verified_date": "2026-10-14", "sample_size": 0, "scope": "個人向けはUltra、対象Enterprise契約は別枠"},
-    {"title": "Geminiヘルプ：使用量上限（英語版）", "url": "https://support.google.com/gemini/answer/16275805?hl=en", "verified_date": "2026-10-14", "sample_size": 0, "scope": "計算量による消費、5時間枠・週間上限、残量確認"},
-    {"title": "Geminiヘルプ：使用量上限（日本語版）", "url": "https://support.google.com/gemini/answer/16275805?hl=ja", "verified_date": "2026-10-14", "sample_size": 0, "scope": "日本を含む対象国と使用量上限。倍率に英語版との差異あり"},
-    {"title": "Google DeepMind：Argonの公開性能比較", "url": "https://deepmind.google/models/gemini/", "verified_date": "2026-10-14", "sample_size": 0, "scope": "公開ベンチマーク値。Nodusの実測ではない"},
-    {"title": "Google DeepMind：Argon評価方法", "url": "https://deepmind.google/models/evals-methodology/gemini-4-argon", "verified_date": "2026-10-14", "sample_size": 0, "scope": "推論設定、評価環境、各結果の取得元"},
-    {"title": "Artificial Analysis：Gemini 4 Argon high", "url": "https://artificialanalysis.ai/models/gemini-4-argon", "verified_date": "2026-10-14", "sample_size": 0, "scope": "第三者の総合指数53。掲載順位は確認時点"},
-    {"title": "Google AI for Developers：ArgonのAPI仕様", "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon", "verified_date": "2026-10-14", "sample_size": 0, "scope": "統合コンテキスト、同期出力・long decode"},
-    {"title": "Google AI for Developers：API料金", "url": "https://ai.google.dev/gemini-api/docs/pricing", "verified_date": "2026-10-14", "sample_size": 0, "scope": "Standardの発売価格と2026年12月以降の料金"}
+    {
+      "title": "Google One：日本向けGoogle AIプラン表",
+      "url": "https://one.google.com/intl/ja_jp/about/google-ai-plans/",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "Pro・UltraのArgon特典と提供条件"
+    },
+    {
+      "title": "Gemini：日本向けサブスクリプション料金",
+      "url": "https://gemini.google/jp/subscriptions/?hl=ja",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "月額表示：Pro 2,900円、Ultra 14,500円／32,000円"
+    },
+    {
+      "title": "Google：Gemini 4 Argonの提供開始告知",
+      "url": "https://blog.google/intl/en-in/products/introducing-gemini-4-argon/",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "Geminiアプリ・検索・Antigravityの提供先"
+    },
+    {
+      "title": "Antigravity：Argonのアプリ・CLI提供条件",
+      "url": "https://antigravity.google/blog/gemini-4-argon-in-google-antigravity",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "個人向けはUltra、対象Enterprise契約は別枠"
+    },
+    {
+      "title": "Geminiヘルプ：使用量上限（英語版）",
+      "url": "https://support.google.com/gemini/answer/16275805?hl=en",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "計算量による消費、5時間枠・週間上限、残量確認"
+    },
+    {
+      "title": "Geminiヘルプ：使用量上限（日本語版）",
+      "url": "https://support.google.com/gemini/answer/16275805?hl=ja",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "日本を含む対象国と使用量上限。倍率に英語版との差異あり"
+    },
+    {
+      "title": "Google DeepMind：Argonの公開性能比較",
+      "url": "https://deepmind.google/models/gemini/",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "公開ベンチマーク値。Nodusの実測ではない"
+    },
+    {
+      "title": "Google DeepMind：Argon評価方法",
+      "url": "https://deepmind.google/models/evals-methodology/gemini-4-argon",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "推論設定、評価環境、各結果の取得元"
+    },
+    {
+      "title": "Artificial Analysis：Gemini 4 Argon high",
+      "url": "https://artificialanalysis.ai/models/gemini-4-argon",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "第三者の総合指数53。掲載順位は確認時点"
+    },
+    {
+      "title": "Google AI for Developers：ArgonのAPI仕様",
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "統合コンテキスト、同期出力・long decode"
+    },
+    {
+      "title": "Google AI for Developers：API料金",
+      "url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "verified_date": "2026-10-14",
+      "sample_size": 0,
+      "scope": "Standardの発売価格と2026年12月以降の料金"
+    }
   ],
   "related_articles": [
-    {"slug": "ai-coding-subscriptions-real-rate-limits-token-economics", "title": "AIコーディングの契約と利用枠を確認する"},
-    {"slug": "personal-ai-vps-home-server-subscription", "title": "サブスクとAPI、自分で運用するAIの費用を分ける"}
+    {
+      "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
+      "title": "AIコーディングの契約と利用枠を確認する"
+    },
+    {
+      "slug": "personal-ai-vps-home-server-subscription",
+      "title": "サブスクとAPI、自分で運用するAIの費用を分ける"
+    },
+    {
+      "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
+      "title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方",
+      "category": "Cloud & AI Infrastructure"
+    },
+    {
+      "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
+      "title": "DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？",
+      "category": "Cloud & AI Infrastructure"
+    }
   ],
   "faqs": []
 }

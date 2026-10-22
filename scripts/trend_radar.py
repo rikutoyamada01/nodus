@@ -335,31 +335,41 @@ def analyze_articles_and_seeds(
         content_gaps: list[dict[str, Any]] = []
         intent_counts: Counter[str] = Counter()
 
-        for mod in modifiers:
-            q = f"{seed}{mod}"
-            for s in fetch_google_suggest(q):
-                if s not in seen_suggestions:
-                    seen_suggestions.append(s)
-                    intent = classify_search_intent(s)
-                    intent_counts[intent] += 1
-                    if art:
-                        eval_res = evaluate_query_against_article(s, art)
-                        if eval_res["status"] == "answer_in_body_missing_in_title":
-                            title_opportunities.append(
-                                {
-                                    "query": s,
-                                    "intent": eval_res["intent"],
-                                    "missing_in_title": eval_res["missing_in_title"],
-                                }
-                            )
-                        elif eval_res["status"] == "missing_in_article":
-                            content_gaps.append(
-                                {
-                                    "query": s,
-                                    "intent": eval_res["intent"],
-                                    "missing_in_body": eval_res["missing_in_body"],
-                                }
-                            )
+        candidate_seeds = [seed]
+        parts = seed.split()
+        if len(parts) > 2:
+            candidate_seeds.append(" ".join(parts[:2]))
+        if len(parts) > 1:
+            candidate_seeds.append(parts[0])
+
+        for cand_seed in candidate_seeds:
+            for mod in modifiers:
+                q = f"{cand_seed}{mod}"
+                for s in fetch_google_suggest(q):
+                    if s not in seen_suggestions:
+                        seen_suggestions.append(s)
+                        intent = classify_search_intent(s)
+                        intent_counts[intent] += 1
+                        if art:
+                            eval_res = evaluate_query_against_article(s, art)
+                            if eval_res["status"] == "answer_in_body_missing_in_title":
+                                title_opportunities.append(
+                                    {
+                                        "query": s,
+                                        "intent": eval_res["intent"],
+                                        "missing_in_title": eval_res["missing_in_title"],
+                                    }
+                                )
+                            elif eval_res["status"] == "missing_in_article":
+                                content_gaps.append(
+                                    {
+                                        "query": s,
+                                        "intent": eval_res["intent"],
+                                        "missing_in_body": eval_res["missing_in_body"],
+                                    }
+                                )
+            if seen_suggestions:
+                break
 
         dominant_intent = intent_counts.most_common(1)[0][0] if intent_counts else "metric_cost_spec"
         results.append(
