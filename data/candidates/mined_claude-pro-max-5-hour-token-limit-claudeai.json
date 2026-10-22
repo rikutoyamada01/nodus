@@ -1,9 +1,9 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-10-20T23:37:51.724296",
+  "mined_at": "2026-10-22T05:12:16.282615",
   "status": "ok",
-  "total_quantitative_hits": 2,
+  "total_quantitative_hits": 1,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
@@ -20,17 +20,6 @@
         "256GB",
         "100GB",
         "20 tok/s"
-      ]
-    },
-    {
-      "source": "GitHub",
-      "title": "Model comparisons: automate PR facts and Claude allowance collection",
-      "url": "https://github.com/onsager-ai/semon/issues/39",
-      "created_at": "2026-09-28",
-      "measurement_count": 2,
-      "extracted_numbers": [
-        "1.8 GB",
-        "99 °C"
       ]
     }
   ],

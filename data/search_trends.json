@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T23:38:04.003354",
+  "generated_at": "2026-10-22T05:12:26.679601",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -446,9 +446,9 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
+        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
-        "mac ローカルllm コーディング",
-        "mac ローカルllm mlx"
+        "mac ローカルllm コーディング"
       ],
       "title_optimization_opportunities": [
         {
@@ -475,6 +475,13 @@
           ]
         },
         {
+          "query": "mac ローカルllm mlx",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mlx"
+          ]
+        },
+        {
           "query": "mac ローカルllm 構築",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -486,13 +493,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "コーディング"
-          ]
-        },
-        {
-          "query": "mac ローカルllm mlx",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mlx"
           ]
         }
       ]
@@ -685,135 +685,135 @@
   "zenn_daily_trending": [
     {
       "title": "Oxlint + Oxfmt で規約をコード化するモノレポ運用",
-      "liked_count": 25,
+      "liked_count": 43,
       "comments_count": 0,
       "url": "https://zenn.dev/reality_tech/articles/oxc-monorepo-20261006",
       "published_at": "2026-10-20"
     },
     {
-      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
-      "liked_count": 29,
-      "comments_count": 1,
-      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
-      "published_at": "2026-10-19"
-    },
-    {
-      "title": "Chromium(V8)のArray.prototype.fillを最大約7倍高速化した",
-      "liked_count": 22,
-      "comments_count": 0,
-      "url": "https://zenn.dev/dinii/articles/5b8edc7856c25b",
-      "published_at": "2026-10-20"
-    },
-    {
-      "title": "Cloudflare + EmDash の自サイトを点検したら Server-Timing から内部情報が見えていた話",
-      "liked_count": 15,
-      "comments_count": 0,
-      "url": "https://zenn.dev/masaru21/articles/2100616bb5110d",
-      "published_at": "2026-10-19"
-    },
-    {
-      "title": "ポートフォリオをVoidで作り直したので、Voidの来歴と中身を整理する",
-      "liked_count": 56,
-      "comments_count": 0,
-      "url": "https://zenn.dev/nkzn/articles/my-first-void",
-      "published_at": "2026-10-16"
-    },
-    {
-      "title": "有名 OSS が PR を閉じはじめた。何が起きていて、どう向き合うか",
-      "liked_count": 99,
-      "comments_count": 2,
-      "url": "https://zenn.dev/hand_dot/articles/ecb391d4322330",
-      "published_at": "2026-10-16"
-    },
-    {
-      "title": "改めて考える、AIエンジニアリングの今",
-      "liked_count": 101,
-      "comments_count": 2,
-      "url": "https://zenn.dev/r_kaga/articles/2fd185c50cea7c",
-      "published_at": "2026-10-15"
-    },
-    {
       "title": "Claude Code で CI 待ち時間を 18 分から 4 分台に短縮する【GitHub Actions】",
-      "liked_count": 12,
+      "liked_count": 38,
       "comments_count": 0,
       "url": "https://zenn.dev/edash_tech_blog/articles/5b90aa33bd8d49",
       "published_at": "2026-10-20"
     },
     {
-      "title": "AI にリバースエンジニアリングさせる REA を触って、持ち帰ったのは「証拠付きで進める」考え方でした",
-      "liked_count": 1,
-      "comments_count": 0,
-      "url": "https://zenn.dev/flinters_blog/articles/3b377ce568d676",
-      "published_at": "2026-10-20"
+      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
+      "liked_count": 34,
+      "comments_count": 1,
+      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
+      "published_at": "2026-10-19"
     },
     {
-      "title": "AIペネトレーションテストツール「Strix」を試してみた",
-      "liked_count": 24,
+      "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
+      "liked_count": 21,
       "comments_count": 0,
-      "url": "https://zenn.dev/turquoise123/articles/df481032f6b405",
-      "published_at": "2026-10-20"
+      "url": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
+      "published_at": "2026-10-22"
+    },
+    {
+      "title": "「PHPのドカ脆弱性」=「今すぐDynmap止めろ」ではなかった話",
+      "liked_count": 1,
+      "comments_count": 0,
+      "url": "https://zenn.dev/56drich/articles/f52bd4a1dae988",
+      "published_at": "2026-10-22"
+    },
+    {
+      "title": "ポートフォリオをVoidで作り直したので、Voidの来歴と中身を整理する",
+      "liked_count": 59,
+      "comments_count": 0,
+      "url": "https://zenn.dev/nkzn/articles/my-first-void",
+      "published_at": "2026-10-16"
+    },
+    {
+      "title": "セキュアな実装をするために意識したいこと",
+      "liked_count": 25,
+      "comments_count": 0,
+      "url": "https://zenn.dev/dress_code/articles/unauthorized-access-secure-implementation",
+      "published_at": "2026-10-21"
+    },
+    {
+      "title": "cronのclaude -pが\"ok\"だけで4万トークン——--safe-modeと--tools \"\"で98%削減",
+      "liked_count": 2,
+      "comments_count": 0,
+      "url": "https://zenn.dev/yosiki/articles/claude-p-cron-token-diet",
+      "published_at": "2026-10-21"
+    },
+    {
+      "title": "Cloudflare + EmDash の自サイトを点検したら Server-Timing から内部情報が見えていた話",
+      "liked_count": 20,
+      "comments_count": 0,
+      "url": "https://zenn.dev/masaru21/articles/2100616bb5110d",
+      "published_at": "2026-10-19"
+    },
+    {
+      "title": "個人事業主が App Store の有料アプリ契約を有効にするまで。Apple は組織を選べず、私は納税フォームを2つ出した",
+      "liked_count": 3,
+      "comments_count": 0,
+      "url": "https://zenn.dev/hk_work/articles/sole-proprietor-app-store-paid-apps-agreement",
+      "published_at": "2026-10-21"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "DeepInfer: High-performance inference framework for DeepSeek models",
-      "points": 2092,
-      "num_comments": 815,
-      "url": "https://github.com/deepseek-ai/DeepInfer"
+      "title": "PHP 8.2.35",
+      "points": 990,
+      "num_comments": 534,
+      "url": "https://github.com/php/php-src/releases/tag/php-8.2.35"
     },
     {
-      "title": "EMudhra Intermediate CA Compromise",
-      "points": 567,
-      "num_comments": 301,
-      "url": "https://emudhra.we-have-a-problem.com/"
+      "title": "Eight Bits of Trust: eMudhra's CA keys cracked in milliseconds",
+      "points": 864,
+      "num_comments": 412,
+      "url": "https://scotthelme.co.uk/eight-bits-of-trust-emudhras-ca-keys-cracked-in-milliseconds/"
     },
     {
-      "title": "Voxtral 3",
-      "points": 484,
-      "num_comments": 133,
-      "url": "https://mistral.ai/news/voxtral-3/"
+      "title": "Today's PHP security release, and how we're strengthening security",
+      "points": 703,
+      "num_comments": 347,
+      "url": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/"
     },
     {
-      "title": "Apple broke an essential presentation feature of iPads",
-      "points": 469,
-      "num_comments": 245,
-      "url": "https://teddysvoronos.com/2026-10-19-apple-broke-an-essential-presentation-feature-of-ipads/"
+      "title": "EA is shutting down BioWare",
+      "points": 583,
+      "num_comments": 350,
+      "url": "https://www.theverge.com/games/1015647/ea-is-shutting-down-bioware"
     },
     {
-      "title": "SimCity, but with Permits",
-      "points": 459,
-      "num_comments": 250,
-      "url": "https://permit.petercai.com/"
+      "title": "Compromised LiteLLM 1.107.0 on PyPI Installs a Credential Stealer and Backdoor",
+      "points": 467,
+      "num_comments": 158,
+      "url": "https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/"
     },
     {
-      "title": "Facebook Pages require paid subscription to post more than two links per month",
-      "points": 401,
-      "num_comments": 362,
-      "url": "https://mastodon.gamedev.place/@AshleyGullen/117473851565913919"
+      "title": "Meta ordered to pay $25B penalty in New Mexico Cambridge Analytica case",
+      "points": 458,
+      "num_comments": 287,
+      "url": "https://www.cnbc.com/2026/10/21/meta-new-mexico-cambridge-analytica-penalty.html"
     },
     {
-      "title": "MicroG: Free-libre re-implementation of Google's proprietary Android user space",
-      "points": 375,
-      "num_comments": 91,
-      "url": "https://github.com/microg/GmsCore/wiki"
+      "title": "DuckDB 2.0.0 LTS “Cinnamon Teal”",
+      "points": 386,
+      "num_comments": 49,
+      "url": "https://duckdb.org/2026/10/21/announcing-duckdb-200"
     },
     {
-      "title": "Tsrs: A Port of TypeScript to Rust",
-      "points": 333,
-      "num_comments": 149,
-      "url": "https://blog.cloudflare.com/typescript-rust-port/"
+      "title": "Security Disclosure",
+      "points": 381,
+      "num_comments": 224,
+      "url": "https://blog.railway.com/p/security-disclosure-wednesday-october-21st"
     },
     {
-      "title": "Google Cloud outage affects almost all banking and other operations in Europe",
-      "points": 313,
-      "num_comments": 164,
-      "url": "https://www.neowin.net/news/google-cloud-outage-takes-down-hsbc-revolut-bank-of-scotland-llyods-equifax-more/"
+      "title": "mitmproxy adds --emudhra option",
+      "points": 353,
+      "num_comments": 94,
+      "url": "https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b"
     },
     {
-      "title": "Ofcom concedes defeat in 4chan case",
-      "points": 305,
-      "num_comments": 209,
-      "url": "https://prestonbyrne.com/2026/10/20/ofcom-concedes-defeat/"
+      "title": "There isn't an easy exploit for this PHP vulnerability",
+      "points": 311,
+      "num_comments": 148,
+      "url": "https://eliastaylor.com/noexploit/"
     }
   ]
 }
