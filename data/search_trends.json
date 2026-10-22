@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T20:47:36.797723",
+  "generated_at": "2026-10-22T23:53:22.796058",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -17,8 +17,8 @@
         "usb-c 充電器 100w",
         "usb-c 充電器 複数ポート",
         "usb-c 充電器 おすすめ",
-        "usb-c 充電器 薄型",
         "usb-c 充電器 ケーブル付き",
+        "usb-c 充電器 薄型",
         "usb-c 充電器 3ポート",
         "usb-c 充電器 iphone"
       ],
@@ -74,9 +74,9 @@
       "seed": "AIコーディング サブスク API 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 7,
+        "metric_cost_spec": 6,
         "question_troubleshoot": 2,
-        "comparison": 1
+        "comparison": 2
       },
       "total_suggestions": 10,
       "top_suggestions": [
@@ -87,9 +87,9 @@
         "aiコーディング 無料",
         "aiコーディング やり方",
         "aiコーディング おすすめ",
+        "aiコーディングエージェントとは",
         "aiコーディングエージェント 無料",
-        "aiコーディング ランキング",
-        "aiコーディングエージェントとは"
+        "aiコーディング 比較"
       ],
       "title_optimization_opportunities": [
         {
@@ -121,30 +121,22 @@
           ]
         },
         {
+          "query": "aiコーディングエージェントとは",
+          "intent": "question_troubleshoot",
+          "missing_in_title": [
+            "コーディングエージェント"
+          ]
+        },
+        {
           "query": "aiコーディングエージェント 無料",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "コーディングエージェント",
             "無料"
           ]
-        },
-        {
-          "query": "aiコーディングエージェントとは",
-          "intent": "question_troubleshoot",
-          "missing_in_title": [
-            "コーディングエージェント"
-          ]
         }
       ],
-      "uncovered_content_gaps": [
-        {
-          "query": "aiコーディング ランキング",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ランキング"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     },
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
@@ -239,24 +231,15 @@
         "cloudflare pages",
         "cloudflare pages 無料枠",
         "cloudflare pages 使い方",
-        "cloudflare pages 廃止",
         "cloudflare pagesとは",
+        "cloudflare pages 廃止",
         "cloudflare pages 料金",
         "cloudflare pages workers 違い",
-        "cloudflare pages 動的サイト",
+        "cloudflare pages ドメイン",
         "cloudflare pages 商用利用",
-        "cloudflare pages ドメイン"
+        "cloudflare pages 独自ドメイン"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "cloudflare pages 動的サイト",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "動的",
-            "サイト"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "cloudflare pages 無料枠",
@@ -369,12 +352,12 @@
       "top_suggestions": [
         "deepseek flash v4",
         "deepseek flash 0731",
+        "deepseek flash v4 0731",
         "deepseek flash v4.1",
         "deepseek flash 4.1",
         "deepseek flash pro",
-        "deepseek flash v4 0731",
-        "deepseek flash api",
         "deepseek flash vision",
+        "deepseek flash api",
         "deepseek flash 价格"
       ],
       "title_optimization_opportunities": [
@@ -386,17 +369,17 @@
           ]
         },
         {
-          "query": "deepseek flash pro",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "pro"
-          ]
-        },
-        {
           "query": "deepseek flash v4 0731",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "0731"
+          ]
+        },
+        {
+          "query": "deepseek flash pro",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "pro"
           ]
         }
       ],
@@ -880,9 +863,9 @@
         "esp32-s3-wroom-1-n16r8",
         "esp32-s3-devkitc-1-n8r8",
         "esp32-s3r8",
-        "esp32-s3 ピン配置",
         "esp32-s3fn8",
-        "esp32-s3-wroom"
+        "esp32-s3-wroom",
+        "esp32-s3 super mini"
       ],
       "title_optimization_opportunities": [
         {
@@ -930,13 +913,6 @@
           ]
         },
         {
-          "query": "esp32-s3 ピン配置",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "配置"
-          ]
-        },
-        {
           "query": "esp32-s3fn8",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -948,6 +924,14 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "esp32-s3-wroom"
+          ]
+        },
+        {
+          "query": "esp32-s3 super mini",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "super",
+            "mini"
           ]
         }
       ]
@@ -999,26 +983,18 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 argon",
-        "gemini 4 argon 性能",
         "gemini 4",
         "gemini 4 carbon",
-        "gemini 4 flash",
+        "gemini 4 argon 性能",
+        "gemini 4 pro",
         "gemini 4 argon 料金",
+        "gemini 4 flash",
         "gemini 4 argon 評価",
-        "gemini 4 argon 使い方",
-        "gemini 4 いつ",
-        "gemini 4.0 いつ"
+        "gemini 4 argon とは",
+        "gemini 4 いつ"
       ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": [
-        {
-          "query": "gemini 4.0 いつ",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "4.0"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     },
     {
       "slug": "gemini-api-prompt-caching-implicit-explicit-cost-guide",
@@ -1030,8 +1006,8 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini api",
-        "gemini apiキー",
         "gemini api key",
+        "gemini apiキー",
         "gemini api 料金",
         "gemini api 無料枠",
         "gemini apiキー 取得方法",
@@ -1133,11 +1109,11 @@
         "google ai pro",
         "google ai plus",
         "google aiモード",
-        "google ai studio 日本語",
         "google aiチャット",
+        "google ai studio 日本語",
         "google ai 無料",
-        "google ai スタジオ",
-        "google ai studio アプリ"
+        "google ai studio アプリ",
+        "google ai studio 日本語にする方法"
       ],
       "title_optimization_opportunities": [
         {
@@ -1164,13 +1140,6 @@
           ]
         },
         {
-          "query": "google ai studio 日本語",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "日本語"
-          ]
-        },
-        {
           "query": "google aiチャット",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1178,10 +1147,18 @@
           ]
         },
         {
-          "query": "google ai スタジオ",
+          "query": "google ai studio 日本語",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "スタジオ"
+            "日本語"
+          ]
+        },
+        {
+          "query": "google ai studio 日本語にする方法",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "日本語",
+            "方法"
           ]
         }
       ]
@@ -1202,8 +1179,8 @@
         "colab gpu 上限",
         "colab gpu 性能",
         "colab gpu 使い方",
-        "colab gpu 使用量上限 リセット",
         "colab gpu 無料",
+        "colab gpu 使用量上限 リセット",
         "colab gpu vscode",
         "colab gpu t4",
         "colab gpu ram"
@@ -1226,17 +1203,17 @@
           ]
         },
         {
-          "query": "colab gpu 使用量上限 リセット",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "リセット"
-          ]
-        },
-        {
           "query": "colab gpu 無料",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "無料"
+          ]
+        },
+        {
+          "query": "colab gpu 使用量上限 リセット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "リセット"
           ]
         },
         {
@@ -1269,28 +1246,28 @@
         "search console",
         "search consoleとは",
         "search console ログイン",
-        "search console 使い方",
         "search console api",
+        "search console 使い方",
         "search console google",
+        "search console mcp",
         "search console 生成ai",
-        "search console sns",
-        "search console url検査",
-        "search console mcp"
+        "search console ai",
+        "search console sns"
       ],
       "title_optimization_opportunities": [
+        {
+          "query": "search console api",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "api"
+          ]
+        },
         {
           "query": "search console 使い方",
           "intent": "question_troubleshoot",
           "missing_in_title": [
             "使",
             "方"
-          ]
-        },
-        {
-          "query": "search console api",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "api"
           ]
         },
         {
@@ -1317,6 +1294,13 @@
           ]
         },
         {
+          "query": "search console mcp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mcp"
+          ]
+        },
+        {
           "query": "search console 生成ai",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1325,18 +1309,10 @@
           ]
         },
         {
-          "query": "search console url検査",
+          "query": "search console ai",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "url",
-            "検査"
-          ]
-        },
-        {
-          "query": "search console mcp",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mcp"
+            "ai"
           ]
         }
       ]
@@ -1361,7 +1337,7 @@
         "スピーカーフォン スマホ",
         "スピーカーフォン jabra",
         "スピーカーフォン 会議",
-        "スピーカーフォン 連結"
+        "スピーカーフォン ヤマハ"
       ],
       "title_optimization_opportunities": [
         {
@@ -1403,10 +1379,10 @@
           ]
         },
         {
-          "query": "スピーカーフォン 連結",
+          "query": "スピーカーフォン ヤマハ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "連結"
+            "ヤマハ"
           ]
         }
       ]
@@ -1430,19 +1406,18 @@
       "seed": "継続学習 ラベリング 注意点",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 9,
+        "metric_cost_spec": 8,
         "question_troubleshoot": 1
       },
-      "total_suggestions": 10,
+      "total_suggestions": 9,
       "top_suggestions": [
         "継続学習",
-        "継続学習 ai",
         "継続学習とは",
+        "継続学習 ai",
         "継続学習 英語",
-        "継続学習制度",
         "継続学習センター",
+        "継続学習制度",
         "継続学習 llm",
-        "継続学習制度(cpds)のガイドライン",
         "継続学習と知能の創発研究会",
         "継続学習 ファイン チューニング"
       ],
@@ -1456,13 +1431,6 @@
           ]
         },
         {
-          "query": "継続学習制度",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "継続学習制度"
-          ]
-        },
-        {
           "query": "継続学習センター",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1470,19 +1438,17 @@
           ]
         },
         {
+          "query": "継続学習制度",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "継続学習制度"
+          ]
+        },
+        {
           "query": "継続学習 llm",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "llm"
-          ]
-        },
-        {
-          "query": "継続学習制度(cpds)のガイドライン",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "継続学習制度",
-            "cpds",
-            "ガイドライン"
           ]
         },
         {
@@ -1533,22 +1499,22 @@
       "seed": "LLM API 速度 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
-        "question_troubleshoot": 1,
-        "comparison": 1
+        "metric_cost_spec": 7,
+        "comparison": 2,
+        "question_troubleshoot": 1
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "llm api",
         "llm api 無料",
-        "llm apiとは",
         "llm api 料金 比較",
-        "llm api 料金",
+        "llm apiとは",
         "llm api 無料枠",
+        "llm api 料金",
+        "llm api 定額",
         "llm api コスパ",
         "llm apiキー",
-        "llm api 安い",
-        "llm api サブスク"
+        "llm api 比較"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1568,6 +1534,13 @@
           ]
         },
         {
+          "query": "llm api 定額",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "定額"
+          ]
+        },
+        {
           "query": "llm api コスパ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1579,20 +1552,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "キー"
-          ]
-        },
-        {
-          "query": "llm api 安い",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "安"
-          ]
-        },
-        {
-          "query": "llm api サブスク",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "サブスク"
           ]
         }
       ]
@@ -1613,23 +1572,23 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
+        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
-        "mac ローカルllm コーディング",
-        "mac ローカルllm mlx"
+        "mac ローカルllm コーディング"
       ],
       "title_optimization_opportunities": [
-        {
-          "query": "mac ローカルllm コーディング",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "コーディング"
-          ]
-        },
         {
           "query": "mac ローカルllm mlx",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "mlx"
+          ]
+        },
+        {
+          "query": "mac ローカルllm コーディング",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "コーディング"
           ]
         }
       ],
@@ -1926,8 +1885,8 @@
         "notebooklm ソース 上限",
         "notebooklm ソース ダウンロード",
         "notebooklm ソース 一括削除",
-        "notebooklm ソース 削除",
         "notebooklm ソース",
+        "notebooklm ソース 削除",
         "notebooklm ソース 更新",
         "notebooklm ソース追加できない",
         "notebooklm ソース 自動更新",
@@ -1999,8 +1958,8 @@
       },
       "total_suggestions": 5,
       "top_suggestions": [
-        "ollama コンテキスト長 変更",
         "ollama コンテキスト長",
+        "ollama コンテキスト長 変更",
         "ollama コンテキスト長 確認",
         "ollama コンテキスト長 設定",
         "ollama コンテキスト長 デフォルト"
@@ -2019,15 +1978,15 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "パーソナルai",
-        "パーソナルアイテムとは",
         "パーソナルaiエージェント",
+        "パーソナルアイテムとは",
         "パーソナルaiとは",
+        "パーソナルアイテック",
         "パーソナルアイデンティティ",
         "パーソナルai 作り方",
-        "パーソナルaiマーケティング",
         "パーソナルアイス",
-        "パーソナルアイテム",
-        "パーソナルアイテック"
+        "パーソナルaiマーケティング",
+        "パーソナルアイテム"
       ],
       "title_optimization_opportunities": [
         {
@@ -2047,17 +2006,17 @@
           ]
         },
         {
+          "query": "パーソナルアイテック",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイテック"
+          ]
+        },
+        {
           "query": "パーソナルアイデンティティ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "パーソナルアイデンティティ"
-          ]
-        },
-        {
-          "query": "パーソナルaiマーケティング",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "マーケティング"
           ]
         },
         {
@@ -2068,17 +2027,17 @@
           ]
         },
         {
+          "query": "パーソナルaiマーケティング",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "マーケティング"
+          ]
+        },
+        {
           "query": "パーソナルアイテム",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "パーソナルアイテム"
-          ]
-        },
-        {
-          "query": "パーソナルアイテック",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "パーソナルアイテック"
           ]
         }
       ]
@@ -2369,9 +2328,9 @@
       "seed": "Wi-Fi 7 買い替え 必要",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
+        "metric_cost_spec": 7,
         "question_troubleshoot": 1,
-        "comparison": 1
+        "comparison": 2
       },
       "total_suggestions": 10,
       "top_suggestions": [
@@ -2383,18 +2342,10 @@
         "wi-fi 7対応ルーター",
         "wi-fi 7 iphone",
         "wi-fi 7対応",
-        "wi-fi 7 (11be)",
-        "wi-fi 7 中継器"
+        "wi-fi 7 中継器",
+        "wi-fi 7 ルーター おすすめ"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "wi-fi 7 (11be)",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "11be"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "wi-fi 7 iphone",
@@ -2415,136 +2366,136 @@
   ],
   "zenn_daily_trending": [
     {
-      "title": "Oxlint + Oxfmt で規約をコード化するモノレポ運用",
-      "liked_count": 43,
-      "comments_count": 0,
-      "url": "https://zenn.dev/reality_tech/articles/oxc-monorepo-20261006",
-      "published_at": "2026-10-20"
-    },
-    {
-      "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
-      "liked_count": 28,
-      "comments_count": 0,
-      "url": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
-      "published_at": "2026-10-22"
-    },
-    {
-      "title": "脆弱性管理の仕組みを整えた",
-      "liked_count": 36,
-      "comments_count": 0,
-      "url": "https://zenn.dev/dress_code/articles/be5550254695cd",
-      "published_at": "2026-10-22"
-    },
-    {
       "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
-      "liked_count": 61,
+      "liked_count": 107,
       "comments_count": 0,
       "url": "https://zenn.dev/explaza/articles/c749042ecbe232",
       "published_at": "2026-10-21"
     },
     {
-      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
-      "liked_count": 35,
-      "comments_count": 1,
-      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
-      "published_at": "2026-10-19"
+      "title": "脆弱性管理の仕組みを整えた",
+      "liked_count": 49,
+      "comments_count": 0,
+      "url": "https://zenn.dev/dress_code/articles/be5550254695cd",
+      "published_at": "2026-10-22"
+    },
+    {
+      "title": "Oxlint + Oxfmt で規約をコード化するモノレポ運用",
+      "liked_count": 44,
+      "comments_count": 0,
+      "url": "https://zenn.dev/reality_tech/articles/oxc-monorepo-20261006",
+      "published_at": "2026-10-20"
     },
     {
       "title": "Claude Code で CI 待ち時間を 18 分から 4 分台に短縮する【GitHub Actions】",
-      "liked_count": 41,
+      "liked_count": 43,
       "comments_count": 0,
       "url": "https://zenn.dev/edash_tech_blog/articles/5b90aa33bd8d49",
       "published_at": "2026-10-20"
     },
     {
-      "title": "「PHPのドカ脆弱性」=「今すぐDynmap止めろ」ではなかった話",
-      "liked_count": 2,
+      "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
+      "liked_count": 29,
       "comments_count": 0,
-      "url": "https://zenn.dev/56drich/articles/f52bd4a1dae988",
+      "url": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
       "published_at": "2026-10-22"
     },
     {
-      "title": "Pi 3B 2台で家のサーバを回してきた — そろそろ限界、Pi 4/5 を買う前に稼働率を測る",
-      "liked_count": 0,
+      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
+      "liked_count": 36,
+      "comments_count": 1,
+      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
+      "published_at": "2026-10-19"
+    },
+    {
+      "title": "バイブコーディングを6週間続けたら、Mac の起動が20分かかるようになった",
+      "liked_count": 50,
       "comments_count": 0,
-      "url": "https://zenn.dev/tinker42/articles/ca22660eedca0a",
+      "url": "https://zenn.dev/singularity/articles/vibe-coding-mac-boot-20min",
+      "published_at": "2026-10-20"
+    },
+    {
+      "title": "Next.js の脆弱性に Dependabot が反応しなかったので、GitHub Advisory Database までの流れを追った",
+      "liked_count": 15,
+      "comments_count": 0,
+      "url": "https://zenn.dev/rakko_inc/articles/dependabot-cve-to-pr-flow",
       "published_at": "2026-10-21"
     },
     {
-      "title": "ポートフォリオをVoidで作り直したので、Voidの来歴と中身を整理する",
-      "liked_count": 62,
+      "title": "Chromium(V8)のArray.prototype.fillを最大約7倍高速化した",
+      "liked_count": 31,
       "comments_count": 0,
-      "url": "https://zenn.dev/nkzn/articles/my-first-void",
-      "published_at": "2026-10-16"
+      "url": "https://zenn.dev/dinii/articles/5b8edc7856c25b",
+      "published_at": "2026-10-20"
     },
     {
-      "title": "10月21日、PHP2Shell対応の後片付けが終わらない",
-      "liked_count": 5,
+      "title": "エージェント用 IDE を3つ試して、今さら cmux を使い始めた",
+      "liked_count": 1,
       "comments_count": 0,
-      "url": "https://zenn.dev/subara3/articles/1165119ef70e75",
+      "url": "https://zenn.dev/yoshi47/articles/cmux-after-agent-ides",
       "published_at": "2026-10-22"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Today's PHP security release, and how we're strengthening security",
-      "points": 751,
-      "num_comments": 374,
-      "url": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/"
+      "title": "Quad9 (DNS Resolver) to Exit France",
+      "points": 943,
+      "num_comments": 343,
+      "url": "https://quad9.net/news/blog/au-revoir-france/"
     },
     {
-      "title": "Meta ordered to pay $25B penalty in New Mexico Cambridge Analytica case",
-      "points": 586,
-      "num_comments": 338,
-      "url": "https://www.cnbc.com/2026/10/21/meta-new-mexico-cambridge-analytica-penalty.html"
+      "title": "eMudhra to exit global SSL/TLS certificate business",
+      "points": 902,
+      "num_comments": 617,
+      "url": "https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business"
     },
     {
-      "title": "Compromised LiteLLM 1.107.0 on PyPI Installs a Credential Stealer and Backdoor",
-      "points": 537,
-      "num_comments": 173,
-      "url": "https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/"
+      "title": "Jailbreaking the Switch 2",
+      "points": 689,
+      "num_comments": 241,
+      "url": "https://pepsipu.com/blog/2026-10-switch2-jailbreak-ns2jb/"
     },
     {
-      "title": "mitmproxy adds --emudhra option",
-      "points": 513,
-      "num_comments": 122,
-      "url": "https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b"
-    },
-    {
-      "title": "Security Disclosure",
-      "points": 489,
-      "num_comments": 283,
-      "url": "https://blog.railway.com/p/security-disclosure-wednesday-october-21st"
-    },
-    {
-      "title": "DuckDB 2.0.0 LTS “Cinnamon Teal”",
+      "title": "Woman faces six years in prison over Cash App account she never opened",
       "points": 428,
-      "num_comments": 57,
-      "url": "https://duckdb.org/2026/10/21/announcing-duckdb-200"
+      "num_comments": 429,
+      "url": "https://www.techspot.com/news/114296-woman-spends-three-nights-jail-faces-six-years.html"
     },
     {
-      "title": "Claude Duet",
-      "points": 417,
-      "num_comments": 382,
-      "url": "https://claude.com/product/claude-duet"
+      "title": "What Is Gridifcation",
+      "points": 384,
+      "num_comments": 189,
+      "url": "https://musicalform.substack.com/p/what-is-gridifcation"
     },
     {
-      "title": "PingCap TiDB Leaks",
-      "points": 367,
-      "num_comments": 59,
-      "url": "https://fulcrumsec.vg/pingcap/"
+      "title": "Tell HN: I unknowingly broke the PHP RCE embargo. I am sorry.",
+      "points": 335,
+      "num_comments": 134,
+      "url": "https://news.ycombinator.com/item?id=50193416"
     },
     {
-      "title": "GitLab critical patch release",
-      "points": 363,
-      "num_comments": 85,
-      "url": "https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/"
+      "title": "What’s getting pwned right now",
+      "points": 327,
+      "num_comments": 152,
+      "url": "https://pwn.watch/"
     },
     {
-      "title": "No more icons in every menu by default",
-      "points": 347,
-      "num_comments": 209,
-      "url": "https://blog.jim-nielsen.com/2026/icons-in-every-menu/"
+      "title": "Run full iOS 16.5 firmware on Android Devices",
+      "points": 300,
+      "num_comments": 117,
+      "url": "https://github.com/oosexgang/hackios-xnu-kernel"
+    },
+    {
+      "title": "OpenShell – A safe, private runtime for fleets of autonomous AI agents",
+      "points": 268,
+      "num_comments": 138,
+      "url": "https://github.com/NVIDIA/OpenShell"
+    },
+    {
+      "title": "A farewell to Arc browser",
+      "points": 219,
+      "num_comments": 199,
+      "url": "https://arc.net/"
     }
   ]
 }
