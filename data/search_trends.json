@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T14:28:23.631286",
+  "generated_at": "2026-10-22T05:30:04.027664",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -90,9 +90,9 @@
       "seed": "AIコーディング サブスク API 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 7,
+        "metric_cost_spec": 6,
         "question_troubleshoot": 2,
-        "comparison": 1
+        "comparison": 2
       },
       "total_suggestions": 10,
       "top_suggestions": [
@@ -103,9 +103,9 @@
         "aiコーディング 無料",
         "aiコーディング やり方",
         "aiコーディング おすすめ",
+        "aiコーディングエージェントとは",
         "aiコーディングエージェント 無料",
-        "aiコーディング ランキング",
-        "aiコーディングエージェントとは"
+        "aiコーディング 比較"
       ],
       "title_optimization_opportunities": [
         {
@@ -113,6 +113,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "方"
+          ]
+        },
+        {
+          "query": "aiコーディング 比較",
+          "intent": "comparison",
+          "missing_in_title": [
+            "比較"
           ]
         }
       ],
@@ -139,25 +146,18 @@
           ]
         },
         {
+          "query": "aiコーディングエージェントとは",
+          "intent": "question_troubleshoot",
+          "missing_in_body": [
+            "コーディングエージェント"
+          ]
+        },
+        {
           "query": "aiコーディングエージェント 無料",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "コーディングエージェント",
             "無料"
-          ]
-        },
-        {
-          "query": "aiコーディング ランキング",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ランキング"
-          ]
-        },
-        {
-          "query": "aiコーディングエージェントとは",
-          "intent": "question_troubleshoot",
-          "missing_in_body": [
-            "コーディングエージェント"
           ]
         }
       ]
@@ -272,24 +272,15 @@
         "cloudflare pages",
         "cloudflare pages 無料枠",
         "cloudflare pages 使い方",
-        "cloudflare pages 廃止",
         "cloudflare pagesとは",
+        "cloudflare pages 廃止",
         "cloudflare pages 料金",
         "cloudflare pages workers 違い",
-        "cloudflare pages 動的サイト",
+        "cloudflare pages ドメイン",
         "cloudflare pages 商用利用",
-        "cloudflare pages ドメイン"
+        "cloudflare pages 独自ドメイン"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "cloudflare pages 動的サイト",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "動的",
-            "サイト"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "cloudflare pages 無料枠",
@@ -409,12 +400,12 @@
       "top_suggestions": [
         "deepseek flash v4",
         "deepseek flash 0731",
+        "deepseek flash v4 0731",
         "deepseek flash v4.1",
         "deepseek flash 4.1",
         "deepseek flash pro",
-        "deepseek flash v4 0731",
-        "deepseek flash api",
         "deepseek flash vision",
+        "deepseek flash api",
         "deepseek flash 价格"
       ],
       "title_optimization_opportunities": [
@@ -1088,9 +1079,9 @@
         "esp32-s3-wroom-1-n16r8",
         "esp32-s3-devkitc-1-n8r8",
         "esp32-s3r8",
-        "esp32-s3 ピン配置",
         "esp32-s3fn8",
-        "esp32-s3-wroom"
+        "esp32-s3-wroom",
+        "esp32-s3 super mini"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1137,17 +1128,17 @@
           ]
         },
         {
-          "query": "esp32-s3 ピン配置",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "配置"
-          ]
-        },
-        {
           "query": "esp32-s3fn8",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "esp32-s3fn8"
+          ]
+        },
+        {
+          "query": "esp32-s3-wroom",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3-wroom"
           ]
         }
       ]
@@ -1239,21 +1230,14 @@
         "gemini 4",
         "gemini 4 argon 性能",
         "gemini 4 flash",
-        "gemini 4 argon 料金",
-        "gemini 4 argon 評価",
         "gemini 4 carbon",
+        "gemini 4 argon 料金",
         "gemini 4 argon 使い方",
+        "gemini 4 argon 評価",
         "gemini 4 アルゴン",
-        "gemini 4 argon ai pro"
+        "gemini 4 いつ"
       ],
       "title_optimization_opportunities": [
-        {
-          "query": "gemini 4 argon 評価",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "評価"
-          ]
-        },
         {
           "query": "gemini 4 argon 使い方",
           "intent": "question_troubleshoot",
@@ -1262,10 +1246,10 @@
           ]
         },
         {
-          "query": "gemini 4 argon ai pro",
+          "query": "gemini 4 argon 評価",
           "intent": "metric_cost_spec",
           "missing_in_title": [
-            "ai"
+            "評価"
           ]
         }
       ],
@@ -1310,8 +1294,8 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini api",
-        "gemini apiキー",
         "gemini api key",
+        "gemini apiキー",
         "gemini api 料金",
         "gemini api 無料枠",
         "gemini apiキー 取得方法",
@@ -1415,16 +1399,16 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "google ai",
         "google ai studio",
+        "google ai",
         "google ai pro",
         "google ai plus",
         "google aiモード",
-        "google aiモード 使えない",
         "google ai studio 日本語",
         "google ai 無料",
         "google ai studio アプリ",
-        "google ai studio 日本語にする方法"
+        "google ai studio 日本語にする方法",
+        "google ai プラン"
       ],
       "title_optimization_opportunities": [
         {
@@ -1432,14 +1416,6 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "モード"
-          ]
-        },
-        {
-          "query": "google aiモード 使えない",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "モード",
-            "使"
           ]
         },
         {
@@ -1479,6 +1455,13 @@
             "日本語",
             "方法"
           ]
+        },
+        {
+          "query": "google ai プラン",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "プラン"
+          ]
         }
       ]
     },
@@ -1498,8 +1481,8 @@
         "colab gpu 上限",
         "colab gpu 性能",
         "colab gpu 使い方",
-        "colab gpu 使用量上限 リセット",
         "colab gpu 無料",
+        "colab gpu 使用量上限 リセット",
         "colab gpu vscode",
         "colab gpu t4",
         "colab gpu ram"
@@ -1529,18 +1512,18 @@
           ]
         },
         {
+          "query": "colab gpu 無料",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "無料"
+          ]
+        },
+        {
           "query": "colab gpu 使用量上限 リセット",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "使用量上限",
             "リセット"
-          ]
-        },
-        {
-          "query": "colab gpu 無料",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "無料"
           ]
         },
         {
@@ -1580,28 +1563,28 @@
         "search console",
         "search consoleとは",
         "search console ログイン",
-        "search console 使い方",
         "search console api",
+        "search console 使い方",
         "search console google",
+        "search console mcp",
         "search console 生成ai",
-        "search console sns",
-        "search console url検査",
-        "search console mcp"
+        "search console ai",
+        "search console sns"
       ],
       "title_optimization_opportunities": [
+        {
+          "query": "search console api",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "api"
+          ]
+        },
         {
           "query": "search console 使い方",
           "intent": "question_troubleshoot",
           "missing_in_title": [
             "使",
             "方"
-          ]
-        },
-        {
-          "query": "search console api",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "api"
           ]
         },
         {
@@ -1628,6 +1611,13 @@
           ]
         },
         {
+          "query": "search console mcp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mcp"
+          ]
+        },
+        {
           "query": "search console 生成ai",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1636,18 +1626,10 @@
           ]
         },
         {
-          "query": "search console url検査",
+          "query": "search console ai",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "url",
-            "検査"
-          ]
-        },
-        {
-          "query": "search console mcp",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mcp"
+            "ai"
           ]
         }
       ]
@@ -1672,7 +1654,7 @@
         "スピーカーフォン スマホ",
         "スピーカーフォン jabra",
         "スピーカーフォン 会議",
-        "スピーカーフォン 連結"
+        "スピーカーフォン ヤマハ"
       ],
       "title_optimization_opportunities": [
         {
@@ -1714,10 +1696,10 @@
           ]
         },
         {
-          "query": "スピーカーフォン 連結",
+          "query": "スピーカーフォン ヤマハ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "連結"
+            "ヤマハ"
           ]
         }
       ]
@@ -1747,11 +1729,11 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "継続学習",
-        "継続学習 ai",
         "継続学習とは",
+        "継続学習 ai",
         "継続学習 英語",
-        "継続学習制度",
         "継続学習センター",
+        "継続学習制度",
         "継続学習 llm",
         "継続学習制度(cpds)のガイドライン",
         "継続学習と知能の創発研究会",
@@ -1775,17 +1757,17 @@
           ]
         },
         {
-          "query": "継続学習制度",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "継続学習制度"
-          ]
-        },
-        {
           "query": "継続学習センター",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "センター"
+          ]
+        },
+        {
+          "query": "継続学習制度",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "継続学習制度"
           ]
         },
         {
@@ -1867,22 +1849,22 @@
       "seed": "LLM API 速度 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
-        "question_troubleshoot": 1,
-        "comparison": 1
+        "metric_cost_spec": 7,
+        "comparison": 2,
+        "question_troubleshoot": 1
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "llm api",
         "llm api 無料",
-        "llm apiとは",
         "llm api 料金 比較",
+        "llm apiとは",
         "llm api 料金",
         "llm api 無料枠",
+        "llm api 定額",
         "llm api コスパ",
         "llm apiキー",
-        "llm api 安い",
-        "llm api サブスク"
+        "llm api 比較"
       ],
       "title_optimization_opportunities": [
         {
@@ -1898,6 +1880,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "料金"
+          ]
+        },
+        {
+          "query": "llm api 比較",
+          "intent": "comparison",
+          "missing_in_title": [
+            "比較"
           ]
         }
       ],
@@ -1918,6 +1907,13 @@
           ]
         },
         {
+          "query": "llm api 定額",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "定額"
+          ]
+        },
+        {
           "query": "llm api コスパ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1929,20 +1925,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "キー"
-          ]
-        },
-        {
-          "query": "llm api 安い",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "安"
-          ]
-        },
-        {
-          "query": "llm api サブスク",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "サブスク"
           ]
         }
       ]
@@ -1963,9 +1945,9 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
+        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
-        "mac ローカルllm コーディング",
-        "mac ローカルllm mlx"
+        "mac ローカルllm コーディング"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1984,6 +1966,13 @@
           ]
         },
         {
+          "query": "mac ローカルllm mlx",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mlx"
+          ]
+        },
+        {
           "query": "mac ローカルllm 構築",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1995,13 +1984,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "コーディング"
-          ]
-        },
-        {
-          "query": "mac ローカルllm mlx",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mlx"
           ]
         }
       ]
@@ -2355,11 +2337,11 @@
         "notebooklm ソース 上限",
         "notebooklm ソース ダウンロード",
         "notebooklm ソース 一括削除",
-        "notebooklm ソース 削除",
         "notebooklm ソース",
+        "notebooklm ソース 削除",
+        "notebooklm ソース 自動更新",
         "notebooklm ソース 更新",
         "notebooklm ソース追加できない",
-        "notebooklm ソース 自動更新",
         "notebooklm ソース数",
         "notebooklm ソースのアップロード中にエラーが発生しました"
       ],
@@ -2373,18 +2355,18 @@
           ]
         },
         {
+          "query": "notebooklm ソース",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ソース"
+          ]
+        },
+        {
           "query": "notebooklm ソース 削除",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "ソース",
             "削除"
-          ]
-        },
-        {
-          "query": "notebooklm ソース",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ソース"
           ]
         },
         {
@@ -2420,17 +2402,17 @@
           ]
         },
         {
-          "query": "notebooklm ソース 更新",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "更新"
-          ]
-        },
-        {
           "query": "notebooklm ソース 自動更新",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "自動更新"
+          ]
+        },
+        {
+          "query": "notebooklm ソース 更新",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "更新"
           ]
         },
         {
@@ -2453,15 +2435,15 @@
       },
       "total_suggestions": 5,
       "top_suggestions": [
-        "ollama コンテキスト長 変更",
         "ollama コンテキスト長",
+        "ollama コンテキスト長 変更",
         "ollama コンテキスト長 確認",
         "ollama コンテキスト長 設定",
         "ollama コンテキスト長 デフォルト"
       ],
       "title_optimization_opportunities": [
         {
-          "query": "ollama コンテキスト長 変更",
+          "query": "ollama コンテキスト長",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "コンテキスト",
@@ -2469,7 +2451,7 @@
           ]
         },
         {
-          "query": "ollama コンテキスト長",
+          "query": "ollama コンテキスト長 変更",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "コンテキスト",
@@ -2516,15 +2498,15 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "パーソナルai",
-        "パーソナルアイテムとは",
         "パーソナルaiエージェント",
+        "パーソナルアイテムとは",
         "パーソナルaiとは",
+        "パーソナルアイテック",
         "パーソナルアイデンティティ",
         "パーソナルai 作り方",
-        "パーソナルaiマーケティング",
         "パーソナルアイス",
-        "パーソナルアイテム",
-        "パーソナルアイテック"
+        "パーソナルaiマーケティング",
+        "パーソナルアイテム"
       ],
       "title_optimization_opportunities": [
         {
@@ -2538,6 +2520,13 @@
       ],
       "uncovered_content_gaps": [
         {
+          "query": "パーソナルaiエージェント",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "エージェント"
+          ]
+        },
+        {
           "query": "パーソナルアイテムとは",
           "intent": "question_troubleshoot",
           "missing_in_body": [
@@ -2545,10 +2534,10 @@
           ]
         },
         {
-          "query": "パーソナルaiエージェント",
+          "query": "パーソナルアイテック",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "エージェント"
+            "パーソナルアイテック"
           ]
         },
         {
@@ -2559,13 +2548,6 @@
           ]
         },
         {
-          "query": "パーソナルaiマーケティング",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "マーケティング"
-          ]
-        },
-        {
           "query": "パーソナルアイス",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -2573,17 +2555,17 @@
           ]
         },
         {
+          "query": "パーソナルaiマーケティング",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "マーケティング"
+          ]
+        },
+        {
           "query": "パーソナルアイテム",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "パーソナルアイテム"
-          ]
-        },
-        {
-          "query": "パーソナルアイテック",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "パーソナルアイテック"
           ]
         }
       ]
