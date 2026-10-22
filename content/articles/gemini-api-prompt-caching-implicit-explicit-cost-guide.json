@@ -1,7 +1,7 @@
 {
   "slug": "gemini-api-prompt-caching-implicit-explicit-cost-guide",
-  "title": "長いシステムプロンプトを毎回払う？ Gemini APIのキャッシュ仕様と最小トークン条件",
-  "display_title": "Gemini API、プロンプトキャッシュはどう効く？",
+  "title": "Gemini APIのプロンプトキャッシュ仕様：ImplicitとExplicitの違い・料金と最小トークン条件",
+  "display_title": "Gemini APIのプロンプトキャッシュ：Implicit/Explicitの違いと料金・最小トークン条件",
   "subtitle": "同じ指示文や参考資料を繰り返し送るとき、自動（Implicit）キャッシュと明示的（Explicit）キャッシュのどちらが使えるのか。モデル別の最小トークン数と設計の注意点を整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式API仕様・料金表を確認 / キャッシュヒット率の独自実測なし",
   "methodology_note": "2026年10月16日にGoogle AI for DevelopersのContext caching公式ドキュメントおよびPricingページを確認して整理した記事です。実際の運用環境におけるキャッシュヒット率やレイテンシ短縮幅の実測は行っていません。",
   "seo": {
-    "meta_title": "Gemini APIのプロンプトキャッシュ仕様：ImplicitとExplicitの違い・最小トークン数 | Nodus",
+    "meta_title": "Gemini APIのプロンプトキャッシュ仕様：ImplicitとExplicitの違い・料金条件 | Nodus",
     "meta_description": "Gemini APIのContext caching（暗黙的キャッシュと明示的キャッシュ）の対象モデル、最小入力トークン数（4,096 / 2,048トークン）、Interactions APIでの制約、ヒット確認方法を公式資料から解説します。",
     "target_keywords": [
       "Gemini API キャッシュ",
@@ -116,12 +116,21 @@
   "related_articles": [
     {
       "slug": "google-ai-pro-ai-studio-api-billing-boundary",
-      "title": "Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界"
+      "title": "Google AI Pro契約中でもAI Studio・Gemini APIは別課金？ 無料枠と請求の境界"
     },
     {
       "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
-      "title": "AIコーディングのトークン節約、AST抽出でどこまで減らせるか"
+      "title": "AIエージェントのトークン節約：AST解析と部分読みの使い分け"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Gemini APIの暗黙的キャッシュ（Implicit caching）は何トークンから自動で効きますか？",
+      "answer": "公式ドキュメントでは、Gemini 4 ArgonおよびGemini 3系モデルは最小4,096入力トークン、Gemini 2.5系モデルは最小2,048入力トークンから設定不要で自動適用されます。"
+    },
+    {
+      "question": "キャッシュがヒットしたかどうかはどうやって確認できますか？",
+      "answer": "APIレスポンスの `usage_metadata` に含まれるキャッシュヒットトークン数を確認します。ヒット率を高めるには、毎回変わらないシステム指示や長文資料をプロンプトの最前部（先頭）に固定して送信します。"
+    }
+  ]
 }

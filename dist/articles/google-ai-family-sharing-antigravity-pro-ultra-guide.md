@@ -1,4 +1,4 @@
-# Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件
+# Google AI Proのファミリー共有でAntigravityも使える？ 家族で共有される利用枠と上限
 
 > Google Oneのファミリー共有でAI特典を分け合える範囲と、AntigravityやAIクレジットの上限が家族全体で合算される仕組みを公式ヘルプから整理します。
 
@@ -47,6 +47,13 @@ Google Oneの公式ヘルプによると、ファミリーグループの全員�
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 参照: [Google Antigravity Docs：Plans](https://antigravity.google/docs/plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Google Oneのファミリー共有を使うと家族もGoogle AntigravityやGemini Proを使えますか？
+A. はい。Google One公式ヘルプでは、Geminiアプリ、Google Antigravity、NotebookLM、AIクレジットがファミリーグループ共有の対象特典に含まれています（対象年齢や居住国などの条件あり）。
+
+### Q. ファミリー共有でAntigravityを使うとき、使用量の上限はメンバーごとに別々ですか？
+A. いいえ。AntigravityやGoogle Flowなどの一部機能では、使用量上限が各メンバー個別ではなく「ファミリーグループ全体」で1つの枠を共有する仕様のため、複数人で同時にヘビー利用すると早く上限に達します。
+
 ## 記事の範囲
 2026年10月16日にGoogle One公式ヘルプ（ファミリーとの共有を開始または停止する）および日本向けGoogle AIプラン表を確認して整理した記事です。複数アカウントでの同時利用テストや消費量の実測は行っていません。
 
@@ -57,5 +64,5 @@ Google Oneの公式ヘルプによると、ファミリーグループの全員�
 - [Google Antigravity Docs：Plans](https://antigravity.google/docs/plans/)
 
 ## 次に考えたいこと
-- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
+- [Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)

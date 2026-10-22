@@ -1,7 +1,7 @@
 {
   "slug": "wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation",
-  "title": "Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する",
-  "display_title": "Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する",
+  "title": "Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・6GHz・MLO・対応スマホと買い替え判断",
+  "display_title": "Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・対応端末・壁越し通信の確認",
   "subtitle": "MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。",
   "category": "Hardware & Power Electronics",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の52環境集計、壁越しの速度維持率、MLOによる倍率、待機電力と年間費用は、採用ログを追跡できないため撤回しました。全機種を同じMIMO構成とする説明も外し、経路と対応条件を確認する内容に改訂しました。",
   "seo": {
-    "meta_title": "Wi-Fi 7?????????????????????????????? | Nodus",
+    "meta_title": "Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・対応端末・買い替え判断 | Nodus",
     "meta_description": "MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。",
     "target_keywords": [
       "Wi-Fi 7 買い替え 必要",
@@ -108,15 +108,24 @@
       "scope": "英国向けモデルの公称機能と端末・環境の制約。日本での速度測定ではありません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "Wi-Fi 7ルーターに買い替えれば、従来のスマホやPCでも通信速度は速くなりますか？",
+      "answer": "6GHz帯や320MHz幅、MLO（マルチリンクオペレーション）の恩恵を受けるにはスマホ・PC側もWi-Fi 7（IEEE 802.11be）に対応している必要があります。またインターネット回線自体が1Gbps契約なら、無線だけ速くしても外向けの速度上限は変わりません。"
+    },
+    {
+      "question": "隣の部屋や2階でWi-Fiが遅い場合、Wi-Fi 7ルーター1台に替えれば解決しますか？",
+      "answer": "高速な6GHz帯は周波数が高いため壁や床などの障害物による減衰を受けやすい特性があります。部屋をまたぐ減衰が原因なら、世代を上げる前にルーターの設置場所見直しや有線バックホール・中継構成を検討する方が効果的です。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "esp32-c3-s3-c6-which-board-to-choose",
-      "title": "ESP32、結局どれを買えばいい？"
+      "title": "ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い"
     },
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+      "title": "自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較"
     }
   ]
 }

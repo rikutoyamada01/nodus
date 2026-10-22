@@ -1,4 +1,4 @@
-# AIコードレビューを別の会話・モデルに任せる価値は？
+# AIコードレビュー比較：別の会話・別モデル（Peer Audit）に任せる価値と依頼手順
 
 > セルフレビュー、新しい会話、別モデル。追加の費用と手間に見合うかを、指摘の再現性と修正後の確認で考えます。
 
@@ -46,6 +46,13 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 ### 追加費用に見合ったかを振り返る
 指摘数の多さより、再現できた不具合、誤検知の調査時間、修正で増えた問題を記録します。検出率を算出するには、見つからなかった不具合も含む正解集合が必要です。2回レビューしても同じ不具合を見落とす可能性があります。AIレビューだけで十分と考えず、テストや人による確認も必要です。
 
+## よくある疑問と回答 (FAQ)
+### Q. コードを書いたAI自身にセルフレビューさせるのと別モデルにレビューさせるのは何が違いますか？
+A. 同じ会話内では直前の推論前提を引きずりやすいため、新しい会話や別モデルに差分と呼び出し元の仕様を渡すことで思い込みによる見落としを減らせます。ただし指摘の誤検知もあるため、必ず再現テストで裏付けを取ります。
+
+### Q. AIコードレビューで実用的な指摘だけを出させるプロンプトのコツは？
+A. 「問題点を挙げて」と曖昧に聞くのではなく、「該当ファイルと行番号・発生条件・影響範囲・最小の再現手順」を必須項目として指定し、スタイル上の好みや推測だけの指摘を除外させるとノイズが減ります。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -55,5 +62,5 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 - [Claude Code：Code Review](https://code.claude.com/docs/en/code-review)
 
 ## 次に考えたいこと
-- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [AIエージェントのトークン節約：AST解析と部分読みの使い分け](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)

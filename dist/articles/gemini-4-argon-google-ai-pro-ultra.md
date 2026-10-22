@@ -1,4 +1,4 @@
-# Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認
+# Gemini 4 ArgonはProで使える？ 性能・評価・使い方とUltra限定範囲（Flash/Carbon比較）
 
 > Google AI Proを契約している人へ。GeminiアプリとAntigravityの提供条件、Ultraへの追加費用、公開評価から分かる得意分野を整理します。
 
@@ -73,6 +73,16 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 参照: [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
 参照: [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)
 
+## よくある疑問と回答 (FAQ)
+### Q. Gemini 4 ArgonはGoogle AI Pro（月額2,900円）でも使えますか？
+A. はい。Geminiアプリ（Web・モバイル）でのGemini 4 Argon利用はGoogle AI Proも提供対象です。ただし独立したGoogle AntigravityデスクトップアプリやCLIでのArgon利用は個人サブスクではGoogle AI Ultra（月額14,500円〜）向けとなっています。
+
+### Q. Gemini 4 Argonの性能・評価は他のモデル（Flash等）と比べてどう違いますか？
+A. 公開ベンチマークでは256k〜1Mトークンの長文関係把握（GraphWalks F1 84.2%）や複雑タスク自動化（AutomationBench 51.3%）で高い性能を示しており、日常の高速応答を担う軽量系（Flash等）に対し、長大資料の横断分析や多段階推論に向いています。
+
+### Q. Gemini 4 ArgonをAPIから使う場合の料金とコンテキスト長は？
+A. Gemini APIでの入出力合計コンテキスト長は最大1,048,576トークン（約100万トークン）で、Standard料金は2026年11月30日まで100万トークンあたり入力2ドル・出力10ドル（12月1日以降は入力4ドル・出力20ドル）です。
+
 ## 記事の範囲
 2026年10月14日時点の公式プラン表、提供開始告知、ヘルプ、公開ベンチマークを参照した編集記事です。Nodusによる契約画面での動作確認、性能・利用枠の独自実測は行っていません。料金はGoogleの日本向け月額表示、差額と必要時短時間はその表示からの計算です。割引、年払い、通信会社経由の契約、変更時の精算は含めません。ベンチマークはAPI等での公開評価であり、サブスク画面で同じ結果や利用量を保証するものではありません。一般ユーザーの初期感想は性能・利用上限の根拠に採用していません。
 
@@ -91,7 +101,7 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 - [Google AI for Developers：API料金](https://ai.google.dev/gemini-api/docs/pricing)
 
 ## 次に考えたいこと
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
-- [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [ColabのGPUは何時間使える？ CUと完了までの費用の考え方](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks)
-- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [Google ColabのGPUは何時間使える？ CU消費レートと使用量上限の考え方](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks)
+- [DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)

@@ -1,7 +1,7 @@
 {
   "slug": "ml-benchmark-data-leakage-group-split-pipeline-guide",
-  "title": "機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ",
-  "display_title": "機械学習ベンチマークのデータリークと再分割バグ",
+  "title": "機械学習のデータリーク（Data Leakage）とは？ 話者リークと学習パイプライン内の再分割バグ",
+  "display_title": "機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ",
   "subtitle": "検証環境では高精度なのに本番・展示会場で全く動かない最大の原因である「データリーク（Data Leakage）」と「ベンチマーク設計の不備」を解説。話者・セッション独立分割の崩壊、学習スクリプト内部で勝手に再分割するバグ、テスト結果のサンプラー逆流を防ぐ手順をまとめました。",
   "category": "Architecture",
   "kind": "guide",
@@ -22,7 +22,7 @@
   "evidence_notice": "公式scikit-learn仕様資料を確認 / 特定データセットの実測ベンチマークなし",
   "methodology_note": "2026年10月16日にscikit-learn公式ガイド（Common pitfalls: Data leakage、GroupKFold）を確認し、音声・画像認識プロジェクトにおけるデータ分割・前処理・サンプラー設計の監査項目を整理した記事です。文中の件数や比率はリーク構造を説明するための再現・計算例です。",
   "seo": {
-    "meta_title": "????????????????????????????????? | Nodus",
+    "meta_title": "機械学習のデータリークとは？ 原因になる話者リークと再分割バグの防止策 | Nodus",
     "meta_description": "検証環境では高精度なのに本番・展示会場で全く動かない最大の原因である「データリーク（Data Leakage）」と「ベンチマーク設計の不備」を解説。話者・セッション独立分割の崩壊、学習スクリプト内部で勝手に再分割するバグ、テスト結果のサンプラー逆流を防ぐ手順をまとめました。",
     "target_keywords": [
       "機械学習 データリーク 原因",
@@ -118,16 +118,25 @@
   "related_articles": [
     {
       "slug": "ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide",
-      "title": "機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方"
+      "title": "混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由"
     },
     {
       "slug": "ml-noise-other-class-false-acceptance-evaluation-guide",
-      "title": "学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計"
+      "title": "機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計"
     },
     {
       "slug": "tts-synthetic-data-augmentation-domain-gap-pitfalls",
-      "title": "合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策"
+      "title": "合成データ（TTS・画像生成）を機械学習に使う注意点：精度向上と錯覚する5つの罠"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "機械学習のデータリーク（Data Leakage）が起きるとどんな症状が出ますか？",
+      "answer": "学習・検証（Val/Test）での正答率は90%以上と非常に高いのに、学習データに含まれない新しい人物（未知話者）や別の日・別の場所で実機テストした瞬間に精度が急落します。"
+    },
+    {
+      "question": "事前にTrainとValのCSVを分けていたのにデータリークが起きるのはなぜですか？",
+      "answer": "前処理スクリプトや学習ラッパーが一度TrainとValを結合して特徴量を作り、学習コード内部の `train_test_split` でランダムに再分割してしまうことで、同一人物のデータが両方に混ざる実装バグがよく発生します。SHA-256ハッシュと人物IDで交差ゼロを自動検査します。"
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-# MacでローカルLLMは動く？必要メモリとGPUとの選び方
+# MacでローカルLLMは動く？ 必要メモリ・スペックとOllamaの始め方、RTX GPUとの比較
 
 > 手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。
 
@@ -78,6 +78,13 @@ llama.cppのApple Silicon向けディスカッションには利用者の報告�
 ### 本体価格と、使い続ける費用
 GPUの増設では、必要な電源、ケース、冷却、騒音も含めます。電力効率を比較するならGPU単体の表示値と、PC全体のコンセントでの消費を混ぜず、同じ仕事の完了までに使った電力量を見る方法があります。不定期にしか使わないならAPIやクラウドも候補にし、手元で動かす目的と費用を照らし合わせます。
 
+## よくある疑問と回答 (FAQ)
+### Q. MacでローカルLLMを動かすにはメモリ（ユニファイドメモリ）が何GB必要ですか？
+A. 7B〜8Bクラスの量子化モデルを試すなら16GBでも動きますが、コーディング補助や30Bクラスのモデル、長いコンテキスト長をスワップなしで快適に扱うには32GB〜64GB以上のメモリと広いメモリ帯域幅（Pro / Maxチップ等）が有利です。
+
+### Q. MacでローカルLLMを動かすとき、OllamaとMLXやGPU搭載PCはどう使い分けますか？
+A. まず手持ちのMacで手軽にモデル管理やAPI互換サーバーを試すならOllama、Appleシリコン専用の最適化で速度を引き出したいならMLX、短いモデルで圧倒的なプロンプト処理速度・生成速度（tok/s）が必要ならVRAM搭載のRTX GPU機が向いています。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -95,7 +102,7 @@ GPUの増設では、必要な電源、ケース、冷却、騒音も含めま�
 - [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
-- [Ollamaの文脈長、既定値は何トークン？](https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide)
-- [デュアル4Kドック、Macでも2画面になる？](https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [Ollamaのコンテキスト長：デフォルトは何トークン？ 変更・設定・確認方法](https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide)
+- [Macのデュアルディスプレイ：USB-Cドックで2画面に拡張できない理由と選び方](https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide)

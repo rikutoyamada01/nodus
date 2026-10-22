@@ -1,4 +1,4 @@
-# AIコーディングのサブスクとAPI、費用をどう比べる？
+# AIコーディングのサブスクとAPI比較：Claude Code・Cursorの利用枠と費用
 
 > Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。
 
@@ -46,6 +46,13 @@ Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管
 ### 併用するなら、役割の重複を減らす
 毎日使う編集環境を主契約にし、独自連携や不定期の処理だけAPIにする、といった分け方を検討できます。ただしサブスクの認証を自動処理で利用できるかは、公式の対応方法と契約条件によります。APIだけが唯一の選択とも、サブスクにAPI利用が含まれるとも決めつけず、目的の実行方法が提供されているかを確認します。
 
+## よくある疑問と回答 (FAQ)
+### Q. AIコーディングツールは月額サブスクとAPI従量課金のどちらが安いですか？
+A. 毎日継続してコード生成やリファクタリングを行うなら月額サブスクの方が費用の上限を予測しやすく、週に数回だけピンポイントで使う場合やCI自動化で短い処理だけ回す場合はAPI従量課金の方が安くなりやすいです。
+
+### Q. 無料で試せるAIコーディングエージェントや枠の確認方法はありますか？
+A. 各ツールの無料枠やトライアルで1週間分の実際の消費ペース（リクエスト数や5時間枠の到達頻度）を設定画面のUsage表示で記録してから、Proや上位プランへの移行を判断するのが確実です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -55,5 +62,5 @@ Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管
 - [Claude Code：Manage costs effectively](https://code.claude.com/docs/en/costs)
 
 ## 次に考えたいこと
-- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [AIエージェントのトークン節約：AST解析と部分読みの使い分け](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)

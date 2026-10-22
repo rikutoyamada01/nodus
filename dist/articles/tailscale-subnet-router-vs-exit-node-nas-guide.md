@@ -1,4 +1,4 @@
-# NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか
+# TailscaleのSubnet RouterとExit Nodeの違い・設定判断：NASやラズパイを中継役にする方法
 
 > アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。
 
@@ -40,6 +40,13 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 参照: [Tailscale Docs：Subnet routers（サブネットルーターの仕組みと制限）](https://tailscale.com/docs/features/subnet-routers)
 参照: [Tailscale Docs：Exit nodes (route all traffic)](https://tailscale.com/kb/1103/exit-nodes)
 
+## よくある疑問と回答 (FAQ)
+### Q. Tailscaleアプリを入れられないNASやプリンターに外出先からアクセスするには何を設定しますか？
+A. 自宅内のRaspberry Piや常時稼働PCで `tailscale up --advertise-routes=192.168.1.0/24` のように「Subnet Router（サブネットルーター）」を設定し、管理画面でルートを承認すると自宅LAN内の機器へアクセスできます。
+
+### Q. Subnet RouterとExit Nodeはどう使い分ければいいですか？
+A. 自宅の特定機器（NAS等）にだけ通信したいならSubnet Routerを使います。カフェの公衆Wi-Fi利用時など、一般サイトへのWeb閲覧を含むすべての通信を自宅回線経由に切り替えたい場合にExit Nodeを使います。
+
 ## 記事の範囲
 2026年10月16日にTailscale公式ドキュメント（Subnet routers、Exit nodes）およびPricingページを確認して整理した記事です。特定のルーターやNAS機種でのスループット測定は行っていません。
 
@@ -50,6 +57,6 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 - [Tailscale：Pricing](https://tailscale.com/pricing)
 
 ## 次に考えたいこと
-- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
+- [Tailscaleの速度が遅いとき：NAS・SMB転送でDirect接続とDERP中継を確認する手順](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)

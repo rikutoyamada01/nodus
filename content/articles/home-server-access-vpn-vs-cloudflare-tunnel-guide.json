@@ -1,7 +1,7 @@
 {
   "slug": "home-server-access-vpn-vs-cloudflare-tunnel-guide",
-  "title": "家族だけに自宅アプリを見せたいとき、VPN（Tailscale）とCloudflare Tunnelで何が変わる？",
-  "display_title": "自宅アプリの共有、VPNとTunnelどっち？",
+  "title": "自宅サーバーの外部公開：Cloudflare TunnelとTailscale（VPN）の違い・選び方",
+  "display_title": "Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方",
   "subtitle": "自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式仕様資料を確認 / 通信速度の独自比較測定なし",
   "methodology_note": "2026年10月16日にCloudflare One公式ドキュメント（Cloudflare Tunnel）およびTailscale公式ドキュメント（Connection types、Pricing）を確認して整理した記事です。",
   "seo": {
-    "meta_title": "自宅サーバーの外部接続：Tailscale（VPN）とCloudflare Tunnelの違いと選び方 | Nodus",
+    "meta_title": "Cloudflare TunnelとTailscaleの違い：自宅サーバー外部接続の選び方 | Nodus",
     "meta_description": "自宅サーバーのWebアプリやNASを家族と共有する際のTailscale（メッシュVPN）とCloudflare Tunnel（cloudflared）の違いを解説。クライアントアプリ導入の手間、ポート開放不要の仕組み、認証と通信経路の差を整理します。",
     "target_keywords": [
       "Cloudflare Tunnel Tailscale 違い",
@@ -132,12 +132,21 @@
   "related_articles": [
     {
       "slug": "tailscale-nas-slow-direct-derp-relay-check",
-      "title": "Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する"
+      "title": "Tailscaleの速度が遅いとき：NAS・SMB転送でDirect接続とDERP中継を確認する手順"
     },
     {
       "slug": "tailscale-subnet-router-vs-exit-node-nas-guide",
-      "title": "NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか"
+      "title": "TailscaleのSubnet RouterとExit Nodeの違い：NAS接続にはどっちを設定する？"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Cloudflare TunnelとTailscaleの最大の違いは何ですか？",
+      "answer": "Tailscaleはアクセスする全員の端末にVPNクライアントアプリを入れて端末間で直接暗号化通信を行うのに対し、Cloudflare Tunnelは閲覧者側に専用アプリを入れず通常のブラウザURL＋Cloudflare Access認証で公開できる代わりに全通信がCloudflareを経由します。"
+    },
+    {
+      "question": "家族との写真共有や大容量ファイル転送にはどちらが向いていますか？",
+      "answer": "家族のスマホにアプリを入れる手間を省いてWeb画面を見せたいならCloudflare Tunnel＋Access、SMBファイル共有や大容量動画のストリーム・高速転送を行いたいならUDP直結できるTailscaleが向いています。"
+    }
+  ]
 }

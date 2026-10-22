@@ -1,4 +1,4 @@
-# ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器
+# ESP32-C6でMatter over Threadを使う必要機器：Border Router（ボーダールーター）の条件
 
 > Wi-Fi 6とThread（802.15.4）に対応するESP32-C6でスマートホーム機器を自作する前に、既存のWi-Fiルーターだけで動くのか、別途ボーダールーターが必要なのかを整理します。
 
@@ -43,6 +43,13 @@ ESP32-C6の大きな特徴は、2.4GHz Wi-Fi 6（802.11ax）とBluetooth 5（LE�
 参照: [Espressif：ESP-Matter Programming Guide (ESP32-C6)](https://docs.espressif.com/projects/esp-matter/en/latest/esp32c6/developing.html)
 参照: [Home Assistant：Thread Integration Documentation](https://www.home-assistant.io/integrations/thread/)
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32-C6を1枚買えば、自宅の普通のWi-FiルーターだけでThread通信ができますか？
+A. いいえ。ThreadはIEEE 802.15.4というWi-Fiとは別の無線規格を使うため、一般的な家庭用Wi-Fiルーターだけでは直接通信できず、HomePod miniやNest Hub（第2世代）、またはもう1枚のESP32-C6＋ホストで構成した「Thread Border Router（ボーダールーター）」が必要です。
+
+### Q. Threadボーダールーターを買わずにESP32でMatter機器を自作する方法はありますか？
+A. はい。「Matter over Wi-Fi」構成を選べば既存の2.4GHz Wi-Fiルーター経由でMatterコントローラーと通信できるため、専用Threadハブなしで試せます（この場合はESP32-C3やS3でも構築可能です）。
+
 ## 記事の範囲
 2026年10月16日にEspressifのESP32-C6データシート、ESP-Matter開発ガイド、およびHome Assistant公式Thread統合ドキュメントを確認して整理した記事です。各スマートスピーカーやアダプターとの実機接続テストは行っていません。
 
@@ -53,5 +60,5 @@ ESP32-C6の大きな特徴は、2.4GHz Wi-Fi 6（802.11ax）とBluetooth 5（LE�
 - [Home Assistant：Thread Integration Documentation](https://www.home-assistant.io/integrations/thread/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)

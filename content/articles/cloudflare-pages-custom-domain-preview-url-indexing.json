@@ -1,7 +1,7 @@
 {
   "slug": "cloudflare-pages-custom-domain-preview-url-indexing",
-  "title": "Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？",
-  "display_title": "Cloudflare Pages、プレビューURLも検索に出る？",
+  "title": "Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLの検索インデックスとAccess制限",
+  "display_title": "Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLも検索に出る？",
   "subtitle": "GitHub連携でブランチごとに自動生成されるプレビューURLや元の .pages.dev サブドメインが、検索エンジンに重複登録されるのを防ぐ公式仕様と確認手順を整理します。",
   "category": "Software & SaaS Economics",
   "kind": "guide",
@@ -109,18 +109,27 @@
   "related_articles": [
     {
       "slug": "cloud-backup-100gb-restore-egress-cost-comparison",
-      "title": "安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較"
+      "title": "クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用"
     },
     {
       "slug": "gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide",
-      "title": "Search Consoleとアクセス解析、なぜ数字が合わない？",
+      "title": "Search Consoleとアクセス解析（GA4等）、なぜクリック数と訪問数が合わない？",
       "category": "Software & SaaS Economics"
     },
     {
       "slug": "home-server-access-vpn-vs-cloudflare-tunnel-guide",
-      "title": "自宅アプリの共有、VPNとTunnelどっち？",
+      "title": "Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方",
       "category": "Cloud & AI Infrastructure"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Cloudflare Pagesでブランチごとに作られるプレビューURLはGoogle検索に載りますか？",
+      "answer": "プレビューデプロイメントには検索エンジン向けの `X-Robots-Tag: noindex` ヘッダが付与される仕様ですが、URL自体を知っていれば初期状態では誰でもブラウザで開けるため、非公開にするにはCloudflare Accessの有効化が必要です。"
+    },
+    {
+      "question": "独自ドメインを設定した後も `*.pages.dev` が検索結果に残るのを防ぐにはどうすればいいですか？",
+      "answer": "全ページの `<link rel=\"canonical\">` と `sitemap.xml` のURLを正規ドメインに統一したうえで、必要に応じてBulk Redirects等で `*.pages.dev` から独自ドメインへ301リダイレクトを設定します。"
+    }
+  ]
 }

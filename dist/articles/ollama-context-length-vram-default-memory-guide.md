@@ -1,4 +1,4 @@
-# Ollamaで128k対応モデルを入れたのに何トークン読める？ VRAM別既定値と変更手順
+# Ollamaのコンテキスト長（num_ctx）のデフォルト確認と変更・設定方法：VRAM別の目安
 
 > 128kや256k対応のローカルLLMをダウンロードしたのに長い文章を途中で忘れるとき、実際に割り当てられているコンテキスト長の確認方法と設定手順を公式資料から整理します。
 
@@ -43,6 +43,13 @@
 参照: [Ollama Docs：Context length（VRAM別既定値と設定方法）](https://docs.ollama.com/context-length)
 参照: [Ollama Docs：FAQ（num_ctxとOLLAMA_CONTEXT_LENGTH）](https://docs.ollama.com/faq)
 
+## よくある疑問と回答 (FAQ)
+### Q. Ollamaのコンテキスト長（Context length）のデフォルトは何トークンですか？
+A. モデル自体が128kトークンに対応していても、Ollamaの既定ではVRAM 24GiB未満の環境で4k（4,096トークン）に設定されます。VRAM 24〜48GiBでは32k、48GiB以上では256kが既定値となります。
+
+### Q. Ollamaのコンテキスト長を変更・設定し、現在有効な値を確認する方法は？
+A. 環境変数 `OLLAMA_CONTEXT_LENGTH=64000` の指定、APIリクエストやModelfileでの `PARAMETER num_ctx 64000` 指定で変更できます。変更後は `ollama ps` コマンドを実行すると、現在ロードされているモデルの `CONTEXT` 列とGPU/CPU割当比率（`PROCESSOR`）を確認できます。
+
 ## 記事の範囲
 2026年10月16日にOllama公式ドキュメント（Context length、FAQ、CLI Reference）を確認して整理した記事です。コンテキスト長ページ（VRAM別4k/32k/256k）とFAQページ（4096トークン）の記載差も含めて照合しています。各モデルでの実測メモリ消費量や生成速度は測定していません。
 
@@ -53,5 +60,5 @@
 - [Ollama Docs：CLI Reference](https://docs.ollama.com/cli)
 
 ## 次に考えたいこと
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

@@ -4,7 +4,7 @@
 
 ---
 
-# DeepSeek-V4.1-Flash-1017は何が異常なのか：890B/tokenのKV圧縮とencoding.pyの内部仕様
+# DeepSeek-V4.1-Flash-1017の内部仕様：890B/tokenのKV圧縮とencoding.py・APIの設計
 
 > 2026年10月17日公開のDeepSeek-V4.1-Flash-1017について、表面的なベンチマーク順位だけでなく、config.jsonとencoding.pyから読み解ける非対称CED構造、KVキャッシュ圧縮、プロトコル仕様、Search/Fetch APIの課金境界を整理します。
 
@@ -70,6 +70,13 @@ DeepSeek APIのdeepseek-flashは、100万入力トークンあたりの料金が
 参照: [GitHub Issue：anomalyco/opencode #40321 (Deepseek-v4-flash produces corrupted output)](https://github.com/anomalyco/opencode/issues/40321)
 参照: [GitHub Issue：deepseek-ai/DeepSeek-V3 #1560 (Why DeepSeek V4 Gets Stuck in Infinite Fix Loops)](https://github.com/deepseek-ai/DeepSeek-V3/issues/1560)
 
+## よくある疑問と回答 (FAQ)
+### Q. DeepSeek-V4.1-Flash-1017は旧リビジョン（0731等）や通常のFlashモデルと何が違いますか？
+A. 552B MoE＋196B Engramの巨大バックボーンを持ちながら、40層をEncoder（入力8B）とDecoder（出力16B）に分割し、メインKVキャッシュを40層中4層に絞ることで890バイト/トークンの極小KVフットプリントを実現しています。
+
+### Q. ツール呼び出し（Tool Calls）を使うときにAPIキャッシュが効き続けるのはなぜですか？
+A. 公式の `encoding.py` では `tools` 定義が存在する場合に過去ターンの `<think>` ブロック削除（`drop_thinking`）を自動で無効化し、プロンプト先頭からのプレフィックス一致を壊さないことでキャッシュヒットを維持する設計になっています。
+
 ## 記事の範囲
 2026年10月17日に公開されたHugging Faceのdeepseek-ai/DeepSeek-V4.1-Flash-1017およびDeepSeek-V4.1-Flash公式リポジトリ内のconfig.json、encoding/encoding.py、encoding/README.md、DeepSeek API公式ドキュメント（Models & Pricing、Search & Fetch Guide、Release 2026/10/17）、ならびにGitHub Issue・Reddit等の開発者コミュニティで報告されているコード修正時のトラブル事例を参照して整理した記事です。Nodusによる実機クラスタでの推論速度計測やベンチマークの再実行は行っていません。
 
@@ -90,13 +97,13 @@ DeepSeek APIのdeepseek-flashは、100万入力トークンあたりの料金が
 - [GitHub Issue：deepseek-ai/DeepSeek-V3 #1560 (Why DeepSeek V4 Gets Stuck in Infinite Fix Loops)](https://github.com/deepseek-ai/DeepSeek-V3/issues/1560)
 
 ## 次に考えたいこと
-- [長いシステムプロンプトを毎回払う？ Gemini APIのキャッシュ仕様と最小トークン条件](https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide)
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [Gemini APIのプロンプトキャッシュ：Implicit/Explicitの違いと料金・最小トークン条件](https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
 
 
 ---
 
-# マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率
+# マルチホップRAGのベクトル検索：取得済み文書の直交引き算が比較質問で効き連鎖質問で崩れる理由
 
 > HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。
 
@@ -161,14 +168,14 @@ HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエ�
 - [HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering](https://hotpotqa.github.io/)
 
 ## 次に考えたいこと
-- [自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁](https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks)
-- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
-- [NotebookLM、資料はどう分けて入れる？](https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide)
+- [Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングと未知スキーマの壁](https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks)
+- [DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [NotebookLMのソース上限と分割方法：資料整理で詰まらないノートブック設計](https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide)
 
 
 ---
 
-# 自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁
+# Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングによる構文保証と未知スキーマの壁
 
 > SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。
 
@@ -237,14 +244,14 @@ A. はい。マスクなしでは未知スキーマに対して存在しない�
 - [SQLite Official Documentation: Query Language Understood by SQLite](https://www.sqlite.org/lang.html)
 
 ## 次に考えたいこと
-- [マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
-- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
-- [LLM APIの速さは、何を測って比べればいい？](https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks)
+- [マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
+- [DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [LLM APIの速度・料金比較：TTFT（応答速度）とスループットをどう測る？](https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks)
 
 
 ---
 
-# パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？
+# AIエージェントを24時間常駐させるなら？ ラズパイ・VPS・ミニPCの費用と選び方
 
 > ノートPCを閉じても記憶や定期処理を残したい。コードの修正も任せたい。推論・記憶・開発作業を分けて、常駐先の費用と選び方を考えます。
 
@@ -324,6 +331,13 @@ Dockerのバインドマウントは、ホスト側のフォルダをコンテ�
 ### まず手持ち機器で、1週間だけ記録する
 毎晩の要約1件、検索、コードの小さな修正など、普段使う仕事を固定して試します。成功したか、待ち時間、メモリ使用量、API費用、確認にかかった時間を残し、再起動後に処理が戻るかも確かめます。ARM対応を確認でき、処理が収まるなら手持ちのラズパイも候補です。自宅の電源や回線から切り離すことを優先するならVPS、同じ機器で開発作業もまとめたいならミニPCを比べます。機器の購入は、記録から足りないものが分かってからでも遅くありません。
 
+## よくある疑問と回答 (FAQ)
+### Q. AIエージェントを24時間常駐させるのにラズパイ（Raspberry Pi）でも足りますか？
+A. 推論自体は外部のLLM APIに任せ、定期実行（cron）やチャットBotの待ち受け・軽量な記憶データベースだけを動かす構成であればRaspberry Piでも十分に常駐運用できます。
+
+### Q. 自宅のミニPCとクラウドVPSはどう使い分ければいいですか？
+A. 自宅の停電やネットワーク設定の影響を受けずに外部Webhook等を安定して受けたいなら小型VPS、Dockerコンテナのビルドやローカル開発作業・大容量メモリを月額固定費なしで回したいならミニPCが向いています。
+
 ## 記事の範囲
 2026年10月15日に公式資料と公開料金表を確認した選び方の記事です。さくらのVPSは料金ページをブラウザで月額払い・石狩リージョンに切り替えて確認しました。自宅構成の金額・電力・電気料金単価は計算例の仮定であり、特定製品の実売価格や実測値ではありません。機器の購入、各構成でのインストール・性能測定、API利用料の実測は行っていません。比較表の用途別評価は編集上の判断です。公開質問や日本語の解説記事は企画の参考とし、利用者数・検索数・性能の根拠にはしていません。
 
@@ -341,14 +355,14 @@ Dockerのバインドマウントは、ホスト側のフォルダをコンテ�
 - [Docker：Engineのセキュリティ](https://docs.docker.com/engine/security/)
 
 ## 次に考えたいこと
-- [パーソナルAIのサブスク・API・自宅運用を比べる](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [自宅サーバー用ミニPCの電力・端子・保守を確認する](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
-- [手持ちのMacでローカルLLMを試す](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
 
 
 ---
 
-# Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係
+# Google Antigravityの利用枠と上限確認：5時間更新・週間上限・AIクレジットの仕組み
 
 > 作業の途中で利用上限に達したとき、5時間待てば戻るのか、週間上限なのか、追加クレジットを使うべきか。公式プラン仕様から確認手順を整理します。
 
@@ -396,6 +410,16 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Google Antigravityの利用枠やAIクレジット残量はどこで確認できますか？
+A. Antigravity内の設定（Settings）画面にある利用状況および「AI Credit Overages」設定項目、ならびにGoogle Oneのプラン管理画面から現在の利用枠の状態と超過時のクレジット消費設定を確認できます。
+
+### Q. 5時間待ったのにAntigravityの利用制限が解除されないのはなぜですか？
+A. Google AI Pro・Ultraの利用枠には「5時間ごとに更新される枠」とは別に「週間レート制限（Weekly limit）」が設けられており、週間上限に到達している場合は5時間経過しても次の週間リセット日時またはAIクレジット利用まで回復しません。
+
+### Q. 基本枠を超えたときに勝手にお金（クレジット）が減るのを防げますか？
+A. はい。設定の「AI Credit Overages」で「Never（自動消費しない）」または都度確認を選んでおけば、基本利用枠を使い切った時点で停止し、意図しないAIクレジット消費を防げます。
+
 ## 記事の範囲
 2026年10月16日にGoogle Antigravity公式ドキュメント（Plans）およびGoogle One日本向けプラン表を確認して整理した記事です。各プランにおける実際のプロンプト実行回数やクレジット消費速度の独自測定は行っていません。月額差額や時短換算の数値は表示料金に基づく計算例であり、実際の請求額や作業効率を保証するものではありません。
 
@@ -406,13 +430,13 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
 
 
 ---
 
-# 安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用
+# クラウドバックアップの復元料金比較：Cloudflare R2とBackblaze B2で100GBを戻す費用
 
 > 自宅NASや写真サーバーの外部バックアップ先を選ぶとき、毎月の保存料金だけでなく、障害時に100GB〜1TBを一括ダウンロード（Egress）したときの料金条件を公式価格表から比較します。
 
@@ -458,6 +482,13 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 参照: [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 参照: [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 
+## よくある疑問と回答 (FAQ)
+### Q. Cloudflare R2はデータを復元（ダウンロード）するときの通信料は本当に無料ですか？
+A. Standardストレージクラスであれば下り転送（Egress）料金は無料です。ただしInfrequent Access（低頻度アクセス）クラスを選んだ場合は、データ取り出し時に1GBあたり$0.01のRetrieval料金と最小保存期間の条件が適用されます。
+
+### Q. Backblaze B2で100GBのバックアップを丸ごと復元すると追加料金はかかりますか？
+A. Backblaze B2のPay-as-you-goプランには「月間平均保存容量の3倍までEgress無料」の枠が含まれているため、100GB保存していれば月300GB（全体復元3回分）までは下り転送費用なしでダウンロードできます。
+
 ## 記事の範囲
 2026年10月16日にCloudflare R2およびBackblaze B2の公式Pricingページを確認して整理した記事です。記事内の金額試算は公式のドル建て単価に基づく計算例であり、APIリクエスト数や為替レート、税金によって実請求額は変動します。各ストレージからのダウンロード速度の実測は行っていません。
 
@@ -467,15 +498,15 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 - [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
-- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
-- [HDD 2台、ミラーリングと別バックアップどっち？](https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide)
-- [Dockerのバックアップ、フォルダコピーで戻る？](https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope)
+- [Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
+- [2ベイNASの選び方：HDD 2台を「RAID 1」にするか「1台＋外付けバックアップ」にするか](https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide)
+- [Dockerのバックアップ方法：VolumeとBind Mountの保存範囲とリストア手順](https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope)
 
 
 ---
 
-# Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？
+# Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLの検索インデックスとAccess制限
 
 > GitHub連携でブランチごとに自動生成されるプレビューURLや元の .pages.dev サブドメインが、検索エンジンに重複登録されるのを防ぐ公式仕様と確認手順を整理します。
 
@@ -512,6 +543,13 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 参照: [Cloudflare Pages Docs：Preview deployments](https://developers.cloudflare.com/pages/configuration/preview-deployments/)
 参照: [Cloudflare Pages Docs：Custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Cloudflare Pagesでブランチごとに作られるプレビューURLはGoogle検索に載りますか？
+A. プレビューデプロイメントには検索エンジン向けの `X-Robots-Tag: noindex` ヘッダが付与される仕様ですが、URL自体を知っていれば初期状態では誰でもブラウザで開けるため、非公開にするにはCloudflare Accessの有効化が必要です。
+
+### Q. 独自ドメインを設定した後も `*.pages.dev` が検索結果に残るのを防ぐにはどうすればいいですか？
+A. 全ページの `<link rel="canonical">` と `sitemap.xml` のURLを正規ドメインに統一したうえで、必要に応じてBulk Redirects等で `*.pages.dev` から独自ドメインへ301リダイレクトを設定します。
+
 ## 記事の範囲
 2026年10月16日にCloudflare Pages公式ドキュメント（Preview deployments、Custom domains）を確認して整理した記事です。
 
@@ -521,14 +559,14 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 - [Cloudflare Pages Docs：Custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
 ## 次に考えたいこと
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
-- [Search Consoleとアクセス解析、なぜ数字が合わない？](https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide)
-- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
+- [クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [Search Consoleとアクセス解析（GA4等）、なぜクリック数と訪問数が合わない？](https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide)
+- [Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
 
 
 ---
 
-# CO₂センサーの「400ppm」は本物の二酸化炭素か推定値か？ 換気計を自作する前の選び方
+# 自作CO₂センサーの選び方：本物の二酸化炭素（SCD40/SCD41）と推定eCO₂（SGP30）の違い
 
 > ESP32で部屋の二酸化炭素濃度計を自作するとき、数百円のガスセンサー（eCO₂）と数千円の光学式センサー（SCD40/SCD41等）で測っているものがどう違うのかを公式資料から整理します。
 
@@ -568,6 +606,13 @@ CO₂を直接測定できるSCD40/SCD41等のモジュールは単体でも数�
 参照: [ESPHome Docs：SCD4X CO₂, Temperature and Relative Humidity Sensor](https://esphome.io/components/sensor/scd4x.html)
 参照: [ESPHome Docs：SGP30 CO₂ and Volatile Organic Compound Sensor](https://esphome.io/components/sensor/sgp30.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 通販で安いCO₂センサーモジュールを買ったらアルコール消毒液で数値が跳ね上がるのはなぜですか？
+A. 仕様欄に「eCO₂」や「CO₂eq」と書かれているセンサー（SGP30等）は、二酸化炭素そのものではなく揮発性有機化合物（TVOC）や水素濃度から推定値を計算しているため、アルコールや料理の匂いに強く反応します。換気指標にはSCD40/SCD41やMH-Z19系などの光学式（NDIR・光音響式）を選びます。
+
+### Q. ラズパイやArduino・ESP32でSCD40/SCD41を使うときの注意点はありますか？
+A. センサー上部の白い保護フィルム（メンブレン）は防塵・透湿用なので絶対に剥がさないでください。また、マイコン基板の発熱が伝わると温度・CO₂補正がずれるため、配線を分けるかスリット入りのケースで熱を逃がします。
+
 ## 記事の範囲
 2026年10月16日にESPHome公式ドキュメント（Sensirion SCD4XおよびSGP30コンポーネント仕様）を確認して整理した記事です。各センサーモジュールの実売価格調査や同一室内での数値比較テストは行っていません。
 
@@ -577,13 +622,13 @@ CO₂を直接測定できるSCD40/SCD41等のモジュールは単体でも数�
 - [ESPHome Docs：SGP30 CO₂ and Volatile Organic Compound Sensor](https://esphome.io/components/sensor/sgp30.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
 
 
 ---
 
-# Dockerの作業フォルダをコピーしたのに復元できない理由：VolumeとBind Mountの保存範囲
+# Dockerのバックアップとリストア：作業フォルダのコピーでVolumeが復元できない理由
 
 > docker-compose.ymlがあるフォルダを丸ごとバックアップしたのに、別マシンへ移したらデータベースの中身が空になっていた。名前付きVolumeとBind Mountの保存場所の違いを整理します。
 
@@ -627,6 +672,13 @@ Docker公式ドキュメント（Bind mounts）で説明されている通り、
 参照: [Docker Docs：Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
 参照: [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
+## よくある疑問と回答 (FAQ)
+### Q. docker-compose.ymlがあるフォルダを丸ごとコピーしたのにデータが復元できないのはなぜですか？
+A. 名前付きVolume（Named Volumes）のデータはプロジェクトフォルダ内ではなくDockerの管理領域（`/var/lib/docker/volumes/` 等）に保存されるため、カレントディレクトリのコピーには含まれません。
+
+### Q. Dockerコンテナのデータベースを安全にバックアップ・リストアする方法は？
+A. 稼働中のDBファイルを直接コピーすると破損のおそれがあるため、`docker compose exec` で `pg_dump` や `mysqldump` などの論理ダンプを出力して保存し、リストア時は空のVolumeに対してダンプを流し込む手順が確実です。
+
 ## 記事の範囲
 2026年10月16日にDocker公式ドキュメント（Volumes、Bind mounts）およびImmich公式バックアップガイドを確認して整理した記事です。
 
@@ -637,13 +689,13 @@ Docker公式ドキュメント（Bind mounts）で説明されている通り、
 - [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
 
 
 ---
 
-# 「デュアル4K対応」のUSB-CドックでMacも2画面に拡張できる？ チップ上限と接続方式の確認
+# Macのデュアルディスプレイ設定：「デュアル4K対応ドック」で2画面に拡張できない理由とThunderbolt選び
 
 > Windows向けに「USB-C 1本で4K 2画面出力」と書かれたドックをMacBookにつないだとき、2枚のモニターに同じ画面しか映らない（ミラーリングになる）原因と選び方を整理します。
 
@@ -679,6 +731,13 @@ Docker公式ドキュメント（Bind mounts）で説明されている通り、
 Mac本体が2台以上の外部ディスプレイに対応しているモデルであり、かつケーブル1本だけで2枚のモニターへ別々の画面を出したい場合は、単なるUSB-Cマルチハブではなく、macOSでのデュアルディスプレイ拡張に対応した「Thunderbolt 4 / 5ドック」を選ぶ必要があります。ただしThunderboltドックは本体価格が高いため、「充電と1枚目のモニターはドック経由にし、2枚目のモニターだけはMac本体の別のThunderboltポートやHDMIポートへ直接挿す」という運用が許容できるなら、高価なドックへ買い替えなくても手持ちのケーブルだけで解決できます。
 参照: [Apple Support：How many displays can be connected to MacBook Pro](https://support.apple.com/en-us/101571)
 
+## よくある疑問と回答 (FAQ)
+### Q. Windows用の「デュアル4K対応USB-Cドック」をMacにつなぐと同じ画面（ミラーリング）になるのはなぜですか？
+A. macOSはDisplayPort MST（1本の映像信号をハブ内部で複数画面に分割する方式）による画面拡張に対応していないため、MST方式の安価なUSB-Cハブを使うと2枚の外部モニターに同じ画面が表示されます。
+
+### Q. MacBookでケーブル1本から2枚の外部ディスプレイを別々に拡張するにはどう選べばいいですか？
+A. まず自分のMacのチップ（無印 / Pro / Max）が標準で外部2画面以上に対応しているかをApple公式仕様で確認したうえで、Thunderbolt 4 / USB4ネイティブ対応ドックを選ぶか、Mac本体の2つのポートへ別々に接続します。
+
 ## 記事の範囲
 2026年10月16日にApple公式サポート文書（MacBook Proに接続できるディスプレイの台数）を確認して整理した記事です。特定のサードパーティ製ドック製品での相性テストは行っていません。
 
@@ -687,13 +746,13 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 - [Apple Support：How many displays can be connected to MacBook Pro](https://support.apple.com/en-us/101571)
 
 ## 次に考えたいこと
-- [USB4外付けSSD、公称40Gbpsだけで選んでいい？](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [外付けSSDは自作（ケース＋M.2）か完成品か？ USB4の発熱デメリットと費用比較](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
 
 
 ---
 
-# PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証
+# PyTorchからONNX INT8量子化で精度が落ちる原因：Calibration・前処理不一致と3段階検証
 
 > GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。
 
@@ -740,6 +799,13 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 参照: [ONNX Runtime Documentation: Quantize ONNX Models](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 参照: [PyTorch Documentation: torch.onnx](https://pytorch.org/docs/stable/onnx.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. PyTorch（FP32）からONNX INT8へ量子化したときに認識精度が大きく落ちたら何を確認すべきですか？
+A. いきなりINT8のCalibration（量子化誤差）だけを疑う前に、同一の検証データで『PyTorch FP32』『ONNX FP32』『ONNX INT8』の3段階を比較してください。ONNX FP32の時点で精度が落ちているなら、前処理の正規化ズレやラベル順序（labels.json）の不一致が原因です。
+
+### Q. ONNXエクスポート時に学習用の補助ヘッド（マルチタスク層）はどう扱うべきですか？
+A. 推論時に使わない補助ヘッドはONNXエクスポート用のラッパーで切り離し、既存の推論ランタイムと同じ入出力テンソル名・形状を維持することでエッジ端末へのドロップイン置換を安全に行えます。
+
 ## 記事の範囲
 2026年10月16日にONNX Runtime Quantization公式ドキュメントおよびPyTorch `torch.onnx` 公式ドキュメントを確認し、音声・画像モデルのONNX変換・INT8量子化時における前処理一致検証と推論グラフ分離の設計手順を整理した記事です。
 
@@ -749,14 +815,14 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 - [PyTorch Documentation: torch.onnx](https://pytorch.org/docs/stable/onnx.html)
 
 ## 次に考えたいこと
-- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
-- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
-- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
+- [ストリーミングAI：オフライン正答率は高いのに実機でタイミングがズレる理由](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
+- [カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
+- [AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
 
 
 ---
 
-# 展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計
+# 展示会・会場Wi-Fi混雑や電波干渉でAIが動かなくなる原因：ローカル完結設計と騒音対策
 
 > 開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。
 
@@ -803,6 +869,13 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 参照: [Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
 参照: [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 展示会やコンテスト会場でWi-Fiやテザリングが繋がらなくなる対策は何ですか？
+A. 2.4GHz帯の電波干渉と回線輻輳を前提とし、起動時のモデル取得や推論をネットワークに一切依存しない『ローカル限定モード』を用意したうえで、機器間通信は有線LANまたは5GHz固定の専用ローカルルーターで完結させます。
+
+### Q. 会場の騒音で音声認識デモが通らなくなるのを防ぐにはどう設計しますか？
+A. 固定音量閾値のVADではなく背景ノイズ床に追従する適応型VADを使い、UI側でもTop-1の厳密一致だけでなくTop-3候補に正解があれば進行できる救済モードや手動スキップ導線を組み込みます。
+
 ## 記事の範囲
 2026年10月16日にHugging Face Hubのオフライン・キャッシュ取得仕様およびONNX Runtimeのローカル推論仕様を確認し、展示会場・フィールド環境におけるネットワーク遮断耐性と騒音耐性のアーキテクチャ設計を整理した記事です。
 
@@ -812,14 +885,14 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 - [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 
 ## 次に考えたいこと
-- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
+- [AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
+- [機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
 
 
 ---
 
-# ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器
+# ESP32-C6でMatter over Threadを使う必要機器：Border Router（ボーダールーター）の条件
 
 > Wi-Fi 6とThread（802.15.4）に対応するESP32-C6でスマートホーム機器を自作する前に、既存のWi-Fiルーターだけで動くのか、別途ボーダールーターが必要なのかを整理します。
 
@@ -864,6 +937,13 @@ ESP32-C6の大きな特徴は、2.4GHz Wi-Fi 6（802.11ax）とBluetooth 5（LE�
 参照: [Espressif：ESP-Matter Programming Guide (ESP32-C6)](https://docs.espressif.com/projects/esp-matter/en/latest/esp32c6/developing.html)
 参照: [Home Assistant：Thread Integration Documentation](https://www.home-assistant.io/integrations/thread/)
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32-C6を1枚買えば、自宅の普通のWi-FiルーターだけでThread通信ができますか？
+A. いいえ。ThreadはIEEE 802.15.4というWi-Fiとは別の無線規格を使うため、一般的な家庭用Wi-Fiルーターだけでは直接通信できず、HomePod miniやNest Hub（第2世代）、またはもう1枚のESP32-C6＋ホストで構成した「Thread Border Router（ボーダールーター）」が必要です。
+
+### Q. Threadボーダールーターを買わずにESP32でMatter機器を自作する方法はありますか？
+A. はい。「Matter over Wi-Fi」構成を選べば既存の2.4GHz Wi-Fiルーター経由でMatterコントローラーと通信できるため、専用Threadハブなしで試せます（この場合はESP32-C3やS3でも構築可能です）。
+
 ## 記事の範囲
 2026年10月16日にEspressifのESP32-C6データシート、ESP-Matter開発ガイド、およびHome Assistant公式Thread統合ドキュメントを確認して整理した記事です。各スマートスピーカーやアダプターとの実機接続テストは行っていません。
 
@@ -874,13 +954,13 @@ ESP32-C6の大きな特徴は、2.4GHz Wi-Fi 6（802.11ax）とBluetooth 5（LE�
 - [Home Assistant：Thread Integration Documentation](https://www.home-assistant.io/integrations/thread/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
 
 
 ---
 
-# ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方
+# ESP32のDeepSleep消費電力と電池持ち計算：開発ボードの待機電流・GPIO・復帰の注意点
 
 > データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。
 
@@ -922,6 +1002,13 @@ ESPHomeの公式ドキュメント（Deep Sleep Component）には、「Deep Sle
 もう一つの実務上の注意点として、デバイスがスリープに入った際にHome Assistantの画面上でセンサー値が「Unavailable（利用不可）」に変わってしまう現象があります。ESPHome公式ドキュメントでは、デバイスをHome Assistantへ登録した「あと」から `deep_sleep` コンポーネントを追加した場合にこの挙動が起きやすく、Home Assistant側で一度デバイスを削除して再登録することで防げると案内されています。電池持ちの測定を始める前に、まず10分程度の短い周期でスリープ復帰と画面表示が意図通り動くかを確かめます。
 参照: [ESPHome Docs：Deep Sleep Component](https://esphome.io/components/deep_sleep/)
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32をDeepSleepさせているのに電池が数日〜数週間で切れてしまうのはなぜですか？
+A. ESP32チップ単体のスリープ電流が数〜数十µAでも、一般的な開発ボード上の電源LED、LDOレギュレーター（AMS1117等）、USBシリアル変換ICが常に数mAを消費し続けているためです。電池駆動には低損失LDO搭載ボードを選ぶかLEDを除去します。
+
+### Q. ESP32のDeepSleepからGPIOやタイマーで復帰（Wakeup）させるときの注意点は？
+A. RTC IOに対応したGPIOピンを選ぶ必要があり、外付けまたは内部プルアップ抵抗に電流が流れ続けるとスリープ中の消費電力が増えます。また復帰後のWi-Fi接続に数秒かかると平均電流が跳ね上がるため、固定IP化等で稼働時間を短縮します。
+
 ## 記事の範囲
 2026年10月16日にESPHome公式ドキュメント（Deep Sleep Component）およびEspressif公式資料を確認して整理した記事です。記事内の電池寿命試算は仮定の電流値・稼働時間に基づく計算例であり、特定の開発ボードや電池での実測結果ではありません。
 
@@ -931,13 +1018,13 @@ ESPHomeの公式ドキュメント（Deep Sleep Component）には、「Deep Sle
 - [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
 
 
 ---
 
-# ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け
+# ESP32-S3（DevKitC-1等）にUSB端子が2つある理由：UART端子とUSB（OTG/JTAG）の使い分け
 
 > ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。
 
@@ -983,6 +1070,13 @@ ESP32-S3の開発ボード（DevKitC系など）を手に取ると、「UART」�
 参照: [Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html)
 参照: [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32-S3-DevKitC-1などの「UART」と「USB」の2つのポートは普段どちらに挿せばいいですか？
+A. 通常のプログラム書き込みやシリアルモニター確認、Deep Sleepの実験では、外付け変換ICを経由してリセット時もポートが切断されにくい「UART」端子に挿すのが最も安定します。
+
+### Q. もう片方の「USB」端子（ネイティブUSB / GPIO19・20）はいつ使いますか？
+A. ESP32-S3をPCからUSBキーボード・マウス（HID）やUSBメモリ（MSC）として認識させたい場合（USB OTG機能）や、外付けデバッガなしで内蔵USB Serial/JTAGデバッグを行う場合に使います。
+
 ## 記事の範囲
 2026年10月16日にEspressif公式ESP-IDFプログラミングガイド（USB OTG Console、USB Serial/JTAG Controller Console、チップ比較表）を確認して整理した記事です。サードパーティ製互換ボードごとの回路差や給電電流の実測は行っていません。
 
@@ -993,13 +1087,13 @@ ESP32-S3の開発ボード（DevKitC系など）を手に取ると、「UART」�
 - [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [ESP32-C6でMatter・Threadを使うには？ ボーダールーターと必要機器の条件](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
 
 
 ---
 
-# 長いシステムプロンプトを毎回払う？ Gemini APIのキャッシュ仕様と最小トークン条件
+# Gemini APIのプロンプトキャッシュ仕様：ImplicitとExplicitの違い・料金と最小トークン条件
 
 > 同じ指示文や参考資料を繰り返し送るとき、自動（Implicit）キャッシュと明示的（Explicit）キャッシュのどちらが使えるのか。モデル別の最小トークン数と設計の注意点を整理します。
 
@@ -1040,6 +1134,13 @@ Implicit cachingは設定不要で有効化されていますが、ヒットが�
 参照: [Google AI for Developers：Context caching（キャッシュ仕様と最小トークン数）](https://ai.google.dev/gemini-api/docs/caching)
 参照: [Google AI for Developers：Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
+## よくある疑問と回答 (FAQ)
+### Q. Gemini APIの暗黙的キャッシュ（Implicit caching）は何トークンから自動で効きますか？
+A. 公式ドキュメントでは、Gemini 4 ArgonおよびGemini 3系モデルは最小4,096入力トークン、Gemini 2.5系モデルは最小2,048入力トークンから設定不要で自動適用されます。
+
+### Q. キャッシュがヒットしたかどうかはどうやって確認できますか？
+A. APIレスポンスの `usage_metadata` に含まれるキャッシュヒットトークン数を確認します。ヒット率を高めるには、毎回変わらないシステム指示や長文資料をプロンプトの最前部（先頭）に固定して送信します。
+
 ## 記事の範囲
 2026年10月16日にGoogle AI for DevelopersのContext caching公式ドキュメントおよびPricingページを確認して整理した記事です。実際の運用環境におけるキャッシュヒット率やレイテンシ短縮幅の実測は行っていません。
 
@@ -1049,13 +1150,13 @@ Implicit cachingは設定不要で有効化されていますが、ヒットが�
 - [Google AI for Developers：Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 ## 次に考えたいこと
-- [Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界](https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary)
-- [AIコーディングのトークン節約、AST抽出でどこまで減らせるか](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [Google AI Pro契約中でもAI Studio・Gemini APIは別課金？ 無料枠と請求の境界](https://nodus-lab.pages.dev/articles/google-ai-pro-ai-studio-api-billing-boundary)
+- [AIエージェントのトークン節約：AST解析と部分読みの使い分け](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
 
 
 ---
 
-# Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件
+# Google AI Proのファミリー共有でAntigravityも使える？ 家族で共有される利用枠と上限
 
 > Google Oneのファミリー共有でAI特典を分け合える範囲と、AntigravityやAIクレジットの上限が家族全体で合算される仕組みを公式ヘルプから整理します。
 
@@ -1104,6 +1205,13 @@ Google Oneの公式ヘルプによると、ファミリーグループの全員�
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 参照: [Google Antigravity Docs：Plans](https://antigravity.google/docs/plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Google Oneのファミリー共有を使うと家族もGoogle AntigravityやGemini Proを使えますか？
+A. はい。Google One公式ヘルプでは、Geminiアプリ、Google Antigravity、NotebookLM、AIクレジットがファミリーグループ共有の対象特典に含まれています（対象年齢や居住国などの条件あり）。
+
+### Q. ファミリー共有でAntigravityを使うとき、使用量の上限はメンバーごとに別々ですか？
+A. いいえ。AntigravityやGoogle Flowなどの一部機能では、使用量上限が各メンバー個別ではなく「ファミリーグループ全体」で1つの枠を共有する仕様のため、複数人で同時にヘビー利用すると早く上限に達します。
+
 ## 記事の範囲
 2026年10月16日にGoogle One公式ヘルプ（ファミリーとの共有を開始または停止する）および日本向けGoogle AIプラン表を確認して整理した記事です。複数アカウントでの同時利用テストや消費量の実測は行っていません。
 
@@ -1114,13 +1222,13 @@ Google Oneの公式ヘルプによると、ファミリーグループの全員�
 - [Google Antigravity Docs：Plans](https://antigravity.google/docs/plans/)
 
 ## 次に考えたいこと
-- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
+- [Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
 
 
 ---
 
-# Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界
+# Google AI ProとGoogle AI Studio・Gemini APIの違い：無料枠・別課金の境界とデータ学習
 
 > 個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。
 
@@ -1170,6 +1278,13 @@ Gemini APIの有料枠は、請求先を登録した直後のTier 1（月間利�
 参照: [Google AI for Developers：Gemini API Pricing（料金表）](https://ai.google.dev/gemini-api/docs/pricing)
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Google AI Pro（月額2,900円）を契約していればGemini APIやAI Studioの有料枠も無料になりますか？
+A. いいえ。個人向けのGoogle Oneサブスク（Google AI Pro / Ultra）と、開発者向けのGoogle AI Studio / Gemini API（Google Cloud請求先による従量課金）は別口座・別契約として扱われます。
+
+### Q. Google AI Studioを無料枠（Free Tier）で使う場合と有料枠（Paid Tier）にする場合の違いは？
+A. 請求先をリンクしないFree Tierは無料で試せますがレート制限が低く、入出力データがGoogle製品の改善（学習）に利用されます。Cloud請求先をリンクしてPaid Tierにするとレート制限が緩和され、データが学習に使われない規約が適用されます。
+
 ## 記事の範囲
 2026年10月16日にGoogle AI for Developersの公式Billing・PricingドキュメントおよびGoogle Oneプラン表を確認して整理した記事です。各Tierの昇格条件や料金単価は確認時点の公式記載に基づいており、今後の改定や為替変動を含みません。
 
@@ -1180,13 +1295,13 @@ Gemini APIの有料枠は、請求先を登録した直後のTier 1（月間利�
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
-- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
+- [Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
 
 
 ---
 
-# Search Consoleに表示やクリックがあるのにアクセス解析がゼロになる理由：計測位置と匿名化の違い
+# Search Consoleとアクセス解析（GA4・Cloudflare）の数字が合わない理由：計測位置と確認手順
 
 > 個人サイトを公開した直後、Google Search Consoleとブラウザ側のアクセス解析（Cloudflare Web AnalyticsやGA4）で数値が食い違うときに、タグの設定ミスと仕様上の差を切り分ける手順です。
 
@@ -1228,6 +1343,13 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 参照: [Google Search Central Blog：A deep dive into Search Console performance data filtering and limits](https://developers.google.com/search/blog/2022/10/performance-data-deep-dive)
 参照: [Cloudflare Web Analytics Docs：Data origin and collection](https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Search ConsoleではクリックがあるのにGA4やCloudflare Web Analyticsが0になるのはなぜですか？
+A. Search ConsoleはGoogle検索結果上でリンクが押された回数を記録する一方、Webアクセス解析はページ読み込み後にブラウザ内でJavaScriptビーコンが送信された回数を記録するため、広告ブロッカー（AdBlock等）や読み込み前の離脱があると0になります。
+
+### Q. Search Consoleの「検索クエリ一覧の合計」と「グラフのサイト全体合計」が一致しないのはバグですか？
+A. バグではなくGoogleの仕様です。プライバシー保護のため検索回数が少ない「匿名化されたクエリ」が一覧表から除外されるため、一覧表の行を足し合わせてもサイト全体の合計クリック数・表示回数より少なくなります。
+
 ## 記事の範囲
 2026年10月16日にGoogle Search Central公式ブログ（Search Consoleのパフォーマンスデータ制限の解説）およびCloudflare Web Analytics公式ドキュメント（Data origin and collection）を確認して整理した記事です。
 
@@ -1237,12 +1359,12 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 - [Cloudflare Web Analytics Docs：Data origin and collection](https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/)
 
 ## 次に考えたいこと
-- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
+- [Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
 
 
 ---
 
-# カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正
+# カメラ距離やマイク（スピーカーフォン）変更でAI認識精度が急落する理由：前処理の再校正
 
 > ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。
 
@@ -1289,6 +1411,13 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 参照: [scikit-learn User Guide: Cross-validation and Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. ヘッドセットから会議用スピーカーフォンにマイクを変えたら音声認識精度が落ちたのはなぜですか？
+A. マイクとの距離や部屋の反響（残響）・周波数特性が変わることで特徴抽出器（Encoder）の入力分布がずれるためです。最終分類層のクラス重みだけをいじっても解決しないため、前処理の音量正規化やVAD閾値の見直しと複数シードでの検証が必要です。
+
+### Q. カメラの設置高さや向きを変えたときに最初に確認すべき前処理はどこですか？
+A. 旧カメラ位置に合わせてハードコードされた画面端のクロップ（切り抜き範囲）や角度補正ヒストグラムが、新配置では被写体の有効領域を削り落としていないかを最初に確認します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnの評価・交差検証ガイドラインを確認し、カメラ幾何条件・マイク音響条件の変更に伴うハイパーパラメータ再校正と対照実験の手順を整理した記事です。
 
@@ -1298,14 +1427,14 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 - [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
 ## 次に考えたいこと
-- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [ストリーミングAI：オフライン正答率は高いのに実機でタイミングがズレる理由](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
+- [ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
 
 
 ---
 
-# 家族だけに自宅アプリを見せたいとき、VPN（Tailscale）とCloudflare Tunnelで何が変わる？
+# 自宅サーバーの外部公開：Cloudflare TunnelとTailscale（VPN）の違い・選び方
 
 > 自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。
 
@@ -1350,6 +1479,13 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 参照: [Cloudflare One Docs：Cloudflare Tunnel (Connect private networks)](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 参照: [Tailscale Docs：Connection types](https://tailscale.com/kb/1257/connection-types)
 
+## よくある疑問と回答 (FAQ)
+### Q. Cloudflare TunnelとTailscaleの最大の違いは何ですか？
+A. Tailscaleはアクセスする全員の端末にVPNクライアントアプリを入れて端末間で直接暗号化通信を行うのに対し、Cloudflare Tunnelは閲覧者側に専用アプリを入れず通常のブラウザURL＋Cloudflare Access認証で公開できる代わりに全通信がCloudflareを経由します。
+
+### Q. 家族との写真共有や大容量ファイル転送にはどちらが向いていますか？
+A. 家族のスマホにアプリを入れる手間を省いてWeb画面を見せたいならCloudflare Tunnel＋Access、SMBファイル共有や大容量動画のストリーム・高速転送を行いたいならUDP直結できるTailscaleが向いています。
+
 ## 記事の範囲
 2026年10月16日にCloudflare One公式ドキュメント（Cloudflare Tunnel）およびTailscale公式ドキュメント（Connection types、Pricing）を確認して整理した記事です。
 
@@ -1360,13 +1496,13 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 - [Tailscale：Pricing](https://tailscale.com/pricing)
 
 ## 次に考えたいこと
-- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
-- [NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide)
+- [Tailscaleの速度が遅いとき：NAS・SMB転送でDirect接続とDERP中継を確認する手順](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
+- [TailscaleのSubnet RouterとExit Nodeの違い：NAS接続にはどっちを設定する？](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide)
 
 
 ---
 
-# 実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計
+# AIの継続学習とラベリング注意点：「出題ラベル＝正解ラベル」で精度が崩壊する理由
 
 > 「使いながらデータを集めてモデルを賢くする」継続学習パイプラインで、アプリが出題したお題をそのまま正解ラベルとして自動学習させるとデータセットが崩壊する理由を解説。出題・実際の発声・モデル予測の3分離、Top-3救済ログの保持、安全なモデル配布設計をまとめます。
 
@@ -1414,6 +1550,13 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 参照: [Hugging Face Hub Documentation: Downloading files (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 実機アプリでユーザーが操作したデータをそのまま自動再学習させてはいけないのはなぜですか？
+A. アプリが提示したお題（Prompt）に対してユーザーが言い間違えたり操作ミスをしたりした場合、「出題ラベル」をそのまま「正解ラベル」として学習させると誤った教師データが蓄積してモデルが急速に劣化（汚染）するためです。
+
+### Q. 継続学習用のログには何を分けて記録すればいいですか？
+A. 「システムが出題したラベル」「人間が後から確認した実際の入力ラベル」「モデルの生予測スコア（Top-1とTop-3）」の3つを別カラムで保存し、検証セット（Val/Test）で回帰がないことを確認してからモデルを更新します。
+
 ## 記事の範囲
 2026年10月16日にHugging Face Hub公式ドキュメント（upload、file_download）およびscikit-learnの評価ガイドを確認し、エッジAI端末における実利用データ収集・ラベリング・再学習・配布の安全な運用設計を整理した記事です。
 
@@ -1424,14 +1567,14 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 - [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
 ## 次に考えたいこと
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
-- [展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [合成データ（TTS・画像生成）を機械学習に使う注意点：精度向上と錯覚する5つの罠](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
+- [展示会のWi-Fi混雑・電波干渉でAIが動かない原因とオフライン完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)
 
 
 ---
 
-# Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認
+# Immichのバックアップとリストア（復元）方法：写真フォルダと自動DBダンプの保存範囲
 
 > 自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。
 
@@ -1472,6 +1615,13 @@ Immichには障害復旧のための自動データベースバックアップ�
 データベースダンプと実体ファイルの両方が揃っていれば、復元はWebインターフェースまたはコマンドラインから行えます。公式ドキュメントでは、既存環境なら管理画面の「Administration > Maintenance」から利用可能なバックアップ一覧を選んで復元でき、実行前に自動でリストアポイント（ロールバック用）が作成される仕組みが説明されています。また、別マシンへ新規導入して初期画面（Onboarding）から復元する手順も用意されているため、写真データが数百GBに膨らむ前に、少量のテスト画像を入れた状態で一度「バックアップからの復元」を実際に試しておくと安心です。
 参照: [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Immichは写真が入っているフォルダ（library / upload）だけバックアップすれば復元できますか？
+A. いいえ。Immichはファイル配置やアルバム・人物情報をPostgreSQLデータベースで管理しており、写真フォルダを置いただけでは自動認識されないため、必ずデータベースのダンプファイルとセットで退避する必要があります。
+
+### Q. Immichの自動バックアップ機能で保存されるDBダンプはどこにありますか？
+A. 既定では `UPLOAD_LOCATION/backups` フォルダ内に毎日自動でデータベースダンプが出力されます。ただしこのダンプ自体には写真・動画の実体ファイルは含まれないため、フォルダ全体と `.env` を別ドライブやクラウドへ3-2-1ルールでコピーします。
+
 ## 記事の範囲
 2026年10月16日にImmich公式ドキュメント（Backup and Restore）およびDocker公式ドキュメントを確認して整理した記事です。特定のNASやストレージ環境における復元所要時間の実測は行っていません。
 
@@ -1481,13 +1631,13 @@ Immichには障害復旧のための自動データベースバックアップ�
 - [Docker Docs：Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
 
 ## 次に考えたいこと
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
 
 
 ---
 
-# 自宅サーバー用ミニPC、CPU名だけで選んでいい？
+# 自宅サーバー用ミニPCのおすすめの選び方：CPU名よりアイドル消費電力・静音性・VPS比較
 
 > RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。
 
@@ -1534,6 +1684,13 @@ AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています
 ### 増設と運用まで含めて、VPSと比べる
 ベアボーンならRAMとSSD、必要ならOS、バックアップ先も費用に含めます。SSDの実装面や厚み、メモリ容量は正確な型番の説明書で確認してください。NPU搭載だけで目的のAIソフトが動くとは限りません。購入を判断する際は、メモリや端子の要件を満たせるかに加え、故障対応やソフトの更新にかかる手間を引き受けられるかも考えます。
 
+## よくある疑問と回答 (FAQ)
+### Q. 自宅サーバー用のミニPCを選ぶとき、CPUのTDP（35W〜54W等）から電気代を計算できますか？
+A. TDPは高負荷時の放熱設計の目安であり、24時間稼働の自宅サーバーでは大半の時間を占める「アイドル時のコンセント消費電力（数W〜十数W）」の方が年間の電気代に大きく影響します。ワットチェッカー等で実測されたシステム全体の待機電力を確認します。
+
+### Q. ミニPCの自宅サーバーとクラウドVPSはどちらが得ですか？
+A. メモリ32GB〜64GBや大容量SSDを使う環境ならミニPCの買い切りの方が数年トータルで安くなりやすい一方、初期費用を抑えて電気代・ファン騒音・停電対策を手放したいならVPSが適しています。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -1542,15 +1699,15 @@ AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています
 - [AMD：Ryzen 7 8845HS公式仕様](https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html)
 
 ## 次に考えたいこと
-- [常駐AI用ならラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
 
 
 ---
 
-# 機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方
+# 混同行列（Confusion Matrix）の見方と改善：全体の正答率（Accuracy）だけ見ると失敗する理由
 
 > 音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。
 
@@ -1610,6 +1767,13 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 参照: [scikit-learn Documentation: balanced_accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
 参照: [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. モデルの全体Accuracy（正答率）が上がったのに、実機で特定の人が使うと全く当たらないのはなぜですか？
+A. データ件数が多い人物や簡単なクラス（母音など）の正答率だけが上がり、件数の少ない人物や難しい子音クラスの劣化が平均値に埋もれているためです。人物・クラスを均等平均した「Balanced Accuracy」と最低グループ値を監視する必要があります。
+
+### Q. 混同行列（Confusion Matrix）から次に直すべき場所をどうやって見つけますか？
+A. 巨大な表をそのまま眺めるのではなく、「母音は合っていて子音だけ外している」「検出点数が常に足りない（隠れ・見落とし）」のように物理的な誤りパターンへ集約することで、前処理・特徴量・後処理のどこを直すべきかが分かります。
+
 ## 記事の範囲
 2026年10月16日にscikit-learn公式ドキュメント（confusion_matrix、balanced_accuracy_score、f1_score）を確認し、多クラス分類および複数人物・複数環境データセットにおける集計バイアスと混同行列の分析手法を整理した記事です。文中のスコアや件数は指標の性質を比較するための計算例です。
 
@@ -1620,15 +1784,15 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 - [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
 
 ## 次に考えたいこと
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
-- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
-- [不均衡データの二重補正と未抽選データの罠](https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [ストリーミングAI：オフライン正答率は高いのに実機でタイミングがズレる理由](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
+- [PyTorchのWeightedRandomSampler：重複抽選と損失重みの二重補正で起きる罠](https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction)
 
 
 ---
 
-# 機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ
+# 機械学習のデータリーク（Data Leakage）とは？ 話者リークと学習パイプライン内の再分割バグ
 
 > 検証環境では高精度なのに本番・展示会場で全く動かない最大の原因である「データリーク（Data Leakage）」と「ベンチマーク設計の不備」を解説。話者・セッション独立分割の崩壊、学習スクリプト内部で勝手に再分割するバグ、テスト結果のサンプラー逆流を防ぐ手順をまとめました。
 
@@ -1676,6 +1840,13 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 参照: [scikit-learn User Guide: Cross-validation: evaluating estimator performance (GroupKFold)](https://scikit-learn.org/stable/modules/cross_validation.html)
 参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 機械学習のデータリーク（Data Leakage）が起きるとどんな症状が出ますか？
+A. 学習・検証（Val/Test）での正答率は90%以上と非常に高いのに、学習データに含まれない新しい人物（未知話者）や別の日・別の場所で実機テストした瞬間に精度が急落します。
+
+### Q. 事前にTrainとValのCSVを分けていたのにデータリークが起きるのはなぜですか？
+A. 前処理スクリプトや学習ラッパーが一度TrainとValを結合して特徴量を作り、学習コード内部の `train_test_split` でランダムに再分割してしまうことで、同一人物のデータが両方に混ざる実装バグがよく発生します。SHA-256ハッシュと人物IDで交差ゼロを自動検査します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learn公式ガイド（Common pitfalls: Data leakage、GroupKFold）を確認し、音声・画像認識プロジェクトにおけるデータ分割・前処理・サンプラー設計の監査項目を整理した記事です。文中の件数や比率はリーク構造を説明するための再現・計算例です。
 
@@ -1686,14 +1857,14 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 - [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
-- [合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [合成データ（TTS・画像生成）を機械学習に使う注意点：精度向上と錯覚する5つの罠](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
 
 
 ---
 
-# 機械学習の不均衡データで「オーバーサンプリング」と「損失重み」を二重に掛けると何が起きるか：全件通過を守る学習設計
+# PyTorchのWeightedRandomSamplerと損失重みの二重補正：重複抽選で未使用データが出る罠
 
 > クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。
 
@@ -1738,6 +1909,13 @@ PyTorch等でクラス間や人物間のデータ件数の偏りを補正する�
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. PyTorchのWeightedRandomSamplerで `replacement=True` にすると何が問題になりますか？
+A. 復元抽出（重複あり抽選）になるため、1エポック分のデータ数を回しても一度も選ばれない多数派データが大量に発生する一方、少数派データばかりが何度も重複入力されて過学習を引き起こします。
+
+### Q. 不均衡データを学習するとき、サンプラーとCrossEntropyLossのweightは両方使うべきですか？
+A. 両方を同時に有効化すると少数クラスへの重み付けが二乗で効く「二重補正」になり、通常のクラスの認識率が大きく崩れます。基本は全データを毎エポック1回ずつ確実に通過させ、補正はどちらか一方に絞ってValで検証します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnの評価・不均衡データガイドラインを確認し、エポック内の全件通過保証とサンプラー・損失重みの切り分け設計を整理した記事です。
 
@@ -1747,14 +1925,14 @@ PyTorch等でクラス間や人物間のデータ件数の偏りを補正する�
 - [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
 
 
 ---
 
-# 学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計
+# 機械学習のノイズ誤認識対策：対象外（other）クラスの設計と誤受理率・誤拒否率の評価
 
 > クリーンな学習データだけで作ったAIモデルが、展示会場の雑音や操作中の無関係な動きに対して誤作動を連発する原因を解説。対象外クラス（other）の設計、環境音誤受理率・発話誤拒否率の分離集計、およびノイズデータのセッション単位保留の重要性を整理します。
 
@@ -1801,6 +1979,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. ノイズ除去を入れるだけで実機の誤作動（暴発）は防げますか？
+A. 前処理のノイズ除去だけでは咳払いや操作中の無関係な動きまでは消せません。正解ラベルしか持たない分類器は無関係な入力にも無理やり正解クラスのどれかを割り当てるため、学習データ自体に『対象外（other / background）クラス』を入れて棄却させる設計が必要です。
+
+### Q. 対象外（other）クラスを入れたときの評価指標はどう分ければいいですか？
+A. otherクラスを通常の認識クラスの平均Accuracyに混ぜるとスコアが歪むため、「有効入力の正答率」「環境音を誤って受理した率（FAR）」「正しい入力をノイズとして弾いた率（FRR）」の3つを分けて集計します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnの分類評価指標リファレンスおよびCommon pitfallsガイドを確認し、閉集合分類モデルを実環境（連続ストリーム）へ適用する際の対象外クラス（other）設計と誤受理・誤拒否指標の定義を整理した記事です。
 
@@ -1810,14 +1995,14 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 - [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [展示会のWi-Fi混雑・電波干渉でAIが動かない原因とオフライン完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)
 
 
 ---
 
-# 初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか
+# 2ベイNASのRAID 1とバックアップの違い：Synology等でHDD 2台をどう使うか
 
 > 2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。
 
@@ -1862,6 +2047,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 参照: [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 参照: [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 
+## よくある疑問と回答 (FAQ)
+### Q. 2ベイNASでRAID 1（ミラーリング）を組んでおけば外付けHDD等へのバックアップは不要ですか？
+A. いいえ。RAID 1は「片方のHDDが物理故障したときに稼働を止めない仕組み」であり、誤ってファイルを削除・上書きした場合やランサムウェア感染、NAS本体の電源故障・落雷時には2台とも同時にデータを失います。
+
+### Q. 予算がHDD 2台分しかない場合、家族の写真や重要データを守るにはどう構成するのが安全ですか？
+A. 同じNAS筐体内で2台をRAID 1にするよりも、1台をNAS本体の保存用にし、もう1台を外付けUSBケースや別拠点のバックアップ先にして「世代（履歴）バックアップ」を残す方が、誤削除や本体故障からもデータを復元できます。
+
 ## 記事の範囲
 2026年10月16日にImmich公式バックアップガイド（3-2-1ルール）およびクラウドストレージ料金資料を参照し、RAID 1（冗長化）とバックアップ（履歴・別筐体退避）の役割分担を整理した記事です。
 
@@ -1872,13 +2064,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 - [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
 
 
 ---
 
-# NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方
+# NotebookLMのソース上限とノートブック分割：自動ラベル分類・削除・データテーブル出力の使い方
 
 > 複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。
 
@@ -1920,6 +2112,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 参照: [Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する](https://support.google.com/notebooklm/answer/16206563?hl=ja)
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. NotebookLMで複数のノートブックに入れたソース（資料）をまたいで横断検索できますか？
+A. いいえ。公式ヘルプの通り各ノートブックは完全に独立して動作するため、比較・統合して質問したい資料群は1つのノートブック内にまとめてソース追加する必要があります。
+
+### Q. 1つのノートブックにたくさんのソースを入れたとき、特定のソースだけを対象に質問できますか？
+A. はい。5つ以上のソースを追加すると自動でトピック分類・ラベル付けが行われるほか、ソース一覧のチェックボックスで参照させたい資料だけを選択・解除して回答を生成させられます。
+
 ## 記事の範囲
 2026年10月16日にGoogle公式ヘルプ（Gemini Notebookでノートブックを作成する）およびGoogle Oneプラン表を確認して整理した記事です。特定のPDFファイルでのOCR精度や応答速度の独自測定は行っていません。
 
@@ -1929,13 +2128,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件](https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide)
-- [マルチホップRAGの2段目検索、直交減算でどこまで改善する？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
+- [Google AI Proのファミリー共有：Antigravityの利用枠と家族共有の注意点](https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide)
+- [マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
 
 
 ---
 
-# Ollamaで128k対応モデルを入れたのに何トークン読める？ VRAM別既定値と変更手順
+# Ollamaのコンテキスト長（num_ctx）のデフォルト確認と変更・設定方法：VRAM別の目安
 
 > 128kや256k対応のローカルLLMをダウンロードしたのに長い文章を途中で忘れるとき、実際に割り当てられているコンテキスト長の確認方法と設定手順を公式資料から整理します。
 
@@ -1980,6 +2179,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 参照: [Ollama Docs：Context length（VRAM別既定値と設定方法）](https://docs.ollama.com/context-length)
 参照: [Ollama Docs：FAQ（num_ctxとOLLAMA_CONTEXT_LENGTH）](https://docs.ollama.com/faq)
 
+## よくある疑問と回答 (FAQ)
+### Q. Ollamaのコンテキスト長（Context length）のデフォルトは何トークンですか？
+A. モデル自体が128kトークンに対応していても、Ollamaの既定ではVRAM 24GiB未満の環境で4k（4,096トークン）に設定されます。VRAM 24〜48GiBでは32k、48GiB以上では256kが既定値となります。
+
+### Q. Ollamaのコンテキスト長を変更・設定し、現在有効な値を確認する方法は？
+A. 環境変数 `OLLAMA_CONTEXT_LENGTH=64000` の指定、APIリクエストやModelfileでの `PARAMETER num_ctx 64000` 指定で変更できます。変更後は `ollama ps` コマンドを実行すると、現在ロードされているモデルの `CONTEXT` 列とGPU/CPU割当比率（`PROCESSOR`）を確認できます。
+
 ## 記事の範囲
 2026年10月16日にOllama公式ドキュメント（Context length、FAQ、CLI Reference）を確認して整理した記事です。コンテキスト長ページ（VRAM別4k/32k/256k）とFAQページ（4096トークン）の記載差も含めて照合しています。各モデルでの実測メモリ消費量や生成速度は測定していません。
 
@@ -1990,13 +2196,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 - [Ollama Docs：CLI Reference](https://docs.ollama.com/cli)
 
 ## 次に考えたいこと
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
 
 
 ---
 
-# パーソナルAIは、どこに置く？
+# パーソナルAIの作り方と置き場所：VPS・自宅サーバー・サブスクの費用と役割分担
 
 > VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。
 
@@ -2039,6 +2245,13 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 ### 買い足す前に、一週間の記録を取る
 最初は手元のPCと利用中のサービスで同じ課題を試し、使った回数、待ち時間、失敗、必要な連携を記録します。常時の定期処理が必要になったらVPS、外に出せないデータやモデル実験が中心なら自宅構成を検討する、という順番なら過剰な購入を避けやすくなります。最適解は利用頻度と品質の許容範囲で変わります。
 
+## よくある疑問と回答 (FAQ)
+### Q. 自分用のパーソナルAIエージェントを作るならVPSと自宅サーバーのどちらがいいですか？
+A. 重いLLMの推論自体は外部APIを使い、記憶データベースや24時間の自動通知・Botだけを動かすなら月数百円〜の軽量VPSで十分です。ローカルLLM自体の推論も手元で回したい場合は大容量メモリを備えた自宅PC・サーバーが候補になります。
+
+### Q. 大手の月額AIサブスクと自作パーソナルAI（API＋サーバー）はどう使い分けますか？
+A. 日常の対話や調査は月額サブスクの方が定額で高性能モデルを使えます。一方、自分のメモや予定表と連携してバックグラウンドで自動処理させたい部分だけをAPI＋小型サーバーで切り出すと費用が膨らみません。
+
 ## 記事の範囲
 公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
 
@@ -2047,14 +2260,14 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 - [Ollama：ローカル実行、クラウド、メモリとサーバー設定のFAQ](https://docs.ollama.com/faq)
 
 ## 次に考えたいこと
-- [パーソナルAIを24時間動かす常駐先を選ぶ](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
 
 
 ---
 
-# オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離
+# リアルタイム音声・映像AIで「オフライン正答率は高いのに実機で使えない」理由：内容一致率と発火タイミングの乖離
 
 > カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。
 
@@ -2101,6 +2314,13 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 参照: [ONNX Runtime Documentation: Performance and Model Optimizations](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 録画・録音データのベンチマークでは正答率80%なのに、実機のリアルタイム認識で全く使えないのはなぜですか？
+A. 出力された文字列の『内容だけの一致率』で評価しており、『いつ発火（確定）したか』のタイミングを測っていないためです。対象に指が触れる前や発話が終わる前にフライング出力する確定層（Readout）は、内容一致率が高くても実機での体感一致率が0%になります。
+
+### Q. リアルタイム認識のタイミングズレを防ぐにはどう評価・設計すればいいですか？
+A. 認識モデル単体ではなく『認識部＋確定層（Readout）』をペアでA/B比較し、許容時間窓内に発火したかどうかを見る『タイミング込み一致率』と『早すぎ（通過前発火）率』を主指標にします。
+
 ## 記事の範囲
 2026年10月16日にONNX Runtimeおよびscikit-learnの評価ドキュメントを確認し、リアルタイム連続認識システムにおける認識部と確定層（Readout）の分離評価・トレース分析手法を整理した記事です。
 
@@ -2110,14 +2330,14 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 - [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
+- [ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
 
 
 ---
 
-# Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する
+# Tailscaleの速度が遅いとき：外出先からのNAS・SMB転送で直結（Direct）とDERP中継を確認する手順
 
 > 自宅NASやサーバーへのリモート接続が期待より遅いとき、光回線やルーターを疑う前に確認したい3つの接続方式（Direct / DERP / Peer Relay）の切り分け手順です。
 
@@ -2162,6 +2382,13 @@ Tailscale公式ドキュメント（Connection types）によると、tailnet内
 参照: [Tailscale Docs：Connection types（Direct / DERP / Peer Relayの仕組み）](https://tailscale.com/kb/1257/connection-types)
 参照: [Tailscale Docs：Subnet routers](https://tailscale.com/docs/features/subnet-routers)
 
+## よくある疑問と回答 (FAQ)
+### Q. Tailscale経由で自宅NAS（SMB等）へのアクセスが極端に遅いときは最初に何を確認すればいいですか？
+A. `tailscale status` または `tailscale ping <対象名>` を実行し、通信経路が直接通信（`direct`）になっているか、中継ぎサーバー経由（`derp` / リレー）に落ちているかを確認します。
+
+### Q. Direct（直結）になっているのにTailscaleでのファイル転送速度が出ない原因は？
+A. 外出先からのダウンロード速度は「自宅側のインターネット上り回線速度（Upload）」が上限になるほか、SMBプロトコルの往復遅延（RTT）やSubnet Routerにしている小型機器のCPU処理能力がボトルネックになっている場合があります。
+
 ## 記事の範囲
 2026年10月16日にTailscale公式ドキュメント（Connection types、Subnet routers）を確認して整理した記事です。特定のISPやモバイル回線における実測スループットやレイテンシの測定は行っていません。
 
@@ -2171,13 +2398,13 @@ Tailscale公式ドキュメント（Connection types）によると、tailnet内
 - [Tailscale Docs：Subnet routers](https://tailscale.com/docs/features/subnet-routers)
 
 ## 次に考えたいこと
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [Wi-Fi 7ルーター、買い替える前に確認すること](https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・対応端末・壁越し通信の確認](https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation)
 
 
 ---
 
-# NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか
+# TailscaleのSubnet RouterとExit Nodeの違い・設定判断：NASやラズパイを中継役にする方法
 
 > アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。
 
@@ -2219,6 +2446,13 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 参照: [Tailscale Docs：Subnet routers（サブネットルーターの仕組みと制限）](https://tailscale.com/docs/features/subnet-routers)
 参照: [Tailscale Docs：Exit nodes (route all traffic)](https://tailscale.com/kb/1103/exit-nodes)
 
+## よくある疑問と回答 (FAQ)
+### Q. Tailscaleアプリを入れられないNASやプリンターに外出先からアクセスするには何を設定しますか？
+A. 自宅内のRaspberry Piや常時稼働PCで `tailscale up --advertise-routes=192.168.1.0/24` のように「Subnet Router（サブネットルーター）」を設定し、管理画面でルートを承認すると自宅LAN内の機器へアクセスできます。
+
+### Q. Subnet RouterとExit Nodeはどう使い分ければいいですか？
+A. 自宅の特定機器（NAS等）にだけ通信したいならSubnet Routerを使います。カフェの公衆Wi-Fi利用時など、一般サイトへのWeb閲覧を含むすべての通信を自宅回線経由に切り替えたい場合にExit Nodeを使います。
+
 ## 記事の範囲
 2026年10月16日にTailscale公式ドキュメント（Subnet routers、Exit nodes）およびPricingページを確認して整理した記事です。特定のルーターやNAS機種でのスループット測定は行っていません。
 
@@ -2229,14 +2463,14 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 - [Tailscale：Pricing](https://tailscale.com/pricing)
 
 ## 次に考えたいこと
-- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
+- [Tailscaleの速度が遅いとき：NAS・SMB転送でDirect接続とDERP中継を確認する手順](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
 
 
 ---
 
-# 合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策
+# 合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップと防止策
 
 > 不足している属性（女性音声や特定条件の画像など）をTTSや合成データで補う際に陥りやすい5つの罠を解説。同一音声IDの複数設定を独立話者と誤認する問題、合成データのTest混入、ゼロ波形・フォーマット偽装、前処理でのメタデータ消失を防ぐ手順を整理します。
 
@@ -2283,6 +2517,13 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 参照: [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
 
+## よくある疑問と回答 (FAQ)
+### Q. TTS（音声合成）で作ったデータを学習に足したらValidation精度が上がったのに実機で効かないのはなぜですか？
+A. 合成データがValidationやTestセットにも混ざっていて「合成音声特有の音響パターン」を当てているだけか、同じTTS話者IDの速度・ピッチ違いを別人物として分割してしまいデータリークが起きているケースが多いためです。
+
+### Q. 合成データを機械学習パイプラインに入れるときの必須チェックは何ですか？
+A. Testセットは100%人間の実データに固定すること、モデル構造の変更とデータ追加を同じ実験で同時に行わないこと、API失敗時の無音（ゼロ波形）ファイルやメタデータ消失を自動検査で弾くことです。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnのCommon pitfallsおよびHugging Face Datasetsのドキュメントを確認し、合成データ（TTS等）を用いたデータ拡張時の実験管理・品質検査ルールを整理した記事です。
 
@@ -2292,14 +2533,14 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 - [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
 
 ## 次に考えたいこと
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
 
 
 ---
 
-# 100W・140W充電器は必要？ ポート配分と使い方から選ぶ
+# 100W・140W USB-C充電器は必要？ 65Wとの違い・複数ポート配分とケーブルの選び方
 
 > ノートPCとスマホを一緒に充電したい人へ。最大出力、複数ポート時の配分、ケーブル、持ち運びまで含めて考えます。
 
@@ -2347,6 +2588,16 @@ Subnet RouterもExit Nodeも、中継役に指定した宅内機器の電源が�
 ### 買い替える価値があるのは、どんなときか
 PCの指定する充電要件を現在の構成で満たせない、2台同時に使うと不足する、持ち運びの荷物を減らしたい、という困りごとがあれば候補を絞れます。すでに不便なく使えているなら、W数だけを理由に買い替える必要性は低いでしょう。実際に接続が切れる場合は熱保護だと決めつけず、説明書を確認し、改善しなければメーカーに相談してください。
 
+## よくある疑問と回答 (FAQ)
+### Q. 65Wと100W・140WのUSB-C充電器はどう使い分ければいいですか？
+A. ノートPC単体で標準付属アダプターが65W以下なら65W充電器で十分です。ノートPCとスマホ・タブレットを複数ポートで同時充電したい場合や、USB PD EPR（最大140W）対応の高性能ノートPCを高負荷で使う場合に100W・140Wクラスを選びます。
+
+### Q. 複数ポート充電器で「合計100W」と書かれていればPCに100W出ますか？
+A. 2ポート以上を同時に挿すと65W＋30Wや45W＋45Wのように出力が自動配分される機種が多いため、単ポート最大出力だけでなくメーカー仕様表の「複数ポート同時使用時の配分表」を確認する必要があります。
+
+### Q. 100Wや140Wで充電するにはUSB-Cケーブルも専用のものが必要ですか？
+A. はい。60W（20V/3A）を超える充電にはeMarker内蔵の100W（5A）対応ケーブルが必須で、140W（28V/5A）充電にはUSB PD 3.1 EPR（240W表示）対応ケーブルやMagSafe 3ケーブルが必要です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2355,13 +2606,13 @@ PCの指定する充電要件を現在の構成で満たせない、2台同時�
 - [USB-IF：USB Charger / USB Power Delivery](https://www.usb.org/usb-charger-pd)
 
 ## 次に考えたいこと
-- [外付けSSDは完成品か、ケースと中身を別々に買うか](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [外付けSSDは自作（ケース＋M.2）か完成品か？ USB4の発熱デメリットと費用比較](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
 
 
 ---
 
-# AIエージェントのトークンを減らすには？ ASTと部分読みの使い分け
+# AIエージェントのトークン節約：AST解析とファイル部分読みの使い分け
 
 > 全文を何度も読む、テストログを大量に渡す。その前にできることと、情報を削りすぎて手戻りになる境界を整理します。
 
@@ -2410,6 +2661,13 @@ Claude Codeの公式資料は、コンテキスト管理、モデル選択、キ
 ### 効果を測るなら、完了までの費用を見る
 同じ変更対象と受け入れ条件で、通常の読み方と部分読みを比べます。モデル、実行日、入力・出力・キャッシュの各量、再試行、所要時間、テスト結果を残し、作業が完成したところまで比較します。要約ツールや別エージェントを使った費用も合計に含めます。試行回数が少ない結果は個別事例にとどまり、一般的な削減率の根拠にはできません。
 
+## よくある疑問と回答 (FAQ)
+### Q. AIコーディングエージェントのトークン消費を減らす一番確実な方法は何ですか？
+A. 大きなファイルを毎回全文読み込みさせるのではなく、まず検索（grep）や行範囲指定の部分読みで該当関数を特定し、テスト実行ログも失敗箇所の前後だけを渡すように制御することが最も効果的です。
+
+### Q. AST（抽象構文木）で関数一覧だけを渡せばトークン節約になりますか？
+A. ファイルの骨格把握には有効ですが、実際のバグ修正では関数内部の実装や呼び出し元の引数が必要になるため、ASTだけで済ませようとすると再読み込みが増えてかえって往復トークンが増える場合があります。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2420,13 +2678,13 @@ Claude Codeの公式資料は、コンテキスト管理、モデル選択、キ
 - [OpenAI：Prompt Caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
 ## 次に考えたいこと
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
-- [AIコードレビューを別の会話・モデルに任せる価値は？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [AIコードレビュー比較：別の会話・別モデルに任せる価値はある？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks)
 
 
 ---
 
-# AIコーディングのサブスクとAPI、費用をどう比べる？
+# AIコーディングのサブスクとAPI比較：Claude Code・Cursorの利用枠と費用
 
 > Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。
 
@@ -2474,6 +2732,13 @@ Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管
 ### 併用するなら、役割の重複を減らす
 毎日使う編集環境を主契約にし、独自連携や不定期の処理だけAPIにする、といった分け方を検討できます。ただしサブスクの認証を自動処理で利用できるかは、公式の対応方法と契約条件によります。APIだけが唯一の選択とも、サブスクにAPI利用が含まれるとも決めつけず、目的の実行方法が提供されているかを確認します。
 
+## よくある疑問と回答 (FAQ)
+### Q. AIコーディングツールは月額サブスクとAPI従量課金のどちらが安いですか？
+A. 毎日継続してコード生成やリファクタリングを行うなら月額サブスクの方が費用の上限を予測しやすく、週に数回だけピンポイントで使う場合やCI自動化で短い処理だけ回す場合はAPI従量課金の方が安くなりやすいです。
+
+### Q. 無料で試せるAIコーディングエージェントや枠の確認方法はありますか？
+A. 各ツールの無料枠やトライアルで1週間分の実際の消費ペース（リクエスト数や5時間枠の到達頻度）を設定画面のUsage表示で記録してから、Proや上位プランへの移行を判断するのが確実です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2483,13 +2748,13 @@ Claude Codeの公式費用資料は、使用量の追跡とコンテキスト管
 - [Claude Code：Manage costs effectively](https://code.claude.com/docs/en/costs)
 
 ## 次に考えたいこと
-- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [AIエージェントのトークン節約：AST解析と部分読みの使い分け](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
 
 
 ---
 
-# AIコードレビューを別の会話・モデルに任せる価値は？
+# AIコードレビュー比較：別の会話・別モデル（Peer Audit）に任せる価値と依頼手順
 
 > セルフレビュー、新しい会話、別モデル。追加の費用と手間に見合うかを、指摘の再現性と修正後の確認で考えます。
 
@@ -2537,6 +2802,13 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 ### 追加費用に見合ったかを振り返る
 指摘数の多さより、再現できた不具合、誤検知の調査時間、修正で増えた問題を記録します。検出率を算出するには、見つからなかった不具合も含む正解集合が必要です。2回レビューしても同じ不具合を見落とす可能性があります。AIレビューだけで十分と考えず、テストや人による確認も必要です。
 
+## よくある疑問と回答 (FAQ)
+### Q. コードを書いたAI自身にセルフレビューさせるのと別モデルにレビューさせるのは何が違いますか？
+A. 同じ会話内では直前の推論前提を引きずりやすいため、新しい会話や別モデルに差分と呼び出し元の仕様を渡すことで思い込みによる見落としを減らせます。ただし指摘の誤検知もあるため、必ず再現テストで裏付けを取ります。
+
+### Q. AIコードレビューで実用的な指摘だけを出させるプロンプトのコツは？
+A. 「問題点を挙げて」と曖昧に聞くのではなく、「該当ファイルと行番号・発生条件・影響範囲・最小の再現手順」を必須項目として指定し、スタイル上の好みや推測だけの指摘を除外させるとノイズが減ります。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2546,13 +2818,13 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 - [Claude Code：Code Review](https://code.claude.com/docs/en/code-review)
 
 ## 次に考えたいこと
-- [AIエージェントのトークンを減らすには？](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [AIエージェントのトークン節約：AST解析と部分読みの使い分け](https://nodus-lab.pages.dev/articles/ai-coding-agent-ast-peek-token-reduction-benchmarks)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
 
 
 ---
 
-# それ、自作したほうが安い？
+# 自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？
 
 > 温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。
 
@@ -2592,6 +2864,13 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 ### まず比べたいのは、温湿度計
 今後の検証では、ESP32とセンサーで作る温湿度計と、既製のスマート温湿度計を比較する予定です。同じ設置場所で測定値、欠測、電池交換、設置までの時間を記録し、電源方式や連携機能が違えば、その差も明記します。現時点では比較機種の購入や測定をしていないため、特定製品より安い・正確という結論は出していません。
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32やラズパイでの自作が既製品より安くなるのはどんな場合ですか？
+A. 1台だけ作る場合はケース・電源・送料・予備部品で既製品より高くなりやすいですが、同じセンサーを複数部屋に展開する場合や、市販品にない複数センサー統合・ローカル連携が必要な場合に自作の費用対効果が出ます。
+
+### Q. NASやPCを自作するのと完成品を買うのではどこで差がつきますか？
+A. パーツ単価だけでなく、24時間稼働時のアイドル消費電力（電気代）、OS・バックアップ設定の手間、故障時に自分でパーツを切り分ける保守時間を含めて比較する必要があります。
+
 ## 記事の範囲
 公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
 
@@ -2601,15 +2880,15 @@ MCPの公式資料は、AIアプリと外部のデータやツールを接続す
 - [Home Assistant：ハードウェア選びと導入](https://www.home-assistant.io/getting-started/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
-- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
-- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作CO₂センサーの選び方：実測式（SCD40/41）と推定式eCO₂（SGP30）の見分け方](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
+- [100W・140W USB-C充電器は必要？ 65Wとの違いと複数ポート配分](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
 
 
 ---
 
-# ESP32、結局どれを買えばいい？
+# ESP32比較表：C3・S3・C6はどれを買う？ ラズパイPico（RP2040/RP2350）やXIAOとの違い
 
 > C3・S3・C6を、温湿度計・音声・スマートホームの用途から比較。ボード単価だけでは見えない費用も整理します。
 
@@ -2648,6 +2927,16 @@ C6は2.4GHzのWi-Fi 6と802.15.4を備えます。ThreadやZigbeeを使いたい
 ### 次に実機で比べたいこと
 同じセンサーと送信間隔で、USB給電時の平均電力、電池駆動時の待機電流、接続の復帰時間を測ると選び方に役立ちます。国内購入と海外購入の送料込み総額、初回書き込みまでの所要時間も記録したい項目です。現段階ではこれらを測っていないため、価格ランキングや電池寿命の順位は付けていません。
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32-C3、ESP32-S3、ESP32-C6は用途別にどう使い分ければいいですか？
+A. 温湿度センサーなど小型・省ピン用途なら安価なC3、カメラ・音声処理・液晶表示などPSRAMやAI命令が必要ならS3、ThreadやZigbee（IEEE 802.15.4）によるMatterスマートホーム機器を作りたいならC6を選びます。
+
+### Q. ESP32シリーズとRaspberry Pi Pico W（RP2040 / RP2350）はどう比較すればいいですか？
+A. Wi-Fi・BLE通信やESPHome連携が主目的なら情報量と周辺機能が豊富なESP32（C3/S3/C6）が手軽です。一方、PIO（プログラマブルI/O）による厳密なタイミング制御やMicroPythonの扱いやすさを重視するならRaspberry Pi Picoシリーズが向いています。
+
+### Q. 通常のDevKit開発ボードとSeeed Studio XIAO ESP32シリーズの違いは何ですか？
+A. 標準のDevKitC等はピン数が多くブレッドボード実験に向いていますが、XIAO ESP32（C3/S3/C6）は切手サイズの超小型基板にリチウムイオン電池の充電回路と外部アンテナ端子がまとまっており、小型ケースへの組み込みに有利です。
+
 ## 記事の範囲
 公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
 
@@ -2657,15 +2946,15 @@ C6は2.4GHzのWi-Fi 6と802.15.4を備えます。ThreadやZigbeeを使いたい
 - [Espressif：ESP32-C6 データシート](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf)
 
 ## 次に考えたいこと
-- [ESP32の電池駆動、なぜ計算より早く切れる？](https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current)
-- [ESP32-S3の2つのUSB端子、どっちに挿す？](https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide)
-- [ESP32-C6、単体でThreadにつながる？](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
-- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
+- [ESP32のDeepSleep消費電力：電池が計算より早く切れる理由と待機電流・復帰設計](https://nodus-lab.pages.dev/articles/esp32-deep-sleep-battery-life-board-quiescent-current)
+- [ESP32-S3の2つのUSB端子（UARTとUSB OTG/JTAG）、どっちに挿す？](https://nodus-lab.pages.dev/articles/esp32-s3-dual-usb-ports-uart-native-otg-guide)
+- [ESP32-C6でMatter・Threadを使うには？ ボーダールーターと必要機器の条件](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
+- [自作CO₂センサーの選び方：実測式（SCD40/41）と推定式eCO₂（SGP30）の見分け方](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
 
 
 ---
 
-# 外付けSSDは完成品か、ケースと中身を別々に買うか
+# 外付けSSDは自作（M.2ケース）と完成品のどっち？ USB4の速度・発熱デメリットとMac対応
 
 > USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。
 
@@ -2712,6 +3001,13 @@ SSDとケースの値段に、送料、必要なケーブル、放熱パッド�
 ### 買う前の判断と、購入後の確認
 毎週大きなデータを移動するなら、同じPCと同じファイル群で全体の所要時間を比較する価値があります。たまに書類を保存する程度なら、速度の上位構成より容量・保証・バックアップを優先するというのが編集上の提案です。高価なストレージを使うことと、データが二重化されていることは別です。
 
+## よくある疑問と回答 (FAQ)
+### Q. 外付けSSDをM.2 NVMe＋USB4ケースで自作するメリットとデメリットは何ですか？
+A. 中身のSSD銘柄（DRAM搭載やTLC等）を自分で選べて将来の容量交換もしやすいのがメリットですが、ケースとSSDの相性問題やサーマルパッドの貼り方による発熱・突然の切断を自分で切り分ける必要がある点がデメリットです。
+
+### Q. Mac（MacBook）で外付けSSDを使うときに速度が出ないのを防ぐには？
+A. MacはUSB 3.2 Gen 2x2（20Gbps）に非対応のため、20Gbps対応ケースをつないでも10Gbps（実測約900〜1,000MB/s）に制限されます。Macで高速転送したい場合は10Gbpsクラスでコスパを取るか、40Gbps対応のUSB4 / Thunderboltケースを選びます。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2720,15 +3016,15 @@ SSDとケースの値段に、送料、必要なケーブル、放熱パッド�
 - [OWC：Express 1M2の仕様と構成](https://www.owc.com/solutions/express-1m2)
 
 ## 次に考えたいこと
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
-- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
-- [磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方](https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [100W・140W USB-C充電器は必要？ 65Wとの違いと複数ポート配分](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [磁気式キーボードは必要？ メカニカルとの違い・デメリットと8000Hzの読み方](https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests)
 
 
 ---
 
-# Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認
+# Gemini 4 ArgonはProで使える？ 性能・評価・使い方とUltra限定範囲（Flash/Carbon比較）
 
 > Google AI Proを契約している人へ。GeminiアプリとAntigravityの提供条件、Ultraへの追加費用、公開評価から分かる得意分野を整理します。
 
@@ -2803,6 +3099,16 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 参照: [Google：Gemini 4 Argonの提供開始告知](https://blog.google/intl/en-in/products/introducing-gemini-4-argon/)
 参照: [Geminiヘルプ：使用量上限（日本語版）](https://support.google.com/gemini/answer/16275805?hl=ja)
 
+## よくある疑問と回答 (FAQ)
+### Q. Gemini 4 ArgonはGoogle AI Pro（月額2,900円）でも使えますか？
+A. はい。Geminiアプリ（Web・モバイル）でのGemini 4 Argon利用はGoogle AI Proも提供対象です。ただし独立したGoogle AntigravityデスクトップアプリやCLIでのArgon利用は個人サブスクではGoogle AI Ultra（月額14,500円〜）向けとなっています。
+
+### Q. Gemini 4 Argonの性能・評価は他のモデル（Flash等）と比べてどう違いますか？
+A. 公開ベンチマークでは256k〜1Mトークンの長文関係把握（GraphWalks F1 84.2%）や複雑タスク自動化（AutomationBench 51.3%）で高い性能を示しており、日常の高速応答を担う軽量系（Flash等）に対し、長大資料の横断分析や多段階推論に向いています。
+
+### Q. Gemini 4 ArgonをAPIから使う場合の料金とコンテキスト長は？
+A. Gemini APIでの入出力合計コンテキスト長は最大1,048,576トークン（約100万トークン）で、Standard料金は2026年11月30日まで100万トークンあたり入力2ドル・出力10ドル（12月1日以降は入力4ドル・出力20ドル）です。
+
 ## 記事の範囲
 2026年10月14日時点の公式プラン表、提供開始告知、ヘルプ、公開ベンチマークを参照した編集記事です。Nodusによる契約画面での動作確認、性能・利用枠の独自実測は行っていません。料金はGoogleの日本向け月額表示、差額と必要時短時間はその表示からの計算です。割引、年払い、通信会社経由の契約、変更時の精算は含めません。ベンチマークはAPI等での公開評価であり、サブスク画面で同じ結果や利用量を保証するものではありません。一般ユーザーの初期感想は性能・利用上限の根拠に採用していません。
 
@@ -2821,15 +3127,15 @@ Gemini APIのArgon仕様は、入力と出力を合わせて1,048,576トーク�
 - [Google AI for Developers：API料金](https://ai.google.dev/gemini-api/docs/pricing)
 
 ## 次に考えたいこと
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
-- [サブスクとAPI、自分で運用するAIの費用を分ける](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [ColabのGPUは何時間使える？ CUと完了までの費用の考え方](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks)
-- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [Google ColabのGPUは何時間使える？ CU消費レートと使用量上限の考え方](https://nodus-lab.pages.dev/articles/google-colab-ai-pro-gpu-burn-rate-benchmarks)
+- [DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
 
 
 ---
 
-# ColabのGPUは何時間使える？ CUと完了までの費用の考え方
+# ColabのGPUは何時間使える？ GPU種類別のCU消費・使用量上限と完了費用の考え方
 
 > GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。
 
@@ -2875,6 +3181,13 @@ Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変�
 ### Colab、クラウド、自宅の境界
 ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCが候補になります。最安の順位は、実行する仕事、必要なGPU、契約、利用頻度を決めてから検証します。
 
+## よくある疑問と回答 (FAQ)
+### Q. Google ColabのGPU（T4・L4・A100等）は100コンピューティングユニット（CU）で何時間使えますか？
+A. CUの消費レート（CU/時間）はGPUの種類や混雑状況によって変動するため、固定の時間表を鵜呑みにせず、接続後のリソースモニターに表示される現在の消費レートと手元の残高から稼働可能時間を計算します。
+
+### Q. Colabのセッション切断や使用量上限で学習がやり直しになるのを防ぐには？
+A. エポックごとや一定ステップごとにチェックポイントをGoogle Drive等の外部ストレージへ保存し、再接続時に最新チェックポイントから自動再開するコードを最初から組み込んでおくのが鉄則です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2883,13 +3196,13 @@ Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変�
 - [Google Colab：FAQとリソース制限](https://research.google.com/colaboratory/faq.html)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
 
 
 ---
 
-# LLM APIの速さは、何を測って比べればいい？
+# LLM APIの速度・料金比較：TTFT（最初の1文字までの応答時間）とスループットの測り方
 
 > 最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。
 
@@ -2937,6 +3250,13 @@ OpenAIの公式資料は、ストリーミングによる早い表示や、入�
 ### 別のAPIへ切り替える前に
 まず長すぎる出力、不要な直列呼び出し、データ読み込み、アプリ側のバッファリングを確認します。別のモデルに切り替えると、品質や対応機能、料金、データの送信先も変わる場合があります。障害時の代替構成も、同じ結果を出せるかと二重実行を防げるかを検証してから導入します。切替先を増やすだけで速さや可用性が保証されるわけではありません。
 
+## よくある疑問と回答 (FAQ)
+### Q. LLM APIの「TTFT」と「スループット（tok/s）」はどちらを重視して比較すべきですか？
+A. チャットUIでユーザーの体感待ち時間を減らしたいなら最初の文字が出るまでの「TTFT（Time To First Token）」、バッチ処理やコード全体の生成完了時間を短縮したいなら「出力スループット（tokens/s）」と全文完了時間を重視します。
+
+### Q. 同じモデルなのにAPIプロバイダーや時間帯によって遅いと感じるときは何を確認しますか？
+A. プロンプトキャッシュのヒット有無、推論トークン（Thinking / Reasoning）の出力長、ストリーミング設定を揃えたうえで、平均値だけでなくp95（遅い上位5%）の完了時間を記録して比較します。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -2946,13 +3266,13 @@ OpenAIの公式資料は、ストリーミングによる早い表示や、入�
 - [OpenAI：Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
 
 
 ---
 
-# MacでローカルLLMは動く？必要メモリとGPUとの選び方
+# MacでローカルLLMは動く？ 必要メモリ・スペックとOllamaの始め方、RTX GPUとの比較
 
 > 手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。
 
@@ -3032,6 +3352,13 @@ llama.cppのApple Silicon向けディスカッションには利用者の報告�
 ### 本体価格と、使い続ける費用
 GPUの増設では、必要な電源、ケース、冷却、騒音も含めます。電力効率を比較するならGPU単体の表示値と、PC全体のコンセントでの消費を混ぜず、同じ仕事の完了までに使った電力量を見る方法があります。不定期にしか使わないならAPIやクラウドも候補にし、手元で動かす目的と費用を照らし合わせます。
 
+## よくある疑問と回答 (FAQ)
+### Q. MacでローカルLLMを動かすにはメモリ（ユニファイドメモリ）が何GB必要ですか？
+A. 7B〜8Bクラスの量子化モデルを試すなら16GBでも動きますが、コーディング補助や30Bクラスのモデル、長いコンテキスト長をスワップなしで快適に扱うには32GB〜64GB以上のメモリと広いメモリ帯域幅（Pro / Maxチップ等）が有利です。
+
+### Q. MacでローカルLLMを動かすとき、OllamaとMLXやGPU搭載PCはどう使い分けますか？
+A. まず手持ちのMacで手軽にモデル管理やAPI互換サーバーを試すならOllama、Appleシリコン専用の最適化で速度を引き出したいならMLX、短いモデルで圧倒的なプロンプト処理速度・生成速度（tok/s）が必要ならVRAM搭載のRTX GPU機が向いています。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -3049,15 +3376,15 @@ GPUの増設では、必要な電源、ケース、冷却、騒音も含めま�
 - [Ollama：クイックスタート](https://docs.ollama.com/quickstart)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
-- [Ollamaの文脈長、既定値は何トークン？](https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide)
-- [デュアル4Kドック、Macでも2画面になる？](https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [Ollamaのコンテキスト長：デフォルトは何トークン？ 変更・設定・確認方法](https://nodus-lab.pages.dev/articles/ollama-context-length-vram-default-memory-guide)
+- [Macのデュアルディスプレイ：USB-Cドックで2画面に拡張できない理由と選び方](https://nodus-lab.pages.dev/articles/dual-4k-dock-mac-mst-displaylink-thunderbolt-guide)
 
 
 ---
 
-# 磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方
+# 磁気式キーボードは必要？ メカニカル・静電容量との違いと8000Hz・ラピッドトリガーの読み方
 
 > ゲーム用の機能と、普段の打ちやすさは別に比較。公称周期を入力遅延の実測と混同せず、配列・設定・費用から選びます。
 
@@ -3104,6 +3431,13 @@ Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソ�
 ### 機能を増やした後も、結果を確かめる
 ポーリングや入力補助の設定を変えたら、普段使うアプリで動作を確認します。高い頻度なら常にFPSが落ちる、低くすれば必ず安定する、とは断定できません。競技で使う補助機能はゲームや大会の現行ルールも確認してください。製品間の遅延・誤入力率の順位は、再現できる測定が用意できるまで付けません。
 
+## よくある疑問と回答 (FAQ)
+### Q. 磁気式（ホールエフェクト）キーボードと通常のメカニカル・静電容量無接点方式の違いは何ですか？
+A. 磁気式は物理接点ではなく磁束の変化で押し込み量を連続検知するため、キーを戻し始めた瞬間にオフになる「ラピッドトリガー」や浅いアクチュエーション設定が可能です。一方、普段のタイピングでは設定を詰めすぎると誤入力が増えるデメリットもあります。
+
+### Q. ポーリングレート8000Hzを選べば入力遅延は必ず8分の1になりますか？
+A. 8000HzはUSBの問い合わせ周期が0.125msになるという意味であり、スキャン周期・フィルタ処理・PCやモニター側の遅延を含めたシステム全体の遅延が8分の1になるわけではありません。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -3112,13 +3446,13 @@ Wooting 80HEの公式ページには8kHz、ラピッドトリガー、設定ソ�
 - [Wooting：80HE公式機能・仕様](https://wooting.io/wooting-80he)
 
 ## 次に考えたいこと
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
 
 
 ---
 
-# ポータブル電源をUPS代わりにする前に、何を確認する？
+# ポータブル電源をUPS代わりにする前に確認すること：切替時間・待機電力・NAS自動停止
 
 > 防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。
 
@@ -3165,6 +3499,13 @@ Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間
 ### 停電対策の完成形まで見積もる
 バックアップを用意し、重要な処理をしていない状態でメーカーの案内に沿って動作確認します。停電後の残量通知、停止、復電時の起動までが要件なら、対応する専用UPSも候補です。容量が大きいことだけで置き換えられるとは限りません。常時接続の可否と保管・充電設定は各製品の説明に従い、共通の充電上限を一律には推奨しません。
 
+## よくある疑問と回答 (FAQ)
+### Q. 「パススルー・EPS対応（切替20ms以下）」のポータブル電源ならPCやNASのUPS代わりに使えますか？
+A. PCの電源ユニットやNASの負荷状態によっては20ms前後の瞬断でも再起動・電源断が起きることがあるため、公称値だけで安心せず必ず実機でコンセントを抜く切替テストを行う必要があります。
+
+### Q. 専用UPSと比べてポータブル電源を常時接続するときの弱点は何ですか？
+A. 24時間インバーターを動かすと待機消費電力（電気代）が大きくなりやすい点と、USB通信（NUT / UPS信号）によるNASの自動シャットダウン連携に対応していない機種が多い点です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -3173,13 +3514,13 @@ Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間
 - [Anker SOLIX：C1000 米国向け公式仕様](https://www.ankersolix.com/products/c1000)
 
 ## 次に考えたいこと
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
 
 
 ---
 
-# Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する
+# Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・6GHz・MLO・対応スマホと買い替え判断
 
 > MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。
 
@@ -3226,6 +3567,13 @@ TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なる�
 ### IoT機器も含めて、導入後を考える
 既存のスマート家電が使う帯域と暗号化方式、ルーターのSSID設定、ゲストネットワークなどの対応を確認します。問題が起きても「Wi-Fi 7は古い機器が必ずつながらない」と一括りにしません。常時稼働の電気代を比べるなら、機種の実測電力と契約単価で計算します。買い替え後は元と同じ場所・端末で測り、改善したか確かめます。
 
+## よくある疑問と回答 (FAQ)
+### Q. Wi-Fi 7ルーターに買い替えれば、従来のスマホやPCでも通信速度は速くなりますか？
+A. 6GHz帯や320MHz幅、MLO（マルチリンクオペレーション）の恩恵を受けるにはスマホ・PC側もWi-Fi 7（IEEE 802.11be）に対応している必要があります。またインターネット回線自体が1Gbps契約なら、無線だけ速くしても外向けの速度上限は変わりません。
+
+### Q. 隣の部屋や2階でWi-Fiが遅い場合、Wi-Fi 7ルーター1台に替えれば解決しますか？
+A. 高速な6GHz帯は周波数が高いため壁や床などの障害物による減衰を受けやすい特性があります。部屋をまたぐ減衰が原因なら、世代を上げる前にルーターの設置場所見直しや有線バックホール・中継構成を検討する方が効果的です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -3234,6 +3582,6 @@ TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なる�
 - [TP-Link：Deco BE9300の仕様と条件注記](https://www.tp-link.com/uk/home-networking/deco/deco-be9300/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
 

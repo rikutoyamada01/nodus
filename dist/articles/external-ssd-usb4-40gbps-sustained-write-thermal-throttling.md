@@ -1,4 +1,4 @@
-# 外付けSSDは完成品か、ケースと中身を別々に買うか
+# 外付けSSDは自作（M.2ケース）と完成品のどっち？ USB4の速度・発熱デメリットとMac対応
 
 > USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。
 
@@ -45,6 +45,13 @@ SSDとケースの値段に、送料、必要なケーブル、放熱パッド�
 ### 買う前の判断と、購入後の確認
 毎週大きなデータを移動するなら、同じPCと同じファイル群で全体の所要時間を比較する価値があります。たまに書類を保存する程度なら、速度の上位構成より容量・保証・バックアップを優先するというのが編集上の提案です。高価なストレージを使うことと、データが二重化されていることは別です。
 
+## よくある疑問と回答 (FAQ)
+### Q. 外付けSSDをM.2 NVMe＋USB4ケースで自作するメリットとデメリットは何ですか？
+A. 中身のSSD銘柄（DRAM搭載やTLC等）を自分で選べて将来の容量交換もしやすいのがメリットですが、ケースとSSDの相性問題やサーマルパッドの貼り方による発熱・突然の切断を自分で切り分ける必要がある点がデメリットです。
+
+### Q. Mac（MacBook）で外付けSSDを使うときに速度が出ないのを防ぐには？
+A. MacはUSB 3.2 Gen 2x2（20Gbps）に非対応のため、20Gbps対応ケースをつないでも10Gbps（実測約900〜1,000MB/s）に制限されます。Macで高速転送したい場合は10Gbpsクラスでコスパを取るか、40Gbps対応のUSB4 / Thunderboltケースを選びます。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -53,7 +60,7 @@ SSDとケースの値段に、送料、必要なケーブル、放熱パッド�
 - [OWC：Express 1M2の仕様と構成](https://www.owc.com/solutions/express-1m2)
 
 ## 次に考えたいこと
-- [それ、自作したほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
-- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
-- [磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方](https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [100W・140W USB-C充電器は必要？ 65Wとの違いと複数ポート配分](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [磁気式キーボードは必要？ メカニカルとの違い・デメリットと8000Hzの読み方](https://nodus-lab.pages.dev/articles/mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests)

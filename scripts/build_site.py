@@ -224,7 +224,8 @@ def build_js() -> str:
           activeFilter === "all" ||
           (activeFilter === "first_party" && (origin === "first_party" || origin === "hybrid")) ||
           cat === activeFilter;
-        var textMatch = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
+        var searchAttr = card.getAttribute("data-search") || "";
+        var textMatch = !query || (card.textContent + " " + searchAttr).toLowerCase().indexOf(query) !== -1;
         if (catMatch && textMatch) {
           card.removeAttribute("hidden");
         } else {
@@ -462,7 +463,7 @@ def render_article_page(
     all_articles: list[dict[str, Any]] | None = None,
 ) -> str:
     if article.get("kind") == "guide":
-        return render_guide(article, config)
+        return render_guide(article, config, all_articles)
     site = config["site"]
     seo = article["seo"]
     slug = validate_slug(article["slug"])
@@ -795,7 +796,7 @@ def render_article_page(
             rel_items.append(
                 f"""
                 <li class="source-item">
-                  <a href="{esc(r_slug)}.html"><strong>{esc(r["title"])}</strong></a>
+                  <a href="{esc(r_slug)}"><strong>{esc(r["title"])}</strong></a>
                   <span class="source-meta">{esc(r_m1["label"])}: {esc(r_m1["value"])} (N={int(r.get("sample_size_n", 0))})</span>
                 </li>
                 """
@@ -1100,20 +1101,58 @@ def render_index(articles, config):
         features.append(f'''<article class="feature-story">
           <a href="articles/{esc(a['slug'])}" tabindex="-1" aria-hidden="true"><div class="feature-art {esc(a['illustration'])}">{illustration(a['illustration'])}</div></a>
           <div class="feature-number">0{i} / {esc(category_label(a['category']))}</div>
-          <h3><a href="articles/{esc(a['slug'])}">{esc(a['title'])}</a></h3>
+          <h3><a href="articles/{esc(a['slug'])}">{esc(a.get('display_title', a['title']))}</a></h3>
           <p>{esc(a['subtitle'])}</p>
           <a class="feature-link" href="articles/{esc(a['slug'])}">選び方を読む <span aria-hidden="true">↗</span></a>
         </article>''')
-    buttons = ['<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて</button>']
+
+    spotlight_slugs = [
+        "gemini-4-argon-google-ai-pro-ultra",
+        "antigravity-quota-5-hour-weekly-ai-credits-guide",
+        "ollama-context-length-vram-default-memory-guide",
+        "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
+    ]
+    slug_map = {a["slug"]: a for a in articles}
+    spotlight_items = []
+    for s_slug in spotlight_slugs:
+        sa = slug_map.get(s_slug)
+        if not sa:
+            continue
+        spotlight_items.append(
+            f'''<a class="spotlight-chip" href="articles/{esc(sa['slug'])}">
+              <span class="spotlight-cat">{esc(category_label(sa['category']))}</span>
+              <strong class="spotlight-title">{esc(sa.get('display_title', sa['title']))}</strong>
+            </a>'''
+        )
+    spotlight_html = (
+        f'<div class="spotlight-bar" aria-label="注目の最新トピック"><div class="spotlight-label">注目のトピック</div><div class="spotlight-grid">{"".join(spotlight_items)}</div></div>'
+        if spotlight_items
+        else ""
+    )
+
+    buttons = [f'<button type="button" class="filter-btn" data-filter="all" aria-pressed="true">すべて ({len(articles)})</button>']
     for c in sorted({a['category'] for a in articles}):
-        buttons.append(f'<button type="button" class="filter-btn" data-filter="{esc(c)}" aria-pressed="false">{esc(category_label(c))}</button>')
+        cat_count = sum(1 for a in articles if a['category'] == c)
+        buttons.append(f'<button type="button" class="filter-btn" data-filter="{esc(c)}" aria-pressed="false">{esc(category_label(c))} ({cat_count})</button>')
     cards = []
     for a in articles:
         label = '選び方・公式資料から整理' if a.get('kind') == 'guide' else ('独自検証' if a.get('origin') in {'first_party', 'hybrid'} else '公開ログの調査')
-        cards.append(f'''<article class="article-card" data-category="{esc(a['category'])}" data-origin="{esc(a.get('origin', 'community'))}">
+        search_terms = " ".join(
+            [
+                str(a.get("title", "")),
+                str(a.get("display_title", "")),
+                " ".join(str(t) for t in a.get("tags", [])),
+                " ".join(str(k) for k in a.get("seo", {}).get("target_keywords", [])),
+            ]
+        )
+        tag_pills = "".join(f'<span class="tag-chip">#{esc(t)}</span>' for t in a.get("tags", [])[:4])
+        cards.append(f'''<article class="article-card" data-category="{esc(a['category'])}" data-origin="{esc(a.get('origin', 'community'))}" data-search="{esc(search_terms)}">
           <div class="card-meta"><span class="category-pill">{esc(category_label(a['category']))}</span><span class="origin-badge">{label}</span><time class="date-text" datetime="{esc(a['updated_at'])}">{esc(a['updated_at'])}</time></div>
-          <h2><a class="card-title-link" href="articles/{esc(a['slug'])}">{esc(a.get('display_title', a['title']))}</a></h2>
-          <p>{esc(a['subtitle'])}</p></article>''')
+          <div class="card-content">
+            <h2><a class="card-title-link" href="articles/{esc(a['slug'])}">{esc(a.get('display_title', a['title']))}</a></h2>
+            <p>{esc(a['subtitle'])}</p>
+            <div class="card-footer-row"><div class="article-tags-row">{tag_pills}</div><span class="card-read-more" aria-hidden="true">ノートを読む &rarr;</span></div>
+          </div></article>''')
     description = '電子工作、AI、サーバー。買うか、作るか、借りるかを、費用と使い道から考える技術ノート。'
     return f'''<!DOCTYPE html><html lang="ja"><head>
       <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1130,7 +1169,7 @@ def render_index(articles, config):
         </div><div class="intro-note"><strong>値札の先まで、考える。</strong>部品代だけでなく、電気代、作る時間、使い続ける手間まで。自分に合う選択のために、条件をそろえて比べます。<p>手持ちのMacから試したい人へ。<a href="articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt">MacでローカルLLMを使うには</a>で、必要メモリと機器選びを整理しました。</p></div></div></section>
         <div class="container"><section class="featured" aria-labelledby="featured-title">
           <div class="featured-heading"><h2 id="featured-title">いま、考えたいこと</h2><span>まずは、この3つから</span></div>
-          <div class="feature-grid">{''.join(features)}</div></section>
+          <div class="feature-grid">{''.join(features)}</div>{spotlight_html}</section>
           <section aria-labelledby="archive-title"><div class="archive-heading"><h2 id="archive-title">記事を読む</h2><span>{len(articles)} articles / 比較と検証のノート</span></div>
           <div class="controls-wrap"><div class="filter-bar" role="group" aria-label="記事のカテゴリ">{''.join(buttons)}</div>
           <div><label for="datasetSearch" class="category-pill">記事検索 </label><input type="search" id="datasetSearch" class="search-input" placeholder="ESP32、電気代、ローカルLLM…"></div></div>
@@ -1138,12 +1177,68 @@ def render_index(articles, config):
         </div></main>{render_footer(config)}</body></html>'''
 
 
-def render_guide(article, config):
+def render_guide(article, config, all_articles=None):
     a = article
-    url = validate_url(config['site']['base_url']).rstrip('/') + '/articles/' + a['slug']
-    schema = {"@context": "https://schema.org", "@type": "TechArticle", "headline": a['title'], "description": a['subtitle'], "datePublished": a['published_at'], "dateModified": a['updated_at'], "inLanguage": "ja", "mainEntityOfPage": url, "citation": [validate_url(s['url']) for s in a['sources']], "author": {"@type": "Organization", "name": config['site']['organization']}}
-    headers = ''.join(f'<th scope="col">{esc(h)}</th>' for h in a['comparison_table']['headers'])
-    rows = ''.join('<tr>' + ''.join(f'<th scope="row">{esc(c)}</th>' if i == 0 else f'<td>{esc(c)}</td>' for i, c in enumerate(r)) + '</tr>' for r in a['comparison_table']['rows'])
+    site = config['site']
+    base_url = validate_url(site['base_url']).rstrip('/')
+    url = base_url + '/articles/' + a['slug']
+    graph_nodes = [
+        {
+            "@type": "TechArticle",
+            "headline": a['title'],
+            "description": a['seo']['meta_description'],
+            "datePublished": a['published_at'],
+            "dateModified": a['updated_at'],
+            "inLanguage": "ja",
+            "keywords": ", ".join(a.get("tags", [])),
+            "mainEntityOfPage": url,
+            "citation": [validate_url(s['url']) for s in a['sources']],
+            "author": {"@type": "Organization", "name": site['organization'], "url": f"{base_url}/about"},
+            "publisher": {"@type": "Organization", "name": site['name'], "url": f"{base_url}/"},
+            "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#sec-tldr", "#sec-faq"]},
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": site['name'], "item": f"{base_url}/"},
+                {"@type": "ListItem", "position": 2, "name": category_label(a['category']), "item": f"{base_url}/"},
+                {"@type": "ListItem", "position": 3, "name": a['title'], "item": url},
+            ],
+        },
+    ]
+    if a.get("faqs"):
+        graph_nodes.append(
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": f["question"],
+                        "acceptedAnswer": {"@type": "Answer", "text": f["answer"]},
+                    }
+                    for f in a["faqs"]
+                ],
+            }
+        )
+    schema = {"@context": "https://schema.org", "@graph": graph_nodes}
+    headers = ''.join(
+        f'<th scope="col" aria-sort="none"><button type="button" class="th-sort-btn"><span>{esc(h)}</span><span aria-hidden="true">↕</span></button></th>'
+        for h in a['comparison_table']['headers']
+    )
+    tr_rows = []
+    for r in a['comparison_table']['rows']:
+        if not r:
+            continue
+        first_cell = f'<th scope="row">{esc(r[0])}</th>'
+        rest_cells = []
+        for c in r[1:]:
+            c_str = str(c)
+            cls_attr = ' class="num-cell"' if _looks_numeric_cell(c_str) else ""
+            sort_val = _normalize_sort_value(c_str)
+            sort_attr = f' data-sort-value="{esc(sort_val)}"' if sort_val else ""
+            rest_cells.append(f"<td{cls_attr}{sort_attr}>{esc(c_str)}</td>")
+        tr_rows.append(f"<tr>{first_cell}{''.join(rest_cells)}</tr>")
+    rows = ''.join(tr_rows)
     sections = ''
     for i, section in enumerate(a['sections']):
         refs = ''.join(f'<a href="{esc(validate_url(a["sources"][n]["url"]))}" target="_blank" rel="noopener noreferrer">{esc(a["sources"][n]["title"])}</a> ' for n in section.get('source_indices', []))
@@ -1151,28 +1246,50 @@ def render_guide(article, config):
     toc = ''.join(f'<li><a href="#part-{i}">{esc(s["heading"])}</a></li>' for i, s in enumerate(a['sections']))
     sources = ''.join(f'<li class="source-item"><a href="{esc(validate_url(s["url"]))}" target="_blank" rel="noopener noreferrer">{esc(s["title"])}</a><span class="source-meta">確認日: {esc(s["verified_date"])} / {esc(s.get("scope", "公式資料の参照"))}</span></li>' for s in a['sources'])
     bullets = ''.join(f'<li>{esc(b)}</li>' for b in a['tldr'])
+    tags_html = ''.join(f'<span class="tag-chip">#{esc(t)}</span>' for t in a.get('tags', []))
     correction = ''
     if a.get('revision_note'):
         correction = f'<aside class="methodology-box" aria-label="記事の訂正"><strong>2026-10-13 内容を見直しました</strong><p>{esc(a["revision_note"])}</p></aside>'
+    faq_section = ''
+    faq_toc = ''
+    if a.get('faqs'):
+        faq_items = ''.join(
+            f'<div class="faq-item"><h3 class="faq-q">Q. {esc(f["question"])}</h3><p class="faq-a">{esc(f["answer"])}</p></div>'
+            for f in a['faqs']
+        )
+        faq_section = f'<section id="sec-faq" class="article-section"><h2 class="section-h2"><span>よくある疑問</span></h2><div class="faq-list">{faq_items}</div></section>'
+        faq_toc = '<li><a href="#sec-faq">よくある疑問</a></li>'
     related = ''
+    related_toc = ''
     if a.get('related_articles'):
-        links = ''.join(f'<li class="source-item"><a href="{esc(validate_slug(r["slug"]))}">{esc(r["title"])}</a></li>' for r in a['related_articles'])
-        related = f'<section class="article-section"><h2 class="section-h2">次に考えたいこと</h2><ul class="source-list">{links}</ul></section>'
+        art_by_slug = {item['slug']: item for item in (all_articles or [])}
+        rel_items = []
+        for r in a['related_articles']:
+            r_slug = validate_slug(r['slug'])
+            target_art = art_by_slug.get(r_slug)
+            r_title = (target_art.get('display_title') or target_art['title']) if target_art else r['title']
+            r_sub = target_art['subtitle'] if target_art else ''
+            r_cat = category_label(target_art['category']) if target_art else ''
+            meta_line = f'<span class="source-meta">{esc(r_cat)} — {esc(r_sub)}</span>' if r_sub else ''
+            rel_items.append(f'<li class="source-item"><a href="{esc(r_slug)}"><strong>{esc(r_title)}</strong></a>{meta_line}</li>')
+        related = f'<section id="sec-related" class="article-section"><h2 class="section-h2"><span>次に考えたいこと</span></h2><ul class="source-list">{"".join(rel_items)}</ul></section>'
+        related_toc = '<li><a href="#sec-related">次に考えたいこと</a></li>'
     return f'''<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>{esc(a['seo']['meta_title'])}</title><meta name="description" content="{esc(a['seo']['meta_description'])}"><link rel="canonical" href="{esc(url)}">
-      <meta property="og:title" content="{esc(a['title'])}"><meta property="og:description" content="{esc(a['subtitle'])}"><meta property="og:type" content="article"><meta property="og:url" content="{esc(url)}">
+      <meta property="og:title" content="{esc(a['seo']['meta_title'])}"><meta property="og:description" content="{esc(a['seo']['meta_description'])}"><meta property="og:type" content="article"><meta property="og:url" content="{esc(url)}"><meta property="og:site_name" content="{esc(site['name'])}"><meta name="twitter:card" content="summary_large_image">
       <link rel="stylesheet" href="../assets/style.css"><link rel="alternate" type="text/markdown" href="{esc(a['slug'])}.md" title="Markdown版"><link rel="alternate" type="application/atom+xml" href="../feed.xml" title="Nodus Feed">
       <script type="application/ld+json">{safe_json_ld(schema)}</script></head><body>{render_header(config, '../')}
       <div class="container article-layout"><main id="main-content" class="article-sheet">
       <nav class="breadcrumb" aria-label="パンくずリスト"><a href="../">Nodus</a> / {esc(category_label(a['category']))}</nav>
-      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span></div>
+      <div class="article-meta-top"><span class="origin-badge">選び方 / 公式資料から整理</span><span class="category-pill">{esc(category_label(a['category']))}</span></div>
       <h1 class="article-title">{esc(a['title'])}</h1><p class="article-subtitle">{esc(a['subtitle'])}</p>
+      <div class="article-tags-row">{tags_html}</div>
       <div class="article-timestamps"><span>公開 <time datetime="{esc(a['published_at'])}">{esc(a['published_at'])}</time></span><span>更新 <time datetime="{esc(a['updated_at'])}">{esc(a['updated_at'])}</time></span><span>{esc(a.get('evidence_notice', '実機テスト・実売価格調査は未実施'))}</span></div>
       {correction}
       <section class="tldr-box" id="sec-tldr"><h2 class="tldr-title">先に、選び方の要点</h2><ul class="tldr-list">{bullets}</ul></section>
-      <section id="sec-table"><h2 class="section-h2">選択肢を並べる</h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>{esc(a['table_caption'])}</caption><thead><tr>{headers}</tr></thead><tbody>{rows}</tbody></table></div><a class="csv-btn" href="../datasets/{esc(a['slug'])}.csv" download>比較表をCSVで保存</a></section>
-      {sections}<section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">{esc(a['methodology_note'])}</p><ul class="source-list">{sources}</ul></section>{related}
-      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li>{toc}<li><a href="#sec-sources">参考資料</a></li></ul></div></aside></div>{render_footer(config, '../')}</body></html>'''
+      <section id="sec-table"><h2 class="section-h2"><span>選択肢を並べる</span><span class="section-subnote">列見出しクリックで並び替え可能</span></h2><p class="source-meta">表が画面に収まらない場合は、横にスクロールして読めます。</p><div class="table-wrap"><table class="data-table"><caption>{esc(a['table_caption'])}</caption><thead><tr>{headers}</tr></thead><tbody>{rows}</tbody></table></div><a class="csv-btn" href="../datasets/{esc(a['slug'])}.csv" download>比較表をCSVで保存</a></section>
+      {sections}{faq_section}<section id="sec-sources" class="article-section"><h2 class="section-h2">参考資料とこの記事の範囲</h2><p class="methodology-box">{esc(a['methodology_note'])}</p><ul class="source-list">{sources}</ul></section>{related}
+      </main><aside class="article-sidebar" aria-label="記事の目次"><div class="sidebar-box"><div class="sidebar-title">このノートの目次</div><ul class="toc-list"><li><a href="#sec-tldr">選び方の要点</a></li><li><a href="#sec-table">比較表</a></li>{toc}{faq_toc}<li><a href="#sec-sources">参考資料</a></li>{related_toc}</ul></div></aside></div>{render_footer(config, '../')}</body></html>'''
 
 
 
@@ -1275,7 +1392,7 @@ def render_404_page(config: dict[str, Any]) -> str:
     <section class="panel">
       <h1 class="article-title">404 — ページが見つかりません</h1>
       <p class="article-subtitle">URLが変更されたか、アーカイブされた可能性があります。トップページの記事一覧からお探しください。</p>
-      <p><a href="/index.html" class="cta-btn">記事一覧へ戻る &rarr;</a></p>
+      <p><a href="/" class="cta-btn">記事一覧へ戻る &rarr;</a></p>
     </section>
   </main>
   {render_footer(config, root_prefix="/")}

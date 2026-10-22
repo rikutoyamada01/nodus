@@ -1,4 +1,4 @@
-# ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け
+# ESP32-S3（DevKitC-1等）にUSB端子が2つある理由：UART端子とUSB（OTG/JTAG）の使い分け
 
 > ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。
 
@@ -44,6 +44,13 @@ ESP32-S3の開発ボード（DevKitC系など）を手に取ると、「UART」�
 参照: [Espressif ESP-IDF Guide：USB Serial/JTAG Controller Console (ESP32-S3)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/usb-serial-jtag-console.html)
 参照: [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32-S3-DevKitC-1などの「UART」と「USB」の2つのポートは普段どちらに挿せばいいですか？
+A. 通常のプログラム書き込みやシリアルモニター確認、Deep Sleepの実験では、外付け変換ICを経由してリセット時もポートが切断されにくい「UART」端子に挿すのが最も安定します。
+
+### Q. もう片方の「USB」端子（ネイティブUSB / GPIO19・20）はいつ使いますか？
+A. ESP32-S3をPCからUSBキーボード・マウス（HID）やUSBメモリ（MSC）として認識させたい場合（USB OTG機能）や、外付けデバッガなしで内蔵USB Serial/JTAGデバッグを行う場合に使います。
+
 ## 記事の範囲
 2026年10月16日にEspressif公式ESP-IDFプログラミングガイド（USB OTG Console、USB Serial/JTAG Controller Console、チップ比較表）を確認して整理した記事です。サードパーティ製互換ボードごとの回路差や給電電流の実測は行っていません。
 
@@ -54,5 +61,5 @@ ESP32-S3の開発ボード（DevKitC系など）を手に取ると、「UART」�
 - [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [ESP32-C6でMatter・Threadを使うには？ ボーダールーターと必要機器の条件](https://nodus-lab.pages.dev/articles/esp32-c6-matter-thread-border-router-requirements)

@@ -1,4 +1,4 @@
-# ポータブル電源をUPS代わりにする前に、何を確認する？
+# ポータブル電源をUPS代わりにする前に確認すること：切替時間・待機電力・NAS自動停止
 
 > 防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。
 
@@ -45,6 +45,13 @@ Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間
 ### 停電対策の完成形まで見積もる
 バックアップを用意し、重要な処理をしていない状態でメーカーの案内に沿って動作確認します。停電後の残量通知、停止、復電時の起動までが要件なら、対応する専用UPSも候補です。容量が大きいことだけで置き換えられるとは限りません。常時接続の可否と保管・充電設定は各製品の説明に従い、共通の充電上限を一律には推奨しません。
 
+## よくある疑問と回答 (FAQ)
+### Q. 「パススルー・EPS対応（切替20ms以下）」のポータブル電源ならPCやNASのUPS代わりに使えますか？
+A. PCの電源ユニットやNASの負荷状態によっては20ms前後の瞬断でも再起動・電源断が起きることがあるため、公称値だけで安心せず必ず実機でコンセントを抜く切替テストを行う必要があります。
+
+### Q. 専用UPSと比べてポータブル電源を常時接続するときの弱点は何ですか？
+A. 24時間インバーターを動かすと待機消費電力（電気代）が大きくなりやすい点と、USB通信（NUT / UPS信号）によるNASの自動シャットダウン連携に対応していない機種が多い点です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -53,5 +60,5 @@ Anker SOLIX C1000の米国向け公式ページには、容量やUPS切替時間
 - [Anker SOLIX：C1000 米国向け公式仕様](https://www.ankersolix.com/products/c1000)
 
 ## 次に考えたいこと
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)

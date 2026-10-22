@@ -1,4 +1,4 @@
-# Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する
+# Tailscaleの速度が遅いとき：外出先からのNAS・SMB転送で直結（Direct）とDERP中継を確認する手順
 
 > 自宅NASやサーバーへのリモート接続が期待より遅いとき、光回線やルーターを疑う前に確認したい3つの接続方式（Direct / DERP / Peer Relay）の切り分け手順です。
 
@@ -43,6 +43,13 @@ Tailscale公式ドキュメント（Connection types）によると、tailnet内
 参照: [Tailscale Docs：Connection types（Direct / DERP / Peer Relayの仕組み）](https://tailscale.com/kb/1257/connection-types)
 参照: [Tailscale Docs：Subnet routers](https://tailscale.com/docs/features/subnet-routers)
 
+## よくある疑問と回答 (FAQ)
+### Q. Tailscale経由で自宅NAS（SMB等）へのアクセスが極端に遅いときは最初に何を確認すればいいですか？
+A. `tailscale status` または `tailscale ping <対象名>` を実行し、通信経路が直接通信（`direct`）になっているか、中継ぎサーバー経由（`derp` / リレー）に落ちているかを確認します。
+
+### Q. Direct（直結）になっているのにTailscaleでのファイル転送速度が出ない原因は？
+A. 外出先からのダウンロード速度は「自宅側のインターネット上り回線速度（Upload）」が上限になるほか、SMBプロトコルの往復遅延（RTT）やSubnet Routerにしている小型機器のCPU処理能力がボトルネックになっている場合があります。
+
 ## 記事の範囲
 2026年10月16日にTailscale公式ドキュメント（Connection types、Subnet routers）を確認して整理した記事です。特定のISPやモバイル回線における実測スループットやレイテンシの測定は行っていません。
 
@@ -52,5 +59,5 @@ Tailscale公式ドキュメント（Connection types）によると、tailnet内
 - [Tailscale Docs：Subnet routers](https://tailscale.com/docs/features/subnet-routers)
 
 ## 次に考えたいこと
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [Wi-Fi 7ルーター、買い替える前に確認すること](https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・対応端末・壁越し通信の確認](https://nodus-lab.pages.dev/articles/wifi7-routers-6ghz-mlo-real-world-throughput-wall-attenuation)

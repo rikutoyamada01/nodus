@@ -1,4 +1,4 @@
-# Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界
+# Google AI ProとGoogle AI Studio・Gemini APIの違い：無料枠・別課金の境界とデータ学習
 
 > 個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。
 
@@ -48,6 +48,13 @@ Gemini APIの有料枠は、請求先を登録した直後のTier 1（月間利�
 参照: [Google AI for Developers：Gemini API Pricing（料金表）](https://ai.google.dev/gemini-api/docs/pricing)
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Google AI Pro（月額2,900円）を契約していればGemini APIやAI Studioの有料枠も無料になりますか？
+A. いいえ。個人向けのGoogle Oneサブスク（Google AI Pro / Ultra）と、開発者向けのGoogle AI Studio / Gemini API（Google Cloud請求先による従量課金）は別口座・別契約として扱われます。
+
+### Q. Google AI Studioを無料枠（Free Tier）で使う場合と有料枠（Paid Tier）にする場合の違いは？
+A. 請求先をリンクしないFree Tierは無料で試せますがレート制限が低く、入出力データがGoogle製品の改善（学習）に利用されます。Cloud請求先をリンクしてPaid Tierにするとレート制限が緩和され、データが学習に使われない規約が適用されます。
+
 ## 記事の範囲
 2026年10月16日にGoogle AI for Developersの公式Billing・PricingドキュメントおよびGoogle Oneプラン表を確認して整理した記事です。各Tierの昇格条件や料金単価は確認時点の公式記載に基づいており、今後の改定や為替変動を含みません。
 
@@ -58,5 +65,5 @@ Gemini APIの有料枠は、請求先を登録した直後のTier 1（月間利�
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
-- [Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)
+- [Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み](https://nodus-lab.pages.dev/articles/antigravity-quota-5-hour-weekly-ai-credits-guide)

@@ -1,4 +1,4 @@
-# 機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方
+# 混同行列（Confusion Matrix）の見方と改善：全体の正答率（Accuracy）だけ見ると失敗する理由
 
 > 音声認識やカメラ画像認識で「全体のAccuracyが上がったのに実機で特定の人が使うと全く当たらない」原因を整理。件数加重Accuracyの罠、グループ均等Balanced Accuracyの設計、および混同行列から誤りの構造を特定する手順を解説します。
 
@@ -58,6 +58,13 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 参照: [scikit-learn Documentation: balanced_accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html)
 参照: [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. モデルの全体Accuracy（正答率）が上がったのに、実機で特定の人が使うと全く当たらないのはなぜですか？
+A. データ件数が多い人物や簡単なクラス（母音など）の正答率だけが上がり、件数の少ない人物や難しい子音クラスの劣化が平均値に埋もれているためです。人物・クラスを均等平均した「Balanced Accuracy」と最低グループ値を監視する必要があります。
+
+### Q. 混同行列（Confusion Matrix）から次に直すべき場所をどうやって見つけますか？
+A. 巨大な表をそのまま眺めるのではなく、「母音は合っていて子音だけ外している」「検出点数が常に足りない（隠れ・見落とし）」のように物理的な誤りパターンへ集約することで、前処理・特徴量・後処理のどこを直すべきかが分かります。
+
 ## 記事の範囲
 2026年10月16日にscikit-learn公式ドキュメント（confusion_matrix、balanced_accuracy_score、f1_score）を確認し、多クラス分類および複数人物・複数環境データセットにおける集計バイアスと混同行列の分析手法を整理した記事です。文中のスコアや件数は指標の性質を比較するための計算例です。
 
@@ -68,7 +75,7 @@ AccuracyやMacro-F1は「どれくらい当たったか」は教えてくれま�
 - [scikit-learn Documentation: f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)
 
 ## 次に考えたいこと
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
-- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
-- [不均衡データの二重補正と未抽選データの罠](https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [ストリーミングAI：オフライン正答率は高いのに実機でタイミングがズレる理由](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
+- [PyTorchのWeightedRandomSampler：重複抽選と損失重みの二重補正で起きる罠](https://nodus-lab.pages.dev/articles/ml-class-imbalance-oversampling-loss-weight-double-correction)

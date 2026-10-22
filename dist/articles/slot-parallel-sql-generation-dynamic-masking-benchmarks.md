@@ -1,4 +1,4 @@
-# 自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁
+# Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングによる構文保証と未知スキーマの壁
 
 > SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。
 
@@ -67,6 +67,6 @@ A. はい。マスクなしでは未知スキーマに対して存在しない�
 - [SQLite Official Documentation: Query Language Understood by SQLite](https://www.sqlite.org/lang.html)
 
 ## 次に考えたいこと
-- [マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
-- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
-- [LLM APIの速さは、何を測って比べればいい？](https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks)
+- [マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
+- [DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [LLM APIの速度・料金比較：TTFT（応答速度）とスループットをどう測る？](https://nodus-lab.pages.dev/articles/llm-api-providers-ttft-latency-throughput-variance-benchmarks)

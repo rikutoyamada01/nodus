@@ -1,7 +1,7 @@
 {
   "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-  "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？",
-  "display_title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？",
+  "title": "自宅サーバー用ミニPCのおすすめの選び方：CPU名よりアイドル消費電力・静音性・VPS比較",
+  "display_title": "自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較",
   "subtitle": "RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。",
   "category": "Hardware & Power Electronics",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の36件集計と機種別の持続電力・温度・騒音順位は、採用ログを追跡できないため撤回しました。CPUのTDPとPC全体の消費電力を区別し、性能を落とさず静かになるとした一律の設定推奨も外しました。",
   "seo": {
-    "meta_title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？ | Nodus",
+    "meta_title": "自宅サーバー用ミニPCの選び方：消費電力・静音性とVPSの費用比較 | Nodus",
     "meta_description": "RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。",
     "target_keywords": [
       "自宅サーバー ミニPC 選び方",
@@ -108,23 +108,32 @@
       "scope": "CPUのTDP・cTDPなど。個別ミニPCの実測電力や騒音を示しません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "自宅サーバー用のミニPCを選ぶとき、CPUのTDP（35W〜54W等）から電気代を計算できますか？",
+      "answer": "TDPは高負荷時の放熱設計の目安であり、24時間稼働の自宅サーバーでは大半の時間を占める「アイドル時のコンセント消費電力（数W〜十数W）」の方が年間の電気代に大きく影響します。ワットチェッカー等で実測されたシステム全体の待機電力を確認します。"
+    },
+    {
+      "question": "ミニPCの自宅サーバーとクラウドVPSはどちらが得ですか？",
+      "answer": "メモリ32GB〜64GBや大容量SSDを使う環境ならミニPCの買い切りの方が数年トータルで安くなりやすい一方、初期費用を抑えて電気代・ファン騒音・停電対策を手放したいならVPSが適しています。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
-      "title": "常駐AI用ならラズパイ・VPS・ミニPCのどれ？"
+      "title": "AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？"
     },
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIは、どこに置く？"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     },
     {
       "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
-      "title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
+      "title": "ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認",
       "category": "Hardware & Power Electronics"
     }
   ]

@@ -1,7 +1,7 @@
 {
   "slug": "google-colab-ai-pro-gpu-burn-rate-benchmarks",
-  "title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方",
-  "display_title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方",
+  "title": "ColabのGPUは何時間使える？ GPU種類別のCU消費・使用量上限と完了費用の考え方",
+  "display_title": "Google ColabのGPUは何時間使える？ CU消費レートと使用量上限の考え方",
   "subtitle": "GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の64セッション集計、GPU別CU/h、円換算と外部クラウドとの価格順位は、採用ログと料金条件を確認できないため撤回しました。実行時の表示と残高に基づく見積もりへ改訂しています。",
   "seo": {
-    "meta_title": "ColabのGPUは何時間使える？ CUと完了までの費用の考え方 | Nodus",
+    "meta_title": "ColabのGPUは何時間使える？ 種類別のCU消費・使用量上限と費用の考え方 | Nodus",
     "meta_description": "GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。",
     "target_keywords": [
       "Colab GPU CU 何時間",
@@ -102,15 +102,24 @@
       "scope": "利用条件と資源の変動性。GPU別の固定CU消費や割り当てを保証しません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "Google ColabのGPU（T4・L4・A100等）は100コンピューティングユニット（CU）で何時間使えますか？",
+      "answer": "CUの消費レート（CU/時間）はGPUの種類や混雑状況によって変動するため、固定の時間表を鵜呑みにせず、接続後のリソースモニターに表示される現在の消費レートと手元の残高から稼働可能時間を計算します。"
+    },
+    {
+      "question": "Colabのセッション切断や使用量上限で学習がやり直しになるのを防ぐには？",
+      "answer": "エポックごとや一定ステップごとにチェックポイントをGoogle Drive等の外部ストレージへ保存し、再接続時に最新チェックポイントから自動再開するコードを最初から組み込んでおくのが鉄則です。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIは、どこに置く？"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "ローカルLLM用に買うなら、MacかGPUか"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "slug": "edge-ai-venue-wifi-congestion-offline-fallback-design",
-  "title": "展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計",
-  "display_title": "展示会・会場Wi-Fi混雑でAIが動かなくなる対策",
+  "title": "展示会・会場Wi-Fi混雑や電波干渉でAIが動かなくなる原因：ローカル完結設計と騒音対策",
+  "display_title": "展示会のWi-Fi混雑・電波干渉でAIが動かない原因とオフライン完結設計",
   "subtitle": "開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。",
   "category": "Architecture",
   "kind": "guide",
@@ -22,7 +22,7 @@
   "evidence_notice": "公式Hugging Face・ONNX Runtime仕様資料を確認 / 会場設計の実践ガイド整理",
   "methodology_note": "2026年10月16日にHugging Face Hubのオフライン・キャッシュ取得仕様およびONNX Runtimeのローカル推論仕様を確認し、展示会場・フィールド環境におけるネットワーク遮断耐性と騒音耐性のアーキテクチャ設計を整理した記事です。",
   "seo": {
-    "meta_title": "展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計 | Nodus",
+    "meta_title": "展示会Wi-Fi混雑・電波干渉でAIが動かなくなる原因とオフライン完結設計 | Nodus",
     "meta_description": "開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。",
     "target_keywords": [
       "展示会 Wi-Fi 混雑 対策",
@@ -110,16 +110,25 @@
   "related_articles": [
     {
       "slug": "human-in-the-loop-labeling-prompt-vs-actual-input-guide",
-      "title": "実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計"
+      "title": "AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由"
     },
     {
       "slug": "ml-noise-other-class-false-acceptance-evaluation-guide",
-      "title": "学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計"
+      "title": "機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計"
     },
     {
       "slug": "edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide",
-      "title": "PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証"
+      "title": "ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "展示会やコンテスト会場でWi-Fiやテザリングが繋がらなくなる対策は何ですか？",
+      "answer": "2.4GHz帯の電波干渉と回線輻輳を前提とし、起動時のモデル取得や推論をネットワークに一切依存しない『ローカル限定モード』を用意したうえで、機器間通信は有線LANまたは5GHz固定の専用ローカルルーターで完結させます。"
+    },
+    {
+      "question": "会場の騒音で音声認識デモが通らなくなるのを防ぐにはどう設計しますか？",
+      "answer": "固定音量閾値のVADではなく背景ノイズ床に追従する適応型VADを使い、UI側でもTop-1の厳密一致だけでなくTop-3候補に正解があれば進行できる救済モードや手動スキップ導線を組み込みます。"
+    }
+  ]
 }

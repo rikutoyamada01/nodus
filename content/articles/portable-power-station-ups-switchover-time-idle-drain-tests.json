@@ -1,7 +1,7 @@
 {
   "slug": "portable-power-station-ups-switchover-time-idle-drain-tests",
-  "title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
-  "display_title": "ポータブル電源をUPS代わりにする前に、何を確認する？",
+  "title": "ポータブル電源をUPS代わりにする前に確認すること：切替時間・待機電力・NAS自動停止",
+  "display_title": "ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認",
   "subtitle": "防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。",
   "category": "Hardware & Power Electronics",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の46台分の容量・待機電力・切替波形集計は、採用ログを確認できないため撤回しました。「一定の切替時間ならPCが落ちない」という境界の断定も外し、用途と互換性の確認を中心に改訂しました。",
   "seo": {
-    "meta_title": "ポータブル電源をUPS代わりにする前に、何を確認する？ | Nodus",
+    "meta_title": "ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認 | Nodus",
     "meta_description": "防災用の容量と、PC・NASを止めないための条件は別。切替時間、動作確認、待機電力、停止処理を分けて考えます。",
     "target_keywords": [
       "ポータブル電源 UPS 代わり",
@@ -108,15 +108,24 @@
       "scope": "米国向け製品の公称仕様。日本向けモデルの仕様・実効容量・互換性を保証しません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "「パススルー・EPS対応（切替20ms以下）」のポータブル電源ならPCやNASのUPS代わりに使えますか？",
+      "answer": "PCの電源ユニットやNASの負荷状態によっては20ms前後の瞬断でも再起動・電源断が起きることがあるため、公称値だけで安心せず必ず実機でコンセントを抜く切替テストを行う必要があります。"
+    },
+    {
+      "question": "専用UPSと比べてポータブル電源を常時接続するときの弱点は何ですか？",
+      "answer": "24時間インバーターを動かすと待機消費電力（電気代）が大きくなりやすい点と、USB通信（NUT / UPS信号）によるNASの自動シャットダウン連携に対応していない機種が多い点です。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+      "title": "自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較"
     },
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIは、どこに置く？"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     }
   ]
 }

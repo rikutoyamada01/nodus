@@ -1,7 +1,7 @@
 {
   "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-  "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方",
-  "display_title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方",
+  "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllamaの始め方、RTX GPUとの比較",
+  "display_title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較",
   "subtitle": "手持ちのMacでOllamaを試す手順から、メモリ不足の確認、GPU搭載PCとの比較まで。買い足す前に必要な条件を整理します。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -21,7 +21,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の74環境集計、機種別tok/s、ワット効率、VRAMに収まる条件の断定は、採用した測定と集計手順を再現できないため撤回しました。必要なメモリと測定条件を確認する選び方へ改訂しました。",
   "seo": {
-    "meta_title": "Mac?????LLM?Ollama???????????GPU????? | Nodus",
+    "meta_title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築・GPU比較 | Nodus",
     "meta_description": "MacでローカルLLMを始めるOllamaの手順、Apple SiliconとIntelの対応、必要メモリの考え方、メモリ不足の確認方法を解説。GPU搭載PCとの比較は、使うモデル・待ち時間・費用をそろえて判断します。",
     "target_keywords": [
       "Mac ローカルLLM",
@@ -223,24 +223,33 @@
       "scope": "ローカルモデルのダウンロードと実行、/byeで会話を終了する手順。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "MacでローカルLLMを動かすにはメモリ（ユニファイドメモリ）が何GB必要ですか？",
+      "answer": "7B〜8Bクラスの量子化モデルを試すなら16GBでも動きますが、コーディング補助や30Bクラスのモデル、長いコンテキスト長をスワップなしで快適に扱うには32GB〜64GB以上のメモリと広いメモリ帯域幅（Pro / Maxチップ等）が有利です。"
+    },
+    {
+      "question": "MacでローカルLLMを動かすとき、OllamaとMLXやGPU搭載PCはどう使い分けますか？",
+      "answer": "まず手持ちのMacで手軽にモデル管理やAPI互換サーバーを試すならOllama、Appleシリコン専用の最適化で速度を引き出したいならMLX、短いモデルで圧倒的なプロンプト処理速度・生成速度（tok/s）が必要ならVRAM搭載のRTX GPU機が向いています。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIは、どこに置く？"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     },
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+      "title": "自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較"
     },
     {
       "slug": "ollama-context-length-vram-default-memory-guide",
-      "title": "Ollamaの文脈長、既定値は何トークン？",
+      "title": "Ollamaのコンテキスト長：デフォルトは何トークン？ 変更・設定・確認方法",
       "category": "Cloud & AI Infrastructure"
     },
     {
       "slug": "dual-4k-dock-mac-mst-displaylink-thunderbolt-guide",
-      "title": "デュアル4Kドック、Macでも2画面になる？",
+      "title": "Macのデュアルディスプレイ：USB-Cドックで2画面に拡張できない理由と選び方",
       "category": "Hardware & Power Electronics"
     }
   ]

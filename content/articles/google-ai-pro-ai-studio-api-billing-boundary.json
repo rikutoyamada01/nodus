@@ -1,7 +1,7 @@
 {
   "slug": "google-ai-pro-ai-studio-api-billing-boundary",
-  "title": "Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスク特典とAPI請求の境界",
-  "display_title": "Google AI ProとGemini API、課金は別？",
+  "title": "Google AI ProとGoogle AI Studio・Gemini APIの違い：無料枠・別課金の境界とデータ学習",
+  "display_title": "Google AI Pro契約中でもAI Studio・Gemini APIは別課金？ 無料枠と請求の境界",
   "subtitle": "個人向けのGoogle AI ProやUltraに加入していても、Google AI StudioやGemini APIで請求が発生する条件と無料枠・有料Tierの違いを公式資料から整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式API課金・料金資料を確認 / 実請求での比較測定なし",
   "methodology_note": "2026年10月16日にGoogle AI for Developersの公式Billing・PricingドキュメントおよびGoogle Oneプラン表を確認して整理した記事です。各Tierの昇格条件や料金単価は確認時点の公式記載に基づいており、今後の改定や為替変動を含みません。",
   "seo": {
-    "meta_title": "Google AI Pro契約中でもAI StudioやGemini APIは別課金？ サブスクとAPIの境界 | Nodus",
+    "meta_title": "Google AI ProとAI Studio・Gemini APIの違い：無料枠と別課金の境界 | Nodus",
     "meta_description": "Google AI Pro/Ultraの月額サブスクリプションと、Google AI Studio・Gemini APIの従量課金（Free Tier / Paid Tier 1〜3）の違いを解説。入出力データの学習利用有無と請求境界を整理します。",
     "target_keywords": [
       "Google AI Pro AI Studio 課金",
@@ -140,12 +140,21 @@
   "related_articles": [
     {
       "slug": "gemini-4-argon-google-ai-pro-ultra",
-      "title": "Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認"
+      "title": "Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件"
     },
     {
       "slug": "antigravity-quota-5-hour-weekly-ai-credits-guide",
-      "title": "Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係"
+      "title": "Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Google AI Pro（月額2,900円）を契約していればGemini APIやAI Studioの有料枠も無料になりますか？",
+      "answer": "いいえ。個人向けのGoogle Oneサブスク（Google AI Pro / Ultra）と、開発者向けのGoogle AI Studio / Gemini API（Google Cloud請求先による従量課金）は別口座・別契約として扱われます。"
+    },
+    {
+      "question": "Google AI Studioを無料枠（Free Tier）で使う場合と有料枠（Paid Tier）にする場合の違いは？",
+      "answer": "請求先をリンクしないFree Tierは無料で試せますがレート制限が低く、入出力データがGoogle製品の改善（学習）に利用されます。Cloud請求先をリンクしてPaid Tierにするとレート制限が緩和され、データが学習に使われない規約が適用されます。"
+    }
+  ]
 }

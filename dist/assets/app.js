@@ -67,7 +67,8 @@
           activeFilter === "all" ||
           (activeFilter === "first_party" && (origin === "first_party" || origin === "hybrid")) ||
           cat === activeFilter;
-        var textMatch = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
+        var searchAttr = card.getAttribute("data-search") || "";
+        var textMatch = !query || (card.textContent + " " + searchAttr).toLowerCase().indexOf(query) !== -1;
         if (catMatch && textMatch) {
           card.removeAttribute("hidden");
         } else {

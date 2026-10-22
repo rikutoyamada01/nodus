@@ -1,4 +1,4 @@
-# Dockerの作業フォルダをコピーしたのに復元できない理由：VolumeとBind Mountの保存範囲
+# Dockerのバックアップとリストア：作業フォルダのコピーでVolumeが復元できない理由
 
 > docker-compose.ymlがあるフォルダを丸ごとバックアップしたのに、別マシンへ移したらデータベースの中身が空になっていた。名前付きVolumeとBind Mountの保存場所の違いを整理します。
 
@@ -42,6 +42,13 @@ Docker公式ドキュメント（Bind mounts）で説明されている通り、
 参照: [Docker Docs：Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
 参照: [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
+## よくある疑問と回答 (FAQ)
+### Q. docker-compose.ymlがあるフォルダを丸ごとコピーしたのにデータが復元できないのはなぜですか？
+A. 名前付きVolume（Named Volumes）のデータはプロジェクトフォルダ内ではなくDockerの管理領域（`/var/lib/docker/volumes/` 等）に保存されるため、カレントディレクトリのコピーには含まれません。
+
+### Q. Dockerコンテナのデータベースを安全にバックアップ・リストアする方法は？
+A. 稼働中のDBファイルを直接コピーすると破損のおそれがあるため、`docker compose exec` で `pg_dump` や `mysqldump` などの論理ダンプを出力して保存し、リストア時は空のVolumeに対してダンプを流し込む手順が確実です。
+
 ## 記事の範囲
 2026年10月16日にDocker公式ドキュメント（Volumes、Bind mounts）およびImmich公式バックアップガイドを確認して整理した記事です。
 
@@ -52,5 +59,5 @@ Docker公式ドキュメント（Bind mounts）で説明されている通り、
 - [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

@@ -1,4 +1,4 @@
-# NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方
+# NotebookLMのソース上限とノートブック分割：自動ラベル分類・削除・データテーブル出力の使い方
 
 > 複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。
 
@@ -40,6 +40,13 @@
 参照: [Gemini Notebook（NotebookLM）ヘルプ：ノートブックを作成する](https://support.google.com/notebooklm/answer/16206563?hl=ja)
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. NotebookLMで複数のノートブックに入れたソース（資料）をまたいで横断検索できますか？
+A. いいえ。公式ヘルプの通り各ノートブックは完全に独立して動作するため、比較・統合して質問したい資料群は1つのノートブック内にまとめてソース追加する必要があります。
+
+### Q. 1つのノートブックにたくさんのソースを入れたとき、特定のソースだけを対象に質問できますか？
+A. はい。5つ以上のソースを追加すると自動でトピック分類・ラベル付けが行われるほか、ソース一覧のチェックボックスで参照させたい資料だけを選択・解除して回答を生成させられます。
+
 ## 記事の範囲
 2026年10月16日にGoogle公式ヘルプ（Gemini Notebookでノートブックを作成する）およびGoogle Oneプラン表を確認して整理した記事です。特定のPDFファイルでのOCR精度や応答速度の独自測定は行っていません。
 
@@ -49,5 +56,5 @@
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件](https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide)
-- [マルチホップRAGの2段目検索、直交減算でどこまで改善する？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)
+- [Google AI Proのファミリー共有：Antigravityの利用枠と家族共有の注意点](https://nodus-lab.pages.dev/articles/google-ai-family-sharing-antigravity-pro-ultra-guide)
+- [マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？](https://nodus-lab.pages.dev/articles/multihop-rag-orthogonal-residual-subtraction-benchmarks)

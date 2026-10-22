@@ -1,4 +1,4 @@
-# 学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計
+# 機械学習のノイズ誤認識対策：対象外（other）クラスの設計と誤受理率・誤拒否率の評価
 
 > クリーンな学習データだけで作ったAIモデルが、展示会場の雑音や操作中の無関係な動きに対して誤作動を連発する原因を解説。対象外クラス（other）の設計、環境音誤受理率・発話誤拒否率の分離集計、およびノイズデータのセッション単位保留の重要性を整理します。
 
@@ -45,6 +45,13 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. ノイズ除去を入れるだけで実機の誤作動（暴発）は防げますか？
+A. 前処理のノイズ除去だけでは咳払いや操作中の無関係な動きまでは消せません。正解ラベルしか持たない分類器は無関係な入力にも無理やり正解クラスのどれかを割り当てるため、学習データ自体に『対象外（other / background）クラス』を入れて棄却させる設計が必要です。
+
+### Q. 対象外（other）クラスを入れたときの評価指標はどう分ければいいですか？
+A. otherクラスを通常の認識クラスの平均Accuracyに混ぜるとスコアが歪むため、「有効入力の正答率」「環境音を誤って受理した率（FAR）」「正しい入力をノイズとして弾いた率（FRR）」の3つを分けて集計します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnの分類評価指標リファレンスおよびCommon pitfallsガイドを確認し、閉集合分類モデルを実環境（連続ストリーム）へ適用する際の対象外クラス（other）設計と誤受理・誤拒否指標の定義を整理した記事です。
 
@@ -54,6 +61,6 @@ otherクラスを導入した際、otherを通常の正解クラス（100個の�
 - [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [展示会のWi-Fi混雑・電波干渉でAIが動かない原因とオフライン完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)

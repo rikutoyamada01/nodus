@@ -1,4 +1,4 @@
-# カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正
+# カメラ距離やマイク（スピーカーフォン）変更でAI認識精度が急落する理由：前処理の再校正
 
 > ハードウェア条件（カメラの取り付け高さ・左右の向き、ヘッドセットからスピーカーフォンへの変更など）を変えた途端にAIの認識精度が急落する原因を解説。旧ハード向け前処理（画面端クロップや角度ヒストグラム等）が害に転じる仕組みと、分類層のみの重み調整の限界を整理します。
 
@@ -45,6 +45,13 @@
 参照: [scikit-learn User Guide: Cross-validation and Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. ヘッドセットから会議用スピーカーフォンにマイクを変えたら音声認識精度が落ちたのはなぜですか？
+A. マイクとの距離や部屋の反響（残響）・周波数特性が変わることで特徴抽出器（Encoder）の入力分布がずれるためです。最終分類層のクラス重みだけをいじっても解決しないため、前処理の音量正規化やVAD閾値の見直しと複数シードでの検証が必要です。
+
+### Q. カメラの設置高さや向きを変えたときに最初に確認すべき前処理はどこですか？
+A. 旧カメラ位置に合わせてハードコードされた画面端のクロップ（切り抜き範囲）や角度補正ヒストグラムが、新配置では被写体の有効領域を削り落としていないかを最初に確認します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnの評価・交差検証ガイドラインを確認し、カメラ幾何条件・マイク音響条件の変更に伴うハイパーパラメータ再校正と対照実験の手順を整理した記事です。
 
@@ -54,6 +61,6 @@
 - [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
 ## 次に考えたいこと
-- [オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [ストリーミングAI：オフライン正答率は高いのに実機でタイミングがズレる理由](https://nodus-lab.pages.dev/articles/streaming-ai-offline-accuracy-vs-realtime-timing-guide)
+- [ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)

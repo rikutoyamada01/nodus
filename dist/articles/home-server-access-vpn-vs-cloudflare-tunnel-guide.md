@@ -1,4 +1,4 @@
-# 家族だけに自宅アプリを見せたいとき、VPN（Tailscale）とCloudflare Tunnelで何が変わる？
+# 自宅サーバーの外部公開：Cloudflare TunnelとTailscale（VPN）の違い・選び方
 
 > 自宅サーバーで動かしている写真管理やスマートホーム画面を外出先や家族のスマホから開きたいとき、全端末にVPNアプリを入れる構成とブラウザだけで開ける構成の違いを整理します。
 
@@ -43,6 +43,13 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 参照: [Cloudflare One Docs：Cloudflare Tunnel (Connect private networks)](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 参照: [Tailscale Docs：Connection types](https://tailscale.com/kb/1257/connection-types)
 
+## よくある疑問と回答 (FAQ)
+### Q. Cloudflare TunnelとTailscaleの最大の違いは何ですか？
+A. Tailscaleはアクセスする全員の端末にVPNクライアントアプリを入れて端末間で直接暗号化通信を行うのに対し、Cloudflare Tunnelは閲覧者側に専用アプリを入れず通常のブラウザURL＋Cloudflare Access認証で公開できる代わりに全通信がCloudflareを経由します。
+
+### Q. 家族との写真共有や大容量ファイル転送にはどちらが向いていますか？
+A. 家族のスマホにアプリを入れる手間を省いてWeb画面を見せたいならCloudflare Tunnel＋Access、SMBファイル共有や大容量動画のストリーム・高速転送を行いたいならUDP直結できるTailscaleが向いています。
+
 ## 記事の範囲
 2026年10月16日にCloudflare One公式ドキュメント（Cloudflare Tunnel）およびTailscale公式ドキュメント（Connection types、Pricing）を確認して整理した記事です。
 
@@ -53,5 +60,5 @@ Webブラウザで完結するダッシュボードやメモアプリの共有�
 - [Tailscale：Pricing](https://tailscale.com/pricing)
 
 ## 次に考えたいこと
-- [Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
-- [NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide)
+- [Tailscaleの速度が遅いとき：NAS・SMB転送でDirect接続とDERP中継を確認する手順](https://nodus-lab.pages.dev/articles/tailscale-nas-slow-direct-derp-relay-check)
+- [TailscaleのSubnet RouterとExit Nodeの違い：NAS接続にはどっちを設定する？](https://nodus-lab.pages.dev/articles/tailscale-subnet-router-vs-exit-node-nas-guide)

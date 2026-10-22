@@ -1,6 +1,6 @@
 {
   "slug": "esp32-c3-s3-c6-which-board-to-choose",
-  "title": "ESP32、結局どれを買えばいい？",
+  "title": "ESP32比較表：C3・S3・C6はどれを買う？ ラズパイPico（RP2040/RP2350）やXIAOとの違い",
   "subtitle": "C3・S3・C6を、温湿度計・音声・スマートホームの用途から比較。ボード単価だけでは見えない費用も整理します。",
   "category": "Hardware & Power Electronics",
   "kind": "guide",
@@ -19,7 +19,7 @@
   "sample_size_n": 0,
   "methodology_note": "公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。",
   "seo": {
-    "meta_title": "ESP32???C3?S3?C6???????????????????? | Nodus",
+    "meta_title": "ESP32比較表：C3・S3・C6の選び方とラズパイPico・XIAOとの違い | Nodus",
     "meta_description": "C3・S3・C6を、温湿度計・音声・スマートホームの用途から比較。ボード単価だけでは見えない費用も整理します。",
     "target_keywords": [
       "ESP32、結局どれを買えばいい？"
@@ -97,27 +97,41 @@
       "sample_size": 0
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "ESP32-C3、ESP32-S3、ESP32-C6は用途別にどう使い分ければいいですか？",
+      "answer": "温湿度センサーなど小型・省ピン用途なら安価なC3、カメラ・音声処理・液晶表示などPSRAMやAI命令が必要ならS3、ThreadやZigbee（IEEE 802.15.4）によるMatterスマートホーム機器を作りたいならC6を選びます。"
+    },
+    {
+      "question": "ESP32シリーズとRaspberry Pi Pico W（RP2040 / RP2350）はどう比較すればいいですか？",
+      "answer": "Wi-Fi・BLE通信やESPHome連携が主目的なら情報量と周辺機能が豊富なESP32（C3/S3/C6）が手軽です。一方、PIO（プログラマブルI/O）による厳密なタイミング制御やMicroPythonの扱いやすさを重視するならRaspberry Pi Picoシリーズが向いています。"
+    },
+    {
+      "question": "通常のDevKit開発ボードとSeeed Studio XIAO ESP32シリーズの違いは何ですか？",
+      "answer": "標準のDevKitC等はピン数が多くブレッドボード実験に向いていますが、XIAO ESP32（C3/S3/C6）は切手サイズの超小型基板にリチウムイオン電池の充電回路と外部アンテナ端子がまとまっており、小型ケースへの組み込みに有利です。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "esp32-deep-sleep-battery-life-board-quiescent-current",
-      "title": "ESP32の電池駆動、なぜ計算より早く切れる？",
+      "title": "ESP32のDeepSleep消費電力：電池が計算より早く切れる理由と待機電流・復帰設計",
       "category": "Hardware & Power Electronics"
     },
     {
       "slug": "esp32-s3-dual-usb-ports-uart-native-otg-guide",
-      "title": "ESP32-S3の2つのUSB端子、どっちに挿す？",
+      "title": "ESP32-S3の2つのUSB端子（UARTとUSB OTG/JTAG）、どっちに挿す？",
       "category": "Hardware & Power Electronics"
     },
     {
       "slug": "esp32-c6-matter-thread-border-router-requirements",
-      "title": "ESP32-C6、単体でThreadにつながる？",
+      "title": "ESP32-C6でMatter・Threadを使うには？ ボーダールーターと必要機器の条件",
       "category": "Hardware & Power Electronics"
     },
     {
       "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
-      "title": "CO₂センサー、実測式と推定式の見分け方は？",
+      "title": "自作CO₂センサーの選び方：実測式（SCD40/41）と推定式eCO₂（SGP30）の見分け方",
       "category": "Hardware & Power Electronics"
     }
-  ]
+  ],
+  "display_title": "ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い"
 }

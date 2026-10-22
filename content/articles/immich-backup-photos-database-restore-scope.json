@@ -1,7 +1,7 @@
 {
   "slug": "immich-backup-photos-database-restore-scope",
-  "title": "Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認",
-  "display_title": "Immichのバックアップ、写真だけで足りる？",
+  "title": "Immichのバックアップとリストア（復元）方法：写真フォルダと自動DBダンプの保存範囲",
+  "display_title": "Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由",
   "subtitle": "自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式管理ドキュメントを確認 / 実機での障害復旧時間測定なし",
   "methodology_note": "2026年10月16日にImmich公式ドキュメント（Backup and Restore）およびDocker公式ドキュメントを確認して整理した記事です。特定のNASやストレージ環境における復元所要時間の実測は行っていません。",
   "seo": {
-    "meta_title": "Immichのバックアップ範囲：写真フォルダとデータベースダンプの両方が必要な理由 | Nodus",
+    "meta_title": "Immichのバックアップとリストア方法：写真フォルダと自動DBダンプの復元手順 | Nodus",
     "meta_description": "セルフホスト写真管理ツールImmichのバックアップと復元仕様を公式ドキュメントから解説。ライブラリフォルダの自動スキャンを行わない仕様、自動DBダンプ（UPLOAD_LOCATION/backups）の保存先、復元手順を整理します。",
     "target_keywords": [
       "Immich バックアップ",
@@ -116,12 +116,21 @@
   "related_articles": [
     {
       "slug": "cloud-backup-100gb-restore-egress-cost-comparison",
-      "title": "安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較"
+      "title": "クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用"
     },
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
-      "title": "パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？"
+      "title": "AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Immichは写真が入っているフォルダ（library / upload）だけバックアップすれば復元できますか？",
+      "answer": "いいえ。Immichはファイル配置やアルバム・人物情報をPostgreSQLデータベースで管理しており、写真フォルダを置いただけでは自動認識されないため、必ずデータベースのダンプファイルとセットで退避する必要があります。"
+    },
+    {
+      "question": "Immichの自動バックアップ機能で保存されるDBダンプはどこにありますか？",
+      "answer": "既定では `UPLOAD_LOCATION/backups` フォルダ内に毎日自動でデータベースダンプが出力されます。ただしこのダンプ自体には写真・動画の実体ファイルは含まれないため、フォルダ全体と `.env` を別ドライブやクラウドへ3-2-1ルールでコピーします。"
+    }
+  ]
 }

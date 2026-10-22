@@ -1,4 +1,4 @@
-# 展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計
+# 展示会・会場Wi-Fi混雑や電波干渉でAIが動かなくなる原因：ローカル完結設計と騒音対策
 
 > 開発室では完璧に動いていたAI・IoTシステムが、展示会やコンテスト会場に持ち込んだ瞬間にネットワーク混雑と会場騒音で動かなくなる原因を解説。完全ローカル推論モード、有線・ローカルAP切り離し、ノイズ適応VADとTop-3救済の設計を整理します。
 
@@ -45,6 +45,13 @@
 参照: [Hugging Face Hub Documentation: Downloading files and offline mode (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
 参照: [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 展示会やコンテスト会場でWi-Fiやテザリングが繋がらなくなる対策は何ですか？
+A. 2.4GHz帯の電波干渉と回線輻輳を前提とし、起動時のモデル取得や推論をネットワークに一切依存しない『ローカル限定モード』を用意したうえで、機器間通信は有線LANまたは5GHz固定の専用ローカルルーターで完結させます。
+
+### Q. 会場の騒音で音声認識デモが通らなくなるのを防ぐにはどう設計しますか？
+A. 固定音量閾値のVADではなく背景ノイズ床に追従する適応型VADを使い、UI側でもTop-1の厳密一致だけでなくTop-3候補に正解があれば進行できる救済モードや手動スキップ導線を組み込みます。
+
 ## 記事の範囲
 2026年10月16日にHugging Face Hubのオフライン・キャッシュ取得仕様およびONNX Runtimeのローカル推論仕様を確認し、展示会場・フィールド環境におけるネットワーク遮断耐性と騒音耐性のアーキテクチャ設計を整理した記事です。
 
@@ -54,6 +61,6 @@
 - [ONNX Runtime Documentation: Quantize ONNX Models for Edge CPU Inference](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 
 ## 次に考えたいこと
-- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
+- [AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
+- [機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)

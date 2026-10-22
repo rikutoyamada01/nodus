@@ -1,4 +1,4 @@
-# 初めての2ベイNAS、HDD 2台を「RAID 1」にするか「1台運用＋外付け・外部バックアップ」にするか
+# 2ベイNASのRAID 1とバックアップの違い：Synology等でHDD 2台をどう使うか
 
 > 2ベイNASとHDD 2台を買うとき、RAID 1（ミラーリング）を組めばバックアップは不要なのか。防げる障害と防げない事故（誤削除・落雷・ランサムウェア）の境界を整理します。
 
@@ -43,6 +43,13 @@
 参照: [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 参照: [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 
+## よくある疑問と回答 (FAQ)
+### Q. 2ベイNASでRAID 1（ミラーリング）を組んでおけば外付けHDD等へのバックアップは不要ですか？
+A. いいえ。RAID 1は「片方のHDDが物理故障したときに稼働を止めない仕組み」であり、誤ってファイルを削除・上書きした場合やランサムウェア感染、NAS本体の電源故障・落雷時には2台とも同時にデータを失います。
+
+### Q. 予算がHDD 2台分しかない場合、家族の写真や重要データを守るにはどう構成するのが安全ですか？
+A. 同じNAS筐体内で2台をRAID 1にするよりも、1台をNAS本体の保存用にし、もう1台を外付けUSBケースや別拠点のバックアップ先にして「世代（履歴）バックアップ」を残す方が、誤削除や本体故障からもデータを復元できます。
+
 ## 記事の範囲
 2026年10月16日にImmich公式バックアップガイド（3-2-1ルール）およびクラウドストレージ料金資料を参照し、RAID 1（冗長化）とバックアップ（履歴・別筐体退避）の役割分担を整理した記事です。
 
@@ -53,5 +60,5 @@
 - [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)

@@ -1,7 +1,7 @@
 {
   "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
-  "title": "パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？",
-  "display_title": "自分専用のAI、24時間動かすには？",
+  "title": "AIエージェントを24時間常駐させるなら？ ラズパイ・VPS・ミニPCの費用と選び方",
+  "display_title": "AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？",
   "subtitle": "ノートPCを閉じても記憶や定期処理を残したい。コードの修正も任せたい。推論・記憶・開発作業を分けて、常駐先の費用と選び方を考えます。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式仕様・VPS料金を確認 / 実機での比較測定なし",
   "methodology_note": "2026年10月15日に公式資料と公開料金表を確認した選び方の記事です。さくらのVPSは料金ページをブラウザで月額払い・石狩リージョンに切り替えて確認しました。自宅構成の金額・電力・電気料金単価は計算例の仮定であり、特定製品の実売価格や実測値ではありません。機器の購入、各構成でのインストール・性能測定、API利用料の実測は行っていません。比較表の用途別評価は編集上の判断です。公開質問や日本語の解説記事は企画の参考とし、利用者数・検索数・性能の根拠にはしていません。",
   "seo": {
-    "meta_title": "AI????????????????VPS???PC????????????? | Nodus",
+    "meta_title": "AIエージェントを24時間常駐させるなら？ ラズパイ・VPS・ミニPCの費用比較 | Nodus",
     "meta_description": "パーソナルAIを24時間動かしたい人へ。ラズパイ・VPS・ミニPCを、API推論、記憶、コーディングの負荷に分けて比較。公式VPS料金と自宅運用の費用例も示します。",
     "target_keywords": [
       "AIエージェント 常駐",
@@ -234,16 +234,25 @@
   "related_articles": [
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIのサブスク・API・自宅運用を比べる"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     },
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-      "title": "自宅サーバー用ミニPCの電力・端子・保守を確認する"
+      "title": "自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較"
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "手持ちのMacでローカルLLMを試す"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "AIエージェントを24時間常駐させるのにラズパイ（Raspberry Pi）でも足りますか？",
+      "answer": "推論自体は外部のLLM APIに任せ、定期実行（cron）やチャットBotの待ち受け・軽量な記憶データベースだけを動かす構成であればRaspberry Piでも十分に常駐運用できます。"
+    },
+    {
+      "question": "自宅のミニPCとクラウドVPSはどう使い分ければいいですか？",
+      "answer": "自宅の停電やネットワーク設定の影響を受けずに外部Webhook等を安定して受けたいなら小型VPS、Dockerコンテナのビルドやローカル開発作業・大容量メモリを月額固定費なしで回したいならミニPCが向いています。"
+    }
+  ]
 }

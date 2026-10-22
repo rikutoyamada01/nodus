@@ -1,7 +1,7 @@
 {
   "slug": "tailscale-subnet-router-vs-exit-node-nas-guide",
-  "title": "NASにTailscaleを入れられないとき、Subnet RouterとExit Nodeのどちらを使うか",
-  "display_title": "Subnet RouterとExit Node、どっちが必要？",
+  "title": "TailscaleのSubnet RouterとExit Nodeの違い・設定判断：NASやラズパイを中継役にする方法",
+  "display_title": "TailscaleのSubnet RouterとExit Nodeの違い：NAS接続にはどっちを設定する？",
   "subtitle": "アプリを追加できないNASやプリンターへ外出先から接続したいとき、宅内の特定機器だけを通す構成と全通信を自宅経由にする構成の違いを公式資料から整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式技術資料を確認 / 実機でのルーティング速度測定なし",
   "methodology_note": "2026年10月16日にTailscale公式ドキュメント（Subnet routers、Exit nodes）およびPricingページを確認して整理した記事です。特定のルーターやNAS機種でのスループット測定は行っていません。",
   "seo": {
-    "meta_title": "Tailscale?Subnet Router?Exit Node???????NAS??????? | Nodus",
+    "meta_title": "TailscaleのSubnet RouterとExit Nodeの違い・設定：NAS接続の選び方 | Nodus",
     "meta_description": "Tailscaleクライアントを直接インストールできないNASや宅内機器へアクセスする際のSubnet Router（サブネットルーター）とExit Node（出口ノード）の違い、デバイス数上限の扱いを公式資料から解説します。",
     "target_keywords": [
       "Tailscale Subnet Router Exit Node 違い",
@@ -124,17 +124,26 @@
   "related_articles": [
     {
       "slug": "tailscale-nas-slow-direct-derp-relay-check",
-      "title": "Tailscaleで外出先からのNAS転送が遅いとき、回線変更の前に直結とDERP中継を確認する"
+      "title": "Tailscaleの速度が遅いとき：NAS・SMB転送でDirect接続とDERP中継を確認する手順"
     },
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
-      "title": "パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？"
+      "title": "AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？"
     },
     {
       "slug": "home-server-access-vpn-vs-cloudflare-tunnel-guide",
-      "title": "自宅アプリの共有、VPNとTunnelどっち？",
+      "title": "Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方",
       "category": "Cloud & AI Infrastructure"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Tailscaleアプリを入れられないNASやプリンターに外出先からアクセスするには何を設定しますか？",
+      "answer": "自宅内のRaspberry Piや常時稼働PCで `tailscale up --advertise-routes=192.168.1.0/24` のように「Subnet Router（サブネットルーター）」を設定し、管理画面でルートを承認すると自宅LAN内の機器へアクセスできます。"
+    },
+    {
+      "question": "Subnet RouterとExit Nodeはどう使い分ければいいですか？",
+      "answer": "自宅の特定機器（NAS等）にだけ通信したいならSubnet Routerを使います。カフェの公衆Wi-Fi利用時など、一般サイトへのWeb閲覧を含むすべての通信を自宅回線経由に切り替えたい場合にExit Nodeを使います。"
+    }
+  ]
 }

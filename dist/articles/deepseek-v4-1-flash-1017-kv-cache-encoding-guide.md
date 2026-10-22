@@ -1,4 +1,4 @@
-# DeepSeek-V4.1-Flash-1017は何が異常なのか：890B/tokenのKV圧縮とencoding.pyの内部仕様
+# DeepSeek-V4.1-Flash-1017の内部仕様：890B/tokenのKV圧縮とencoding.py・APIの設計
 
 > 2026年10月17日公開のDeepSeek-V4.1-Flash-1017について、表面的なベンチマーク順位だけでなく、config.jsonとencoding.pyから読み解ける非対称CED構造、KVキャッシュ圧縮、プロトコル仕様、Search/Fetch APIの課金境界を整理します。
 
@@ -64,6 +64,13 @@ DeepSeek APIのdeepseek-flashは、100万入力トークンあたりの料金が
 参照: [GitHub Issue：anomalyco/opencode #40321 (Deepseek-v4-flash produces corrupted output)](https://github.com/anomalyco/opencode/issues/40321)
 参照: [GitHub Issue：deepseek-ai/DeepSeek-V3 #1560 (Why DeepSeek V4 Gets Stuck in Infinite Fix Loops)](https://github.com/deepseek-ai/DeepSeek-V3/issues/1560)
 
+## よくある疑問と回答 (FAQ)
+### Q. DeepSeek-V4.1-Flash-1017は旧リビジョン（0731等）や通常のFlashモデルと何が違いますか？
+A. 552B MoE＋196B Engramの巨大バックボーンを持ちながら、40層をEncoder（入力8B）とDecoder（出力16B）に分割し、メインKVキャッシュを40層中4層に絞ることで890バイト/トークンの極小KVフットプリントを実現しています。
+
+### Q. ツール呼び出し（Tool Calls）を使うときにAPIキャッシュが効き続けるのはなぜですか？
+A. 公式の `encoding.py` では `tools` 定義が存在する場合に過去ターンの `<think>` ブロック削除（`drop_thinking`）を自動で無効化し、プロンプト先頭からのプレフィックス一致を壊さないことでキャッシュヒットを維持する設計になっています。
+
 ## 記事の範囲
 2026年10月17日に公開されたHugging Faceのdeepseek-ai/DeepSeek-V4.1-Flash-1017およびDeepSeek-V4.1-Flash公式リポジトリ内のconfig.json、encoding/encoding.py、encoding/README.md、DeepSeek API公式ドキュメント（Models & Pricing、Search & Fetch Guide、Release 2026/10/17）、ならびにGitHub Issue・Reddit等の開発者コミュニティで報告されているコード修正時のトラブル事例を参照して整理した記事です。Nodusによる実機クラスタでの推論速度計測やベンチマークの再実行は行っていません。
 
@@ -84,5 +91,5 @@ DeepSeek APIのdeepseek-flashは、100万入力トークンあたりの料金が
 - [GitHub Issue：deepseek-ai/DeepSeek-V3 #1560 (Why DeepSeek V4 Gets Stuck in Infinite Fix Loops)](https://github.com/deepseek-ai/DeepSeek-V3/issues/1560)
 
 ## 次に考えたいこと
-- [長いシステムプロンプトを毎回払う？ Gemini APIのキャッシュ仕様と最小トークン条件](https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide)
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [Gemini APIのプロンプトキャッシュ：Implicit/Explicitの違いと料金・最小トークン条件](https://nodus-lab.pages.dev/articles/gemini-api-prompt-caching-implicit-explicit-cost-guide)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)

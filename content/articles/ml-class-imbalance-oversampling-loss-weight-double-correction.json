@@ -1,7 +1,7 @@
 {
   "slug": "ml-class-imbalance-oversampling-loss-weight-double-correction",
-  "title": "機械学習の不均衡データで「オーバーサンプリング」と「損失重み」を二重に掛けると何が起きるか：全件通過を守る学習設計",
-  "display_title": "不均衡データの二重補正と未抽選データの罠",
+  "title": "PyTorchのWeightedRandomSamplerと損失重みの二重補正：重複抽選で未使用データが出る罠",
+  "display_title": "PyTorchのWeightedRandomSampler：重複抽選と損失重みの二重補正で起きる罠",
   "subtitle": "クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。",
   "category": "Architecture",
   "kind": "guide",
@@ -22,7 +22,7 @@
   "evidence_notice": "公式scikit-learn・PyTorch設計原則を確認 / 特定データセットの普遍保証なし",
   "methodology_note": "2026年10月16日にscikit-learnの評価・不均衡データガイドラインを確認し、エポック内の全件通過保証とサンプラー・損失重みの切り分け設計を整理した記事です。",
   "seo": {
-    "meta_title": "???????WeightedRandomSampler???????????PyTorch???? | Nodus",
+    "meta_title": "PyTorch WeightedRandomSamplerの注意点：重複抽選と損失重みの二重補正 | Nodus",
     "meta_description": "クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。",
     "target_keywords": [
       "WeightedRandomSampler 重複",
@@ -110,16 +110,25 @@
   "related_articles": [
     {
       "slug": "ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide",
-      "title": "機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方"
+      "title": "混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由"
     },
     {
       "slug": "hardware-change-camera-microphone-hyperparameter-regression-guide",
-      "title": "カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正"
+      "title": "カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正"
     },
     {
       "slug": "ml-benchmark-data-leakage-group-split-pipeline-guide",
-      "title": "機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ"
+      "title": "機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "PyTorchのWeightedRandomSamplerで `replacement=True` にすると何が問題になりますか？",
+      "answer": "復元抽出（重複あり抽選）になるため、1エポック分のデータ数を回しても一度も選ばれない多数派データが大量に発生する一方、少数派データばかりが何度も重複入力されて過学習を引き起こします。"
+    },
+    {
+      "question": "不均衡データを学習するとき、サンプラーとCrossEntropyLossのweightは両方使うべきですか？",
+      "answer": "両方を同時に有効化すると少数クラスへの重み付けが二乗で効く「二重補正」になり、通常のクラスの認識率が大きく崩れます。基本は全データを毎エポック1回ずつ確実に通過させ、補正はどちらか一方に絞ってValで検証します。"
+    }
+  ]
 }

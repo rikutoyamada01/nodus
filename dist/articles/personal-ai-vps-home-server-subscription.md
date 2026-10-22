@@ -1,4 +1,4 @@
-# パーソナルAIは、どこに置く？
+# パーソナルAIの作り方と置き場所：VPS・自宅サーバー・サブスクの費用と役割分担
 
 > VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。
 
@@ -41,6 +41,13 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 ### 買い足す前に、一週間の記録を取る
 最初は手元のPCと利用中のサービスで同じ課題を試し、使った回数、待ち時間、失敗、必要な連携を記録します。常時の定期処理が必要になったらVPS、外に出せないデータやモデル実験が中心なら自宅構成を検討する、という順番なら過剰な購入を避けやすくなります。最適解は利用頻度と品質の許容範囲で変わります。
 
+## よくある疑問と回答 (FAQ)
+### Q. 自分用のパーソナルAIエージェントを作るならVPSと自宅サーバーのどちらがいいですか？
+A. 重いLLMの推論自体は外部APIを使い、記憶データベースや24時間の自動通知・Botだけを動かすなら月数百円〜の軽量VPSで十分です。ローカルLLM自体の推論も手元で回したい場合は大容量メモリを備えた自宅PC・サーバーが候補になります。
+
+### Q. 大手の月額AIサブスクと自作パーソナルAI（API＋サーバー）はどう使い分けますか？
+A. 日常の対話や調査は月額サブスクの方が定額で高性能モデルを使えます。一方、自分のメモや予定表と連携してバックグラウンドで自動処理させたい部分だけをAPI＋小型サーバーで切り出すと費用が膨らみません。
+
 ## 記事の範囲
 公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
 
@@ -49,6 +56,6 @@ Ollamaの公式FAQはローカル実行とクラウドモデル利用を区別�
 - [Ollama：ローカル実行、クラウド、メモリとサーバー設定のFAQ](https://docs.ollama.com/faq)
 
 ## 次に考えたいこと
-- [パーソナルAIを24時間動かす常駐先を選ぶ](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)

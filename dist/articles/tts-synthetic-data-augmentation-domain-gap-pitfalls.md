@@ -1,4 +1,4 @@
-# 合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策
+# 合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップと防止策
 
 > 不足している属性（女性音声や特定条件の画像など）をTTSや合成データで補う際に陥りやすい5つの罠を解説。同一音声IDの複数設定を独立話者と誤認する問題、合成データのTest混入、ゼロ波形・フォーマット偽装、前処理でのメタデータ消失を防ぐ手順を整理します。
 
@@ -45,6 +45,13 @@
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 参照: [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
 
+## よくある疑問と回答 (FAQ)
+### Q. TTS（音声合成）で作ったデータを学習に足したらValidation精度が上がったのに実機で効かないのはなぜですか？
+A. 合成データがValidationやTestセットにも混ざっていて「合成音声特有の音響パターン」を当てているだけか、同じTTS話者IDの速度・ピッチ違いを別人物として分割してしまいデータリークが起きているケースが多いためです。
+
+### Q. 合成データを機械学習パイプラインに入れるときの必須チェックは何ですか？
+A. Testセットは100%人間の実データに固定すること、モデル構造の変更とデータ追加を同じ実験で同時に行わないこと、API失敗時の無音（ゼロ波形）ファイルやメタデータ消失を自動検査で弾くことです。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnのCommon pitfallsおよびHugging Face Datasetsのドキュメントを確認し、合成データ（TTS等）を用いたデータ拡張時の実験管理・品質検査ルールを整理した記事です。
 
@@ -54,6 +61,6 @@
 - [Hugging Face Datasets Documentation: Process and manage datasets](https://huggingface.co/docs/datasets/process)
 
 ## 次に考えたいこと
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由](https://nodus-lab.pages.dev/articles/human-in-the-loop-labeling-prompt-vs-actual-input-guide)

@@ -1,4 +1,4 @@
-# オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離
+# リアルタイム音声・映像AIで「オフライン正答率は高いのに実機で使えない」理由：内容一致率と発火タイミングの乖離
 
 > カメラ映像や音声のリアルタイム認識で「出力された文字列の一致率は70〜80%あるのに、実機で動かすとタイミングがズレて全く使えない（タイミング込み一致率0%）」現象の構造を解説。認識部と確定層（Readout）のペア評価、早すぎ・遅すぎの計測設計をまとめます。
 
@@ -45,6 +45,13 @@
 参照: [ONNX Runtime Documentation: Performance and Model Optimizations](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html)
 参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 録画・録音データのベンチマークでは正答率80%なのに、実機のリアルタイム認識で全く使えないのはなぜですか？
+A. 出力された文字列の『内容だけの一致率』で評価しており、『いつ発火（確定）したか』のタイミングを測っていないためです。対象に指が触れる前や発話が終わる前にフライング出力する確定層（Readout）は、内容一致率が高くても実機での体感一致率が0%になります。
+
+### Q. リアルタイム認識のタイミングズレを防ぐにはどう評価・設計すればいいですか？
+A. 認識モデル単体ではなく『認識部＋確定層（Readout）』をペアでA/B比較し、許容時間窓内に発火したかどうかを見る『タイミング込み一致率』と『早すぎ（通過前発火）率』を主指標にします。
+
 ## 記事の範囲
 2026年10月16日にONNX Runtimeおよびscikit-learnの評価ドキュメントを確認し、リアルタイム連続認識システムにおける認識部と確定層（Readout）の分離評価・トレース分析手法を整理した記事です。
 
@@ -54,6 +61,6 @@
 - [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
-- [PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
+- [ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証](https://nodus-lab.pages.dev/articles/edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide)

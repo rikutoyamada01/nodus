@@ -1,4 +1,4 @@
-# マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率
+# マルチホップRAGのベクトル検索：取得済み文書の直交引き算が比較質問で効き連鎖質問で崩れる理由
 
 > HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。
 
@@ -63,6 +63,6 @@ HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエ�
 - [HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering](https://hotpotqa.github.io/)
 
 ## 次に考えたいこと
-- [自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁](https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks)
-- [DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
-- [NotebookLM、資料はどう分けて入れる？](https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide)
+- [Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングと未知スキーマの壁](https://nodus-lab.pages.dev/articles/slot-parallel-sql-generation-dynamic-masking-benchmarks)
+- [DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計](https://nodus-lab.pages.dev/articles/deepseek-v4-1-flash-1017-kv-cache-encoding-guide)
+- [NotebookLMのソース上限と分割方法：資料整理で詰まらないノートブック設計](https://nodus-lab.pages.dev/articles/notebooklm-limits-sources-notebooks-sharing-guide)

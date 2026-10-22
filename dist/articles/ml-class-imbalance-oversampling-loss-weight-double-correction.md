@@ -1,4 +1,4 @@
-# 機械学習の不均衡データで「オーバーサンプリング」と「損失重み」を二重に掛けると何が起きるか：全件通過を守る学習設計
+# PyTorchのWeightedRandomSamplerと損失重みの二重補正：重複抽選で未使用データが出る罠
 
 > クラス数や話者数の偏りを補正しようとして、WeightedRandomSampler（重複あり抽選）とCrossEntropyLossのクラス重みを同時に有効化したときに起きる過補正と「エポック内で一度も使われないデータ」の問題を解説します。
 
@@ -43,6 +43,13 @@ PyTorch等でクラス間や人物間のデータ件数の偏りを補正する�
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 参照: [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. PyTorchのWeightedRandomSamplerで `replacement=True` にすると何が問題になりますか？
+A. 復元抽出（重複あり抽選）になるため、1エポック分のデータ数を回しても一度も選ばれない多数派データが大量に発生する一方、少数派データばかりが何度も重複入力されて過学習を引き起こします。
+
+### Q. 不均衡データを学習するとき、サンプラーとCrossEntropyLossのweightは両方使うべきですか？
+A. 両方を同時に有効化すると少数クラスへの重み付けが二乗で効く「二重補正」になり、通常のクラスの認識率が大きく崩れます。基本は全データを毎エポック1回ずつ確実に通過させ、補正はどちらか一方に絞ってValで検証します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learnの評価・不均衡データガイドラインを確認し、エポック内の全件通過保証とサンプラー・損失重みの切り分け設計を整理した記事です。
 
@@ -52,6 +59,6 @@ PyTorch等でクラス間や人物間のデータ件数の偏りを補正する�
 - [scikit-learn User Guide: Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正](https://nodus-lab.pages.dev/articles/hardware-change-camera-microphone-hyperparameter-regression-guide)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)

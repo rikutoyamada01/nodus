@@ -1,7 +1,7 @@
 {
   "slug": "google-ai-family-sharing-antigravity-pro-ultra-guide",
-  "title": "Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件",
-  "display_title": "Google AI、家族と共有すると上限はどうなる？",
+  "title": "Google AI Proのファミリー共有でAntigravityも使える？ 家族で共有される利用枠と上限",
+  "display_title": "Google AI Proのファミリー共有：Antigravityの利用枠と家族共有の注意点",
   "subtitle": "Google Oneのファミリー共有でAI特典を分け合える範囲と、AntigravityやAIクレジットの上限が家族全体で合算される仕組みを公式ヘルプから整理します。",
   "category": "Software & SaaS Economics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式ヘルプ・プラン表を確認 / 実アカウントでの共有動作測定なし",
   "methodology_note": "2026年10月16日にGoogle One公式ヘルプ（ファミリーとの共有を開始または停止する）および日本向けGoogle AIプラン表を確認して整理した記事です。複数アカウントでの同時利用テストや消費量の実測は行っていません。",
   "seo": {
-    "meta_title": "Google AI Pro?????????Antigravity????????????????? | Nodus",
+    "meta_title": "Google AI Proのファミリー共有でAntigravityは使える？ 共有される上限と条件 | Nodus",
     "meta_description": "Google Oneのファミリー共有におけるGeminiアプリ、Google Antigravity、NotebookLM、AIクレジットの共有仕様を解説。メンバー別ではなくグループ全体で共有される使用量上限の注意点を整理します。",
     "target_keywords": [
       "Google AI ファミリー共有",
@@ -139,12 +139,21 @@
   "related_articles": [
     {
       "slug": "antigravity-quota-5-hour-weekly-ai-credits-guide",
-      "title": "Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係"
+      "title": "Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み"
     },
     {
       "slug": "gemini-4-argon-google-ai-pro-ultra",
-      "title": "Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認"
+      "title": "Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Google Oneのファミリー共有を使うと家族もGoogle AntigravityやGemini Proを使えますか？",
+      "answer": "はい。Google One公式ヘルプでは、Geminiアプリ、Google Antigravity、NotebookLM、AIクレジットがファミリーグループ共有の対象特典に含まれています（対象年齢や居住国などの条件あり）。"
+    },
+    {
+      "question": "ファミリー共有でAntigravityを使うとき、使用量の上限はメンバーごとに別々ですか？",
+      "answer": "いいえ。AntigravityやGoogle Flowなどの一部機能では、使用量上限が各メンバー個別ではなく「ファミリーグループ全体」で1つの枠を共有する仕様のため、複数人で同時にヘビー利用すると早く上限に達します。"
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-# AIエージェントのトークンを減らすには？ ASTと部分読みの使い分け
+# AIエージェントのトークン節約：AST解析とファイル部分読みの使い分け
 
 > 全文を何度も読む、テストログを大量に渡す。その前にできることと、情報を削りすぎて手戻りになる境界を整理します。
 
@@ -47,6 +47,13 @@ Claude Codeの公式資料は、コンテキスト管理、モデル選択、キ
 ### 効果を測るなら、完了までの費用を見る
 同じ変更対象と受け入れ条件で、通常の読み方と部分読みを比べます。モデル、実行日、入力・出力・キャッシュの各量、再試行、所要時間、テスト結果を残し、作業が完成したところまで比較します。要約ツールや別エージェントを使った費用も合計に含めます。試行回数が少ない結果は個別事例にとどまり、一般的な削減率の根拠にはできません。
 
+## よくある疑問と回答 (FAQ)
+### Q. AIコーディングエージェントのトークン消費を減らす一番確実な方法は何ですか？
+A. 大きなファイルを毎回全文読み込みさせるのではなく、まず検索（grep）や行範囲指定の部分読みで該当関数を特定し、テスト実行ログも失敗箇所の前後だけを渡すように制御することが最も効果的です。
+
+### Q. AST（抽象構文木）で関数一覧だけを渡せばトークン節約になりますか？
+A. ファイルの骨格把握には有効ですが、実際のバグ修正では関数内部の実装や呼び出し元の引数が必要になるため、ASTだけで済ませようとすると再読み込みが増えてかえって往復トークンが増える場合があります。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -57,5 +64,5 @@ Claude Codeの公式資料は、コンテキスト管理、モデル選択、キ
 - [OpenAI：Prompt Caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
 ## 次に考えたいこと
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
-- [AIコードレビューを別の会話・モデルに任せる価値は？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [AIコードレビュー比較：別の会話・別モデルに任せる価値はある？](https://nodus-lab.pages.dev/articles/cross-model-peer-audit-bug-detection-benchmarks)

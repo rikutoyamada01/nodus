@@ -1,7 +1,7 @@
 {
   "slug": "esp32-s3-dual-usb-ports-uart-native-otg-guide",
-  "title": "ESP32-S3開発ボードにUSB端子が2つある理由：UARTとネイティブUSBの使い分け",
-  "display_title": "ESP32-S3の2つのUSB端子、どっちに挿す？",
+  "title": "ESP32-S3（DevKitC-1等）にUSB端子が2つある理由：UART端子とUSB（OTG/JTAG）の使い分け",
+  "display_title": "ESP32-S3の2つのUSB端子（UARTとUSB OTG/JTAG）、どっちに挿す？",
   "subtitle": "ESP32-S3ボードに「UART（またはCOM）」と「USB（またはOTG）」の2つのUSB-C端子があるとき、プログラム書き込み・シリアル監視・USB機器エミュレーションでどちらを使うかを整理します。",
   "category": "Hardware & Power Electronics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式ESP-IDF技術資料を確認 / 個別互換ボードの実機測定なし",
   "methodology_note": "2026年10月16日にEspressif公式ESP-IDFプログラミングガイド（USB OTG Console、USB Serial/JTAG Controller Console、チップ比較表）を確認して整理した記事です。サードパーティ製互換ボードごとの回路差や給電電流の実測は行っていません。",
   "seo": {
-    "meta_title": "ESP32-S3のUSB端子が2つある理由：UART端子とUSB（OTG/JTAG）端子の違い | Nodus",
+    "meta_title": "ESP32-S3にUSB端子が2つある理由：UART端子とUSB（OTG/JTAG）の違い | Nodus",
     "meta_description": "ESP32-S3開発ボードに搭載された2つのUSBポート（USB-to-UARTブリッジ側とネイティブUSB GPIO19/20直結側）の役割の違い、書き込みやDeep Sleep時・USBデバイス動作時の注意点を公式資料から解説します。",
     "target_keywords": [
       "ESP32-S3 USB 2つ",
@@ -128,12 +128,21 @@
   "related_articles": [
     {
       "slug": "esp32-c3-s3-c6-which-board-to-choose",
-      "title": "ESP32、結局どれを買えばいい？"
+      "title": "ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い"
     },
     {
       "slug": "esp32-c6-matter-thread-border-router-requirements",
-      "title": "ESP32-C6を買えばMatterやThreadがすぐ使える？ ボーダールーターまで含めた必要機器"
+      "title": "ESP32-C6でMatter・Threadを使うには？ ボーダールーターと必要機器の条件"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "ESP32-S3-DevKitC-1などの「UART」と「USB」の2つのポートは普段どちらに挿せばいいですか？",
+      "answer": "通常のプログラム書き込みやシリアルモニター確認、Deep Sleepの実験では、外付け変換ICを経由してリセット時もポートが切断されにくい「UART」端子に挿すのが最も安定します。"
+    },
+    {
+      "question": "もう片方の「USB」端子（ネイティブUSB / GPIO19・20）はいつ使いますか？",
+      "answer": "ESP32-S3をPCからUSBキーボード・マウス（HID）やUSBメモリ（MSC）として認識させたい場合（USB OTG機能）や、外付けデバッガなしで内蔵USB Serial/JTAGデバッグを行う場合に使います。"
+    }
+  ]
 }

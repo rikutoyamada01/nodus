@@ -1,4 +1,4 @@
-# Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認
+# Immichのバックアップとリストア（復元）方法：写真フォルダと自動DBダンプの保存範囲
 
 > 自宅で写真管理サーバーImmichを運用するとき、画像ファイル本体だけを別HDDへコピーしていてもアルバムやユーザー情報が戻らない理由と、公式のバックアップ・復元手順を整理します。
 
@@ -39,6 +39,13 @@ Immichには障害復旧のための自動データベースバックアップ�
 データベースダンプと実体ファイルの両方が揃っていれば、復元はWebインターフェースまたはコマンドラインから行えます。公式ドキュメントでは、既存環境なら管理画面の「Administration > Maintenance」から利用可能なバックアップ一覧を選んで復元でき、実行前に自動でリストアポイント（ロールバック用）が作成される仕組みが説明されています。また、別マシンへ新規導入して初期画面（Onboarding）から復元する手順も用意されているため、写真データが数百GBに膨らむ前に、少量のテスト画像を入れた状態で一度「バックアップからの復元」を実際に試しておくと安心です。
 参照: [Immich Docs：Backup and Restore](https://immich.app/docs/administration/backup-and-restore/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Immichは写真が入っているフォルダ（library / upload）だけバックアップすれば復元できますか？
+A. いいえ。Immichはファイル配置やアルバム・人物情報をPostgreSQLデータベースで管理しており、写真フォルダを置いただけでは自動認識されないため、必ずデータベースのダンプファイルとセットで退避する必要があります。
+
+### Q. Immichの自動バックアップ機能で保存されるDBダンプはどこにありますか？
+A. 既定では `UPLOAD_LOCATION/backups` フォルダ内に毎日自動でデータベースダンプが出力されます。ただしこのダンプ自体には写真・動画の実体ファイルは含まれないため、フォルダ全体と `.env` を別ドライブやクラウドへ3-2-1ルールでコピーします。
+
 ## 記事の範囲
 2026年10月16日にImmich公式ドキュメント（Backup and Restore）およびDocker公式ドキュメントを確認して整理した記事です。特定のNASやストレージ環境における復元所要時間の実測は行っていません。
 
@@ -48,5 +55,5 @@ Immichには障害復旧のための自動データベースバックアップ�
 - [Docker Docs：Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/)
 
 ## 次に考えたいこと
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
-- [パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)

@@ -1,4 +1,4 @@
-# パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？
+# AIエージェントを24時間常駐させるなら？ ラズパイ・VPS・ミニPCの費用と選び方
 
 > ノートPCを閉じても記憶や定期処理を残したい。コードの修正も任せたい。推論・記憶・開発作業を分けて、常駐先の費用と選び方を考えます。
 
@@ -78,6 +78,13 @@ Dockerのバインドマウントは、ホスト側のフォルダをコンテ�
 ### まず手持ち機器で、1週間だけ記録する
 毎晩の要約1件、検索、コードの小さな修正など、普段使う仕事を固定して試します。成功したか、待ち時間、メモリ使用量、API費用、確認にかかった時間を残し、再起動後に処理が戻るかも確かめます。ARM対応を確認でき、処理が収まるなら手持ちのラズパイも候補です。自宅の電源や回線から切り離すことを優先するならVPS、同じ機器で開発作業もまとめたいならミニPCを比べます。機器の購入は、記録から足りないものが分かってからでも遅くありません。
 
+## よくある疑問と回答 (FAQ)
+### Q. AIエージェントを24時間常駐させるのにラズパイ（Raspberry Pi）でも足りますか？
+A. 推論自体は外部のLLM APIに任せ、定期実行（cron）やチャットBotの待ち受け・軽量な記憶データベースだけを動かす構成であればRaspberry Piでも十分に常駐運用できます。
+
+### Q. 自宅のミニPCとクラウドVPSはどう使い分ければいいですか？
+A. 自宅の停電やネットワーク設定の影響を受けずに外部Webhook等を安定して受けたいなら小型VPS、Dockerコンテナのビルドやローカル開発作業・大容量メモリを月額固定費なしで回したいならミニPCが向いています。
+
 ## 記事の範囲
 2026年10月15日に公式資料と公開料金表を確認した選び方の記事です。さくらのVPSは料金ページをブラウザで月額払い・石狩リージョンに切り替えて確認しました。自宅構成の金額・電力・電気料金単価は計算例の仮定であり、特定製品の実売価格や実測値ではありません。機器の購入、各構成でのインストール・性能測定、API利用料の実測は行っていません。比較表の用途別評価は編集上の判断です。公開質問や日本語の解説記事は企画の参考とし、利用者数・検索数・性能の根拠にはしていません。
 
@@ -95,6 +102,6 @@ Dockerのバインドマウントは、ホスト側のフォルダをコンテ�
 - [Docker：Engineのセキュリティ](https://docs.docker.com/engine/security/)
 
 ## 次に考えたいこと
-- [パーソナルAIのサブスク・API・自宅運用を比べる](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [自宅サーバー用ミニPCの電力・端子・保守を確認する](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
-- [手持ちのMacでローカルLLMを試す](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

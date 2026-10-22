@@ -1,4 +1,4 @@
-# Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？
+# Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLの検索インデックスとAccess制限
 
 > GitHub連携でブランチごとに自動生成されるプレビューURLや元の .pages.dev サブドメインが、検索エンジンに重複登録されるのを防ぐ公式仕様と確認手順を整理します。
 
@@ -35,6 +35,13 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 参照: [Cloudflare Pages Docs：Preview deployments](https://developers.cloudflare.com/pages/configuration/preview-deployments/)
 参照: [Cloudflare Pages Docs：Custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Cloudflare Pagesでブランチごとに作られるプレビューURLはGoogle検索に載りますか？
+A. プレビューデプロイメントには検索エンジン向けの `X-Robots-Tag: noindex` ヘッダが付与される仕様ですが、URL自体を知っていれば初期状態では誰でもブラウザで開けるため、非公開にするにはCloudflare Accessの有効化が必要です。
+
+### Q. 独自ドメインを設定した後も `*.pages.dev` が検索結果に残るのを防ぐにはどうすればいいですか？
+A. 全ページの `<link rel="canonical">` と `sitemap.xml` のURLを正規ドメインに統一したうえで、必要に応じてBulk Redirects等で `*.pages.dev` から独自ドメインへ301リダイレクトを設定します。
+
 ## 記事の範囲
 2026年10月16日にCloudflare Pages公式ドキュメント（Preview deployments、Custom domains）を確認して整理した記事です。
 
@@ -44,6 +51,6 @@ Cloudflare PagesをGitHubリポジトリと連携している場合、`main` な
 - [Cloudflare Pages Docs：Custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
 ## 次に考えたいこと
-- [安いクラウドバックアップで100GBを戻すといくら？ 保存料金と下り転送費用の比較](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
-- [Search Consoleとアクセス解析、なぜ数字が合わない？](https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide)
-- [自宅アプリの共有、VPNとTunnelどっち？](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)
+- [クラウドバックアップ比較：Cloudflare R2とBackblaze B2の保存・復元費用](https://nodus-lab.pages.dev/articles/cloud-backup-100gb-restore-egress-cost-comparison)
+- [Search Consoleとアクセス解析（GA4等）、なぜクリック数と訪問数が合わない？](https://nodus-lab.pages.dev/articles/gsc-clicks-vs-ga4-zero-analytics-discrepancy-guide)
+- [Cloudflare TunnelとTailscaleの違い：自宅サーバー・アプリ共有の選び方](https://nodus-lab.pages.dev/articles/home-server-access-vpn-vs-cloudflare-tunnel-guide)

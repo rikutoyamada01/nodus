@@ -1,4 +1,4 @@
-# CO₂センサーの「400ppm」は本物の二酸化炭素か推定値か？ 換気計を自作する前の選び方
+# 自作CO₂センサーの選び方：本物の二酸化炭素（SCD40/SCD41）と推定eCO₂（SGP30）の違い
 
 > ESP32で部屋の二酸化炭素濃度計を自作するとき、数百円のガスセンサー（eCO₂）と数千円の光学式センサー（SCD40/SCD41等）で測っているものがどう違うのかを公式資料から整理します。
 
@@ -38,6 +38,13 @@ CO₂を直接測定できるSCD40/SCD41等のモジュールは単体でも数�
 参照: [ESPHome Docs：SCD4X CO₂, Temperature and Relative Humidity Sensor](https://esphome.io/components/sensor/scd4x.html)
 参照: [ESPHome Docs：SGP30 CO₂ and Volatile Organic Compound Sensor](https://esphome.io/components/sensor/sgp30.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 通販で安いCO₂センサーモジュールを買ったらアルコール消毒液で数値が跳ね上がるのはなぜですか？
+A. 仕様欄に「eCO₂」や「CO₂eq」と書かれているセンサー（SGP30等）は、二酸化炭素そのものではなく揮発性有機化合物（TVOC）や水素濃度から推定値を計算しているため、アルコールや料理の匂いに強く反応します。換気指標にはSCD40/SCD41やMH-Z19系などの光学式（NDIR・光音響式）を選びます。
+
+### Q. ラズパイやArduino・ESP32でSCD40/SCD41を使うときの注意点はありますか？
+A. センサー上部の白い保護フィルム（メンブレン）は防塵・透湿用なので絶対に剥がさないでください。また、マイコン基板の発熱が伝わると温度・CO₂補正がずれるため、配線を分けるかスリット入りのケースで熱を逃がします。
+
 ## 記事の範囲
 2026年10月16日にESPHome公式ドキュメント（Sensirion SCD4XおよびSGP30コンポーネント仕様）を確認して整理した記事です。各センサーモジュールの実売価格調査や同一室内での数値比較テストは行っていません。
 
@@ -47,5 +54,5 @@ CO₂を直接測定できるSCD40/SCD41等のモジュールは単体でも数�
 - [ESPHome Docs：SGP30 CO₂ and Volatile Organic Compound Sensor](https://esphome.io/components/sensor/sgp30.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)

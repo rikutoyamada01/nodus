@@ -1,7 +1,7 @@
 {
   "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
-  "title": "外付けSSDは完成品か、ケースと中身を別々に買うか",
-  "display_title": "外付けSSDは完成品か、ケースと中身を別々に買うか",
+  "title": "外付けSSDは自作（M.2ケース）と完成品のどっち？ USB4の速度・発熱デメリットとMac対応",
+  "display_title": "外付けSSDは自作（ケース＋M.2）か完成品か？ USB4の発熱デメリットと費用比較",
   "subtitle": "USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。",
   "category": "Hardware & Power Electronics",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の41件集計、機種別の持続速度・温度・キャッシュ容量、Mac全機種への速度の一般化は、採用データと条件を追跡できないため撤回しました。完成品と組み合わせ型の選び方へ改訂しました。",
   "seo": {
-    "meta_title": "???SSD???????????????USB4???????????? | Nodus",
+    "meta_title": "外付けSSDは自作と完成品のどっち？ USB4の発熱デメリット・Mac対応を比較 | Nodus",
     "meta_description": "USB4の速さだけで選ばない。PC側の対応、長いコピー、放熱、保証、送料まで含めて、完成品と組み合わせ型を比較します。",
     "target_keywords": [
       "外付けSSD 自作 完成品 比較",
@@ -108,24 +108,33 @@
       "scope": "メーカー公称仕様と完成品・組み合わせ型の案内。独自の連続書込測定ではありません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "外付けSSDをM.2 NVMe＋USB4ケースで自作するメリットとデメリットは何ですか？",
+      "answer": "中身のSSD銘柄（DRAM搭載やTLC等）を自分で選べて将来の容量交換もしやすいのがメリットですが、ケースとSSDの相性問題やサーマルパッドの貼り方による発熱・突然の切断を自分で切り分ける必要がある点がデメリットです。"
+    },
+    {
+      "question": "Mac（MacBook）で外付けSSDを使うときに速度が出ないのを防ぐには？",
+      "answer": "MacはUSB 3.2 Gen 2x2（20Gbps）に非対応のため、20Gbps対応ケースをつないでも10Gbps（実測約900〜1,000MB/s）に制限されます。Macで高速転送したい場合は10Gbpsクラスでコスパを取るか、40Gbps対応のUSB4 / Thunderboltケースを選びます。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "diy-or-ready-made-total-cost",
-      "title": "それ、自作したほうが安い？"
+      "title": "自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？"
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "ローカルLLM用に買うなら、MacかGPUか"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     },
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
-      "title": "100W・140W充電器は必要？ ポート配分と使い方から選ぶ",
+      "title": "100W・140W USB-C充電器は必要？ 65Wとの違いと複数ポート配分",
       "category": "Hardware & Power Electronics"
     },
     {
       "slug": "mechanical-hall-effect-keyboards-rapid-trigger-input-latency-tests",
-      "title": "磁気式キーボードは必要？ 8000Hzとラピッドトリガーの読み方",
+      "title": "磁気式キーボードは必要？ メカニカルとの違い・デメリットと8000Hzの読み方",
       "category": "Hardware & Power Electronics"
     }
   ]

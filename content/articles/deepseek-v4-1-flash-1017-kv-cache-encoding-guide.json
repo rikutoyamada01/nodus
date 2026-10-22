@@ -1,7 +1,7 @@
 {
   "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
-  "title": "DeepSeek-V4.1-Flash-1017は何が異常なのか：890B/tokenのKV圧縮とencoding.pyの内部仕様",
-  "display_title": "DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？",
+  "title": "DeepSeek-V4.1-Flash-1017の内部仕様：890B/tokenのKV圧縮とencoding.py・APIの設計",
+  "display_title": "DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計",
   "subtitle": "2026年10月17日公開のDeepSeek-V4.1-Flash-1017について、表面的なベンチマーク順位だけでなく、config.jsonとencoding.pyから読み解ける非対称CED構造、KVキャッシュ圧縮、プロトコル仕様、Search/Fetch APIの課金境界を整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -22,7 +22,7 @@
   "evidence_notice": "公式リポジトリ（config.json / encoding.py）・API料金表・GitHub Issue等のコミュニティ報告を確認 / Nodusの独自実測なし",
   "methodology_note": "2026年10月17日に公開されたHugging Faceのdeepseek-ai/DeepSeek-V4.1-Flash-1017およびDeepSeek-V4.1-Flash公式リポジトリ内のconfig.json、encoding/encoding.py、encoding/README.md、DeepSeek API公式ドキュメント（Models & Pricing、Search & Fetch Guide、Release 2026/10/17）、ならびにGitHub Issue・Reddit等の開発者コミュニティで報告されているコード修正時のトラブル事例を参照して整理した記事です。Nodusによる実機クラスタでの推論速度計測やベンチマークの再実行は行っていません。",
   "seo": {
-    "meta_title": "DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計 | Nodus",
+    "meta_title": "DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.py・API設計 | Nodus",
     "meta_description": "DeepSeek-V4.1-Flash-1017のCausal Encoder-Decoder（入力8B/出力16B）、890バイト/トークンのKVキャッシュ圧縮、encoding.pyのdrop_thinking制御やDSMLタグ仕様、実運用で報告されている125k文脈以降のコード破損要因を解説します。",
     "target_keywords": [
       "DeepSeek-V4.1-Flash-1017",
@@ -241,12 +241,21 @@
   "related_articles": [
     {
       "slug": "gemini-api-prompt-caching-implicit-explicit-cost-guide",
-      "title": "長いシステムプロンプトを毎回払う？ Gemini APIのキャッシュ仕様と最小トークン条件"
+      "title": "Gemini APIのプロンプトキャッシュ：Implicit/Explicitの違いと料金・最小トークン条件"
     },
     {
       "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-      "title": "AIコーディングの契約と利用枠を確認する"
+      "title": "AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "DeepSeek-V4.1-Flash-1017は旧リビジョン（0731等）や通常のFlashモデルと何が違いますか？",
+      "answer": "552B MoE＋196B Engramの巨大バックボーンを持ちながら、40層をEncoder（入力8B）とDecoder（出力16B）に分割し、メインKVキャッシュを40層中4層に絞ることで890バイト/トークンの極小KVフットプリントを実現しています。"
+    },
+    {
+      "question": "ツール呼び出し（Tool Calls）を使うときにAPIキャッシュが効き続けるのはなぜですか？",
+      "answer": "公式の `encoding.py` では `tools` 定義が存在する場合に過去ターンの `<think>` ブロック削除（`drop_thinking`）を自動で無効化し、プロンプト先頭からのプレフィックス一致を壊さないことでキャッシュヒットを維持する設計になっています。"
+    }
+  ]
 }

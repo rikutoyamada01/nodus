@@ -1,4 +1,4 @@
-# 「デュアル4K対応」のUSB-CドックでMacも2画面に拡張できる？ チップ上限と接続方式の確認
+# Macのデュアルディスプレイ設定：「デュアル4K対応ドック」で2画面に拡張できない理由とThunderbolt選び
 
 > Windows向けに「USB-C 1本で4K 2画面出力」と書かれたドックをMacBookにつないだとき、2枚のモニターに同じ画面しか映らない（ミラーリングになる）原因と選び方を整理します。
 
@@ -34,6 +34,13 @@
 Mac本体が2台以上の外部ディスプレイに対応しているモデルであり、かつケーブル1本だけで2枚のモニターへ別々の画面を出したい場合は、単なるUSB-Cマルチハブではなく、macOSでのデュアルディスプレイ拡張に対応した「Thunderbolt 4 / 5ドック」を選ぶ必要があります。ただしThunderboltドックは本体価格が高いため、「充電と1枚目のモニターはドック経由にし、2枚目のモニターだけはMac本体の別のThunderboltポートやHDMIポートへ直接挿す」という運用が許容できるなら、高価なドックへ買い替えなくても手持ちのケーブルだけで解決できます。
 参照: [Apple Support：How many displays can be connected to MacBook Pro](https://support.apple.com/en-us/101571)
 
+## よくある疑問と回答 (FAQ)
+### Q. Windows用の「デュアル4K対応USB-Cドック」をMacにつなぐと同じ画面（ミラーリング）になるのはなぜですか？
+A. macOSはDisplayPort MST（1本の映像信号をハブ内部で複数画面に分割する方式）による画面拡張に対応していないため、MST方式の安価なUSB-Cハブを使うと2枚の外部モニターに同じ画面が表示されます。
+
+### Q. MacBookでケーブル1本から2枚の外部ディスプレイを別々に拡張するにはどう選べばいいですか？
+A. まず自分のMacのチップ（無印 / Pro / Max）が標準で外部2画面以上に対応しているかをApple公式仕様で確認したうえで、Thunderbolt 4 / USB4ネイティブ対応ドックを選ぶか、Mac本体の2つのポートへ別々に接続します。
+
 ## 記事の範囲
 2026年10月16日にApple公式サポート文書（MacBook Proに接続できるディスプレイの台数）を確認して整理した記事です。特定のサードパーティ製ドック製品での相性テストは行っていません。
 
@@ -42,5 +49,5 @@ Mac本体が2台以上の外部ディスプレイに対応しているモデル�
 - [Apple Support：How many displays can be connected to MacBook Pro](https://support.apple.com/en-us/101571)
 
 ## 次に考えたいこと
-- [USB4外付けSSD、公称40Gbpsだけで選んでいい？](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [外付けSSDは自作（ケース＋M.2）か完成品か？ USB4の発熱デメリットと費用比較](https://nodus-lab.pages.dev/articles/external-ssd-usb4-40gbps-sustained-write-thermal-throttling)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

@@ -1,4 +1,4 @@
-# ColabのGPUは何時間使える？ CUと完了までの費用の考え方
+# ColabのGPUは何時間使える？ GPU種類別のCU消費・使用量上限と完了費用の考え方
 
 > GPUごとの固定時間表ではなく、手元の残高・表示レート・実行時間から費用を見積もります。Colab、時間課金GPU、自宅PCの使い分けも整理します。
 
@@ -44,6 +44,13 @@ Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変�
 ### Colab、クラウド、自宅の境界
 ノートブックの手軽さを求めるならColab、特定の資源や実行条件を指定したいならそれを提供するクラウド、同じ小さな処理を頻繁に行うなら手元のPCが候補になります。最安の順位は、実行する仕事、必要なGPU、契約、利用頻度を決めてから検証します。
 
+## よくある疑問と回答 (FAQ)
+### Q. Google ColabのGPU（T4・L4・A100等）は100コンピューティングユニット（CU）で何時間使えますか？
+A. CUの消費レート（CU/時間）はGPUの種類や混雑状況によって変動するため、固定の時間表を鵜呑みにせず、接続後のリソースモニターに表示される現在の消費レートと手元の残高から稼働可能時間を計算します。
+
+### Q. Colabのセッション切断や使用量上限で学習がやり直しになるのを防ぐには？
+A. エポックごとや一定ステップごとにチェックポイントをGoogle Drive等の外部ストレージへ保存し、再接続時に最新チェックポイントから自動再開するコードを最初から組み込んでおくのが鉄則です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -52,5 +59,5 @@ Googleの公式FAQは、利用制限、GPUの種類、実行時間などが変�
 - [Google Colab：FAQとリソース制限](https://research.google.com/colaboratory/faq.html)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [ローカルLLM用に買うなら、MacかGPUか](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)

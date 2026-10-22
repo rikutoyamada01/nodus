@@ -1,4 +1,4 @@
-# LLM APIの速さは、何を測って比べればいい？
+# LLM APIの速度・料金比較：TTFT（最初の1文字までの応答時間）とスループットの測り方
 
 > 最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。
 
@@ -46,6 +46,13 @@ OpenAIの公式資料は、ストリーミングによる早い表示や、入�
 ### 別のAPIへ切り替える前に
 まず長すぎる出力、不要な直列呼び出し、データ読み込み、アプリ側のバッファリングを確認します。別のモデルに切り替えると、品質や対応機能、料金、データの送信先も変わる場合があります。障害時の代替構成も、同じ結果を出せるかと二重実行を防げるかを検証してから導入します。切替先を増やすだけで速さや可用性が保証されるわけではありません。
 
+## よくある疑問と回答 (FAQ)
+### Q. LLM APIの「TTFT」と「スループット（tok/s）」はどちらを重視して比較すべきですか？
+A. チャットUIでユーザーの体感待ち時間を減らしたいなら最初の文字が出るまでの「TTFT（Time To First Token）」、バッチ処理やコード全体の生成完了時間を短縮したいなら「出力スループット（tokens/s）」と全文完了時間を重視します。
+
+### Q. 同じモデルなのにAPIプロバイダーや時間帯によって遅いと感じるときは何を確認しますか？
+A. プロンプトキャッシュのヒット有無、推論トークン（Thinking / Reasoning）の出力長、ストリーミング設定を揃えたうえで、平均値だけでなくp95（遅い上位5%）の完了時間を記録して比較します。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -55,5 +62,5 @@ OpenAIの公式資料は、ストリーミングによる早い表示や、入�
 - [OpenAI：Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
 ## 次に考えたいこと
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [AIコーディングのサブスクとAPI、費用をどう比べる？](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)

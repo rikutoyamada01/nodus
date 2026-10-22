@@ -1,4 +1,4 @@
-# 自宅サーバー用ミニPC、CPU名だけで選んでいい？
+# 自宅サーバー用ミニPCのおすすめの選び方：CPU名よりアイドル消費電力・静音性・VPS比較
 
 > RyzenやNPUの数字より、常時稼働の電力、メモリ、端子、静かさ。VPSと比べる費用も含めて選びます。
 
@@ -45,6 +45,13 @@ AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています
 ### 増設と運用まで含めて、VPSと比べる
 ベアボーンならRAMとSSD、必要ならOS、バックアップ先も費用に含めます。SSDの実装面や厚み、メモリ容量は正確な型番の説明書で確認してください。NPU搭載だけで目的のAIソフトが動くとは限りません。購入を判断する際は、メモリや端子の要件を満たせるかに加え、故障対応やソフトの更新にかかる手間を引き受けられるかも考えます。
 
+## よくある疑問と回答 (FAQ)
+### Q. 自宅サーバー用のミニPCを選ぶとき、CPUのTDP（35W〜54W等）から電気代を計算できますか？
+A. TDPは高負荷時の放熱設計の目安であり、24時間稼働の自宅サーバーでは大半の時間を占める「アイドル時のコンセント消費電力（数W〜十数W）」の方が年間の電気代に大きく影響します。ワットチェッカー等で実測されたシステム全体の待機電力を確認します。
+
+### Q. ミニPCの自宅サーバーとクラウドVPSはどちらが得ですか？
+A. メモリ32GB〜64GBや大容量SSDを使う環境ならミニPCの買い切りの方が数年トータルで安くなりやすい一方、初期費用を抑えて電気代・ファン騒音・停電対策を手放したいならVPSが適しています。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -53,7 +60,7 @@ AMDはRyzen 7 8845HSについてDefault TDPとcTDPの範囲を示しています
 - [AMD：Ryzen 7 8845HS公式仕様](https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html)
 
 ## 次に考えたいこと
-- [常駐AI用ならラズパイ・VPS・ミニPCのどれ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
-- [パーソナルAIは、どこに置く？](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
-- [MacでローカルLLMは動く？必要メモリとGPUとの選び方](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
-- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
+- [AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？](https://nodus-lab.pages.dev/articles/always-on-personal-ai-raspberry-pi-vps-mini-pc)
+- [パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方](https://nodus-lab.pages.dev/articles/personal-ai-vps-home-server-subscription)
+- [MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較](https://nodus-lab.pages.dev/articles/local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt)
+- [ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)

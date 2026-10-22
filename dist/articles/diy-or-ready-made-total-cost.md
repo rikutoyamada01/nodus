@@ -1,4 +1,4 @@
-# それ、自作したほうが安い？
+# 自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？
 
 > 温湿度計やスマートホームを例に、部品代・作業時間・保守まで含めて、既製品と比べるための考え方。
 
@@ -38,6 +38,13 @@
 ### まず比べたいのは、温湿度計
 今後の検証では、ESP32とセンサーで作る温湿度計と、既製のスマート温湿度計を比較する予定です。同じ設置場所で測定値、欠測、電池交換、設置までの時間を記録し、電源方式や連携機能が違えば、その差も明記します。現時点では比較機種の購入や測定をしていないため、特定製品より安い・正確という結論は出していません。
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32やラズパイでの自作が既製品より安くなるのはどんな場合ですか？
+A. 1台だけ作る場合はケース・電源・送料・予備部品で既製品より高くなりやすいですが、同じセンサーを複数部屋に展開する場合や、市販品にない複数センサー統合・ローカル連携が必要な場合に自作の費用対効果が出ます。
+
+### Q. NASやPCを自作するのと完成品を買うのではどこで差がつきますか？
+A. パーツ単価だけでなく、24時間稼働時のアイドル消費電力（電気代）、OS・バックアップ設定の手間、故障時に自分でパーツを切り分ける保守時間を含めて比較する必要があります。
+
 ## 記事の範囲
 公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。
 
@@ -47,7 +54,7 @@
 - [Home Assistant：ハードウェア選びと導入](https://www.home-assistant.io/getting-started/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [CO₂センサー、実測式と推定式の見分け方は？](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
-- [100W・140W充電器は必要？ ポート配分と使い方から選ぶ](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
-- [ポータブル電源をUPS代わりにする前に、何を確認する？](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作CO₂センサーの選び方：実測式（SCD40/41）と推定式eCO₂（SGP30）の見分け方](https://nodus-lab.pages.dev/articles/co2-sensor-ndir-vs-eco2-tvoc-selection-guide)
+- [100W・140W USB-C充電器は必要？ 65Wとの違いと複数ポート配分](https://nodus-lab.pages.dev/articles/100w-140w-gan-charger-thermal-throttling-real-world-tests)
+- [ポータブル電源をUPS代わりにする前に：切替時間・待機電力・NAS停止の確認](https://nodus-lab.pages.dev/articles/portable-power-station-ups-switchover-time-idle-drain-tests)

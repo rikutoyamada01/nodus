@@ -1,4 +1,4 @@
-# Wi-Fi 7へ買い替える前に、回線・端末・置き場所を確認する
+# Wi-Fi 7ルーターは必要？ Wi-Fi 6との違い・6GHz・MLO・対応スマホと買い替え判断
 
 > MLOや6GHzに投資する価値はある？ ネット回線、宅内転送、壁越しの通信を分けて、改善したい場所から考えます。
 
@@ -45,6 +45,13 @@ TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なる�
 ### IoT機器も含めて、導入後を考える
 既存のスマート家電が使う帯域と暗号化方式、ルーターのSSID設定、ゲストネットワークなどの対応を確認します。問題が起きても「Wi-Fi 7は古い機器が必ずつながらない」と一括りにしません。常時稼働の電気代を比べるなら、機種の実測電力と契約単価で計算します。買い替え後は元と同じ場所・端末で測り、改善したか確かめます。
 
+## よくある疑問と回答 (FAQ)
+### Q. Wi-Fi 7ルーターに買い替えれば、従来のスマホやPCでも通信速度は速くなりますか？
+A. 6GHz帯や320MHz幅、MLO（マルチリンクオペレーション）の恩恵を受けるにはスマホ・PC側もWi-Fi 7（IEEE 802.11be）に対応している必要があります。またインターネット回線自体が1Gbps契約なら、無線だけ速くしても外向けの速度上限は変わりません。
+
+### Q. 隣の部屋や2階でWi-Fiが遅い場合、Wi-Fi 7ルーター1台に替えれば解決しますか？
+A. 高速な6GHz帯は周波数が高いため壁や床などの障害物による減衰を受けやすい特性があります。部屋をまたぐ減衰が原因なら、世代を上げる前にルーターの設置場所見直しや有線バックホール・中継構成を検討する方が効果的です。
+
 ## 記事の範囲
 公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。
 
@@ -53,5 +60,5 @@ TP-LinkのDeco BE9300公式ページは、公称値と実効速度が異なる�
 - [TP-Link：Deco BE9300の仕様と条件注記](https://www.tp-link.com/uk/home-networking/deco/deco-be9300/)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自宅サーバー用ミニPC、CPU名だけで選んでいい？](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較](https://nodus-lab.pages.dev/articles/mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests)

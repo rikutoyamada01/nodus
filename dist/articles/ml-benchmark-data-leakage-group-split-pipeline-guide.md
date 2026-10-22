@@ -1,4 +1,4 @@
-# 機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ
+# 機械学習のデータリーク（Data Leakage）とは？ 話者リークと学習パイプライン内の再分割バグ
 
 > 検証環境では高精度なのに本番・展示会場で全く動かない最大の原因である「データリーク（Data Leakage）」と「ベンチマーク設計の不備」を解説。話者・セッション独立分割の崩壊、学習スクリプト内部で勝手に再分割するバグ、テスト結果のサンプラー逆流を防ぐ手順をまとめました。
 
@@ -46,6 +46,13 @@
 参照: [scikit-learn User Guide: Cross-validation: evaluating estimator performance (GroupKFold)](https://scikit-learn.org/stable/modules/cross_validation.html)
 参照: [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 機械学習のデータリーク（Data Leakage）が起きるとどんな症状が出ますか？
+A. 学習・検証（Val/Test）での正答率は90%以上と非常に高いのに、学習データに含まれない新しい人物（未知話者）や別の日・別の場所で実機テストした瞬間に精度が急落します。
+
+### Q. 事前にTrainとValのCSVを分けていたのにデータリークが起きるのはなぜですか？
+A. 前処理スクリプトや学習ラッパーが一度TrainとValを結合して特徴量を作り、学習コード内部の `train_test_split` でランダムに再分割してしまうことで、同一人物のデータが両方に混ざる実装バグがよく発生します。SHA-256ハッシュと人物IDで交差ゼロを自動検査します。
+
 ## 記事の範囲
 2026年10月16日にscikit-learn公式ガイド（Common pitfalls: Data leakage、GroupKFold）を確認し、音声・画像認識プロジェクトにおけるデータ分割・前処理・サンプラー設計の監査項目を整理した記事です。文中の件数や比率はリーク構造を説明するための再現・計算例です。
 
@@ -56,6 +63,6 @@
 - [scikit-learn User Guide: Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
 ## 次に考えたいこと
-- [機械学習で「全体の正答率（Accuracy）」だけ見ると失敗する理由：混同行列・Balanced Accuracy・誤り内訳の読み方](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
-- [学習データにノイズ・対象外（other）クラスを入れないと実機で何が起きるか：誤受理率と誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
-- [合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
+- [混同行列の見方とBalanced Accuracy：全体の正答率だけ見ると失敗する理由](https://nodus-lab.pages.dev/articles/ml-accuracy-trap-confusion-matrix-balanced-accuracy-guide)
+- [機械学習のノイズ誤認識対策：対象外（other）クラスと誤受理率・誤拒否率の設計](https://nodus-lab.pages.dev/articles/ml-noise-other-class-false-acceptance-evaluation-guide)
+- [合成データ（TTS・画像生成）を機械学習に使う注意点：精度向上と錯覚する5つの罠](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)

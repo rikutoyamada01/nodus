@@ -1,7 +1,7 @@
 {
   "slug": "ollama-context-length-vram-default-memory-guide",
-  "title": "Ollamaで128k対応モデルを入れたのに何トークン読める？ VRAM別既定値と変更手順",
-  "display_title": "Ollamaの文脈長、既定値は何トークン？",
+  "title": "Ollamaのコンテキスト長（num_ctx）のデフォルト確認と変更・設定方法：VRAM別の目安",
+  "display_title": "Ollamaのコンテキスト長：デフォルトは何トークン？ 変更・設定・確認方法",
   "subtitle": "128kや256k対応のローカルLLMをダウンロードしたのに長い文章を途中で忘れるとき、実際に割り当てられているコンテキスト長の確認方法と設定手順を公式資料から整理します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式ドキュメント・FAQを確認 / 実機でのVRAM消費量測定なし",
   "methodology_note": "2026年10月16日にOllama公式ドキュメント（Context length、FAQ、CLI Reference）を確認して整理した記事です。コンテキスト長ページ（VRAM別4k/32k/256k）とFAQページ（4096トークン）の記載差も含めて照合しています。各モデルでの実測メモリ消費量や生成速度は測定していません。",
   "seo": {
-    "meta_title": "Ollama?????????num_ctx?????????VRAM???????? | Nodus",
+    "meta_title": "Ollamaのコンテキスト長（num_ctx）のデフォルト確認と変更・設定方法 | Nodus",
     "meta_description": "OllamaでローカルLLMを使う際のコンテキスト長（Context length）の既定値（VRAM 24GiB未満は4k等）、OLLAMA_CONTEXT_LENGTHやnum_ctxでの変更方法、ollama psでのGPU/CPU割当確認手順を解説します。",
     "target_keywords": [
       "Ollama コンテキスト長",
@@ -132,12 +132,21 @@
   "related_articles": [
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     },
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
-      "title": "パーソナルAIを24時間動かすなら、ラズパイ・VPS・ミニPCのどれ？"
+      "title": "AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Ollamaのコンテキスト長（Context length）のデフォルトは何トークンですか？",
+      "answer": "モデル自体が128kトークンに対応していても、Ollamaの既定ではVRAM 24GiB未満の環境で4k（4,096トークン）に設定されます。VRAM 24〜48GiBでは32k、48GiB以上では256kが既定値となります。"
+    },
+    {
+      "question": "Ollamaのコンテキスト長を変更・設定し、現在有効な値を確認する方法は？",
+      "answer": "環境変数 `OLLAMA_CONTEXT_LENGTH=64000` の指定、APIリクエストやModelfileでの `PARAMETER num_ctx 64000` 指定で変更できます。変更後は `ollama ps` コマンドを実行すると、現在ロードされているモデルの `CONTEXT` 列とGPU/CPU割当比率（`PROCESSOR`）を確認できます。"
+    }
+  ]
 }

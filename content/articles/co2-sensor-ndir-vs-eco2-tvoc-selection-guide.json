@@ -1,7 +1,7 @@
 {
   "slug": "co2-sensor-ndir-vs-eco2-tvoc-selection-guide",
-  "title": "CO₂センサーの「400ppm」は本物の二酸化炭素か推定値か？ 換気計を自作する前の選び方",
-  "display_title": "CO₂センサー、実測式と推定式の見分け方は？",
+  "title": "自作CO₂センサーの選び方：本物の二酸化炭素（SCD40/SCD41）と推定eCO₂（SGP30）の違い",
+  "display_title": "自作CO₂センサーの選び方：実測式（SCD40/41）と推定式eCO₂（SGP30）の見分け方",
   "subtitle": "ESP32で部屋の二酸化炭素濃度計を自作するとき、数百円のガスセンサー（eCO₂）と数千円の光学式センサー（SCD40/SCD41等）で測っているものがどう違うのかを公式資料から整理します。",
   "category": "Hardware & Power Electronics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式コンポーネント資料を確認 / センサー精度の実機比較測定なし",
   "methodology_note": "2026年10月16日にESPHome公式ドキュメント（Sensirion SCD4XおよびSGP30コンポーネント仕様）を確認して整理した記事です。各センサーモジュールの実売価格調査や同一室内での数値比較テストは行っていません。",
   "seo": {
-    "meta_title": "??CO2?????????????SCD40/SCD41????eCO2?SGP30????? | Nodus",
+    "meta_title": "自作CO2センサーの選び方：SCD40/SCD41（実測）とSGP30（推定eCO2）の違い | Nodus",
     "meta_description": "ESP32やESPHomeで室内の換気モニターを自作する際に知っておきたい、CO₂直接測定センサー（SCD4X等）とVOCから算出する推定二酸化炭素（eCO₂ / CO₂eq）センサー（SGP30等）の違い、校正・配置の注意点を解説します。",
     "target_keywords": [
       "CO2センサー 自作 SCD40",
@@ -110,12 +110,21 @@
   "related_articles": [
     {
       "slug": "esp32-c3-s3-c6-which-board-to-choose",
-      "title": "ESP32、結局どれを買えばいい？"
+      "title": "ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い"
     },
     {
       "slug": "diy-or-ready-made-total-cost",
-      "title": "自作は既製品より安い？ 部品代の外にある費用"
+      "title": "自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "通販で安いCO₂センサーモジュールを買ったらアルコール消毒液で数値が跳ね上がるのはなぜですか？",
+      "answer": "仕様欄に「eCO₂」や「CO₂eq」と書かれているセンサー（SGP30等）は、二酸化炭素そのものではなく揮発性有機化合物（TVOC）や水素濃度から推定値を計算しているため、アルコールや料理の匂いに強く反応します。換気指標にはSCD40/SCD41やMH-Z19系などの光学式（NDIR・光音響式）を選びます。"
+    },
+    {
+      "question": "ラズパイやArduino・ESP32でSCD40/SCD41を使うときの注意点はありますか？",
+      "answer": "センサー上部の白い保護フィルム（メンブレン）は防塵・透湿用なので絶対に剥がさないでください。また、マイコン基板の発熱が伝わると温度・CO₂補正がずれるため、配線を分けるかスリット入りのケースで熱を逃がします。"
+    }
+  ]
 }

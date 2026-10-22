@@ -1,6 +1,6 @@
 {
   "slug": "personal-ai-vps-home-server-subscription",
-  "title": "パーソナルAIは、どこに置く？",
+  "title": "パーソナルAIの作り方と置き場所：VPS・自宅サーバー・サブスクの費用と役割分担",
   "subtitle": "VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。",
   "category": "Cloud & AI Infrastructure",
   "kind": "guide",
@@ -19,7 +19,7 @@
   "sample_size_n": 0,
   "methodology_note": "公式資料を参照して選択の条件を整理した編集記事です。実機テスト、実売価格の調査、検索ボリュームの計測は行っていません。費用の数値は計算方法を示す仮定例であり、製品やサービスの現在価格・性能の保証ではありません。",
   "seo": {
-    "meta_title": "?????AI???????VPS????????????????????? | Nodus",
+    "meta_title": "パーソナルAIの作り方と置き場所比較：VPS・自宅サーバー・サブスクの費用 | Nodus",
     "meta_description": "VPS、自宅サーバー、大手のサブスク。「AIを動かす場所」と「記憶や自動化を置く場所」を分けて、費用と手間を比較します。",
     "target_keywords": [
       "パーソナルAIは、どこに置く？"
@@ -101,19 +101,29 @@
       "sample_size": 0
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "自分用のパーソナルAIエージェントを作るならVPSと自宅サーバーのどちらがいいですか？",
+      "answer": "重いLLMの推論自体は外部APIを使い、記憶データベースや24時間の自動通知・Botだけを動かすなら月数百円〜の軽量VPSで十分です。ローカルLLM自体の推論も手元で回したい場合は大容量メモリを備えた自宅PC・サーバーが候補になります。"
+    },
+    {
+      "question": "大手の月額AIサブスクと自作パーソナルAI（API＋サーバー）はどう使い分けますか？",
+      "answer": "日常の対話や調査は月額サブスクの方が定額で高性能モデルを使えます。一方、自分のメモや予定表と連携してバックグラウンドで自動処理させたい部分だけをAPI＋小型サーバーで切り出すと費用が膨らみません。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
-      "title": "パーソナルAIを24時間動かす常駐先を選ぶ"
+      "title": "AIエージェントの24時間常駐：ラズパイ・VPS・ミニPCのどれを選ぶ？"
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     },
     {
       "slug": "mini-pc-ryzen-ai-hx370-8845hs-sustained-tdp-fan-noise-tests",
-      "title": "自宅サーバー用ミニPC、CPU名だけで選んでいい？"
+      "title": "自宅サーバー用ミニPCの選び方：CPU名より消費電力・静音性とVPS比較"
     }
-  ]
+  ],
+  "display_title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
 }

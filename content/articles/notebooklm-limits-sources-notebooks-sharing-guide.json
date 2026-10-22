@@ -1,7 +1,7 @@
 {
   "slug": "notebooklm-limits-sources-notebooks-sharing-guide",
-  "title": "NotebookLM（Gemini Notebook）のノートブック分割と出力機能：資料整理で詰まらない使い方",
-  "display_title": "NotebookLM、資料はどう分けて入れる？",
+  "title": "NotebookLMのソース上限とノートブック分割：自動ラベル分類・削除・データテーブル出力の使い方",
+  "display_title": "NotebookLMのソース上限と分割方法：資料整理で詰まらないノートブック設計",
   "subtitle": "複数のノートブックをまたいで検索できるのか、初回生成されるレポートや音声解説は利用上限を消費するのか。公式ヘルプの仕様から資料投入の設計を整理します。",
   "category": "Software & SaaS Economics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式ヘルプ・プラン表を確認 / 大量資料投入時の独自実測なし",
   "methodology_note": "2026年10月16日にGoogle公式ヘルプ（Gemini Notebookでノートブックを作成する）およびGoogle Oneプラン表を確認して整理した記事です。特定のPDFファイルでのOCR精度や応答速度の独自測定は行っていません。",
   "seo": {
-    "meta_title": "NotebookLM?????????????????????? | Nodus",
+    "meta_title": "NotebookLMのソース上限とノートブック分割：資料整理・テーブル出力の使い方 | Nodus",
     "meta_description": "NotebookLM（Gemini Notebook）において複数ノートブックが独立して動作する仕様、5ソース以上での自動ラベル分類、Studioパネルのデータテーブル出力や初回自動生成と使用量上限の関係を公式ヘルプから解説します。",
     "target_keywords": [
       "NotebookLM ノートブック 分割",
@@ -122,12 +122,21 @@
   "related_articles": [
     {
       "slug": "google-ai-family-sharing-antigravity-pro-ultra-guide",
-      "title": "Google AIのファミリー共有でAntigravityも使える？ 共有される上限と対象条件"
+      "title": "Google AI Proのファミリー共有：Antigravityの利用枠と家族共有の注意点"
     },
     {
       "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
-      "title": "マルチホップRAGの2段目検索、直交減算でどこまで改善する？"
+      "title": "マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "NotebookLMで複数のノートブックに入れたソース（資料）をまたいで横断検索できますか？",
+      "answer": "いいえ。公式ヘルプの通り各ノートブックは完全に独立して動作するため、比較・統合して質問したい資料群は1つのノートブック内にまとめてソース追加する必要があります。"
+    },
+    {
+      "question": "1つのノートブックにたくさんのソースを入れたとき、特定のソースだけを対象に質問できますか？",
+      "answer": "はい。5つ以上のソースを追加すると自動でトピック分類・ラベル付けが行われるほか、ソース一覧のチェックボックスで参照させたい資料だけを選択・解除して回答を生成させられます。"
+    }
+  ]
 }

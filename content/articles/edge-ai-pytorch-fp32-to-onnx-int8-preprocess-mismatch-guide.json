@@ -1,7 +1,7 @@
 {
   "slug": "edge-ai-pytorch-fp32-to-onnx-int8-preprocess-mismatch-guide",
-  "title": "PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証",
-  "display_title": "PyTorchからONNX INT8量子化で精度が落ちる原因",
+  "title": "PyTorchからONNX INT8量子化で精度が落ちる原因：Calibration・前処理不一致と3段階検証",
+  "display_title": "ONNX INT8量子化で精度が落ちる原因：前処理不一致とCalibration検証",
   "subtitle": "GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。",
   "category": "Architecture",
   "kind": "guide",
@@ -22,7 +22,7 @@
   "evidence_notice": "公式ONNX Runtime・PyTorch資料を確認 / 記載のレイテンシ比率は一般的な構造例",
   "methodology_note": "2026年10月16日にONNX Runtime Quantization公式ドキュメントおよびPyTorch `torch.onnx` 公式ドキュメントを確認し、音声・画像モデルのONNX変換・INT8量子化時における前処理一致検証と推論グラフ分離の設計手順を整理した記事です。",
   "seo": {
-    "meta_title": "PyTorchで学習したモデルをONNX INT8量子化して実機へ載せるときに精度が落ちる原因：前処理不一致と段階的検証 | Nodus",
+    "meta_title": "ONNX INT8量子化で精度が落ちる原因：PyTorchとの前処理不一致とCalibration検証 | Nodus",
     "meta_description": "GPU上のPyTorch FP32では高精度だったモデルを、Raspberry Pi等のエッジ端末向けにONNX INT8量子化して載せると認識精度が変わってしまう原因を解説。学習時と推論時の前処理不一致、補助ヘッドの切り離し、3段階検証手順を整理します。",
     "target_keywords": [
       "ONNX INT8 量子化 精度低下",
@@ -110,16 +110,25 @@
   "related_articles": [
     {
       "slug": "streaming-ai-offline-accuracy-vs-realtime-timing-guide",
-      "title": "オフライン正答率は高いのに実機で使えない理由：ストリーミングAIにおける「内容一致率」と「発火タイミング一致率」の乖離"
+      "title": "ストリーミングAI：オフライン正答率は高いのに実機でタイミングがズレる理由"
     },
     {
       "slug": "hardware-change-camera-microphone-hyperparameter-regression-guide",
-      "title": "カメラ距離やマイク（スピーカーフォン）を変えたらAI認識精度が急落する理由：前処理ハイパーパラメータの前提崩壊と再校正"
+      "title": "カメラやスピーカーフォン変更でAI認識精度が急落する理由と前処理の再校正"
     },
     {
       "slug": "human-in-the-loop-labeling-prompt-vs-actual-input-guide",
-      "title": "実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計"
+      "title": "AIの継続学習：実機データで「出題＝正解ラベル」にしてはいけない理由"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "PyTorch（FP32）からONNX INT8へ量子化したときに認識精度が大きく落ちたら何を確認すべきですか？",
+      "answer": "いきなりINT8のCalibration（量子化誤差）だけを疑う前に、同一の検証データで『PyTorch FP32』『ONNX FP32』『ONNX INT8』の3段階を比較してください。ONNX FP32の時点で精度が落ちているなら、前処理の正規化ズレやラベル順序（labels.json）の不一致が原因です。"
+    },
+    {
+      "question": "ONNXエクスポート時に学習用の補助ヘッド（マルチタスク層）はどう扱うべきですか？",
+      "answer": "推論時に使わない補助ヘッドはONNXエクスポート用のラッパーで切り離し、既存の推論ランタイムと同じ入出力テンソル名・形状を維持することでエッジ端末へのドロップイン置換を安全に行えます。"
+    }
+  ]
 }

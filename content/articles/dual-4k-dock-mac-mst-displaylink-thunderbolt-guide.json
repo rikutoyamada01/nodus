@@ -1,7 +1,7 @@
 {
   "slug": "dual-4k-dock-mac-mst-displaylink-thunderbolt-guide",
-  "title": "「デュアル4K対応」のUSB-CドックでMacも2画面に拡張できる？ チップ上限と接続方式の確認",
-  "display_title": "デュアル4Kドック、Macでも2画面になる？",
+  "title": "Macのデュアルディスプレイ設定：「デュアル4K対応ドック」で2画面に拡張できない理由とThunderbolt選び",
+  "display_title": "Macのデュアルディスプレイ：USB-Cドックで2画面に拡張できない理由と選び方",
   "subtitle": "Windows向けに「USB-C 1本で4K 2画面出力」と書かれたドックをMacBookにつないだとき、2枚のモニターに同じ画面しか映らない（ミラーリングになる）原因と選び方を整理します。",
   "category": "Hardware & Power Electronics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式Appleサポート仕様を確認 / 個別ドックの実機測定なし",
   "methodology_note": "2026年10月16日にApple公式サポート文書（MacBook Proに接続できるディスプレイの台数）を確認して整理した記事です。特定のサードパーティ製ドック製品での相性テストは行っていません。",
   "seo": {
-    "meta_title": "Mac????????????4K?????????????Thunderbolt??? | Nodus",
+    "meta_title": "Macのデュアルディスプレイ設定：USB-Cドックで2画面にできない理由と選び方 | Nodus",
     "meta_description": "Windows用の「デュアル4K対応USB-Cドック」をMacBookにつなぐと別々の画面に拡張できない場合がある理由を解説。Appleシリコン（無印チップとPro/Maxチップ）の外部ディスプレイ台数上限の確認方法を公式サポート情報から整理します。",
     "target_keywords": [
       "Mac デュアルディスプレイ ドック 映らない",
@@ -101,12 +101,21 @@
   "related_articles": [
     {
       "slug": "external-ssd-usb4-40gbps-sustained-write-thermal-throttling",
-      "title": "USB4外付けSSD、公称40Gbpsだけで選んでいい？"
+      "title": "外付けSSDは自作（ケース＋M.2）か完成品か？ USB4の発熱デメリットと費用比較"
     },
     {
       "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
-      "title": "MacでローカルLLMは動く？必要メモリとGPUとの選び方"
+      "title": "MacでローカルLLMは動く？ 必要メモリ・スペックとOllama構築、GPUとの比較"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Windows用の「デュアル4K対応USB-Cドック」をMacにつなぐと同じ画面（ミラーリング）になるのはなぜですか？",
+      "answer": "macOSはDisplayPort MST（1本の映像信号をハブ内部で複数画面に分割する方式）による画面拡張に対応していないため、MST方式の安価なUSB-Cハブを使うと2枚の外部モニターに同じ画面が表示されます。"
+    },
+    {
+      "question": "MacBookでケーブル1本から2枚の外部ディスプレイを別々に拡張するにはどう選べばいいですか？",
+      "answer": "まず自分のMacのチップ（無印 / Pro / Max）が標準で外部2画面以上に対応しているかをApple公式仕様で確認したうえで、Thunderbolt 4 / USB4ネイティブ対応ドックを選ぶか、Mac本体の2つのポートへ別々に接続します。"
+    }
+  ]
 }

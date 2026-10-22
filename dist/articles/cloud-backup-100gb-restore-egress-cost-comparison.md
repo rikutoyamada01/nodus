@@ -1,4 +1,4 @@
-# 安いクラウドバックアップで100GBを戻すといくら？ 保存料金と復元時の下り転送費用
+# クラウドバックアップの復元料金比較：Cloudflare R2とBackblaze B2で100GBを戻す費用
 
 > 自宅NASや写真サーバーの外部バックアップ先を選ぶとき、毎月の保存料金だけでなく、障害時に100GB〜1TBを一括ダウンロード（Egress）したときの料金条件を公式価格表から比較します。
 
@@ -44,6 +44,13 @@
 参照: [Cloudflare R2 Docs：Pricing](https://developers.cloudflare.com/r2/pricing/)
 参照: [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 
+## よくある疑問と回答 (FAQ)
+### Q. Cloudflare R2はデータを復元（ダウンロード）するときの通信料は本当に無料ですか？
+A. Standardストレージクラスであれば下り転送（Egress）料金は無料です。ただしInfrequent Access（低頻度アクセス）クラスを選んだ場合は、データ取り出し時に1GBあたり$0.01のRetrieval料金と最小保存期間の条件が適用されます。
+
+### Q. Backblaze B2で100GBのバックアップを丸ごと復元すると追加料金はかかりますか？
+A. Backblaze B2のPay-as-you-goプランには「月間平均保存容量の3倍までEgress無料」の枠が含まれているため、100GB保存していれば月300GB（全体復元3回分）までは下り転送費用なしでダウンロードできます。
+
 ## 記事の範囲
 2026年10月16日にCloudflare R2およびBackblaze B2の公式Pricingページを確認して整理した記事です。記事内の金額試算は公式のドル建て単価に基づく計算例であり、APIリクエスト数や為替レート、税金によって実請求額は変動します。各ストレージからのダウンロード速度の実測は行っていません。
 
@@ -53,7 +60,7 @@
 - [Backblaze：B2 Cloud Storage Pricing](https://www.backblaze.com/cloud-storage/pricing)
 
 ## 次に考えたいこと
-- [Immichは写真フォルダだけコピーすれば戻せる？ データベースダンプと復元範囲の確認](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
-- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
-- [HDD 2台、ミラーリングと別バックアップどっち？](https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide)
-- [Dockerのバックアップ、フォルダコピーで戻る？](https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope)
+- [Immichのバックアップ・リストア方法：写真フォルダとDBダンプの両方が必要な理由](https://nodus-lab.pages.dev/articles/immich-backup-photos-database-restore-scope)
+- [Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
+- [2ベイNASの選び方：HDD 2台を「RAID 1」にするか「1台＋外付けバックアップ」にするか](https://nodus-lab.pages.dev/articles/nas-2bay-raid1-vs-external-backup-recovery-guide)
+- [Dockerのバックアップ方法：VolumeとBind Mountの保存範囲とリストア手順](https://nodus-lab.pages.dev/articles/docker-volume-bind-mount-backup-restore-scope)

@@ -1,7 +1,7 @@
 {
   "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
-  "title": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？ 比較質問と連鎖質問で逆転する到達率",
-  "display_title": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？",
+  "title": "マルチホップRAGのベクトル検索：取得済み文書の直交引き算が比較質問で効き連鎖質問で崩れる理由",
+  "display_title": "マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？",
   "subtitle": "HotpotQA（Wikipedia 66,635文書 / 1,029クエリ）でのプローブ実験と、LLM要約途中状態のインデックス検証から、ベクトル減算が効く条件と自滅する境界を整理します。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -18,7 +18,7 @@
   "sample_size_n": 1029,
   "methodology_note": "HotpotQA Wikipediaコーパス（66,635文書）および未見テストクエリ1,395件のうち、第1ホップで正解文書がTop-1にヒットした1,029件を対象に、第2ホップ文書への到達率（Reach@10 / Reach@50）をCPU 16スレッド環境で測定。また、別実験としてQwen2.5-0.5B baseの要約途中状態（448文書・36,435状態・32クエリ）を用いた検索精度をテキスト基準と比較。",
   "seo": {
-    "meta_title": "??????RAG??????????????????????????????? | Nodus",
+    "meta_title": "マルチホップRAGのベクトル検索：直交残差の引き算と比較・連鎖質問の実測 | Nodus",
     "meta_description": "HotpotQA（66,635文書・1,029クエリ）での実測に基づき、クエリベクトルから取得済み文書を直交射影で引き算する手法が比較質問（Reach@50 92.1%）で効き、連鎖質問（27.3%）で自滅する理由と解決策を解説します。",
     "target_keywords": [
       "マルチホップRAG ベクトル検索",
@@ -209,17 +209,17 @@
   "related_articles": [
     {
       "slug": "slot-parallel-sql-generation-dynamic-masking-benchmarks",
-      "title": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁",
+      "title": "Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングと未知スキーマの壁",
       "category": "Cloud & AI Infrastructure"
     },
     {
       "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
-      "title": "DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？",
+      "title": "DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計",
       "category": "Cloud & AI Infrastructure"
     },
     {
       "slug": "notebooklm-limits-sources-notebooks-sharing-guide",
-      "title": "NotebookLM、資料はどう分けて入れる？",
+      "title": "NotebookLMのソース上限と分割方法：資料整理で詰まらないノートブック設計",
       "category": "Software & SaaS Economics"
     }
   ]

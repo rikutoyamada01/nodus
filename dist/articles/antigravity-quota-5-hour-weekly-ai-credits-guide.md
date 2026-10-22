@@ -1,4 +1,4 @@
-# Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係
+# Google Antigravityの利用枠と上限確認：5時間更新・週間上限・AIクレジットの仕組み
 
 > 作業の途中で利用上限に達したとき、5時間待てば戻るのか、週間上限なのか、追加クレジットを使うべきか。公式プラン仕様から確認手順を整理します。
 
@@ -46,6 +46,16 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 参照: [Gemini：日本向けサブスクリプション料金](https://gemini.google/jp/subscriptions/?hl=ja)
 参照: [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Google Antigravityの利用枠やAIクレジット残量はどこで確認できますか？
+A. Antigravity内の設定（Settings）画面にある利用状況および「AI Credit Overages」設定項目、ならびにGoogle Oneのプラン管理画面から現在の利用枠の状態と超過時のクレジット消費設定を確認できます。
+
+### Q. 5時間待ったのにAntigravityの利用制限が解除されないのはなぜですか？
+A. Google AI Pro・Ultraの利用枠には「5時間ごとに更新される枠」とは別に「週間レート制限（Weekly limit）」が設けられており、週間上限に到達している場合は5時間経過しても次の週間リセット日時またはAIクレジット利用まで回復しません。
+
+### Q. 基本枠を超えたときに勝手にお金（クレジット）が減るのを防げますか？
+A. はい。設定の「AI Credit Overages」で「Never（自動消費しない）」または都度確認を選んでおけば、基本利用枠を使い切った時点で停止し、意図しないAIクレジット消費を防げます。
+
 ## 記事の範囲
 2026年10月16日にGoogle Antigravity公式ドキュメント（Plans）およびGoogle One日本向けプラン表を確認して整理した記事です。各プランにおける実際のプロンプト実行回数やクレジット消費速度の独自測定は行っていません。月額差額や時短換算の数値は表示料金に基づく計算例であり、実際の請求額や作業効率を保証するものではありません。
 
@@ -56,5 +66,5 @@ Google AI ProまたはUltraの加入者は、購入したAIクレジットやプ
 - [Google One：日本向けGoogle AIプラン表](https://one.google.com/intl/ja_jp/about/google-ai-plans/)
 
 ## 次に考えたいこと
-- [Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
-- [AIコーディングの契約と利用枠を確認する](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)
+- [Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件](https://nodus-lab.pages.dev/articles/gemini-4-argon-google-ai-pro-ultra)
+- [AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用](https://nodus-lab.pages.dev/articles/ai-coding-subscriptions-real-rate-limits-token-economics)

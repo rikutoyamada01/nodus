@@ -1,4 +1,4 @@
-# 実機データの継続学習で「出題ラベル＝正解ラベル」にしてはいけない理由：ユーザーの誤操作とモデル誤認識の分離設計
+# AIの継続学習とラベリング注意点：「出題ラベル＝正解ラベル」で精度が崩壊する理由
 
 > 「使いながらデータを集めてモデルを賢くする」継続学習パイプラインで、アプリが出題したお題をそのまま正解ラベルとして自動学習させるとデータセットが崩壊する理由を解説。出題・実際の発声・モデル予測の3分離、Top-3救済ログの保持、安全なモデル配布設計をまとめます。
 
@@ -46,6 +46,13 @@
 参照: [Hugging Face Hub Documentation: Downloading files (hf_hub_download)](https://huggingface.co/docs/huggingface_hub/en/package_reference/file_download)
 参照: [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
+## よくある疑問と回答 (FAQ)
+### Q. 実機アプリでユーザーが操作したデータをそのまま自動再学習させてはいけないのはなぜですか？
+A. アプリが提示したお題（Prompt）に対してユーザーが言い間違えたり操作ミスをしたりした場合、「出題ラベル」をそのまま「正解ラベル」として学習させると誤った教師データが蓄積してモデルが急速に劣化（汚染）するためです。
+
+### Q. 継続学習用のログには何を分けて記録すればいいですか？
+A. 「システムが出題したラベル」「人間が後から確認した実際の入力ラベル」「モデルの生予測スコア（Top-1とTop-3）」の3つを別カラムで保存し、検証セット（Val/Test）で回帰がないことを確認してからモデルを更新します。
+
 ## 記事の範囲
 2026年10月16日にHugging Face Hub公式ドキュメント（upload、file_download）およびscikit-learnの評価ガイドを確認し、エッジAI端末における実利用データ収集・ラベリング・再学習・配布の安全な運用設計を整理した記事です。
 
@@ -56,6 +63,6 @@
 - [scikit-learn User Guide: Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html)
 
 ## 次に考えたいこと
-- [機械学習のベンチマークが正しく測れない原因：話者・撮影条件リークと学習パイプライン内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
-- [合成データ（TTS・画像生成）で機械学習の精度が上がったと錯覚する罠：ドメインギャップとメタデータ消失の防止策](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
-- [展示会やコンテスト実機審査でAIが動かなくなる原因：会場Wi-Fi混雑・騒音による精度劣化とローカル完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)
+- [機械学習のデータリーク原因：話者・条件リークと学習コード内の再分割バグ](https://nodus-lab.pages.dev/articles/ml-benchmark-data-leakage-group-split-pipeline-guide)
+- [合成データ（TTS・画像生成）を機械学習に使う注意点：精度向上と錯覚する5つの罠](https://nodus-lab.pages.dev/articles/tts-synthetic-data-augmentation-domain-gap-pitfalls)
+- [展示会のWi-Fi混雑・電波干渉でAIが動かない原因とオフライン完結設計](https://nodus-lab.pages.dev/articles/edge-ai-venue-wifi-congestion-offline-fallback-design)

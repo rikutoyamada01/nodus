@@ -1,4 +1,4 @@
-# ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方
+# ESP32のDeepSleep消費電力と電池持ち計算：開発ボードの待機電流・GPIO・復帰の注意点
 
 > データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。
 
@@ -40,6 +40,13 @@ ESPHomeの公式ドキュメント（Deep Sleep Component）には、「Deep Sle
 もう一つの実務上の注意点として、デバイスがスリープに入った際にHome Assistantの画面上でセンサー値が「Unavailable（利用不可）」に変わってしまう現象があります。ESPHome公式ドキュメントでは、デバイスをHome Assistantへ登録した「あと」から `deep_sleep` コンポーネントを追加した場合にこの挙動が起きやすく、Home Assistant側で一度デバイスを削除して再登録することで防げると案内されています。電池持ちの測定を始める前に、まず10分程度の短い周期でスリープ復帰と画面表示が意図通り動くかを確かめます。
 参照: [ESPHome Docs：Deep Sleep Component](https://esphome.io/components/deep_sleep/)
 
+## よくある疑問と回答 (FAQ)
+### Q. ESP32をDeepSleepさせているのに電池が数日〜数週間で切れてしまうのはなぜですか？
+A. ESP32チップ単体のスリープ電流が数〜数十µAでも、一般的な開発ボード上の電源LED、LDOレギュレーター（AMS1117等）、USBシリアル変換ICが常に数mAを消費し続けているためです。電池駆動には低損失LDO搭載ボードを選ぶかLEDを除去します。
+
+### Q. ESP32のDeepSleepからGPIOやタイマーで復帰（Wakeup）させるときの注意点は？
+A. RTC IOに対応したGPIOピンを選ぶ必要があり、外付けまたは内部プルアップ抵抗に電流が流れ続けるとスリープ中の消費電力が増えます。また復帰後のWi-Fi接続に数秒かかると平均電流が跳ね上がるため、固定IP化等で稼働時間を短縮します。
+
 ## 記事の範囲
 2026年10月16日にESPHome公式ドキュメント（Deep Sleep Component）およびEspressif公式資料を確認して整理した記事です。記事内の電池寿命試算は仮定の電流値・稼働時間に基づく計算例であり、特定の開発ボードや電池での実測結果ではありません。
 
@@ -49,5 +56,5 @@ ESPHomeの公式ドキュメント（Deep Sleep Component）には、「Deep Sle
 - [Espressif：Chip Series Comparison](https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/chip-series-comparison.html)
 
 ## 次に考えたいこと
-- [ESP32、結局どれを買えばいい？](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
-- [自作は既製品より安い？ 部品代の外にある費用](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)
+- [ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い](https://nodus-lab.pages.dev/articles/esp32-c3-s3-c6-which-board-to-choose)
+- [自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？](https://nodus-lab.pages.dev/articles/diy-or-ready-made-total-cost)

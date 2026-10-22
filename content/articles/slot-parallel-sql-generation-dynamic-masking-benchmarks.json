@@ -1,7 +1,7 @@
 {
   "slug": "slot-parallel-sql-generation-dynamic-masking-benchmarks",
-  "title": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的アクションマスキングによる構文保証（61.7%）と未知スキーマの壁",
-  "display_title": "自己回帰LLMなしでSQLを1パス生成できるか？ 動的マスキングと未知スキーマの壁",
+  "title": "Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングによる構文保証と未知スキーマの壁",
+  "display_title": "Text-to-SQLを自己回帰LLMなしで1パス生成できるか？ 動的マスキングと未知スキーマの壁",
   "subtitle": "SELECT句やWHERE句をトークンごとに自己回帰生成せず、7つの構造スロットを並列予測するエンジンのクロスDB検証（訓練16ドメイン・未見テスト4ドメイン60クエリ）から、30ms以下の型安全設計で解ける問題と解けないボトルネックを解剖します。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -18,7 +18,7 @@
   "sample_size_n": 60,
   "methodology_note": "訓練用16ドメイン（CRM, DevOps, E-commerce, HR, IoT等）と検証用4ドメインで学習したSlot-Parallel Multi-Head分類器＋動的スキーママスキング＋SQLite実行検証（RLEV）エンジンを、学習時に一度も見ていない未知の4ドメインDB（Automotive 13件、Finance 15件、Healthcare 17件、Airline 15件の計60クエリ）で評価。構文有効実行率（VE）、実行結果一致率（EX）、完全一致率（EM）、および7スロット個別の正解率を測定。",
   "seo": {
-    "meta_title": "Text-to-SQL?????LLM???1????????????????????????? | Nodus",
+    "meta_title": "Text-to-SQLを自己回帰LLMなしで1パス生成：動的マスキングと未知スキーマ実測 | Nodus",
     "meta_description": "トークン自己回帰を使わず1パスでSQLスロットを並列予測するエンジンの未知4ドメイン（N=60）実測。有効SQL実行率61.67%・ORDER/LIMIT句86.67%に対し、カラム選択（18.33%）がボトルネックとなりEX 10.0%に留まる原因を検証します。",
     "target_keywords": [
       "Text-to-SQL 自己回帰なし",
@@ -229,17 +229,17 @@
   "related_articles": [
     {
       "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
-      "title": "マルチホップ検索で「取得済み文書のベクトルを引き算」すると精度は上がるか？",
+      "title": "マルチホップRAGのベクトル検索：取得済み文書を引き算すると精度は上がるか？",
       "category": "Cloud & AI Infrastructure"
     },
     {
       "slug": "deepseek-v4-1-flash-1017-kv-cache-encoding-guide",
-      "title": "DeepSeek-V4.1-Flash-1017、裏側の設計はどうなっている？",
+      "title": "DeepSeek-V4.1-Flash-1017の内部仕様：890B KV圧縮とencoding.pyの設計",
       "category": "Cloud & AI Infrastructure"
     },
     {
       "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
-      "title": "LLM APIの速さは、何を測って比べればいい？",
+      "title": "LLM APIの速度・料金比較：TTFT（応答速度）とスループットをどう測る？",
       "category": "Cloud & AI Infrastructure"
     }
   ]

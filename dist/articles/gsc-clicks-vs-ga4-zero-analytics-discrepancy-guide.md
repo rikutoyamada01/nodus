@@ -1,4 +1,4 @@
-# Search Consoleに表示やクリックがあるのにアクセス解析がゼロになる理由：計測位置と匿名化の違い
+# Search Consoleとアクセス解析（GA4・Cloudflare）の数字が合わない理由：計測位置と確認手順
 
 > 個人サイトを公開した直後、Google Search Consoleとブラウザ側のアクセス解析（Cloudflare Web AnalyticsやGA4）で数値が食い違うときに、タグの設定ミスと仕様上の差を切り分ける手順です。
 
@@ -40,6 +40,13 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 参照: [Google Search Central Blog：A deep dive into Search Console performance data filtering and limits](https://developers.google.com/search/blog/2022/10/performance-data-deep-dive)
 参照: [Cloudflare Web Analytics Docs：Data origin and collection](https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/)
 
+## よくある疑問と回答 (FAQ)
+### Q. Search ConsoleではクリックがあるのにGA4やCloudflare Web Analyticsが0になるのはなぜですか？
+A. Search ConsoleはGoogle検索結果上でリンクが押された回数を記録する一方、Webアクセス解析はページ読み込み後にブラウザ内でJavaScriptビーコンが送信された回数を記録するため、広告ブロッカー（AdBlock等）や読み込み前の離脱があると0になります。
+
+### Q. Search Consoleの「検索クエリ一覧の合計」と「グラフのサイト全体合計」が一致しないのはバグですか？
+A. バグではなくGoogleの仕様です。プライバシー保護のため検索回数が少ない「匿名化されたクエリ」が一覧表から除外されるため、一覧表の行を足し合わせてもサイト全体の合計クリック数・表示回数より少なくなります。
+
 ## 記事の範囲
 2026年10月16日にGoogle Search Central公式ブログ（Search Consoleのパフォーマンスデータ制限の解説）およびCloudflare Web Analytics公式ドキュメント（Data origin and collection）を確認して整理した記事です。
 
@@ -49,4 +56,4 @@ Google Search Centralの公式解説（A deep dive into Search Console performan
 - [Cloudflare Web Analytics Docs：Data origin and collection](https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/)
 
 ## 次に考えたいこと
-- [Cloudflare Pagesで独自ドメインを設定したとき、pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)
+- [Cloudflare Pagesの独自ドメイン設定：pages.devやプレビューURLも検索に出る？](https://nodus-lab.pages.dev/articles/cloudflare-pages-custom-domain-preview-url-indexing)

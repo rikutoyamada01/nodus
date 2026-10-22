@@ -1,7 +1,7 @@
 {
   "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-  "title": "AIコーディングのサブスクとAPI、費用をどう比べる？",
-  "display_title": "AIコーディングのサブスクとAPI、費用をどう比べる？",
+  "title": "AIコーディングのサブスクとAPI比較：Claude Code・Cursorの利用枠と費用",
+  "display_title": "AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用",
   "subtitle": "Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。",
   "category": "Software & SaaS Economics",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の85アカウント集計、固定トークン上限、API比の倍率および損益分岐点は、採用ログを確認できないため撤回しました。変動する契約条件と、読者自身の作業費用を比較する内容へ改訂しています。",
   "seo": {
-    "meta_title": "AIコーディングのサブスクとAPI、費用をどう比べる？ | Nodus",
+    "meta_title": "AIコーディングのサブスクとAPI比較：Claude Code・Cursorの利用枠と費用 | Nodus",
     "meta_description": "Claude CodeやCursorを選ぶ前に。月額だけでなく、含まれる利用枠、追加課金、作業の完了率を分けて比べます。",
     "target_keywords": [
       "AIコーディング サブスク API 比較",
@@ -117,15 +117,24 @@
       "scope": "利用量の追跡とコスト管理。各利用者の上限を保証するものではありません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "AIコーディングツールは月額サブスクとAPI従量課金のどちらが安いですか？",
+      "answer": "毎日継続してコード生成やリファクタリングを行うなら月額サブスクの方が費用の上限を予測しやすく、週に数回だけピンポイントで使う場合やCI自動化で短い処理だけ回す場合はAPI従量課金の方が安くなりやすいです。"
+    },
+    {
+      "question": "無料で試せるAIコーディングエージェントや枠の確認方法はありますか？",
+      "answer": "各ツールの無料枠やトライアルで1週間分の実際の消費ペース（リクエスト数や5時間枠の到達頻度）を設定画面のUsage表示で記録してから、Proや上位プランへの移行を判断するのが確実です。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "ai-coding-agent-ast-peek-token-reduction-benchmarks",
-      "title": "AIエージェントのトークンを減らすには？"
+      "title": "AIエージェントのトークン節約：AST解析と部分読みの使い分け"
     },
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIは、どこに置く？"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     }
   ]
 }

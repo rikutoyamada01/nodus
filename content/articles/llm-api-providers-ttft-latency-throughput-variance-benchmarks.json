@@ -1,7 +1,7 @@
 {
   "slug": "llm-api-providers-ttft-latency-throughput-variance-benchmarks",
-  "title": "LLM APIの速さは、何を測って比べればいい？",
-  "display_title": "LLM APIの速さは、何を測って比べればいい？",
+  "title": "LLM APIの速度・料金比較：TTFT（最初の1文字までの応答時間）とスループットの測り方",
+  "display_title": "LLM APIの速度・料金比較：TTFT（応答速度）とスループットをどう測る？",
   "subtitle": "最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。",
   "category": "Cloud & AI Infrastructure",
   "tags": [
@@ -20,7 +20,7 @@
   "methodology_note": "公式資料で確認できる機能・仕様と、編集上の比較手順を整理しています。購入価格や性能の順位を確定する実機比較は行っていません。計算例を示す場合は仮定を明記しています。",
   "revision_note": "旧版の672リクエスト集計、プロバイダー別のp50・p95、夜間の悪化率、キャッシュの短縮率は、計測記録を確認できないため撤回しました。待ち時間と品質を分けて比較する手順へ改訂しています。",
   "seo": {
-    "meta_title": "LLM API??????????????TTFT??????????? | Nodus",
+    "meta_title": "LLM APIの速度・料金比較：TTFTとスループットの測り方・切り分け手順 | Nodus",
     "meta_description": "最初の文字までの待ち時間、全文の完了時間、出力の品質。APIプロバイダーを替える前に、遅い理由を切り分けます。",
     "target_keywords": [
       "LLM API 速度 比較",
@@ -116,15 +116,24 @@
       "scope": "キャッシュ条件と使用量の確認。一定の短縮率を保証しません。"
     }
   ],
-  "faqs": [],
+  "faqs": [
+    {
+      "question": "LLM APIの「TTFT」と「スループット（tok/s）」はどちらを重視して比較すべきですか？",
+      "answer": "チャットUIでユーザーの体感待ち時間を減らしたいなら最初の文字が出るまでの「TTFT（Time To First Token）」、バッチ処理やコード全体の生成完了時間を短縮したいなら「出力スループット（tokens/s）」と全文完了時間を重視します。"
+    },
+    {
+      "question": "同じモデルなのにAPIプロバイダーや時間帯によって遅いと感じるときは何を確認しますか？",
+      "answer": "プロンプトキャッシュのヒット有無、推論トークン（Thinking / Reasoning）の出力長、ストリーミング設定を揃えたうえで、平均値だけでなくp95（遅い上位5%）の完了時間を記録して比較します。"
+    }
+  ],
   "related_articles": [
     {
       "slug": "personal-ai-vps-home-server-subscription",
-      "title": "パーソナルAIは、どこに置く？"
+      "title": "パーソナルAIの置き場所比較：VPS・自宅サーバー・サブスクの費用と作り方"
     },
     {
       "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-      "title": "AIコーディングのサブスクとAPI、費用をどう比べる？"
+      "title": "AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用"
     }
   ]
 }

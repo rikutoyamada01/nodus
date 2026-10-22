@@ -1,7 +1,7 @@
 {
   "slug": "antigravity-quota-5-hour-weekly-ai-credits-guide",
-  "title": "Antigravityの利用枠はどう決まる？ 5時間更新・週間上限・AIクレジットの関係",
-  "display_title": "Antigravityの上限、待つか追加課金か？",
+  "title": "Google Antigravityの利用枠と上限確認：5時間更新・週間上限・AIクレジットの仕組み",
+  "display_title": "Google Antigravityの利用枠：上限の確認方法と5時間更新・週間制限の仕組み",
   "subtitle": "作業の途中で利用上限に達したとき、5時間待てば戻るのか、週間上限なのか、追加クレジットを使うべきか。公式プラン仕様から確認手順を整理します。",
   "category": "Software & SaaS Economics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式プラン仕様・料金表を確認 / 実機での消費量測定なし",
   "methodology_note": "2026年10月16日にGoogle Antigravity公式ドキュメント（Plans）およびGoogle One日本向けプラン表を確認して整理した記事です。各プランにおける実際のプロンプト実行回数やクレジット消費速度の独自測定は行っていません。月額差額や時短換算の数値は表示料金に基づく計算例であり、実際の請求額や作業効率を保証するものではありません。",
   "seo": {
-    "meta_title": "Google Antigravity??????????? 5?????????????? | Nodus",
+    "meta_title": "Google Antigravityの利用枠と確認方法：5時間更新・週間上限・AIクレジットの仕組み | Nodus",
     "meta_description": "Google Antigravityの5時間更新枠、週間レート制限、超過時のAIクレジット消費（Overages設定）の関係を公式資料から解説。Pro・Ultra・無料枠の違いと確認手順を整理します。",
     "target_keywords": [
       "Antigravity 上限",
@@ -133,12 +133,25 @@
   "related_articles": [
     {
       "slug": "gemini-4-argon-google-ai-pro-ultra",
-      "title": "Gemini 4 ArgonはProで使える？ Ultra限定の範囲を確認"
+      "title": "Gemini 4 ArgonはProで使える？ 性能・評価とAntigravityのUltra条件"
     },
     {
       "slug": "ai-coding-subscriptions-real-rate-limits-token-economics",
-      "title": "AIコーディングの契約と利用枠を確認する"
+      "title": "AIコーディングのサブスクとAPI比較：Claude Code・Cursorの費用"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "Google Antigravityの利用枠やAIクレジット残量はどこで確認できますか？",
+      "answer": "Antigravity内の設定（Settings）画面にある利用状況および「AI Credit Overages」設定項目、ならびにGoogle Oneのプラン管理画面から現在の利用枠の状態と超過時のクレジット消費設定を確認できます。"
+    },
+    {
+      "question": "5時間待ったのにAntigravityの利用制限が解除されないのはなぜですか？",
+      "answer": "Google AI Pro・Ultraの利用枠には「5時間ごとに更新される枠」とは別に「週間レート制限（Weekly limit）」が設けられており、週間上限に到達している場合は5時間経過しても次の週間リセット日時またはAIクレジット利用まで回復しません。"
+    },
+    {
+      "question": "基本枠を超えたときに勝手にお金（クレジット）が減るのを防げますか？",
+      "answer": "はい。設定の「AI Credit Overages」で「Never（自動消費しない）」または都度確認を選んでおけば、基本利用枠を使い切った時点で停止し、意図しないAIクレジット消費を防げます。"
+    }
+  ]
 }

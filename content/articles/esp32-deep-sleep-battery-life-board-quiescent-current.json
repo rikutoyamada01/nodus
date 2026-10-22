@@ -1,7 +1,7 @@
 {
   "slug": "esp32-deep-sleep-battery-life-board-quiescent-current",
-  "title": "ESP32の電池持ちはチップのµA値だけで計算できる？ Deep Sleepと開発ボード待機電流の考え方",
-  "display_title": "ESP32の電池駆動、なぜ計算より早く切れる？",
+  "title": "ESP32のDeepSleep消費電力と電池持ち計算：開発ボードの待機電流・GPIO・復帰の注意点",
+  "display_title": "ESP32のDeepSleep消費電力：電池が計算より早く切れる理由と待機電流・復帰設計",
   "subtitle": "データシート上のDeep Sleep電流は数〜数十µAなのに、一般的な開発ボードを電池で動かすと数日〜数週間で切れてしまう理由と、設定・給電で見直すポイントを整理します。",
   "category": "Hardware & Power Electronics",
   "kind": "guide",
@@ -21,7 +21,7 @@
   "evidence_notice": "公式資料・計算手順を整理 / 基板別の実測電流値なし",
   "methodology_note": "2026年10月16日にESPHome公式ドキュメント（Deep Sleep Component）およびEspressif公式資料を確認して整理した記事です。記事内の電池寿命試算は仮定の電流値・稼働時間に基づく計算例であり、特定の開発ボードや電池での実測結果ではありません。",
   "seo": {
-    "meta_title": "ESP32のDeep Sleepと電池持ちの計算：開発ボードの待機電流とESPHomeの注意点 | Nodus",
+    "meta_title": "ESP32のDeepSleep消費電力と電池持ち：待機電流・GPIO・復帰の注意点 | Nodus",
     "meta_description": "ESP32で電池駆動センサーを自作する際に、チップ単体のDeep Sleep電流（µA）だけで計算すると電池持ちが大きくずれる理由を解説。USB変換ICや電源LED、Wi-Fi再接続時間、ESPHomeでのOTA・Unavailable表示の注意点を整理します。",
     "target_keywords": [
       "ESP32 Deep Sleep 電池持ち",
@@ -122,12 +122,21 @@
   "related_articles": [
     {
       "slug": "esp32-c3-s3-c6-which-board-to-choose",
-      "title": "ESP32、結局どれを買えばいい？"
+      "title": "ESP32比較（C3・S3・C6）：用途別の選び方とラズパイPico・XIAOとの違い"
     },
     {
       "slug": "diy-or-ready-made-total-cost",
-      "title": "自作は既製品より安い？ 部品代の外にある費用"
+      "title": "自作と既製品のコスパ比較：ESP32・ラズパイ・NASは作ったほうが安い？"
     }
   ],
-  "faqs": []
+  "faqs": [
+    {
+      "question": "ESP32をDeepSleepさせているのに電池が数日〜数週間で切れてしまうのはなぜですか？",
+      "answer": "ESP32チップ単体のスリープ電流が数〜数十µAでも、一般的な開発ボード上の電源LED、LDOレギュレーター（AMS1117等）、USBシリアル変換ICが常に数mAを消費し続けているためです。電池駆動には低損失LDO搭載ボードを選ぶかLEDを除去します。"
+    },
+    {
+      "question": "ESP32のDeepSleepからGPIOやタイマーで復帰（Wakeup）させるときの注意点は？",
+      "answer": "RTC IOに対応したGPIOピンを選ぶ必要があり、外付けまたは内部プルアップ抵抗に電流が流れ続けるとスリープ中の消費電力が増えます。また復帰後のWi-Fi接続に数秒かかると平均電流が跳ね上がるため、固定IP化等で稼働時間を短縮します。"
+    }
+  ]
 }
