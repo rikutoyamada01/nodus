@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T23:53:22.796058",
+  "generated_at": "2026-10-23T23:45:19.364307",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -12,15 +12,15 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "usb-c 充電器",
-        "usb-c 充電器 65w",
         "usb-c 充電器 ダイソー",
         "usb-c 充電器 100w",
+        "usb-c 充電器 65w",
         "usb-c 充電器 複数ポート",
         "usb-c 充電器 おすすめ",
-        "usb-c 充電器 ケーブル付き",
         "usb-c 充電器 薄型",
-        "usb-c 充電器 3ポート",
-        "usb-c 充電器 iphone"
+        "usb-c 充電器 ケーブル付き",
+        "usb-c 充電器 30w",
+        "usb-c 充電器 cio"
       ],
       "title_optimization_opportunities": [
         {
@@ -28,6 +28,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "付"
+          ]
+        },
+        {
+          "query": "usb-c 充電器 30w",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "30w"
           ]
         }
       ],
@@ -47,10 +54,10 @@
           ]
         },
         {
-          "query": "usb-c 充電器 iphone",
+          "query": "usb-c 充電器 cio",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "iphone"
+            "cio"
           ]
         }
       ]
@@ -235,11 +242,19 @@
         "cloudflare pages 廃止",
         "cloudflare pages 料金",
         "cloudflare pages workers 違い",
-        "cloudflare pages ドメイン",
         "cloudflare pages 商用利用",
-        "cloudflare pages 独自ドメイン"
+        "cloudflare pages ドメイン",
+        "cloudflare pages github"
       ],
-      "title_optimization_opportunities": [],
+      "title_optimization_opportunities": [
+        {
+          "query": "cloudflare pages github",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "github"
+          ]
+        }
+      ],
       "uncovered_content_gaps": [
         {
           "query": "cloudflare pages 無料枠",
@@ -351,9 +366,9 @@
       "total_suggestions": 9,
       "top_suggestions": [
         "deepseek flash v4",
+        "deepseek flash v4 1",
         "deepseek flash 0731",
         "deepseek flash v4 0731",
-        "deepseek flash v4.1",
         "deepseek flash 4.1",
         "deepseek flash pro",
         "deepseek flash vision",
@@ -514,9 +529,9 @@
         "mac デュアルディスプレイ dock 移動",
         "mac デュアルディスプレイ 設定",
         "mac デュアルディスプレイ dock 固定",
-        "mac デュアルディスプレイ設定 できない",
         "mac デュアルディスプレイ 配置がない",
         "mac デュアルディスプレイ ウィンドウ移動 ショートカット",
+        "mac デュアルディスプレイ設定 できない",
         "mac デュアルディスプレイ dock 両方",
         "mac デュアルディスプレイ 画面移動",
         "mac デュアルディスプレイ おすすめ"
@@ -863,8 +878,8 @@
         "esp32-s3-wroom-1-n16r8",
         "esp32-s3-devkitc-1-n8r8",
         "esp32-s3r8",
+        "esp32-s3 n16r8",
         "esp32-s3fn8",
-        "esp32-s3-wroom",
         "esp32-s3 super mini"
       ],
       "title_optimization_opportunities": [
@@ -913,17 +928,17 @@
           ]
         },
         {
+          "query": "esp32-s3 n16r8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "n16r8"
+          ]
+        },
+        {
           "query": "esp32-s3fn8",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "esp32-s3fn8"
-          ]
-        },
-        {
-          "query": "esp32-s3-wroom",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "esp32-s3-wroom"
           ]
         },
         {
@@ -947,9 +962,9 @@
       "total_suggestions": 7,
       "top_suggestions": [
         "外付けssd 自作",
+        "外付けssd 自作 mac",
         "外付けssd 自作 デメリット",
         "外付けssd 自作 おすすめ",
-        "外付けssd 自作 mac",
         "外付けssd 自作pc",
         "外付けssd 自作 メリット",
         "macbook 外付けssd 自作"
@@ -977,24 +992,38 @@
       "seed": "Gemini 4 Argon Pro Ultra 違い",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 9,
-        "question_troubleshoot": 1
+        "metric_cost_spec": 10
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 argon",
         "gemini 4",
-        "gemini 4 carbon",
+        "gemini 4 いつ",
         "gemini 4 argon 性能",
-        "gemini 4 pro",
-        "gemini 4 argon 料金",
         "gemini 4 flash",
-        "gemini 4 argon 評価",
-        "gemini 4 argon とは",
-        "gemini 4 いつ"
+        "gemini 4 pro",
+        "gemini 4.0",
+        "gemini 4.0 いつ",
+        "gemini 4 carbon",
+        "gemini 4 pro いつ"
       ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "gemini 4.0",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "4.0"
+          ]
+        },
+        {
+          "query": "gemini 4.0 いつ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "4.0"
+          ]
+        }
+      ]
     },
     {
       "slug": "gemini-api-prompt-caching-implicit-explicit-cost-guide",
@@ -1007,14 +1036,14 @@
       "top_suggestions": [
         "gemini api",
         "gemini api key",
-        "gemini apiキー",
-        "gemini api 料金",
         "gemini api 無料枠",
-        "gemini apiキー 取得方法",
+        "gemini apiキー",
+        "gemini api cli",
+        "gemini api 料金",
         "gemini api 無料",
         "gemini api 無料枠 制限",
-        "gemini api モデル",
-        "gemini api 無料枠 超えたら"
+        "gemini api key 無料",
+        "gemini apiキー 取得方法"
       ],
       "title_optimization_opportunities": [
         {
@@ -1022,13 +1051,6 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "キー"
-          ]
-        },
-        {
-          "query": "gemini api モデル",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "モデル"
           ]
         }
       ],
@@ -1049,10 +1071,10 @@
           ]
         },
         {
-          "query": "gemini apiキー 取得方法",
+          "query": "gemini api cli",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "取得方法"
+            "cli"
           ]
         },
         {
@@ -1072,11 +1094,18 @@
           ]
         },
         {
-          "query": "gemini api 無料枠 超えたら",
+          "query": "gemini api key 無料",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "無料",
-            "枠"
+            "key",
+            "無料"
+          ]
+        },
+        {
+          "query": "gemini apiキー 取得方法",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "取得方法"
           ]
         }
       ]
@@ -1110,8 +1139,8 @@
         "google ai plus",
         "google aiモード",
         "google aiチャット",
-        "google ai studio 日本語",
         "google ai 無料",
+        "google ai studio 日本語",
         "google ai studio アプリ",
         "google ai studio 日本語にする方法"
       ],
@@ -1168,24 +1197,31 @@
       "seed": "Colab GPU CU 何時間",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
+        "metric_cost_spec": 7,
         "question_troubleshoot": 1,
-        "comparison": 1
+        "comparison": 2
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "colab gpu",
         "colab gpu 種類",
         "colab gpu 上限",
+        "colab gpu 使用量上限 リセット",
         "colab gpu 性能",
         "colab gpu 使い方",
+        "colab gpu 比較",
         "colab gpu 無料",
-        "colab gpu 使用量上限 リセット",
         "colab gpu vscode",
-        "colab gpu t4",
-        "colab gpu ram"
+        "colab gpu t4"
       ],
       "title_optimization_opportunities": [
+        {
+          "query": "colab gpu 比較",
+          "intent": "comparison",
+          "missing_in_title": [
+            "比較"
+          ]
+        },
         {
           "query": "colab gpu t4",
           "intent": "metric_cost_spec",
@@ -1195,6 +1231,13 @@
         }
       ],
       "uncovered_content_gaps": [
+        {
+          "query": "colab gpu 使用量上限 リセット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "リセット"
+          ]
+        },
         {
           "query": "colab gpu 性能",
           "intent": "metric_cost_spec",
@@ -1210,24 +1253,10 @@
           ]
         },
         {
-          "query": "colab gpu 使用量上限 リセット",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "リセット"
-          ]
-        },
-        {
           "query": "colab gpu vscode",
           "intent": "comparison",
           "missing_in_body": [
             "vscode"
-          ]
-        },
-        {
-          "query": "colab gpu ram",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ram"
           ]
         }
       ]
@@ -1247,11 +1276,11 @@
         "search consoleとは",
         "search console ログイン",
         "search console api",
-        "search console 使い方",
         "search console google",
+        "search console 使い方",
         "search console mcp",
         "search console 生成ai",
-        "search console ai",
+        "search console 設定",
         "search console sns"
       ],
       "title_optimization_opportunities": [
@@ -1263,6 +1292,13 @@
           ]
         },
         {
+          "query": "search console google",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "google"
+          ]
+        },
+        {
           "query": "search console 使い方",
           "intent": "question_troubleshoot",
           "missing_in_title": [
@@ -1271,10 +1307,10 @@
           ]
         },
         {
-          "query": "search console google",
+          "query": "search console 設定",
           "intent": "metric_cost_spec",
           "missing_in_title": [
-            "google"
+            "設定"
           ]
         },
         {
@@ -1307,13 +1343,6 @@
             "生成",
             "ai"
           ]
-        },
-        {
-          "query": "search console ai",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ai"
-          ]
         }
       ]
     },
@@ -1331,13 +1360,13 @@
         "スピーカーフォン",
         "スピーカーフォンとは",
         "スピーカーフォン おすすめ",
-        "スピーカーフォン 使い方",
         "スピーカーフォンにするには",
         "スピーカーフォン 小型",
+        "スピーカーフォン 使い方",
         "スピーカーフォン スマホ",
         "スピーカーフォン jabra",
-        "スピーカーフォン 会議",
-        "スピーカーフォン ヤマハ"
+        "スピーカーフォン ヤマハ",
+        "スピーカーフォン 会議"
       ],
       "title_optimization_opportunities": [
         {
@@ -1406,19 +1435,17 @@
       "seed": "継続学習 ラベリング 注意点",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
+        "metric_cost_spec": 6,
         "question_troubleshoot": 1
       },
-      "total_suggestions": 9,
+      "total_suggestions": 7,
       "top_suggestions": [
         "継続学習",
-        "継続学習とは",
         "継続学習 ai",
+        "継続学習とは",
         "継続学習 英語",
         "継続学習センター",
         "継続学習制度",
-        "継続学習 llm",
-        "継続学習と知能の創発研究会",
         "継続学習 ファイン チューニング"
       ],
       "title_optimization_opportunities": [],
@@ -1442,21 +1469,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "継続学習制度"
-          ]
-        },
-        {
-          "query": "継続学習 llm",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "llm"
-          ]
-        },
-        {
-          "query": "継続学習と知能の創発研究会",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "知能",
-            "創発研究会"
           ]
         },
         {
@@ -1509,12 +1521,12 @@
         "llm api 無料",
         "llm api 料金 比較",
         "llm apiとは",
-        "llm api 無料枠",
         "llm api 料金",
-        "llm api 定額",
-        "llm api コスパ",
+        "llm api 無料枠",
         "llm apiキー",
-        "llm api 比較"
+        "llm api コスパ",
+        "llm api 比較",
+        "llm api 定額"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1534,10 +1546,10 @@
           ]
         },
         {
-          "query": "llm api 定額",
+          "query": "llm apiキー",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "定額"
+            "キー"
           ]
         },
         {
@@ -1548,10 +1560,10 @@
           ]
         },
         {
-          "query": "llm apiキー",
+          "query": "llm api 定額",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "キー"
+            "定額"
           ]
         }
       ]
@@ -1570,9 +1582,9 @@
         "mac ローカルllm おすすめ",
         "mac ローカルllm 画像生成",
         "mac ローカルllm メモリ",
+        "mac ローカルllm mlx",
         "mac ローカルllm スペック",
         "mac ローカルllm ollama",
-        "mac ローカルllm mlx",
         "mac ローカルllm 構築",
         "mac ローカルllm コーディング"
       ],
@@ -1833,13 +1845,9 @@
       "slug": "multihop-rag-orthogonal-residual-subtraction-benchmarks",
       "seed": "マルチホップRAG ベクトル検索",
       "dominant_market_intent": "metric_cost_spec",
-      "intent_distribution": {
-        "metric_cost_spec": 1
-      },
-      "total_suggestions": 1,
-      "top_suggestions": [
-        "マルチホップrag"
-      ],
+      "intent_distribution": {},
+      "total_suggestions": 0,
+      "top_suggestions": [],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": []
     },
@@ -1877,8 +1885,8 @@
       "seed": "NotebookLM ソース 分割 上限",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
-        "question_troubleshoot": 2
+        "metric_cost_spec": 9,
+        "question_troubleshoot": 1
       },
       "total_suggestions": 10,
       "top_suggestions": [
@@ -1891,7 +1899,7 @@
         "notebooklm ソース追加できない",
         "notebooklm ソース 自動更新",
         "notebooklm ソース数",
-        "notebooklm ソースのアップロード中にエラーが発生しました"
+        "notebooklm ソースの上限"
       ],
       "title_optimization_opportunities": [
         {
@@ -1937,15 +1945,6 @@
           "missing_in_body": [
             "自動更新"
           ]
-        },
-        {
-          "query": "notebooklm ソースのアップロード中にエラーが発生しました",
-          "intent": "question_troubleshoot",
-          "missing_in_body": [
-            "中",
-            "エラー",
-            "発生"
-          ]
         }
       ]
     },
@@ -1960,8 +1959,8 @@
       "top_suggestions": [
         "ollama コンテキスト長",
         "ollama コンテキスト長 変更",
-        "ollama コンテキスト長 確認",
         "ollama コンテキスト長 設定",
+        "ollama コンテキスト長 確認",
         "ollama コンテキスト長 デフォルト"
       ],
       "title_optimization_opportunities": [],
@@ -1972,26 +1971,33 @@
       "seed": "パーソナルAI VPS 自宅サーバー",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
-        "question_troubleshoot": 2
+        "metric_cost_spec": 7,
+        "question_troubleshoot": 3
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "パーソナルai",
         "パーソナルaiエージェント",
+        "パーソナルai",
         "パーソナルアイテムとは",
         "パーソナルaiとは",
-        "パーソナルアイテック",
         "パーソナルアイデンティティ",
-        "パーソナルai 作り方",
+        "パーソナルアイテック",
         "パーソナルアイス",
+        "パーソナルai 作り方",
         "パーソナルaiマーケティング",
-        "パーソナルアイテム"
+        "パーソナルaiエージェントとは"
       ],
       "title_optimization_opportunities": [
         {
           "query": "パーソナルaiエージェント",
           "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "エージェント"
+          ]
+        },
+        {
+          "query": "パーソナルaiエージェントとは",
+          "intent": "question_troubleshoot",
           "missing_in_title": [
             "エージェント"
           ]
@@ -2006,17 +2012,17 @@
           ]
         },
         {
-          "query": "パーソナルアイテック",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "パーソナルアイテック"
-          ]
-        },
-        {
           "query": "パーソナルアイデンティティ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "パーソナルアイデンティティ"
+          ]
+        },
+        {
+          "query": "パーソナルアイテック",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイテック"
           ]
         },
         {
@@ -2031,13 +2037,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "マーケティング"
-          ]
-        },
-        {
-          "query": "パーソナルアイテム",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "パーソナルアイテム"
           ]
         }
       ]
@@ -2068,7 +2067,7 @@
       "top_suggestions": [
         "text-to-sql",
         "text-to-sqlとは",
-        "text to sql rag",
+        "text-to-sql rag",
         "text to sql llm",
         "text to sql aws",
         "text to sql langchain",
@@ -2088,7 +2087,7 @@
       ],
       "uncovered_content_gaps": [
         {
-          "query": "text to sql rag",
+          "query": "text-to-sql rag",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "rag"
@@ -2136,17 +2135,16 @@
       "seed": "リアルタイム認識 タイミング ズレ",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 7
+        "metric_cost_spec": 6
       },
-      "total_suggestions": 7,
+      "total_suggestions": 6,
       "top_suggestions": [
         "リアルタイム認識af+",
         "リアルタイム認識af(プラス)",
         "リアルタイム認識af+ 設定",
         "リアルタイム認識af 追いかける瞳af",
-        "sony リアルタイム認識af+",
-        "provoxt リアルタイム認識",
-        "ソニー リアルタイム認識af"
+        "sony リアルタイム認識af",
+        "provoxt リアルタイム認識"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -2182,7 +2180,7 @@
           ]
         },
         {
-          "query": "sony リアルタイム認識af+",
+          "query": "sony リアルタイム認識af",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "sony",
@@ -2194,14 +2192,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "provoxt"
-          ]
-        },
-        {
-          "query": "ソニー リアルタイム認識af",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ソニー",
-            "af"
           ]
         }
       ]
@@ -2251,15 +2241,15 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "tailscale subnet router",
-        "tailscale subnet router 設定",
         "tailscale subnet",
-        "tailscale subnet 設定",
         "tailscale subnet router raspberry pi",
+        "tailscale subnet 設定",
         "tailscale subnet router windows",
         "tailscale subnets",
         "tailscale subnet routes",
         "tailscale subnet router synology",
-        "tailscale subnet windows"
+        "tailscale subnet windows",
+        "tailscale subnet router docker"
       ],
       "title_optimization_opportunities": [
         {
@@ -2305,6 +2295,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "windows"
+          ]
+        },
+        {
+          "query": "tailscale subnet router docker",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "docker"
           ]
         }
       ]
@@ -2367,135 +2364,135 @@
   "zenn_daily_trending": [
     {
       "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
-      "liked_count": 107,
+      "liked_count": 156,
       "comments_count": 0,
       "url": "https://zenn.dev/explaza/articles/c749042ecbe232",
       "published_at": "2026-10-21"
     },
     {
       "title": "脆弱性管理の仕組みを整えた",
-      "liked_count": 49,
+      "liked_count": 67,
       "comments_count": 0,
       "url": "https://zenn.dev/dress_code/articles/be5550254695cd",
       "published_at": "2026-10-22"
     },
     {
       "title": "Oxlint + Oxfmt で規約をコード化するモノレポ運用",
-      "liked_count": 44,
+      "liked_count": 48,
       "comments_count": 0,
       "url": "https://zenn.dev/reality_tech/articles/oxc-monorepo-20261006",
       "published_at": "2026-10-20"
     },
     {
-      "title": "Claude Code で CI 待ち時間を 18 分から 4 分台に短縮する【GitHub Actions】",
-      "liked_count": 43,
+      "title": "eMudhraの中間CA証明書の秘密鍵を求めてみる",
+      "liked_count": 14,
       "comments_count": 0,
-      "url": "https://zenn.dev/edash_tech_blog/articles/5b90aa33bd8d49",
-      "published_at": "2026-10-20"
-    },
-    {
-      "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
-      "liked_count": 29,
-      "comments_count": 0,
-      "url": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
-      "published_at": "2026-10-22"
-    },
-    {
-      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
-      "liked_count": 36,
-      "comments_count": 1,
-      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
-      "published_at": "2026-10-19"
+      "url": "https://zenn.dev/herumi/articles/search_bad_emudhra_key",
+      "published_at": "2026-10-23"
     },
     {
       "title": "バイブコーディングを6週間続けたら、Mac の起動が20分かかるようになった",
-      "liked_count": 50,
+      "liked_count": 68,
       "comments_count": 0,
       "url": "https://zenn.dev/singularity/articles/vibe-coding-mac-boot-20min",
       "published_at": "2026-10-20"
     },
     {
-      "title": "Next.js の脆弱性に Dependabot が反応しなかったので、GitHub Advisory Database までの流れを追った",
-      "liked_count": 15,
-      "comments_count": 0,
-      "url": "https://zenn.dev/rakko_inc/articles/dependabot-cve-to-pr-flow",
-      "published_at": "2026-10-21"
+      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
+      "liked_count": 38,
+      "comments_count": 1,
+      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
+      "published_at": "2026-10-19"
     },
     {
-      "title": "Chromium(V8)のArray.prototype.fillを最大約7倍高速化した",
-      "liked_count": 31,
+      "title": "Claude Code で CI 待ち時間を 18 分から 4 分台に短縮する【GitHub Actions】",
+      "liked_count": 46,
       "comments_count": 0,
-      "url": "https://zenn.dev/dinii/articles/5b8edc7856c25b",
+      "url": "https://zenn.dev/edash_tech_blog/articles/5b90aa33bd8d49",
       "published_at": "2026-10-20"
     },
     {
-      "title": "エージェント用 IDE を3つ試して、今さら cmux を使い始めた",
-      "liked_count": 1,
+      "title": "厳選・セキュリティが心配ならClaude Codeにこの問いかけをコピペするべし20",
+      "liked_count": 40,
       "comments_count": 0,
-      "url": "https://zenn.dev/yoshi47/articles/cmux-after-agent-ides",
+      "url": "https://zenn.dev/yuiseki/articles/54b01670841898",
+      "published_at": "2026-10-22"
+    },
+    {
+      "title": "[Flutter]main()を通らない起動ルートで初期化漏れした話（Android着信のヒヤリハット）",
+      "liked_count": 4,
+      "comments_count": 0,
+      "url": "https://zenn.dev/lincwell_inc/articles/ab2a642ea8f6f0",
+      "published_at": "2026-10-23"
+    },
+    {
+      "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
+      "liked_count": 35,
+      "comments_count": 0,
+      "url": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
       "published_at": "2026-10-22"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Quad9 (DNS Resolver) to Exit France",
-      "points": 943,
-      "num_comments": 343,
-      "url": "https://quad9.net/news/blog/au-revoir-france/"
+      "title": "Local Wikipedia: Wikipedia, but only for things a half hour walk from you",
+      "points": 1193,
+      "num_comments": 223,
+      "url": "https://edjefferson.com/localwiki/"
     },
     {
-      "title": "eMudhra to exit global SSL/TLS certificate business",
-      "points": 902,
-      "num_comments": 617,
-      "url": "https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business"
+      "title": "Today, we hacked what we'd set out to hack: the iPhone",
+      "points": 703,
+      "num_comments": 461,
+      "url": "https://blog.calif.io/p/iphone"
     },
     {
-      "title": "Jailbreaking the Switch 2",
-      "points": 689,
-      "num_comments": 241,
-      "url": "https://pepsipu.com/blog/2026-10-switch2-jailbreak-ns2jb/"
+      "title": "Kimi K3.1 Pro and K3.1 Pro Highspeed",
+      "points": 652,
+      "num_comments": 412,
+      "url": "https://www.kimi.ai/blog/kimi-k3-1-pro"
     },
     {
-      "title": "Woman faces six years in prison over Cash App account she never opened",
-      "points": 428,
-      "num_comments": 429,
-      "url": "https://www.techspot.com/news/114296-woman-spends-three-nights-jail-faces-six-years.html"
+      "title": "Apple Music 404 Not Found",
+      "points": 504,
+      "num_comments": 173,
+      "url": "https://music.apple.com/this-url-doesnt-exist"
     },
     {
-      "title": "What Is Gridifcation",
-      "points": 384,
-      "num_comments": 189,
-      "url": "https://musicalform.substack.com/p/what-is-gridifcation"
+      "title": "Canadians are running out of time to oppose Bill C-22",
+      "points": 289,
+      "num_comments": 148,
+      "url": "https://www.eff.org/deeplinks/2026/10/canadians-are-running-out-time-oppose-dangerous-c-22-surveillance-bill"
     },
     {
-      "title": "Tell HN: I unknowingly broke the PHP RCE embargo. I am sorry.",
-      "points": 335,
-      "num_comments": 134,
-      "url": "https://news.ycombinator.com/item?id=50193416"
+      "title": "Now Google says it might use your Gmail and Google Photos data to target ads",
+      "points": 218,
+      "num_comments": 101,
+      "url": "https://www.theverge.com/tech/1017600/google-personal-intelligence-privacy-policy-ads-update"
     },
     {
-      "title": "What’s getting pwned right now",
-      "points": 327,
-      "num_comments": 152,
-      "url": "https://pwn.watch/"
+      "title": "The Real Kevin Bacon",
+      "points": 216,
+      "num_comments": 65,
+      "url": "https://pudding.cool/2026/10/kevin-bacon/"
     },
     {
-      "title": "Run full iOS 16.5 firmware on Android Devices",
-      "points": 300,
-      "num_comments": 117,
-      "url": "https://github.com/oosexgang/hackios-xnu-kernel"
+      "title": "Dessa: the most authentic full-duplex speech model ever built",
+      "points": 179,
+      "num_comments": 74,
+      "url": "https://block.xyz/dessa"
     },
     {
-      "title": "OpenShell – A safe, private runtime for fleets of autonomous AI agents",
-      "points": 268,
-      "num_comments": 138,
-      "url": "https://github.com/NVIDIA/OpenShell"
+      "title": "Can we replace a $150k Looker with a bucket of HTML files?",
+      "points": 113,
+      "num_comments": 70,
+      "url": "https://david.lequin.dev/blog/bi-software-is-dead/"
     },
     {
-      "title": "A farewell to Arc browser",
-      "points": 219,
-      "num_comments": 199,
-      "url": "https://arc.net/"
+      "title": "UUIDv7 doesn't have the properties you think it does",
+      "points": 101,
+      "num_comments": 85,
+      "url": "https://alexsci.com/blog/uuidv7-is-weird/"
     }
   ]
 }
