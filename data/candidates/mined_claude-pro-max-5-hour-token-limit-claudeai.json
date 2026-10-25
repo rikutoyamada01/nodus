@@ -1,12 +1,24 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-10-24T22:53:56.627757",
+  "mined_at": "2026-10-25T23:01:31.365714",
   "status": "ok",
-  "total_quantitative_hits": 1,
+  "total_quantitative_hits": 2,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
+    {
+      "source": "GitHub",
+      "title": "Colab vLLM shoot-out on RedlineBench: K2-Horizon-MoVA-36B-A4B vs Muse-Glimmer-30B vs Qwen3.8-27B (no-think)",
+      "url": "https://github.com/arthrod/redline-bench/issues/5",
+      "created_at": "2026-10-25",
+      "measurement_count": 3,
+      "extracted_numbers": [
+        "90 GB",
+        "96 GB",
+        "199.98 CU"
+      ]
+    },
     {
       "source": "GitHub",
       "title": "claude",

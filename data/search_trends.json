@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-24T22:54:10.066990",
+  "generated_at": "2026-10-25T23:01:53.593855",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -1000,20 +1000,19 @@
       "seed": "Gemini 4 Argon Pro Ultra 違い",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 9,
-        "question_troubleshoot": 1
+        "metric_cost_spec": 10
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 argon",
         "gemini 4",
-        "gemini 4 carbon",
         "gemini 4 いつ",
         "gemini 4 pro",
         "gemini 4 flash",
+        "gemini 4 argon 料金",
         "gemini 4.0",
+        "gemini 4 carbon",
         "gemini 4.0 いつ",
-        "gemini 4 argon とは",
         "gemini 4 pro いつ"
       ],
       "title_optimization_opportunities": [],
@@ -1047,8 +1046,8 @@
         "gemini api key",
         "gemini api 無料枠",
         "gemini apiキー",
-        "gemini api cli",
         "gemini api 料金",
+        "gemini api cli",
         "gemini api 無料",
         "gemini api 無料枠 制限",
         "gemini apiキー 無料",
@@ -1992,6 +1991,7 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "パーソナルaiエージェント",
+        "パーソナルaiエージェント「muse」",
         "パーソナルai",
         "パーソナルアイテムとは",
         "パーソナルaiとは",
@@ -1999,8 +1999,7 @@
         "パーソナルアイス",
         "パーソナルai 作り方",
         "パーソナルaiマーケティング",
-        "パーソナルaiエージェントとは",
-        "パーソナルアイテム"
+        "パーソナルaiエージェントとは"
       ],
       "title_optimization_opportunities": [
         {
@@ -2019,6 +2018,13 @@
         }
       ],
       "uncovered_content_gaps": [
+        {
+          "query": "パーソナルaiエージェント「muse」",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "muse"
+          ]
+        },
         {
           "query": "パーソナルアイテムとは",
           "intent": "question_troubleshoot",
@@ -2045,13 +2051,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "マーケティング"
-          ]
-        },
-        {
-          "query": "パーソナルアイテム",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "パーソナルアイテム"
           ]
         }
       ]
@@ -2379,135 +2378,135 @@
   "zenn_daily_trending": [
     {
       "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
-      "liked_count": 166,
+      "liked_count": 180,
       "comments_count": 0,
       "url": "https://zenn.dev/explaza/articles/c749042ecbe232",
       "published_at": "2026-10-21"
     },
     {
       "title": "eMudhraの中間CA証明書の秘密鍵を求めてみる",
-      "liked_count": 42,
+      "liked_count": 88,
       "comments_count": 0,
       "url": "https://zenn.dev/herumi/articles/search_bad_emudhra_key",
       "published_at": "2026-10-23"
     },
     {
       "title": "Oxlint + Oxfmt で規約をコード化するモノレポ運用",
-      "liked_count": 52,
+      "liked_count": 57,
       "comments_count": 0,
       "url": "https://zenn.dev/reality_tech/articles/oxc-monorepo-20261006",
       "published_at": "2026-10-20"
     },
     {
-      "title": "脆弱性管理の仕組みを整えた",
-      "liked_count": 74,
+      "title": "600人規模のイベント運営を支えたインカムを、学生1人で作った話",
+      "liked_count": 17,
       "comments_count": 0,
-      "url": "https://zenn.dev/dress_code/articles/be5550254695cd",
-      "published_at": "2026-10-22"
-    },
-    {
-      "title": "バイブコーディングを6週間続けたら、Mac の起動が20分かかるようになった",
-      "liked_count": 73,
-      "comments_count": 0,
-      "url": "https://zenn.dev/singularity/articles/vibe-coding-mac-boot-20min",
-      "published_at": "2026-10-20"
-    },
-    {
-      "title": "AI時代、配布するPythonコードをどう守るか: 難読化の実験と判断軸",
-      "liked_count": 40,
-      "comments_count": 1,
-      "url": "https://zenn.dev/pksha/articles/0f9c11d1daea2e",
-      "published_at": "2026-10-19"
+      "url": "https://zenn.dev/kodak_20/articles/3b0ba74333b56c",
+      "published_at": "2026-10-25"
     },
     {
       "title": "prpr: Rust 向けのシンプルで高速な Parser generator",
-      "liked_count": 24,
+      "liked_count": 40,
       "comments_count": 0,
       "url": "https://zenn.dev/tanakh/articles/prpr-packrat-parser",
       "published_at": "2026-10-24"
     },
     {
-      "title": "Claude Code で CI 待ち時間を 18 分から 4 分台に短縮する【GitHub Actions】",
-      "liked_count": 48,
+      "title": "脆弱性管理の仕組みを整えた",
+      "liked_count": 77,
       "comments_count": 0,
-      "url": "https://zenn.dev/edash_tech_blog/articles/5b90aa33bd8d49",
-      "published_at": "2026-10-20"
-    },
-    {
-      "title": "webauthn-ruby をもう一回覗いてみた",
-      "liked_count": 1,
-      "comments_count": 0,
-      "url": "https://zenn.dev/smartcamp/articles/22bde5829493e5",
-      "published_at": "2026-10-24"
+      "url": "https://zenn.dev/dress_code/articles/be5550254695cd",
+      "published_at": "2026-10-22"
     },
     {
       "title": "AI が実装してくれる時代こそ、自分の手で実装しよう",
-      "liked_count": 14,
+      "liked_count": 30,
       "comments_count": 1,
       "url": "https://zenn.dev/loglass/articles/24b2a4776ce8d4",
       "published_at": "2026-10-23"
+    },
+    {
+      "title": "バイブコーディングを6週間続けたら、Mac の起動が20分かかるようになった",
+      "liked_count": 81,
+      "comments_count": 0,
+      "url": "https://zenn.dev/singularity/articles/vibe-coding-mac-boot-20min",
+      "published_at": "2026-10-20"
+    },
+    {
+      "title": "Claude Codeにghを使わせても、GH_TOKENをコンテナの環境変数に置かないdevcontainer構成",
+      "liked_count": 3,
+      "comments_count": 0,
+      "url": "https://zenn.dev/hii_chi/articles/claude-code-gh-token-wrapper",
+      "published_at": "2026-10-25"
+    },
+    {
+      "title": "Xcode 27 で ＠State がマクロになった理由 ― 遅延評価は private だけ、＠StateObject との違い",
+      "liked_count": 5,
+      "comments_count": 0,
+      "url": "https://zenn.dev/takehito/articles/50145459523321",
+      "published_at": "2026-10-25"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Local Wikipedia: Wikipedia, but only for things a half hour walk from you",
-      "points": 1530,
-      "num_comments": 242,
-      "url": "https://edjefferson.com/localwiki/"
+      "title": "Root shell on Samsung TV",
+      "points": 736,
+      "num_comments": 561,
+      "url": "https://twitter.com/log4j/status/2113014142600953868?s=46"
     },
     {
-      "title": "No signs of AI payoff outside the tech sector",
-      "points": 394,
-      "num_comments": 364,
-      "url": "https://www.apollo.com/wealth/insights-news/insights/daily-spark/no-signs-of-ai-payoff-outside-the-tech-sector"
+      "title": "We should be more ambitious with the software we build",
+      "points": 731,
+      "num_comments": 672,
+      "url": "https://danluu.com/ambitious/"
     },
     {
-      "title": "Twelve years of distributed SQLite",
-      "points": 352,
-      "num_comments": 60,
-      "url": "https://philipotoole.com/twelve-years-of-distributed-sqlite/"
+      "title": "A 10-year-old CNN outperforms frontier LLMs for skin cancer diagnosis",
+      "points": 357,
+      "num_comments": 179,
+      "url": "https://lynchlab.net/llm-skin-cancer"
     },
     {
-      "title": "Bringing uv and ty together",
-      "points": 288,
-      "num_comments": 103,
-      "url": "https://astral.sh/blog/uv-ty-integration"
-    },
-    {
-      "title": "Show HN: Steal My Bitcoin",
-      "points": 274,
+      "title": "Cerebras Deploys Trillion-Parameter AI Models",
+      "points": 344,
       "num_comments": 127,
-      "url": "https://stealmybitcoin.com/"
+      "url": "https://www.cerebras.ai/blog/how-we-deploy-trillion-parameter-frontier-models-on-cerebras"
     },
     {
-      "title": "Physicists trap a single antimatter particle for a month",
-      "points": 263,
-      "num_comments": 77,
-      "url": "https://www.scientificamerican.com/article/physicists-trap-a-single-antimatter-particle-for-a-month/"
+      "title": "I refuse to accept a censored Internet. Join Me at FOSDEM 27",
+      "points": 339,
+      "num_comments": 170,
+      "url": "https://talkweb.eu/openweb/4558/"
     },
     {
-      "title": "Node2Shell evolves to HTTP2Shell, blast radius affects many HTTP libs and apps",
-      "points": 259,
-      "num_comments": 128,
-      "url": "https://www.aikido.dev/blog/python-packages-vulnerable-node2shell-brotli-cve-2026-111497"
-    },
-    {
-      "title": "I don't understand quantum physics (2018)",
-      "points": 257,
-      "num_comments": 189,
-      "url": "https://www.southampton.ac.uk/~doug/quantum_physics/index.html"
-    },
-    {
-      "title": "How close can pure functional programming get to C?",
-      "points": 245,
+      "title": "Oregon Police Are Charging a Local News Outlet $2.5M for Records About One Cop",
+      "points": 319,
       "num_comments": 81,
-      "url": "https://rtfeldman.com/fp-vs-c"
+      "url": "https://theintercept.com/2026/10/01/oregon-police-misconduct-public-records-cost-fee/"
     },
     {
-      "title": "Roku developer repositories moved from GitHub to GitLab",
-      "points": 227,
-      "num_comments": 152,
-      "url": "https://blog.roku.com/developer/gitlab-move"
+      "title": "Dolly Parton's Imagination Library",
+      "points": 283,
+      "num_comments": 52,
+      "url": "https://imaginationlibrary.com/"
+    },
+    {
+      "title": "AI use leads UC Berkeley math professor to see 'no point' in grading homework",
+      "points": 176,
+      "num_comments": 257,
+      "url": "https://www.dailycal.org/news/campus/academics/ai-use-leads-uc-berkeley-math-professor-to-see-no-point-in-grading-homework/article_bdf1eae2-c08b-491f-b9f1-81a7cea177de.html"
+    },
+    {
+      "title": "JetBrains Thinkrail",
+      "points": 147,
+      "num_comments": 104,
+      "url": "https://github.com/JetBrains/thinkrail"
+    },
+    {
+      "title": "Moderna and Merck say their mRNA cancer vaccine cut death, recurrence by 42%",
+      "points": 146,
+      "num_comments": 26,
+      "url": "https://arstechnica.com/health/2026/10/personalized-mrna-cancer-vaccine-cut-melanoma-death-recurrence-by-42/"
     }
   ]
 }
