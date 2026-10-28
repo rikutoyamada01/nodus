@@ -182,6 +182,54 @@ class AnalyticsChecks(unittest.TestCase):
         self.assertEqual(result["sources"]["cloudflare"]["status"], "error")
         self.assertNotIn("comparison", result["sources"]["cloudflare"])
 
+    def test_gsc_sitemap_skips_redundant_put_when_already_registered(self):
+        import json
+        import urllib.error
+        from unittest.mock import MagicMock
+        import ping_index
+
+        get_resp = MagicMock()
+        get_resp.status = 200
+        get_resp.read.return_value = json.dumps(
+            {
+                "path": "https://nodus-lab.pages.dev/sitemap.xml",
+                "lastSubmitted": "2026-10-27T00:15:50Z",
+                "lastDownloaded": None,
+                "isPending": True,
+                "errors": "0",
+                "warnings": "0",
+            }
+        ).encode("utf-8")
+        get_resp.__enter__.return_value = get_resp
+
+        with patch.object(ping_index.urllib.request, "urlopen", return_value=get_resp) as mock_open:
+            res = ping_index.submit_gsc_sitemap(
+                "https://nodus-lab.pages.dev/",
+                "https://nodus-lab.pages.dev/sitemap.xml",
+                "test-token",
+            )
+            self.assertEqual(res["status"], "already_registered")
+            self.assertTrue(res["is_pending"])
+            self.assertEqual(mock_open.call_count, 1)
+            self.assertEqual(mock_open.call_args.args[0].get_method(), "GET")
+
+        put_resp = MagicMock()
+        put_resp.status = 204
+        put_resp.__enter__.return_value = put_resp
+        not_found = urllib.error.HTTPError(
+            url="https://www.googleapis.com/", code=404, msg="Not Found", hdrs=None, fp=None
+        )
+        with patch.object(ping_index.urllib.request, "urlopen", side_effect=[not_found, put_resp]) as mock_open2:
+            res2 = ping_index.submit_gsc_sitemap(
+                "https://nodus-lab.pages.dev/",
+                "https://nodus-lab.pages.dev/sitemap.xml",
+                "test-token",
+            )
+            self.assertEqual(res2["status"], "submitted")
+            self.assertEqual(mock_open2.call_count, 2)
+            self.assertEqual(mock_open2.call_args_list[0].args[0].get_method(), "GET")
+            self.assertEqual(mock_open2.call_args_list[1].args[0].get_method(), "PUT")
+
 
 if __name__ == "__main__":
     unittest.main()

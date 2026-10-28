@@ -102,20 +102,28 @@ jobs:
         run: python scripts/validate_site.py
 
       - name: Commit and push verified updates
+        id: commit_updates
         if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "nodus-autonomous-bot[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/ content/ dist/
+          if git diff --cached --quiet -- dist/; then
+            echo "dist_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "dist_changed=true" >> "$GITHUB_OUTPUT"
+          fi
           if git diff --cached --quiet; then
             echo "No verified data or SEO changes to commit."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "chore(autonomous): update mined quantitative logs and rebuild dist"
             git push origin HEAD:main
+            echo "committed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Deploy updated dist to Cloudflare Pages
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && steps.commit_updates.outputs.dist_changed == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -127,7 +135,7 @@ jobs:
           fi
 
       - name: Ping IndexNow & Search Console for instant indexing
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && steps.commit_updates.outputs.dist_changed == 'true'
         env:
           GSC_ACCESS_TOKEN: ${{ secrets.GSC_ACCESS_TOKEN }}
           GSC_CLIENT_ID: ${{ secrets.GSC_CLIENT_ID }}

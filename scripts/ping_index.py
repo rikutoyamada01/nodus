@@ -104,7 +104,12 @@ def submit_indexnow(base_url: str, key: str, urls: list[str]) -> list[dict[str, 
     return results
 
 
-def submit_gsc_sitemap(property_url: str, sitemap_url: str, access_token: str) -> dict[str, Any]:
+def submit_gsc_sitemap(
+    property_url: str,
+    sitemap_url: str,
+    access_token: str,
+    force_resubmit: bool = False,
+) -> dict[str, Any]:
     if not access_token:
         return {
             "engine": "GoogleSearchConsole",
@@ -114,6 +119,42 @@ def submit_gsc_sitemap(property_url: str, sitemap_url: str, access_token: str) -
     enc_prop = urllib.parse.quote(property_url, safe="")
     enc_sm = urllib.parse.quote(sitemap_url, safe="")
     api_url = f"https://www.googleapis.com/webmasters/v3/sites/{enc_prop}/sitemaps/{enc_sm}"
+
+    if not force_resubmit:
+        get_req = urllib.request.Request(
+            api_url,
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "User-Agent": "NodusIndexPinger/1.0",
+            },
+            method="GET",
+        )
+        try:
+            with urllib.request.urlopen(get_req, timeout=12) as resp:
+                body = resp.read().decode("utf-8", errors="replace")
+                existing = json.loads(body) if body else {}
+                return {
+                    "engine": "GoogleSearchConsole",
+                    "status": "already_registered",
+                    "status_code": resp.status,
+                    "sitemap_url": sitemap_url,
+                    "last_submitted": existing.get("lastSubmitted"),
+                    "last_downloaded": existing.get("lastDownloaded"),
+                    "is_pending": existing.get("isPending"),
+                    "errors": existing.get("errors"),
+                    "warnings": existing.get("warnings"),
+                }
+        except urllib.error.HTTPError as e:
+            if e.code != 404:
+                return {
+                    "engine": "GoogleSearchConsole",
+                    "status": "error",
+                    "status_code": e.code,
+                    "detail": str(e),
+                }
+        except Exception:
+            pass
+
     req = urllib.request.Request(
         api_url,
         data=b"",
@@ -136,7 +177,7 @@ def submit_gsc_sitemap(property_url: str, sitemap_url: str, access_token: str) -
         return {"engine": "GoogleSearchConsole", "status": "error", "detail": str(e)}
 
 
-def run_ping() -> dict[str, Any]:
+def run_ping(force_resubmit_sitemap: bool = False) -> dict[str, Any]:
     config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     base_url = config["site"]["base_url"].rstrip("/")
     seo_cfg = config.get("seo_loop", {})
@@ -151,7 +192,12 @@ def run_ping() -> dict[str, Any]:
         token = resolve_gsc_access_token()
     except Exception:
         pass
-    gsc_res = submit_gsc_sitemap(prop_url, sitemap_url, token)
+    gsc_res = submit_gsc_sitemap(
+        prop_url,
+        sitemap_url,
+        token,
+        force_resubmit=force_resubmit_sitemap,
+    )
 
     report = {
         "base_url": base_url,
@@ -166,4 +212,5 @@ def run_ping() -> dict[str, Any]:
 if __name__ == "__main__":
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
-    run_ping()
+    force_sm = "--force-sitemap" in sys.argv
+    run_ping(force_resubmit_sitemap=force_sm)
