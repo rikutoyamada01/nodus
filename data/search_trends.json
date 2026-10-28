@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T00:14:36.574293",
+  "generated_at": "2026-10-28T00:15:26.023132",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -15,11 +15,11 @@
         "usb-c 充電器 ダイソー",
         "usb-c 充電器 100w",
         "usb-c 充電器 65w",
-        "usb-c 充電器 おすすめ",
         "usb-c 充電器 複数ポート",
+        "usb-c 充電器 おすすめ",
+        "usb-c 充電器 薄型",
         "usb-c 充電器 ケーブル付き",
         "usb-c 充電器 30w",
-        "usb-c 充電器 薄型",
         "usb-c 充電器 cio"
       ],
       "title_optimization_opportunities": [
@@ -81,9 +81,9 @@
       "seed": "AIコーディング サブスク API 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 7,
+        "metric_cost_spec": 6,
         "question_troubleshoot": 2,
-        "comparison": 1
+        "comparison": 2
       },
       "total_suggestions": 10,
       "top_suggestions": [
@@ -94,9 +94,9 @@
         "aiコーディング 無料",
         "aiコーディング やり方",
         "aiコーディング おすすめ",
-        "aiコーディング ランキング",
         "aiコーディングエージェントとは",
-        "aiコーディングエージェント 無料"
+        "aiコーディングエージェント 無料",
+        "aiコーディング 比較"
       ],
       "title_optimization_opportunities": [
         {
@@ -143,15 +143,7 @@
           ]
         }
       ],
-      "uncovered_content_gaps": [
-        {
-          "query": "aiコーディング ランキング",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ランキング"
-          ]
-        }
-      ]
+      "uncovered_content_gaps": []
     },
     {
       "slug": "always-on-personal-ai-raspberry-pi-vps-mini-pc",
@@ -246,13 +238,13 @@
         "cloudflare pages",
         "cloudflare pages 無料枠",
         "cloudflare pages 使い方",
-        "cloudflare pages 廃止",
         "cloudflare pagesとは",
-        "cloudflare pages workers 違い",
+        "cloudflare pages 廃止",
         "cloudflare pages 料金",
+        "cloudflare pages workers 違い",
         "cloudflare pages 商用利用",
-        "cloudflare pages github",
-        "cloudflare pages ドメイン"
+        "cloudflare pages ドメイン",
+        "cloudflare pages github"
       ],
       "title_optimization_opportunities": [
         {
@@ -287,18 +279,18 @@
           ]
         },
         {
+          "query": "cloudflare pages 料金",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "料金"
+          ]
+        },
+        {
           "query": "cloudflare pages workers 違い",
           "intent": "comparison",
           "missing_in_body": [
             "workers",
             "違"
-          ]
-        },
-        {
-          "query": "cloudflare pages 料金",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "料金"
           ]
         },
         {
@@ -375,12 +367,12 @@
       "top_suggestions": [
         "deepseek flash v4",
         "deepseek flash 0731",
+        "deepseek flash v4 0731",
         "deepseek flash 4.1",
         "deepseek flash v4.1",
-        "deepseek flash v4 0731",
         "deepseek flash pro",
-        "deepseek flash api",
         "deepseek flash vision",
+        "deepseek flash api",
         "deepseek flash 价格"
       ],
       "title_optimization_opportunities": [
@@ -537,9 +529,9 @@
         "mac デュアルディスプレイ dock 移動",
         "mac デュアルディスプレイ 設定",
         "mac デュアルディスプレイ dock 固定",
+        "mac デュアルディスプレイ 配置がない",
         "mac デュアルディスプレイ ウィンドウ移動 ショートカット",
         "mac デュアルディスプレイ設定 できない",
-        "mac デュアルディスプレイ 配置がない",
         "mac デュアルディスプレイ dock 両方",
         "mac デュアルディスプレイ 画面移動",
         "mac デュアルディスプレイ おすすめ"
@@ -563,19 +555,19 @@
           ]
         },
         {
+          "query": "mac デュアルディスプレイ 配置がない",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "配置"
+          ]
+        },
+        {
           "query": "mac デュアルディスプレイ ウィンドウ移動 ショートカット",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "ウィンドウ",
             "移動",
             "ショートカット"
-          ]
-        },
-        {
-          "query": "mac デュアルディスプレイ 配置がない",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "配置"
           ]
         },
         {
@@ -887,8 +879,8 @@
         "esp32-s3-devkitc-1-n8r8",
         "esp32-s3r8",
         "esp32-s3 n16r8",
-        "esp32-s3 super mini",
-        "esp32-s3-wroom"
+        "esp32-s3fn8",
+        "esp32-s3 super mini"
       ],
       "title_optimization_opportunities": [
         {
@@ -943,18 +935,18 @@
           ]
         },
         {
+          "query": "esp32-s3fn8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "esp32-s3fn8"
+          ]
+        },
+        {
           "query": "esp32-s3 super mini",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "super",
             "mini"
-          ]
-        },
-        {
-          "query": "esp32-s3-wroom",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "esp32-s3-wroom"
           ]
         }
       ]
@@ -1008,12 +1000,12 @@
         "gemini 4",
         "gemini 4 flash",
         "gemini 4 いつ",
-        "gemini 4 carbon",
         "gemini 4 pro",
-        "gemini 4 argon 性能",
         "gemini 4 argon 料金",
+        "gemini 4 carbon",
         "gemini 4.0",
-        "gemini 4.0 いつ"
+        "gemini 4.0 いつ",
+        "gemini 4 pro いつ"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1047,11 +1039,11 @@
         "gemini api 無料枠",
         "gemini apiキー",
         "gemini api 料金",
+        "gemini api cli",
         "gemini api 無料",
         "gemini api 無料枠 制限",
-        "gemini apiキー 無料",
-        "gemini apiキー 取得方法",
-        "gemini api モデル"
+        "gemini api key 無料",
+        "gemini apiキー 取得方法"
       ],
       "title_optimization_opportunities": [
         {
@@ -1059,13 +1051,6 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "キー"
-          ]
-        },
-        {
-          "query": "gemini api モデル",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "モデル"
           ]
         }
       ],
@@ -1086,6 +1071,13 @@
           ]
         },
         {
+          "query": "gemini api cli",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "cli"
+          ]
+        },
+        {
           "query": "gemini api 無料",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1102,9 +1094,10 @@
           ]
         },
         {
-          "query": "gemini apiキー 無料",
+          "query": "gemini api key 無料",
           "intent": "metric_cost_spec",
           "missing_in_body": [
+            "key",
             "無料"
           ]
         },
@@ -1145,11 +1138,11 @@
         "google ai pro",
         "google ai plus",
         "google aiモード",
+        "google aiチャット",
         "google ai 無料",
         "google ai studio 日本語",
         "google ai studio アプリ",
-        "google ai studio 日本語にする方法",
-        "google ai プラン"
+        "google ai studio 日本語にする方法"
       ],
       "title_optimization_opportunities": [
         {
@@ -1176,6 +1169,13 @@
           ]
         },
         {
+          "query": "google aiチャット",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "チャット"
+          ]
+        },
+        {
           "query": "google ai studio 日本語",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1188,13 +1188,6 @@
           "missing_in_body": [
             "日本語",
             "方法"
-          ]
-        },
-        {
-          "query": "google ai プラン",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "プラン"
           ]
         }
       ]
@@ -1282,15 +1275,22 @@
         "search console",
         "search consoleとは",
         "search console ログイン",
+        "search console api",
         "search console google",
         "search console 使い方",
-        "search console api",
+        "search console mcp",
         "search console 生成ai",
-        "search console sns",
-        "search console insights",
-        "search console 所有権の確認"
+        "search console 設定",
+        "search console sns"
       ],
       "title_optimization_opportunities": [
+        {
+          "query": "search console api",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "api"
+          ]
+        },
         {
           "query": "search console google",
           "intent": "metric_cost_spec",
@@ -1307,10 +1307,10 @@
           ]
         },
         {
-          "query": "search console api",
+          "query": "search console 設定",
           "intent": "metric_cost_spec",
           "missing_in_title": [
-            "api"
+            "設定"
           ]
         },
         {
@@ -1330,25 +1330,18 @@
           ]
         },
         {
+          "query": "search console mcp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mcp"
+          ]
+        },
+        {
           "query": "search console 生成ai",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "生成",
             "ai"
-          ]
-        },
-        {
-          "query": "search console insights",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "insights"
-          ]
-        },
-        {
-          "query": "search console 所有権の確認",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "所有権"
           ]
         }
       ]
@@ -1372,8 +1365,8 @@
         "スピーカーフォン 使い方",
         "スピーカーフォン スマホ",
         "スピーカーフォン jabra",
-        "スピーカーフォン 連結",
-        "スピーカーフォン ヤマハ"
+        "スピーカーフォン ヤマハ",
+        "スピーカーフォン 会議"
       ],
       "title_optimization_opportunities": [
         {
@@ -1382,6 +1375,13 @@
           "missing_in_title": [
             "使",
             "方"
+          ]
+        },
+        {
+          "query": "スピーカーフォン 会議",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "会議"
           ]
         }
       ],
@@ -1405,13 +1405,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "jabra"
-          ]
-        },
-        {
-          "query": "スピーカーフォン 連結",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "連結"
           ]
         },
         {
@@ -1451,9 +1444,9 @@
         "継続学習 ai",
         "継続学習とは",
         "継続学習 英語",
+        "継続学習センター",
         "継続学習制度",
-        "継続学習 ファイン チューニング",
-        "継続学習センター"
+        "継続学習 ファイン チューニング"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1462,6 +1455,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "英語"
+          ]
+        },
+        {
+          "query": "継続学習センター",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "センター"
           ]
         },
         {
@@ -1477,13 +1477,6 @@
           "missing_in_body": [
             "ファイン",
             "チューニング"
-          ]
-        },
-        {
-          "query": "継続学習センター",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "センター"
           ]
         }
       ]
@@ -1518,22 +1511,22 @@
       "seed": "LLM API 速度 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 8,
-        "question_troubleshoot": 1,
-        "comparison": 1
+        "metric_cost_spec": 7,
+        "comparison": 2,
+        "question_troubleshoot": 1
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "llm api 無料",
         "llm api",
-        "llm apiとは",
+        "llm api 無料",
         "llm api 料金 比較",
+        "llm apiとは",
         "llm api 料金",
         "llm api 無料枠",
         "llm apiキー",
         "llm api コスパ",
-        "llm api 安い",
-        "llm api サブスク"
+        "llm api 比較",
+        "llm api 定額"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1567,17 +1560,10 @@
           ]
         },
         {
-          "query": "llm api 安い",
+          "query": "llm api 定額",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "安"
-          ]
-        },
-        {
-          "query": "llm api サブスク",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "サブスク"
+            "定額"
           ]
         }
       ]
@@ -1587,13 +1573,13 @@
       "seed": "Mac ローカルLLM",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "comparison": 1,
-        "metric_cost_spec": 8
+        "metric_cost_spec": 8,
+        "comparison": 1
       },
       "total_suggestions": 9,
       "top_suggestions": [
-        "mac ローカルllm おすすめ",
         "mac ローカルllm",
+        "mac ローカルllm おすすめ",
         "mac ローカルllm 画像生成",
         "mac ローカルllm メモリ",
         "mac ローカルllm mlx",
@@ -1907,12 +1893,12 @@
         "notebooklm ソース 上限",
         "notebooklm ソース ダウンロード",
         "notebooklm ソース 一括削除",
-        "notebooklm ソース 削除",
         "notebooklm ソース",
+        "notebooklm ソース 削除",
         "notebooklm ソース 更新",
         "notebooklm ソース追加できない",
-        "notebooklm ソース数",
         "notebooklm ソース 自動更新",
+        "notebooklm ソース数",
         "notebooklm ソースの上限"
       ],
       "title_optimization_opportunities": [
@@ -1990,12 +1976,12 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "パーソナルaiエージェント",
-        "パーソナルaiエージェント「muse」",
         "パーソナルai",
+        "パーソナルaiエージェント",
         "パーソナルアイテムとは",
         "パーソナルaiとは",
         "パーソナルアイデンティティ",
+        "パーソナルアイテック",
         "パーソナルアイス",
         "パーソナルai 作り方",
         "パーソナルaiマーケティング",
@@ -2019,13 +2005,6 @@
       ],
       "uncovered_content_gaps": [
         {
-          "query": "パーソナルaiエージェント「muse」",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "muse"
-          ]
-        },
-        {
           "query": "パーソナルアイテムとは",
           "intent": "question_troubleshoot",
           "missing_in_body": [
@@ -2037,6 +2016,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "パーソナルアイデンティティ"
+          ]
+        },
+        {
+          "query": "パーソナルアイテック",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "パーソナルアイテック"
           ]
         },
         {
@@ -2377,136 +2363,136 @@
   ],
   "zenn_daily_trending": [
     {
-      "title": "eMudhraの中間CA証明書の秘密鍵を求めてみる",
-      "liked_count": 119,
-      "comments_count": 1,
-      "url": "https://zenn.dev/herumi/articles/search_bad_emudhra_key",
-      "published_at": "2026-10-23"
-    },
-    {
-      "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
-      "liked_count": 201,
-      "comments_count": 0,
-      "url": "https://zenn.dev/explaza/articles/c749042ecbe232",
-      "published_at": "2026-10-21"
+      "title": "AI の謎な説明文を直すスキル",
+      "liked_count": 120,
+      "comments_count": 2,
+      "url": "https://zenn.dev/microsoft/articles/explain-before-shorten",
+      "published_at": "2026-10-26"
     },
     {
       "title": "最近の E2E 戦略（2026 年 10 月現在）",
-      "liked_count": 29,
+      "liked_count": 75,
       "comments_count": 0,
       "url": "https://zenn.dev/polyco/articles/26624b38c951b5",
       "published_at": "2026-10-26"
     },
     {
-      "title": "600人規模のイベント運営を支えたインカムを、学生1人で作った話",
-      "liked_count": 48,
+      "title": "コードを読まずにマージするために必要なこと",
+      "liked_count": 45,
+      "comments_count": 0,
+      "url": "https://zenn.dev/nrs/articles/c777388530aa84",
+      "published_at": "2026-10-27"
+    },
+    {
+      "title": "eMudhraの中間CA証明書の秘密鍵を求めてみる",
+      "liked_count": 131,
       "comments_count": 1,
+      "url": "https://zenn.dev/herumi/articles/search_bad_emudhra_key",
+      "published_at": "2026-10-23"
+    },
+    {
+      "title": "学生2人で日本語音声LLMを作り、FT-LLM 2026 自由形タスクで1位を獲得した話",
+      "liked_count": 25,
+      "comments_count": 0,
+      "url": "https://zenn.dev/ayutaso/articles/ftllm2026-ja-speech-llm",
+      "published_at": "2026-10-26"
+    },
+    {
+      "title": "600人規模のイベント運営を支えたインカムを、学生1人で作った話",
+      "liked_count": 62,
+      "comments_count": 0,
       "url": "https://zenn.dev/kodak_20/articles/3b0ba74333b56c",
       "published_at": "2026-10-25"
     },
     {
-      "title": "AI の謎な説明文を直すスキル",
-      "liked_count": 57,
+      "title": "Jevに問い合わせメッセージを仕分けてもらう",
+      "liked_count": 12,
       "comments_count": 0,
-      "url": "https://zenn.dev/microsoft/articles/explain-before-shorten",
-      "published_at": "2026-10-26"
+      "url": "https://zenn.dev/chot/articles/980c44e5a19736",
+      "published_at": "2026-10-27"
+    },
+    {
+      "title": "Go で動く新世代の補完プラグイン goda-cmp.vim",
+      "liked_count": 14,
+      "comments_count": 0,
+      "url": "https://zenn.dev/shougo/articles/goda-cmp-vim-beta",
+      "published_at": "2026-10-27"
     },
     {
       "title": "私が5種類のコーディングエージェントを使い分ける理由",
-      "liked_count": 18,
+      "liked_count": 29,
       "comments_count": 0,
       "url": "https://zenn.dev/rimon/articles/45c1fd2f015af8",
       "published_at": "2026-10-26"
     },
     {
-      "title": "スタックトレースを読むとヒープが約1,470 MB増えていた話",
-      "liked_count": 13,
+      "title": "2026年の国内情報漏えい71件を侵入経路で分類してみた",
+      "liked_count": 49,
       "comments_count": 0,
-      "url": "https://zenn.dev/dress_code/articles/f2a51226c9ec6f",
-      "published_at": "2026-10-26"
-    },
-    {
-      "title": "Node.js の Brotli 脆弱性 CVE-2026-111497 を読む",
-      "liked_count": 5,
-      "comments_count": 0,
-      "url": "https://zenn.dev/chot/articles/79e6c94e27782d",
-      "published_at": "2026-10-26"
-    },
-    {
-      "title": "AIネイティブなインターン生を受け入れて考えた、これからの開発エンジニア",
-      "liked_count": 7,
-      "comments_count": 0,
-      "url": "https://zenn.dev/tokium_dev/articles/internship-mentoring-2026",
-      "published_at": "2026-10-26"
-    },
-    {
-      "title": "prpr: Rust 向けのシンプルで高速な Parser generator",
-      "liked_count": 48,
-      "comments_count": 0,
-      "url": "https://zenn.dev/tanakh/articles/prpr-packrat-parser",
-      "published_at": "2026-10-24"
+      "url": "https://zenn.dev/blackleg/articles/e9ed8b038bcf48",
+      "published_at": "2026-10-25"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Anthropic S-1",
-      "points": 1443,
-      "num_comments": 1408,
-      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm"
+      "title": "US Government is hiding a secret court ruling about how it spies on Americans",
+      "points": 751,
+      "num_comments": 271,
+      "url": "https://www.wired.com/story/the-us-government-is-hiding-a-secret-court-ruling-about-how-it-spies-on-americans/"
     },
     {
-      "title": "Microsoft offers mass buyouts for roughly a quarter of its workforce",
-      "points": 707,
-      "num_comments": 623,
-      "url": "https://www.seattletimes.com/business/microsoft/microsoft-offers-mass-buyouts-for-roughly-a-quarter-of-its-workforce/"
+      "title": "Ghostty 1.4",
+      "points": 691,
+      "num_comments": 214,
+      "url": "https://ghostty.org/docs/install/release-notes/1-4-0"
     },
     {
-      "title": "Sebastian Raschka's from-scratch video course on building reasoning models",
-      "points": 526,
-      "num_comments": 79,
-      "url": "https://magazine.sebastianraschka.com/p/building-reasoning-models"
+      "title": "Genie 4",
+      "points": 680,
+      "num_comments": 411,
+      "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/"
     },
     {
-      "title": "Birdwatching rewires the brain and slows cognitive decline",
-      "points": 498,
-      "num_comments": 193,
-      "url": "https://www.bbc.com/future/article/20261019-birdwatching-rewires-the-brain-and-slows-cognitive-decline"
+      "title": "Wikipedia's Cleanup of AI-Generated Content",
+      "points": 435,
+      "num_comments": 200,
+      "url": "https://spectrum.ieee.org/wikipedia-wikiproject-ai-writing-cleanup"
     },
     {
-      "title": "GPT-6.1 Terra",
-      "points": 475,
-      "num_comments": 300,
-      "url": "https://openai.com/index/introducing-gpt-6-1-terra/"
+      "title": "Python's experimental JIT to be removed",
+      "points": 433,
+      "num_comments": 228,
+      "url": "https://lwn.net/SubscriberLink/1102102/0c00e4d550f25f8c/"
     },
     {
-      "title": "Switzerland. Block by block. At 1:1 scale",
-      "points": 455,
-      "num_comments": 213,
-      "url": "https://blocks.manifold3d.ch/"
+      "title": "New iMac with M6",
+      "points": 300,
+      "num_comments": 360,
+      "url": "https://www.apple.com/imac/"
     },
     {
-      "title": "CSS-Tricks has a new owner",
-      "points": 367,
-      "num_comments": 86,
-      "url": "https://css-tricks.com/css-tricks-has-a-new-owner/"
+      "title": "New 14‑inch MacBook Pro with M6",
+      "points": 265,
+      "num_comments": 319,
+      "url": "https://www.apple.com/in/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
     },
     {
-      "title": "In Leaked Audio, Flock CEO Tells Cops Backlash to the Company Isn't Real",
-      "points": 277,
-      "num_comments": 160,
-      "url": "https://www.404media.co/in-leaked-audio-flock-ceo-tells-cops-backlash-to-the-company-isnt-real/"
+      "title": "Amazon Is Gutting Its AI Division After Sustained Failure",
+      "points": 230,
+      "num_comments": 132,
+      "url": "https://futurism.com/artificial-intelligence/amazon-ai-division-failure-nova"
     },
     {
-      "title": "Blaise Pascal invented fixed route public transport (2024)",
-      "points": 257,
-      "num_comments": 135,
-      "url": "https://humantransit.org/2024/12/one-of-the-greatest-inventions-in-the-history-of-human-transport.html"
+      "title": "Discord will soon let anyone find public server messages through Google",
+      "points": 220,
+      "num_comments": 122,
+      "url": "https://discord.com/blog/making-content-from-discoverable-servers-easier-to-discover"
     },
     {
-      "title": "Oldest GUI application that still runs on Windows 11",
-      "points": 253,
-      "num_comments": 157,
-      "url": "https://blog.enlyth.com/posts/oldest-windows-gui-app-win-11/"
+      "title": "Tailscale SSH: Investigation and remediation update",
+      "points": 173,
+      "num_comments": 96,
+      "url": "https://tailscale.com/ssh-investigation-update"
     }
   ]
 }
