@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T00:15:26.023132",
+  "generated_at": "2026-10-29T00:36:48.917598",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -180,15 +180,14 @@
       "seed": "クラウドバックアップ 復元 料金 比較",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 5
+        "metric_cost_spec": 4
       },
-      "total_suggestions": 5,
+      "total_suggestions": 4,
       "top_suggestions": [
         "クラウドバックアップ 復元",
         "iphone クラウドバックアップ 復元",
-        "ノートン クラウドバックアップ 復元",
         "microsoft authenticator クラウドバックアップ 復元",
-        "キキ navi クラウドバックアップ 復元"
+        "ノートン クラウドバックアップ 復元"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -200,13 +199,6 @@
           ]
         },
         {
-          "query": "ノートン クラウドバックアップ 復元",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ノートン"
-          ]
-        },
-        {
           "query": "microsoft authenticator クラウドバックアップ 復元",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -215,11 +207,10 @@
           ]
         },
         {
-          "query": "キキ navi クラウドバックアップ 復元",
+          "query": "ノートン クラウドバックアップ 復元",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "キキ",
-            "navi"
+            "ノートン"
           ]
         }
       ]
@@ -425,8 +416,8 @@
       "total_suggestions": 3,
       "top_suggestions": [
         "pc 自作 既製品",
-        "ゲーミングpc 自作 既製品",
-        "nas 自作 既製品"
+        "nas 自作 既製品",
+        "ゲーミングpc 自作 既製品"
       ],
       "title_optimization_opportunities": [
         {
@@ -461,11 +452,11 @@
         "docker バックアップ リストア",
         "docker volume バックアップ",
         "docker コンテナ バックアップ",
-        "gitlab docker バックアップ",
+        "docker image バックアップ",
+        "docker ボリューム バックアップ",
         "growi docker バックアップ",
-        "redmine docker バックアップ",
-        "ubuntu docker バックアップ",
-        "nextcloud docker バックアップ"
+        "gitlab docker バックアップ",
+        "redmine docker バックアップ"
       ],
       "title_optimization_opportunities": [
         {
@@ -478,10 +469,17 @@
       ],
       "uncovered_content_gaps": [
         {
-          "query": "gitlab docker バックアップ",
+          "query": "docker image バックアップ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "gitlab"
+            "image"
+          ]
+        },
+        {
+          "query": "docker ボリューム バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ボリューム"
           ]
         },
         {
@@ -492,24 +490,17 @@
           ]
         },
         {
+          "query": "gitlab docker バックアップ",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "gitlab"
+          ]
+        },
+        {
           "query": "redmine docker バックアップ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "redmine"
-          ]
-        },
-        {
-          "query": "ubuntu docker バックアップ",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "ubuntu"
-          ]
-        },
-        {
-          "query": "nextcloud docker バックアップ",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "nextcloud"
           ]
         }
       ]
@@ -604,8 +595,8 @@
         "onnx int8 inference",
         "onnx int8 model",
         "bge m3 onnx int8",
-        "kokoro onnx int8",
-        "sherpa onnx int8"
+        "sherpa onnx int8",
+        "kokoro onnx int8"
       ],
       "title_optimization_opportunities": [
         {
@@ -654,17 +645,17 @@
           ]
         },
         {
-          "query": "kokoro onnx int8",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "kokoro"
-          ]
-        },
-        {
           "query": "sherpa onnx int8",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "sherpa"
+          ]
+        },
+        {
+          "query": "kokoro onnx int8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "kokoro"
           ]
         }
       ]
@@ -739,15 +730,15 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "esp32-c6 matter",
-        "esp32 c6 matter border router",
         "esp32 c6 matter router",
+        "esp32 c6 matter border router",
         "esp32 c6 matter over thread example",
-        "esp32 c6 matter device",
         "esp32 c6 matter gateway",
-        "esp32 c6 matter over wifi",
-        "esp32 c6 matter arduino",
+        "esp32 c6 matter device",
         "esp32-c6 matter controller",
-        "esp32 c6 matter switch"
+        "esp32 c6 matter coordinator",
+        "esp32 c6 matter switch",
+        "esp32 c6 matter thread"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -759,13 +750,6 @@
           ]
         },
         {
-          "query": "esp32 c6 matter device",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "device"
-          ]
-        },
-        {
           "query": "esp32 c6 matter gateway",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -773,17 +757,10 @@
           ]
         },
         {
-          "query": "esp32 c6 matter over wifi",
+          "query": "esp32 c6 matter device",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "wifi"
-          ]
-        },
-        {
-          "query": "esp32 c6 matter arduino",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "arduino"
+            "device"
           ]
         },
         {
@@ -791,6 +768,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "controller"
+          ]
+        },
+        {
+          "query": "esp32 c6 matter coordinator",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "coordinator"
           ]
         },
         {
@@ -813,14 +797,14 @@
       "top_suggestions": [
         "esp32 deepsleep",
         "esp32 deepsleep 消費電力",
-        "esp32 deepsleep gpio",
         "esp32 deepsleep rtc",
+        "esp32 deep sleep external wake up",
+        "esp32 deepsleep gpio",
         "esp32 deepsleep 復帰",
+        "esp32 deep sleep code",
         "esp32 deepsleep 復帰 しない",
         "esp32 deep sleep consumption",
-        "esp32 deepseek",
-        "esp32 deep sleep wake",
-        "esp32 deep sleep gpio wakeup"
+        "esp32 deepseek"
       ],
       "title_optimization_opportunities": [
         {
@@ -829,23 +813,23 @@
           "missing_in_title": [
             "rtc"
           ]
-        },
-        {
-          "query": "esp32 deep sleep wake",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "wake"
-          ]
-        },
-        {
-          "query": "esp32 deep sleep gpio wakeup",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "wakeup"
-          ]
         }
       ],
       "uncovered_content_gaps": [
+        {
+          "query": "esp32 deep sleep external wake up",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "external"
+          ]
+        },
+        {
+          "query": "esp32 deep sleep code",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "code"
+          ]
+        },
         {
           "query": "esp32 deep sleep consumption",
           "intent": "metric_cost_spec",
@@ -997,13 +981,13 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 argon",
+        "gemini 4 carbon",
         "gemini 4",
         "gemini 4 flash",
         "gemini 4 いつ",
         "gemini 4 pro",
-        "gemini 4 argon 料金",
-        "gemini 4 carbon",
         "gemini 4.0",
+        "gemini 4 hydrogen",
         "gemini 4.0 いつ",
         "gemini 4 pro いつ"
       ],
@@ -1014,6 +998,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "4.0"
+          ]
+        },
+        {
+          "query": "gemini 4 hydrogen",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "hydrogen"
           ]
         },
         {
@@ -1039,9 +1030,9 @@
         "gemini api 無料枠",
         "gemini apiキー",
         "gemini api 料金",
-        "gemini api cli",
         "gemini api 無料",
         "gemini api 無料枠 制限",
+        "gemini api cli",
         "gemini api key 無料",
         "gemini apiキー 取得方法"
       ],
@@ -1071,13 +1062,6 @@
           ]
         },
         {
-          "query": "gemini api cli",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "cli"
-          ]
-        },
-        {
           "query": "gemini api 無料",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1091,6 +1075,13 @@
             "無料",
             "枠",
             "制限"
+          ]
+        },
+        {
+          "query": "gemini api cli",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "cli"
           ]
         },
         {
@@ -1140,9 +1131,9 @@
         "google aiモード",
         "google aiチャット",
         "google ai 無料",
+        "google ai ultra",
         "google ai studio 日本語",
-        "google ai studio アプリ",
-        "google ai studio 日本語にする方法"
+        "google ai studio アプリ"
       ],
       "title_optimization_opportunities": [
         {
@@ -1150,6 +1141,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "モード"
+          ]
+        },
+        {
+          "query": "google ai ultra",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ultra"
           ]
         },
         {
@@ -1181,14 +1179,6 @@
           "missing_in_body": [
             "日本語"
           ]
-        },
-        {
-          "query": "google ai studio 日本語にする方法",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "日本語",
-            "方法"
-          ]
         }
       ]
     },
@@ -1212,7 +1202,7 @@
         "colab gpu 比較",
         "colab gpu 無料",
         "colab gpu vscode",
-        "colab gpu t4"
+        "colab gpu ram"
       ],
       "title_optimization_opportunities": [
         {
@@ -1220,13 +1210,6 @@
           "intent": "comparison",
           "missing_in_title": [
             "比較"
-          ]
-        },
-        {
-          "query": "colab gpu t4",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "t4"
           ]
         }
       ],
@@ -1257,6 +1240,13 @@
           "intent": "comparison",
           "missing_in_body": [
             "vscode"
+          ]
+        },
+        {
+          "query": "colab gpu ram",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ram"
           ]
         }
       ]
@@ -1619,18 +1609,19 @@
       "seed": "磁気式 キーボード 必要",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 6,
+        "metric_cost_spec": 7,
         "comparison": 2
       },
-      "total_suggestions": 8,
+      "total_suggestions": 9,
       "top_suggestions": [
         "磁気式 キーボード",
         "磁気式 キーボード おすすめ",
         "磁気式 キーボード自作",
         "磁気式 キーボード デメリット",
+        "磁気式 キーボード ロープロファイル",
         "光学式 磁気式 キーボード",
-        "キーボード 磁気式 静電容量",
         "キーボード 磁気式 メカニカル 違い",
+        "キーボード 磁気式 静電容量",
         "キーボード 静電容量無接点方式 磁気式"
       ],
       "title_optimization_opportunities": [
@@ -1648,6 +1639,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "自作"
+          ]
+        },
+        {
+          "query": "磁気式 キーボード ロープロファイル",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ロープロファイル"
           ]
         },
         {
@@ -2071,8 +2069,8 @@
         "text to sql llm",
         "text to sql aws",
         "text to sql langchain",
-        "text to sql mcp",
         "text to sql snowflake",
+        "text to sql mcp",
         "text to sql agent",
         "text to sql ai"
       ],
@@ -2108,17 +2106,17 @@
           ]
         },
         {
-          "query": "text to sql mcp",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "mcp"
-          ]
-        },
-        {
           "query": "text to sql snowflake",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "snowflake"
+          ]
+        },
+        {
+          "query": "text to sql mcp",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "mcp"
           ]
         },
         {
@@ -2210,7 +2208,7 @@
         "tailscale exit node 遅い",
         "tailscale 速度 遅い",
         "tailscale smb 遅い",
-        "tailscale dns 遅い"
+        "tailscale dns遅い"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -2223,7 +2221,7 @@
           ]
         },
         {
-          "query": "tailscale dns 遅い",
+          "query": "tailscale dns遅い",
           "intent": "question_troubleshoot",
           "missing_in_body": [
             "dns"
@@ -2247,9 +2245,9 @@
         "tailscale subnet router windows",
         "tailscale subnets",
         "tailscale subnet routes",
-        "tailscale subnet router synology",
-        "tailscale subnet windows",
-        "tailscale subnet router docker"
+        "tailscale subnet routers",
+        "tailscale subnet router docker",
+        "tailscale subnet router synology"
       ],
       "title_optimization_opportunities": [
         {
@@ -2265,6 +2263,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "routes"
+          ]
+        },
+        {
+          "query": "tailscale subnet routers",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "routers"
           ]
         }
       ],
@@ -2284,24 +2289,17 @@
           ]
         },
         {
-          "query": "tailscale subnet router synology",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "synology"
-          ]
-        },
-        {
-          "query": "tailscale subnet windows",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "windows"
-          ]
-        },
-        {
           "query": "tailscale subnet router docker",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "docker"
+          ]
+        },
+        {
+          "query": "tailscale subnet router synology",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "synology"
           ]
         }
       ]
@@ -2363,136 +2361,136 @@
   ],
   "zenn_daily_trending": [
     {
+      "title": "コードを読まずにマージするために必要なこと",
+      "liked_count": 118,
+      "comments_count": 0,
+      "url": "https://zenn.dev/nrs/articles/c777388530aa84",
+      "published_at": "2026-10-27"
+    },
+    {
       "title": "AI の謎な説明文を直すスキル",
-      "liked_count": 120,
+      "liked_count": 181,
       "comments_count": 2,
       "url": "https://zenn.dev/microsoft/articles/explain-before-shorten",
       "published_at": "2026-10-26"
     },
     {
       "title": "最近の E2E 戦略（2026 年 10 月現在）",
-      "liked_count": 75,
+      "liked_count": 96,
       "comments_count": 0,
       "url": "https://zenn.dev/polyco/articles/26624b38c951b5",
       "published_at": "2026-10-26"
     },
     {
-      "title": "コードを読まずにマージするために必要なこと",
-      "liked_count": 45,
+      "title": "Flutter やめました。電話アプリを Native にした理由",
+      "liked_count": 63,
       "comments_count": 0,
-      "url": "https://zenn.dev/nrs/articles/c777388530aa84",
-      "published_at": "2026-10-27"
+      "url": "https://zenn.dev/ivry/articles/d155267331a3ca",
+      "published_at": "2026-10-28"
     },
     {
       "title": "eMudhraの中間CA証明書の秘密鍵を求めてみる",
-      "liked_count": 131,
+      "liked_count": 137,
       "comments_count": 1,
       "url": "https://zenn.dev/herumi/articles/search_bad_emudhra_key",
       "published_at": "2026-10-23"
     },
     {
       "title": "学生2人で日本語音声LLMを作り、FT-LLM 2026 自由形タスクで1位を獲得した話",
-      "liked_count": 25,
+      "liked_count": 35,
       "comments_count": 0,
       "url": "https://zenn.dev/ayutaso/articles/ftllm2026-ja-speech-llm",
       "published_at": "2026-10-26"
     },
     {
-      "title": "600人規模のイベント運営を支えたインカムを、学生1人で作った話",
-      "liked_count": 62,
+      "title": "AIエージェントに設計書レビューを任せたらレビュワーは楽になった。でも現場は？？",
+      "liked_count": 6,
       "comments_count": 0,
-      "url": "https://zenn.dev/kodak_20/articles/3b0ba74333b56c",
-      "published_at": "2026-10-25"
+      "url": "https://zenn.dev/nttdata_tech/articles/6a06f484ebfab7",
+      "published_at": "2026-10-28"
     },
     {
-      "title": "Jevに問い合わせメッセージを仕分けてもらう",
-      "liked_count": 12,
+      "title": "【Rails】焼きなまし法で会議室予約アプリに空き時間最適化機能を実装してみた",
+      "liked_count": 10,
       "comments_count": 0,
-      "url": "https://zenn.dev/chot/articles/980c44e5a19736",
-      "published_at": "2026-10-27"
+      "url": "https://zenn.dev/port_inc/articles/eaf460ff291c97",
+      "published_at": "2026-10-28"
     },
     {
-      "title": "Go で動く新世代の補完プラグイン goda-cmp.vim",
-      "liked_count": 14,
+      "title": "Claude Codeで半年分のレビュー指摘を分類してみた",
+      "liked_count": 8,
       "comments_count": 0,
-      "url": "https://zenn.dev/shougo/articles/goda-cmp-vim-beta",
-      "published_at": "2026-10-27"
+      "url": "https://zenn.dev/port_inc/articles/a4bc3b39f44459",
+      "published_at": "2026-10-28"
     },
     {
-      "title": "私が5種類のコーディングエージェントを使い分ける理由",
-      "liked_count": 29,
-      "comments_count": 0,
-      "url": "https://zenn.dev/rimon/articles/45c1fd2f015af8",
-      "published_at": "2026-10-26"
-    },
-    {
-      "title": "2026年の国内情報漏えい71件を侵入経路で分類してみた",
-      "liked_count": 49,
-      "comments_count": 0,
-      "url": "https://zenn.dev/blackleg/articles/e9ed8b038bcf48",
-      "published_at": "2026-10-25"
+      "title": "Auto mode時代のClaude Codeを守る。検証済み10キットで始めるセキュリティ対策【全員・チーム・組織別】",
+      "liked_count": 7,
+      "comments_count": 1,
+      "url": "https://zenn.dev/sonicmoov/articles/67aaeb49be69ec",
+      "published_at": "2026-10-28"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "US Government is hiding a secret court ruling about how it spies on Americans",
-      "points": 751,
-      "num_comments": 271,
-      "url": "https://www.wired.com/story/the-us-government-is-hiding-a-secret-court-ruling-about-how-it-spies-on-americans/"
-    },
-    {
       "title": "Ghostty 1.4",
-      "points": 691,
-      "num_comments": 214,
+      "points": 1294,
+      "num_comments": 412,
       "url": "https://ghostty.org/docs/install/release-notes/1-4-0"
     },
     {
-      "title": "Genie 4",
-      "points": 680,
-      "num_comments": 411,
-      "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/"
+      "title": "Apple's git still trusts the compromised eMudhra certificates",
+      "points": 1028,
+      "num_comments": 376,
+      "url": "https://emudhra.we-have-a-problem.com/apple.html"
     },
     {
-      "title": "Wikipedia's Cleanup of AI-Generated Content",
-      "points": 435,
-      "num_comments": 200,
-      "url": "https://spectrum.ieee.org/wikipedia-wikiproject-ai-writing-cleanup"
+      "title": "Gemini 4 Carbon",
+      "points": 778,
+      "num_comments": 637,
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/"
     },
     {
-      "title": "Python's experimental JIT to be removed",
-      "points": 433,
-      "num_comments": 228,
-      "url": "https://lwn.net/SubscriberLink/1102102/0c00e4d550f25f8c/"
+      "title": "Why is this fingerprinting script creating bioweapons?",
+      "points": 772,
+      "num_comments": 176,
+      "url": "https://nullpt.rs/fingerprinting-bioweapons"
     },
     {
-      "title": "New iMac with M6",
-      "points": 300,
-      "num_comments": 360,
-      "url": "https://www.apple.com/imac/"
+      "title": "Start Doing Graph Theory",
+      "points": 570,
+      "num_comments": 124,
+      "url": "https://vertex.degree/"
     },
     {
-      "title": "New 14‑inch MacBook Pro with M6",
-      "points": 265,
-      "num_comments": 319,
-      "url": "https://www.apple.com/in/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/"
+      "title": "MacBook Pro with PROLED XDR Display and Touch",
+      "points": 485,
+      "num_comments": 835,
+      "url": "https://www.apple.com/macbook-pro/proled-xdr-display/"
     },
     {
-      "title": "Amazon Is Gutting Its AI Division After Sustained Failure",
-      "points": 230,
-      "num_comments": 132,
-      "url": "https://futurism.com/artificial-intelligence/amazon-ai-division-failure-nova"
+      "title": "Kentucky man becomes the first humanist granted religious exemption from AI",
+      "points": 420,
+      "num_comments": 462,
+      "url": "https://religionnews.com/2026/10/26/in-a-first-a-humanist-granted-a-religious-exemption-from-using-ai/"
     },
     {
-      "title": "Discord will soon let anyone find public server messages through Google",
-      "points": 220,
-      "num_comments": 122,
-      "url": "https://discord.com/blog/making-content-from-discoverable-servers-easier-to-discover"
+      "title": "The Grid, a factory-scale robot in Massachusetts that builds PCBs on demand",
+      "points": 403,
+      "num_comments": 196,
+      "url": "https://www.circuithub.com/post/unveiling-the-grid"
     },
     {
-      "title": "Tailscale SSH: Investigation and remediation update",
-      "points": 173,
-      "num_comments": 96,
-      "url": "https://tailscale.com/ssh-investigation-update"
+      "title": "Emacs Turns 50",
+      "points": 402,
+      "num_comments": 173,
+      "url": "https://www.technologyreview.com/2026/10/20/1145399/emacs-turns-50/"
+    },
+    {
+      "title": "CNC Stone Carving",
+      "points": 393,
+      "num_comments": 115,
+      "url": "https://carmelitegothic.com/cnc-stone-carving/"
     }
   ]
 }
