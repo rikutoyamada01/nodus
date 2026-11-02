@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T23:57:17.584120",
+  "generated_at": "2026-11-02T00:15:53.123928",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -984,8 +984,7 @@
       "seed": "Gemini 4 Argon Pro Ultra 違い",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 9,
-        "question_troubleshoot": 1
+        "metric_cost_spec": 10
       },
       "total_suggestions": 10,
       "top_suggestions": [
@@ -993,12 +992,12 @@
         "gemini 4 carbon",
         "gemini 4",
         "gemini 4 いつ",
-        "gemini 4 carbon とは",
-        "gemini 4 pro",
         "gemini 4 flash",
+        "gemini 4 pro",
         "gemini 4.0",
-        "gemini 4 xenon",
-        "gemini 4.0 いつ"
+        "gemini 4.0 いつ",
+        "gemini 4 pro いつ",
+        "gemini 4 xenon"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1010,17 +1009,17 @@
           ]
         },
         {
-          "query": "gemini 4 xenon",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "xenon"
-          ]
-        },
-        {
           "query": "gemini 4.0 いつ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "4.0"
+          ]
+        },
+        {
+          "query": "gemini 4 xenon",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "xenon"
           ]
         }
       ]
@@ -1140,8 +1139,8 @@
         "google aiチャット",
         "google ai 無料",
         "google ai studio 日本語",
-        "google ai studio アプリ",
-        "google ai studio 日本語にする方法"
+        "google ai プラン",
+        "google ai studio アプリ"
       ],
       "title_optimization_opportunities": [
         {
@@ -1182,11 +1181,10 @@
           ]
         },
         {
-          "query": "google ai studio 日本語にする方法",
+          "query": "google ai プラン",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "日本語",
-            "方法"
+            "プラン"
           ]
         }
       ]
@@ -2377,136 +2375,136 @@
   ],
   "zenn_daily_trending": [
     {
-      "title": "最近の E2E 戦略（2026 年 10 月現在）",
-      "liked_count": 282,
-      "comments_count": 0,
-      "url": "https://zenn.dev/polyco/articles/26624b38c951b5",
-      "published_at": "2026-10-26"
-    },
-    {
       "title": "今後のセキュリティの考え方",
-      "liked_count": 86,
+      "liked_count": 193,
       "comments_count": 0,
       "url": "https://zenn.dev/cscloud_blog/articles/a987163efae5d8",
       "published_at": "2026-10-30"
     },
     {
-      "title": "GitHub Actions で checkout@v7 のようなバージョン指定を書くのはやめよう！ 時代は actions.lock！",
-      "liked_count": 122,
+      "title": "3 人それぞれの Claude Code を Slack でつないで ISUCON2026 に参加した（207,039 点）",
+      "liked_count": 61,
       "comments_count": 0,
-      "url": "https://zenn.dev/progate/articles/24b1140180300c",
-      "published_at": "2026-10-29"
+      "url": "https://zenn.dev/kauche/articles/f3736c660aab77",
+      "published_at": "2026-10-31"
     },
     {
       "title": "コードを読まずにマージするために必要なこと",
-      "liked_count": 194,
+      "liked_count": 204,
       "comments_count": 1,
       "url": "https://zenn.dev/nrs/articles/c777388530aa84",
       "published_at": "2026-10-27"
     },
     {
-      "title": "AI の謎な説明文を直すスキル",
-      "liked_count": 263,
-      "comments_count": 2,
-      "url": "https://zenn.dev/microsoft/articles/explain-before-shorten",
-      "published_at": "2026-10-26"
+      "title": "GitHub Actions で checkout@v7 のようなバージョン指定を書くのはやめよう！ 時代は actions.lock！",
+      "liked_count": 148,
+      "comments_count": 0,
+      "url": "https://zenn.dev/progate/articles/24b1140180300c",
+      "published_at": "2026-10-29"
     },
     {
-      "title": "Flutter やめました。電話アプリを Native にした理由",
-      "liked_count": 81,
+      "title": "ISUCON 2026 参加記",
+      "liked_count": 8,
       "comments_count": 0,
-      "url": "https://zenn.dev/ivry/articles/d155267331a3ca",
-      "published_at": "2026-10-28"
+      "url": "https://zenn.dev/catatsuy/articles/159edffe202c0c",
+      "published_at": "2026-11-01"
+    },
+    {
+      "title": "ペイントツール上でニューラルネットワークを動かす",
+      "liked_count": 18,
+      "comments_count": 0,
+      "url": "https://zenn.dev/melville/articles/953aa2b41f674b",
+      "published_at": "2026-10-31"
     },
     {
       "title": "【最速解説】goda.vimでHello, worldする",
-      "liked_count": 14,
+      "liked_count": 17,
       "comments_count": 0,
       "url": "https://zenn.dev/comamoca/articles/2026-10-30-trying-hello-world-with-goda-vim",
       "published_at": "2026-10-31"
     },
     {
       "title": "yoroによろしくぅ！Ai Workforce 事業部のリモートコーディングエージェント環境 yoro のご紹介",
-      "liked_count": 24,
+      "liked_count": 29,
       "comments_count": 0,
       "url": "https://zenn.dev/layerx/articles/a277f83a93d300",
       "published_at": "2026-10-30"
     },
     {
-      "title": "3 人それぞれの Claude Code を Slack でつないで ISUCON2026 に参加した（207,039 点）",
-      "liked_count": 16,
+      "title": "ISUCONに初めて出たら、直すたびに次のボトルネックが出てきて、超面白かった",
+      "liked_count": 10,
       "comments_count": 0,
-      "url": "https://zenn.dev/kauche/articles/f3736c660aab77",
+      "url": "https://zenn.dev/paraponera/articles/2026-10-31-isucon-2026-isureal",
       "published_at": "2026-10-31"
     },
     {
-      "title": "元フロントエンドエンジニアがプロダクトエンジニアとして強制成長した1年",
-      "liked_count": 36,
+      "title": "WASIじゃない、もう一つのインターフェース「WALI」という提案",
+      "liked_count": 28,
       "comments_count": 0,
-      "url": "https://zenn.dev/dress_code/articles/bbc5159fefbd2c",
-      "published_at": "2026-10-29"
+      "url": "https://zenn.dev/progate/articles/wali-webassembly-linux-interface",
+      "published_at": "2026-10-30"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Serbia just elected the world's brainiest parliament",
-      "points": 794,
-      "num_comments": 458,
-      "url": "https://www.science.org/content/article/serbia-just-elected-world-s-brainiest-parliament"
-    },
-    {
       "title": "HackerTube: YouTube built from videos recommended by HN",
-      "points": 521,
-      "num_comments": 194,
+      "points": 2224,
+      "num_comments": 533,
       "url": "https://karpathy.bearblog.dev/hacker-tube/"
     },
     {
-      "title": "Digital minimalism",
-      "points": 301,
-      "num_comments": 223,
-      "url": "https://vitalik.eth.limo/general/2026/10/31/digital_minimalism.html"
+      "title": "Show HN: HackerBooks – HackerTube, but for books mentioned on HN",
+      "points": 834,
+      "num_comments": 166,
+      "url": "https://hackerbooks.org"
     },
     {
-      "title": "Do the math: How we took over ChatGPT accounts",
-      "points": 297,
-      "num_comments": 143,
-      "url": "https://www.parameter.ai/labs/we-found-a-gap-at-openai"
+      "title": "An Italian farmer found some unknown seeds in his attic and planted them",
+      "points": 763,
+      "num_comments": 197,
+      "url": "https://www.smithsonianmag.com/science-nature/italian-farmer-found-unknown-seeds-attic-with-nothing-lose-planted-them-result-biblical-180989644/"
     },
     {
-      "title": "Molly (Signal fork) has not been updated since 3 months and is vulnerable",
-      "points": 292,
-      "num_comments": 171,
-      "url": "https://piefed.world/post/1503394"
+      "title": "Lenovo's 'encrypted' fingerprint USB is just an unencrypted SD card in a case",
+      "points": 372,
+      "num_comments": 133,
+      "url": "https://www.reddit.com/r/technology/comments/1xl2pr3/lenovos_encrypted_fingerprint_usb_drive_is_just/"
     },
     {
-      "title": "TCP Use-After-Free: CVE-2026-98432 / CVSS 9.8",
-      "points": 270,
-      "num_comments": 132,
-      "url": "https://atlasum.net/blog/cve-2026-98432-linux-ipv4-tcp-uaf"
+      "title": "Patrick Stewart taught us what good men do with power",
+      "points": 347,
+      "num_comments": 245,
+      "url": "https://www.vox.com/politics/508526/patrick-stewart-jean-luc-picard-star-trek-liberalism"
     },
     {
-      "title": "Simple circuits can create complex behaviors",
-      "points": 204,
-      "num_comments": 66,
-      "url": "https://aatishb.com/myriad/lets-build-a-brain/"
+      "title": "The AI cost of JavaScript frameworks",
+      "points": 286,
+      "num_comments": 224,
+      "url": "https://nolanlawson.com/2026/10/28/the-ai-cost-of-javascript-frameworks/"
     },
     {
-      "title": "Switch Lowering in GCC",
-      "points": 196,
+      "title": "Mathematics has changed. Let's act like it",
+      "points": 205,
+      "num_comments": 217,
+      "url": "https://terrytao.wordpress.com/2026/11/01/mathematics-has-changed-lets-act-like-it/"
+    },
+    {
+      "title": "Frontier Airlines Likely Breached",
+      "points": 167,
+      "num_comments": 56,
+      "url": "https://www.reddit.com/r/frontierairlines/comments/1xl20e8/psa_email_scam/"
+    },
+    {
+      "title": "Show HN: Point your camera at a landscape to learn about its geology",
+      "points": 147,
       "num_comments": 37,
-      "url": "https://xoranth.net/gcc-switch/"
+      "url": "https://outcrop.rocks/"
     },
     {
-      "title": "Jepsen: ParticleDB 1.1.4",
-      "points": 174,
-      "num_comments": 95,
-      "url": "https://jepsen.io/analyses/particledb-1.1.4"
-    },
-    {
-      "title": "Anthropic blocks users for anything touching training larger models",
-      "points": 150,
-      "num_comments": 51,
-      "url": "https://twitter.com/jiahaoshao1/status/2116475922190922088"
+      "title": "Show HN: OmniDiff – Opensource, super fast, content aware Git difftool, in Rust",
+      "points": 143,
+      "num_comments": 38,
+      "url": "https://github.com/ivankovic/omnidiff"
     }
   ]
 }
