@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T02:46:33.787922",
+  "generated_at": "2026-11-04T01:03:06.935569",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -991,13 +991,13 @@
         "gemini 4 argon",
         "gemini 4 carbon",
         "gemini 4",
-        "gemini 4 flash",
         "gemini 4 いつ",
-        "gemini 4 carbon いつから",
         "gemini 4 pro",
         "gemini 4.0",
         "gemini 4.0 いつ",
-        "gemini 4 pro いつ"
+        "gemini 4 pro いつ",
+        "gemini 4 flash",
+        "gemini 4 argon いつ"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1124,16 +1124,16 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "google ai",
         "google ai studio",
+        "google ai",
         "google ai pro",
         "google ai plus",
         "google aiモード",
-        "google aiチャット",
         "google ai 無料",
         "google ai studio 日本語",
-        "google ai studio アプリ",
-        "google ai studio 日本語にする方法"
+        "google ai スタジオ",
+        "google ai プラン",
+        "google ai studio アプリ"
       ],
       "title_optimization_opportunities": [
         {
@@ -1160,13 +1160,6 @@
           ]
         },
         {
-          "query": "google aiチャット",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "チャット"
-          ]
-        },
-        {
           "query": "google ai studio 日本語",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1174,11 +1167,17 @@
           ]
         },
         {
-          "query": "google ai studio 日本語にする方法",
+          "query": "google ai スタジオ",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "日本語",
-            "方法"
+            "スタジオ"
+          ]
+        },
+        {
+          "query": "google ai プラン",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "プラン"
           ]
         }
       ]
@@ -2370,135 +2369,135 @@
   "zenn_daily_trending": [
     {
       "title": "ISUCON2026 で優勝しました（当日編）",
-      "liked_count": 310,
+      "liked_count": 654,
       "comments_count": 0,
       "url": "https://zenn.dev/luvtechno/articles/isucon2026-competition-day",
       "published_at": "2026-11-02"
     },
     {
-      "title": "今後のセキュリティの考え方",
-      "liked_count": 244,
-      "comments_count": 0,
-      "url": "https://zenn.dev/cscloud_blog/articles/a987163efae5d8",
-      "published_at": "2026-10-30"
-    },
-    {
-      "title": "3 人それぞれの Claude Code を Slack でつないで ISUCON2026 に参加した（207,039 点）",
-      "liked_count": 83,
-      "comments_count": 0,
-      "url": "https://zenn.dev/kauche/articles/f3736c660aab77",
-      "published_at": "2026-10-31"
-    },
-    {
       "title": "日本の全法令を git の履歴にしてみた",
-      "liked_count": 99,
-      "comments_count": 1,
+      "liked_count": 191,
+      "comments_count": 3,
       "url": "https://zenn.dev/koheiwada/articles/houritsu-japanese-laws-as-git",
       "published_at": "2026-11-01"
     },
     {
-      "title": "GitHub Actions で checkout@v7 のようなバージョン指定を書くのはやめよう！ 時代は actions.lock！",
-      "liked_count": 172,
-      "comments_count": 0,
-      "url": "https://zenn.dev/progate/articles/24b1140180300c",
-      "published_at": "2026-10-29"
-    },
-    {
       "title": "AIが書く「読みづらいADR」に発狂しかけたので、ADRのガイドラインを作った",
-      "liked_count": 46,
+      "liked_count": 114,
       "comments_count": 0,
       "url": "https://zenn.dev/tokium_dev/articles/adr-authoring-guideline",
       "published_at": "2026-11-02"
     },
     {
-      "title": "ペイントツール上でニューラルネットワークを動かす",
-      "liked_count": 33,
+      "title": "今後のセキュリティの考え方",
+      "liked_count": 260,
       "comments_count": 0,
-      "url": "https://zenn.dev/melville/articles/953aa2b41f674b",
-      "published_at": "2026-10-31"
-    },
-    {
-      "title": "ISUCON2026 にツールを捨てて勝ちたかった",
-      "liked_count": 16,
-      "comments_count": 0,
-      "url": "https://zenn.dev/mazrean/articles/5c968503fd69a3",
-      "published_at": "2026-11-01"
-    },
-    {
-      "title": "プロダクトの情報を「浴びるように」見られる場所を作った話",
-      "liked_count": 32,
-      "comments_count": 0,
-      "url": "https://zenn.dev/tokium_dev/articles/product-cockpit-for-product-teams",
+      "url": "https://zenn.dev/cscloud_blog/articles/a987163efae5d8",
       "published_at": "2026-10-30"
     },
     {
-      "title": "Snowflake: Optima Clustering による 1KB クラスタリングキーでの日本語フィルタの改善",
-      "liked_count": 12,
+      "title": "ADRをregoでlintする",
+      "liked_count": 24,
       "comments_count": 0,
-      "url": "https://zenn.dev/snowflakejp/articles/d907c02698d748",
+      "url": "https://zenn.dev/babarot/articles/regomark-adr-checker",
+      "published_at": "2026-11-03"
+    },
+    {
+      "title": "3 人それぞれの Claude Code を Slack でつないで ISUCON2026 に参加した（207,039 点）",
+      "liked_count": 84,
+      "comments_count": 0,
+      "url": "https://zenn.dev/kauche/articles/f3736c660aab77",
+      "published_at": "2026-10-31"
+    },
+    {
+      "title": "GitHub Actions で checkout@v7 のようなバージョン指定を書くのはやめよう！ 時代は actions.lock！",
+      "liked_count": 186,
+      "comments_count": 0,
+      "url": "https://zenn.dev/progate/articles/24b1140180300c",
+      "published_at": "2026-10-29"
+    },
+    {
+      "title": "Human-out-of-the-loop(もどき)で戦うISUCON2026 (301,558 点 | 12 位)",
+      "liked_count": 14,
+      "comments_count": 0,
+      "url": "https://zenn.dev/ponyo877/articles/2a8a24acc2ea3b",
       "published_at": "2026-11-02"
+    },
+    {
+      "title": "バイブコーディングで機能を継ぎ足していて見えてきたClaudeCodeの実装のクセ",
+      "liked_count": 17,
+      "comments_count": 0,
+      "url": "https://zenn.dev/uguisu_blog/articles/45d1f446ece415",
+      "published_at": "2026-11-03"
+    },
+    {
+      "title": "Agent DX 〜 AI時代にフレームワークHonoは必要か",
+      "liked_count": 59,
+      "comments_count": 0,
+      "url": "https://zenn.dev/yusukebe/articles/3d3dc6605ca1b1",
+      "published_at": "2026-11-01"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Astra can read and write weights to improve Qwen",
-      "points": 2023,
-      "num_comments": 659,
-      "url": "https://rikiyat.github.io/blog/weight-space-programming/"
+      "title": "Postman silently auto-installs AI plugins and attempts to share all API data",
+      "points": 999,
+      "num_comments": 332,
+      "url": "https://github.com/postmanlabs/postman-app-support/issues/14370"
     },
     {
-      "title": "WTF Ubuntu?",
-      "points": 1344,
-      "num_comments": 586,
-      "url": "https://chalmovsky.com/posts/wtf-ubuntu"
+      "title": "The 'Astra can read and write weights to improve Qwen' post is misleading",
+      "points": 888,
+      "num_comments": 190,
+      "url": "https://honnibal.dev/blog/astra-read-write-misleading"
     },
     {
-      "title": "Show HN: Subvocal – Talk to your computer without making noise",
-      "points": 572,
-      "num_comments": 310,
-      "url": "https://news.ycombinator.com/item?id=50340088"
+      "title": "Jailbreaking my car's navigation system just so I can change the time",
+      "points": 594,
+      "num_comments": 238,
+      "url": "https://blog.nns.ee/2026/11/02/renault-hack/"
     },
     {
-      "title": "If you love a website, back it up",
-      "points": 419,
-      "num_comments": 95,
-      "url": "https://blog.mistys-internet.website/post/2026/10/29/if-you-love-a-website-back-it-up/"
+      "title": "Qwen 3.8 27B on my laptop can interpret model weights, too",
+      "points": 475,
+      "num_comments": 151,
+      "url": "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/"
     },
     {
-      "title": "Ubuntu still has not released patch for Linux 0day RCE in almost 3 weeks",
-      "points": 355,
-      "num_comments": 86,
-      "url": "https://freenode.net/article/ubuntu-lts-kernels-still-unfixed-for-critical-cve-2026-98432"
+      "title": "Could a modern chess engine on a Pentium have defeated Kasparov in 1996?",
+      "points": 442,
+      "num_comments": 209,
+      "url": "https://nicholas.carlini.com/writing/2026/algorithmic-improvements-chess.html"
     },
     {
-      "title": "US boy names that became girl names and vice versa",
-      "points": 302,
-      "num_comments": 318,
-      "url": "https://namedaisy.com/blog/boy-names-that-became-girl-names"
+      "title": "Fujifilm to boost tape production 5x as AI fuels archiving demand",
+      "points": 369,
+      "num_comments": 155,
+      "url": "https://arstechnica.com/gadgets/2026/10/fujifilm-to-boost-tape-production-5x-as-ai-fuels-archiving-demand/"
     },
     {
-      "title": "Show HN: Warsaw in voxels – An interactive 3D map of the city centre",
-      "points": 221,
-      "num_comments": 36,
-      "url": "https://p.migdal.pl/warsaw-vibe-voxel/"
+      "title": "Stringman, an $800 open-source room scale gripper robot",
+      "points": 354,
+      "num_comments": 136,
+      "url": "https://neufangled.com/"
     },
     {
-      "title": "The SEC Should Block Anthropic's IPO to Protect the Public",
-      "points": 217,
-      "num_comments": 145,
-      "url": "https://www.techpolicy.press/the-sec-should-block-anthropics-ipo-to-protect-the-public/"
+      "title": "Mac at Any Scale",
+      "points": 310,
+      "num_comments": 175,
+      "url": "https://namespace.so/blog/mac-at-any-scale"
     },
     {
-      "title": "Ask HN: Who is hiring? (November 2026)",
-      "points": 179,
-      "num_comments": 146,
-      "url": "https://news.ycombinator.com/item?id=50338728"
+      "title": "Safari introduces Adaptive Dark Mode in 27.3",
+      "points": 260,
+      "num_comments": 166,
+      "url": "https://webkit.org/blog/18541/introducing-adaptive-dark-mode/"
     },
     {
-      "title": "Oracle files to sell $20B in new stock, bonds to finance AI buildout",
-      "points": 167,
-      "num_comments": 127,
-      "url": "https://www.cnbc.com/2026/11/02/oracle-files-to-sell-20-billion-in-new-stock-bonds-to-finance-ai-buildout.html"
+      "title": "US tech giants' hidden AI debt swells 90% to $3.2T in 6 months",
+      "points": 209,
+      "num_comments": 71,
+      "url": "https://asia.nikkei.com/business/technology/artificial-intelligence/us-tech-giants-hidden-ai-debt-swells-90-to-3.2tn-in-6-months"
     }
   ]
 }
