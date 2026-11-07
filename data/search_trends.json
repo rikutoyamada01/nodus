@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T01:23:06.458311",
+  "generated_at": "2026-11-07T00:38:25.184843",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -20,7 +20,7 @@
         "usb-c 充電器 おすすめ",
         "usb-c 充電器 薄型",
         "usb-c 充電器 100w以上",
-        "usb-c 充電器 30w"
+        "usb-c 充電器 cio"
       ],
       "title_optimization_opportunities": [
         {
@@ -35,13 +35,6 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "以上"
-          ]
-        },
-        {
-          "query": "usb-c 充電器 30w",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "30w"
           ]
         }
       ],
@@ -58,6 +51,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "薄型"
+          ]
+        },
+        {
+          "query": "usb-c 充電器 cio",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "cio"
           ]
         }
       ]
@@ -457,11 +457,11 @@
       "top_suggestions": [
         "docker バックアップ",
         "docker バックアップ リストア",
+        "docker バックアップ 方法",
         "docker volume バックアップ",
         "docker コンテナ バックアップ",
         "docker image バックアップ",
         "docker ボリューム バックアップ",
-        "docker compose バックアップ",
         "growi docker バックアップ",
         "gitlab docker バックアップ",
         "redmine docker バックアップ"
@@ -472,13 +472,6 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "コンテナ"
-          ]
-        },
-        {
-          "query": "docker compose バックアップ",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "compose"
           ]
         }
       ],
@@ -1008,10 +1001,10 @@
         "gemini 4 いつ",
         "gemini 4 argon いつから",
         "gemini 4 flash",
-        "gemini 4 carbon いつから",
         "gemini 4.0",
         "gemini 4 pro",
-        "gemini 4.0 いつ"
+        "gemini 4.0 いつ",
+        "gemini 4 hydrogen"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1027,6 +1020,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "4.0"
+          ]
+        },
+        {
+          "query": "gemini 4 hydrogen",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "hydrogen"
           ]
         }
       ]
@@ -1048,8 +1048,8 @@
         "gemini api 無料",
         "gemini api 無料枠 制限",
         "gemini apiキー 取得方法",
-        "gemini api モデル",
-        "gemini api key 無料"
+        "gemini api key 無料",
+        "gemini api モデル"
       ],
       "title_optimization_opportunities": [
         {
@@ -1147,8 +1147,8 @@
         "google aiチャット",
         "google ai studio 日本語",
         "google ai プラン",
-        "google ai 無料",
-        "google ai studio 日本語にする方法"
+        "google ai studio アプリ",
+        "google ai 無料"
       ],
       "title_optimization_opportunities": [
         {
@@ -1156,6 +1156,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "モード"
+          ]
+        },
+        {
+          "query": "google ai studio アプリ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "アプリ"
           ]
         }
       ],
@@ -1187,14 +1194,6 @@
           "missing_in_body": [
             "プラン"
           ]
-        },
-        {
-          "query": "google ai studio 日本語にする方法",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "日本語",
-            "方法"
-          ]
         }
       ]
     },
@@ -1213,8 +1212,8 @@
         "colab gpu 種類",
         "colab gpu 上限",
         "colab gpu 性能",
-        "colab gpu 使用量上限 リセット",
         "colab gpu 使い方",
+        "colab gpu 使用量上限 リセット",
         "colab gpu 比較",
         "colab gpu vscode",
         "colab gpu ram",
@@ -1285,8 +1284,8 @@
         "search console api",
         "search console 使い方",
         "search console mcp",
-        "search console 設定",
         "search console sns",
+        "search console 設定",
         "search console insights"
       ],
       "title_optimization_opportunities": [
@@ -1313,17 +1312,17 @@
           ]
         },
         {
-          "query": "search console 設定",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "設定"
-          ]
-        },
-        {
           "query": "search console sns",
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "sns"
+          ]
+        },
+        {
+          "query": "search console 設定",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "設定"
           ]
         }
       ],
@@ -1449,8 +1448,8 @@
         "継続学習 ai",
         "継続学習とは",
         "継続学習 英語",
-        "継続学習センター",
         "継続学習制度",
+        "継続学習センター",
         "継続学習 ファイン チューニング"
       ],
       "title_optimization_opportunities": [],
@@ -1463,17 +1462,17 @@
           ]
         },
         {
-          "query": "継続学習センター",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "センター"
-          ]
-        },
-        {
           "query": "継続学習制度",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "継続学習制度"
+          ]
+        },
+        {
+          "query": "継続学習センター",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "センター"
           ]
         },
         {
@@ -1522,15 +1521,15 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "llm api",
         "llm api 無料",
+        "llm api",
         "llm api 料金 比較",
         "llm apiとは",
         "llm api 料金",
         "llm api 無料枠",
         "llm apiキー",
-        "llm api 比較",
         "llm api コスパ",
+        "llm api 比較",
         "llm api 安い"
       ],
       "title_optimization_opportunities": [],
@@ -1589,8 +1588,8 @@
         "mac ローカルllm メモリ",
         "mac ローカルllm mlx",
         "mac ローカルllm スペック",
-        "mac ローカルllm ollama",
         "mac ローカルllm 構築",
+        "mac ローカルllm ollama",
         "mac ローカルllm コーディング",
         "mac ローカルllm 動画生成"
       ],
@@ -1998,24 +1997,17 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "パーソナルai",
-        "パーソナルaiエージェント",
         "パーソナルaiとは",
-        "パーソナルアイテムとは",
         "パーソナルai 作り方",
+        "パーソナルアイテムとは",
         "パーソナルアイデンティティ",
         "パーソナルアイテック",
-        "パーソナルアイス",
         "パーソナルaiエージェントとは",
+        "パーソナルアイス",
+        "パーソナルaiアシスタント",
         "パーソナルaiマーケティング"
       ],
       "title_optimization_opportunities": [
-        {
-          "query": "パーソナルaiエージェント",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "エージェント"
-          ]
-        },
         {
           "query": "パーソナルaiエージェントとは",
           "intent": "question_troubleshoot",
@@ -2054,6 +2046,13 @@
           ]
         },
         {
+          "query": "パーソナルaiアシスタント",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "アシスタント"
+          ]
+        },
+        {
           "query": "パーソナルaiマーケティング",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -2088,7 +2087,7 @@
       "top_suggestions": [
         "text-to-sql",
         "text-to-sqlとは",
-        "text to sql rag",
+        "text-to-sql rag",
         "text to sql llm",
         "text to sql aws",
         "text to sql langchain",
@@ -2108,7 +2107,7 @@
       ],
       "uncovered_content_gaps": [
         {
-          "query": "text to sql rag",
+          "query": "text-to-sql rag",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "rag"
@@ -2369,8 +2368,8 @@
         "wi-fi 7対応ルーター",
         "wi-fi 7 iphone",
         "wi-fi 7対応",
-        "wi-fi 7 (11be)",
-        "wi-fi 7 中継器"
+        "wi-fi 7 中継器",
+        "wi-fi 7 (11be)"
       ],
       "title_optimization_opportunities": [
         {
@@ -2402,135 +2401,135 @@
   "zenn_daily_trending": [
     {
       "title": "ISUCON2026 で優勝しました（当日編）",
-      "liked_count": 958,
+      "liked_count": 995,
       "comments_count": 2,
       "url": "https://zenn.dev/luvtechno/articles/isucon2026-competition-day",
       "published_at": "2026-11-02"
     },
     {
       "title": "AIが書く「読みづらいADR」に発狂しかけたので、ADRのガイドラインを作った",
-      "liked_count": 167,
+      "liked_count": 191,
       "comments_count": 0,
       "url": "https://zenn.dev/tokium_dev/articles/adr-authoring-guideline",
       "published_at": "2026-11-02"
     },
     {
       "title": "OpenCode+Docker+GitHub Actionsで全自動AIペネトレーションテストはじめました",
-      "liked_count": 85,
+      "liked_count": 96,
       "comments_count": 0,
       "url": "https://zenn.dev/team_zenn/articles/opencode-docker-actions-ai-pentest",
       "published_at": "2026-11-04"
     },
     {
-      "title": "ADRをregoでlintする",
-      "liked_count": 53,
+      "title": "[破壊的変更] 明治時代の開始日が変更になって単体テストが失敗した件",
+      "liked_count": 43,
       "comments_count": 0,
-      "url": "https://zenn.dev/babarot/articles/regomark-adr-checker",
-      "published_at": "2026-11-03"
+      "url": "https://zenn.dev/xin9le/articles/9a1cf8e10494d6",
+      "published_at": "2026-11-06"
     },
     {
       "title": "コードを読まずにバイブコーディングしたら、Claude Codeは分かっていてスルーしていた",
-      "liked_count": 56,
+      "liked_count": 67,
       "comments_count": 0,
       "url": "https://zenn.dev/nexta_/articles/42a828ca2b8a02",
       "published_at": "2026-11-04"
     },
     {
-      "title": "集約をどこまで機械的に導けるか――形式手法をベースとしたドメインモデリング",
-      "liked_count": 45,
+      "title": "ADRをregoでlintする",
+      "liked_count": 56,
       "comments_count": 0,
-      "url": "https://zenn.dev/nrs/articles/33ba79c8b2542e",
-      "published_at": "2026-11-04"
-    },
-    {
-      "title": "バイブコーディングで機能を継ぎ足していて見えてきたClaudeCodeの実装のクセ",
-      "liked_count": 50,
-      "comments_count": 1,
-      "url": "https://zenn.dev/uguisu_blog/articles/45d1f446ece415",
+      "url": "https://zenn.dev/babarot/articles/regomark-adr-checker",
       "published_at": "2026-11-03"
     },
     {
-      "title": "Xで積み重ねた日々をmixi2へ。過去ポストのインポート機能ができるまで",
-      "liked_count": 8,
+      "title": "AI駆動文章作成において俺が意識しているテクニック集",
+      "liked_count": 28,
       "comments_count": 0,
-      "url": "https://zenn.dev/mixi/articles/bcf2363e83b0a2",
+      "url": "https://zenn.dev/ntk221/articles/34ad88a9225364",
       "published_at": "2026-11-05"
     },
     {
-      "title": "SigLIP2に匹敵する画像エンコーダーをフルスクラッチで開発した話",
-      "liked_count": 36,
+      "title": "【.NET/Unity】C# の型制約とボックス化をハックする — IL と手動スタック配置",
+      "liked_count": 12,
       "comments_count": 0,
-      "url": "https://zenn.dev/noetra_techblog/articles/0cea39ce67d2c2",
-      "published_at": "2026-11-04"
+      "url": "https://zenn.dev/aakei/articles/csharp-stack-box",
+      "published_at": "2026-11-06"
     },
     {
-      "title": "Siri AIにアプリをつなぎ、振る舞いを評価する",
-      "liked_count": 4,
+      "title": "[TypeScript] パスエイリアスには Subpath Imports を使いたい",
+      "liked_count": 17,
       "comments_count": 0,
-      "url": "https://zenn.dev/d_date/articles/e8e2c5d53b424e",
+      "url": "https://zenn.dev/mediba/articles/167e2a3f663889",
+      "published_at": "2026-11-05"
+    },
+    {
+      "title": ".NET にも build.cs 欲しいんじゃーーー",
+      "liked_count": 13,
+      "comments_count": 0,
+      "url": "https://zenn.dev/sator_imaging/articles/c10d8da7685308",
       "published_at": "2026-11-05"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "sshole",
-      "points": 2299,
-      "num_comments": 569,
-      "url": "https://sshhole.com"
+      "title": "Tesla to wind down Cybertruck production",
+      "points": 813,
+      "num_comments": 1651,
+      "url": "https://www.nbcnews.com/tech/tech-news/tesla-wind-cybertruck-production-years-poor-sales-markets-rcna607817"
     },
     {
-      "title": "Alpine Linux Security Advisory: OpenSSH-server password authentication bypass",
-      "points": 579,
-      "num_comments": 123,
-      "url": "https://alpinelinux.org/posts/2026-11-05-openssh-password-authentication-bypass/"
+      "title": "Deus Ex",
+      "points": 333,
+      "num_comments": 169,
+      "url": "https://www.filfre.net/2026/11/deus-ex/"
     },
     {
-      "title": "Search for everyone",
-      "points": 498,
-      "num_comments": 244,
-      "url": "https://kagi.com/changelog#11820"
+      "title": "A Jev that can ask Opus for help gives Opus accuracy at 4x lower cost",
+      "points": 297,
+      "num_comments": 66,
+      "url": "https://hightouch.com/blog/llm-judges-identity-resolution"
     },
     {
-      "title": "Claude Code sends your email address to websites",
-      "points": 450,
-      "num_comments": 158,
-      "url": "https://github.com/anthropics/claude-code/issues/107757"
+      "title": "Gemini Omni 1.2 Flash",
+      "points": 291,
+      "num_comments": 216,
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/"
     },
     {
-      "title": "Goodbye from Salon",
-      "points": 407,
-      "num_comments": 149,
-      "url": "https://www.salon.com/2026/11/05/goodbye-from-salon/"
+      "title": "US FAA says it will phase out floppy disks from air traffic control by 2028",
+      "points": 265,
+      "num_comments": 209,
+      "url": "https://www.reuters.com/world/us/us-faa-says-it-will-phase-out-floppy-disks-air-traffic-control-by-2028-2026-11-05/"
     },
     {
-      "title": "Motorola Signature 27 with GrapheneOS support",
-      "points": 397,
-      "num_comments": 297,
-      "url": "https://motorolanews.com/motorola-signature-27-2/"
+      "title": "Anthropic IPO buyers see valuation as low as $1.1T",
+      "points": 209,
+      "num_comments": 463,
+      "url": "https://www.bloomberg.com/news/articles/2026-11-06/anthropic-ipo-valuation-expectations-pressured-after-ai-rout"
     },
     {
-      "title": "MS Paint Remote Code Execution Vulnerability",
-      "points": 300,
-      "num_comments": 97,
-      "url": "https://www.cve.org/CVERecord?id=CVE-2026-83844"
+      "title": "First steps in bare-metal programming using UEFI",
+      "points": 175,
+      "num_comments": 31,
+      "url": "https://kevinboone.me/efitest_index.html"
     },
     {
-      "title": "I wish tech companies knew more about me",
-      "points": 294,
-      "num_comments": 264,
-      "url": "https://rakhim.exotext.com/i-wish-tech-companies-knew-more-about-me"
+      "title": "AI is dramatically accelerating AI research",
+      "points": 174,
+      "num_comments": 134,
+      "url": "https://www.planned-obsolescence.org/p/ai-is-dramatically-accelerating-ai"
     },
     {
-      "title": "GPT-6 Astra covertly underperforms on safety research",
-      "points": 292,
-      "num_comments": 152,
-      "url": "https://alignment.openai.com/misalignment-reports/covert-underperformance-on-safety-research-tasks/"
+      "title": "Firecracker VM Escape: PwnEscape Part 2",
+      "points": 154,
+      "num_comments": 70,
+      "url": "https://pwn.ai/blog/firecracker-escape"
     },
     {
-      "title": "Download your favourite YouTube videos",
-      "points": 271,
-      "num_comments": 123,
-      "url": "https://criminallyvulgar.dev/you-should-absolutely-download-your-favourite-youtube-videos/"
+      "title": "Rune: A native GPU-rendered Rust UI framework for macOS, Windows, Linux and web",
+      "points": 147,
+      "num_comments": 105,
+      "url": "https://github.com/anomalyco/rune"
     }
   ]
 }
