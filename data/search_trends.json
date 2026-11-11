@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T03:10:41.455454",
+  "generated_at": "2026-11-11T01:01:21.503139",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -997,19 +997,26 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
+        "gemini 4 carbon",
         "gemini 4 argon",
         "gemini 4",
-        "gemini 4 carbon",
         "gemini 4 flash",
         "gemini 4 argon いつから",
         "gemini 4 いつ",
+        "gemini 4 carbon 一般公開",
         "gemini 4.0",
-        "gemini 4 pro",
-        "gemini 4 hyperion",
-        "gemini 4.0 いつ"
+        "gemini 4 hydrogen",
+        "gemini 4 pro"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
+        {
+          "query": "gemini 4 carbon 一般公開",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "一般公開"
+          ]
+        },
         {
           "query": "gemini 4.0",
           "intent": "metric_cost_spec",
@@ -1018,17 +1025,10 @@
           ]
         },
         {
-          "query": "gemini 4 hyperion",
+          "query": "gemini 4 hydrogen",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "hyperion"
-          ]
-        },
-        {
-          "query": "gemini 4.0 いつ",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "4.0"
+            "hydrogen"
           ]
         }
       ]
@@ -1148,9 +1148,9 @@
         "google aiモード",
         "google aiチャット",
         "google ai studio 日本語",
+        "google ai ultra",
         "google ai studio アプリ",
-        "google ai 無料",
-        "google ai プラン"
+        "google ai 無料"
       ],
       "title_optimization_opportunities": [
         {
@@ -1158,6 +1158,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "モード"
+          ]
+        },
+        {
+          "query": "google ai ultra",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "ultra"
           ]
         },
         {
@@ -1188,13 +1195,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "日本語"
-          ]
-        },
-        {
-          "query": "google ai プラン",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "プラン"
           ]
         }
       ]
@@ -2410,136 +2410,136 @@
   ],
   "zenn_daily_trending": [
     {
+      "title": "Claude Codeで最近使っているTips【2026/11】",
+      "liked_count": 102,
+      "comments_count": 0,
+      "url": "https://zenn.dev/oikon/articles/claude-code-recipe",
+      "published_at": "2026-11-10"
+    },
+    {
+      "title": "退屈なCoding AgentはMuseにやらせよう",
+      "liked_count": 113,
+      "comments_count": 0,
+      "url": "https://zenn.dev/watany/articles/342b9815dd0553",
+      "published_at": "2026-11-10"
+    },
+    {
       "title": "[破壊的変更] 明治時代の開始日が変更になって単体テストが失敗した件",
-      "liked_count": 164,
+      "liked_count": 180,
       "comments_count": 4,
       "url": "https://zenn.dev/xin9le/articles/9a1cf8e10494d6",
       "published_at": "2026-11-06"
     },
     {
-      "title": "ShopifyのReact Native→ネイティブ移行を支える「Reflex」をSwiftとKotlinで試す",
-      "liked_count": 19,
-      "comments_count": 1,
-      "url": "https://zenn.dev/tellernovel_inc/articles/reflex-native-swift-kotlin",
-      "published_at": "2026-11-09"
-    },
-    {
-      "title": "AWSから4.3億円の課金が...バグと思われる高額請求された際にまずすること",
-      "liked_count": 42,
-      "comments_count": 0,
-      "url": "https://zenn.dev/tsumita7/articles/aoss-intelligent-ingestion-billing-202610",
-      "published_at": "2026-11-08"
-    },
-    {
-      "title": "タスク管理までAIエージェントに任せたら、確認待ちに答えるだけになった",
-      "liked_count": 65,
-      "comments_count": 1,
-      "url": "https://zenn.dev/rescuenow/articles/4c03a548cd6589",
-      "published_at": "2026-11-06"
-    },
-    {
       "title": "なぜ mixi2 は iPhone Duo の発売初日から最適化できたのか？",
-      "liked_count": 19,
+      "liked_count": 42,
       "comments_count": 0,
       "url": "https://zenn.dev/mixi/articles/b0ea64fded9503",
       "published_at": "2026-11-09"
     },
     {
-      "title": "Weight-Space Programming やってみた(やらせてみた)",
-      "liked_count": 40,
-      "comments_count": 0,
-      "url": "https://zenn.dev/nwn/articles/cf9fe78aa33861",
-      "published_at": "2026-11-07"
-    },
-    {
-      "title": "OpenCode+Docker+GitHub Actionsで全自動AIペネトレーションテストはじめました",
-      "liked_count": 131,
-      "comments_count": 1,
-      "url": "https://zenn.dev/team_zenn/articles/opencode-docker-actions-ai-pentest",
-      "published_at": "2026-11-04"
-    },
-    {
       "title": "週間制限に3日で到達していたClaudeが、ModelとEffortの使い分けで5日持つようになった話",
-      "liked_count": 14,
+      "liked_count": 24,
       "comments_count": 0,
       "url": "https://zenn.dev/sun_asterisk/articles/1d1c65b1fe409a",
       "published_at": "2026-11-09"
     },
     {
-      "title": "ISUCON2026 ソロ参加記：自作ハーネスで Claude Code をほぼ無人運転した",
-      "liked_count": 11,
-      "comments_count": 2,
-      "url": "https://zenn.dev/5alt_nacl/articles/isucon2026-solo-ai-agent",
+      "title": "脆弱性問題を解決するためにRustに移行するべきなのか？",
+      "liked_count": 31,
+      "comments_count": 0,
+      "url": "https://zenn.dev/garasubo/articles/72340052cdd871",
+      "published_at": "2026-11-09"
+    },
+    {
+      "title": "AWSから4.3億円の課金が...バグと思われる高額請求された際にまずすること",
+      "liked_count": 57,
+      "comments_count": 0,
+      "url": "https://zenn.dev/tsumita7/articles/aoss-intelligent-ingestion-billing-202610",
       "published_at": "2026-11-08"
     },
     {
-      "title": "JAWS FESTA 2026 in AKITA 懇親会を振り返ってみる",
-      "liked_count": 15,
+      "title": "AIですぐに作れる時代に、何と向き合うか",
+      "liked_count": 24,
       "comments_count": 0,
-      "url": "https://zenn.dev/k_suzuki_pnx/articles/411e236ab4f2c7",
+      "url": "https://zenn.dev/peoplex_blog/articles/2611-what-to-face-when-ai-builds-fast",
       "published_at": "2026-11-09"
+    },
+    {
+      "title": "AI ネイティブなデータ分析基盤を作った話（後編）",
+      "liked_count": 6,
+      "comments_count": 0,
+      "url": "https://zenn.dev/pksha/articles/laplace-build-guide",
+      "published_at": "2026-11-10"
+    },
+    {
+      "title": "AIでテストカバレッジを23%から84%に引き上げた方法",
+      "liked_count": 5,
+      "comments_count": 0,
+      "url": "https://zenn.dev/litalico/articles/20261029-test-with-ai",
+      "published_at": "2026-11-10"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Foldable Flight: The Best Paper Airplanes",
-      "points": 868,
-      "num_comments": 141,
-      "url": "https://www.foldableflight.com"
+      "title": "Smart home devices should work without the internet",
+      "points": 681,
+      "num_comments": 245,
+      "url": "https://docodethatmatters.com/home-automation-overnight-success/"
     },
     {
-      "title": "USPS now offers official ZIP Code boundary polygons",
-      "points": 504,
-      "num_comments": 262,
-      "url": "https://postalpro.usps.com/zcb"
+      "title": ".name Grandfathered",
+      "points": 670,
+      "num_comments": 155,
+      "url": "https://neil.fraser.name/news/2026/11/10/"
     },
     {
-      "title": "Payments Canada announces launch of Canada's Real-Time Rail (RTR) payment system",
-      "points": 482,
-      "num_comments": 264,
-      "url": "https://www.payments.ca/canada-launches-real-time-rail-bringing-247-payment-infrastructure-national-economy"
+      "title": "AlphaProof Code",
+      "points": 573,
+      "num_comments": 175,
+      "url": "https://deepmind.google/blog/introducing-alphaproof-code/"
     },
     {
-      "title": "Google Gemini routes personal Drive files and emails to human annotators",
-      "points": 451,
-      "num_comments": 104,
-      "url": "https://github.com/thisisme6598/gemini_files/"
-    },
-    {
-      "title": "Claude Fable 5.2 scores 65 on Artificial Analysis, highest so far",
-      "points": 300,
-      "num_comments": 221,
-      "url": "https://artificialanalysis.ai/models/claude-fable-5-2"
-    },
-    {
-      "title": "E-means: Outperforming k-means in one-tenth the epochs",
-      "points": 287,
-      "num_comments": 20,
-      "url": "https://e-means.github.io/"
-    },
-    {
-      "title": "Semi-transparent, colored cadmium telluride photovoltaic panels in agrivoltaics",
-      "points": 286,
-      "num_comments": 181,
-      "url": "https://www.anthropocenemagazine.org/2026/10/magenta-solar-panels-may-be-agrivoltaics-cleverest-trick-yet/"
-    },
-    {
-      "title": "Muse Ember: Our smallest, most efficient model",
-      "points": 259,
-      "num_comments": 108,
-      "url": "https://research.meta.ai/blog/muse-ember"
-    },
-    {
-      "title": "Show HN: Every satellite that passed over any place this week, and its photos",
-      "points": 241,
-      "num_comments": 45,
-      "url": "https://www.watched.earth"
-    },
-    {
-      "title": "What is malloc doing, anyway?",
-      "points": 230,
+      "title": "Blender 5.3 released with Gaussian Splat support",
+      "points": 422,
       "num_comments": 62,
-      "url": "https://benmandrew.com/articles/what-is-malloc-doing-anyway"
+      "url": "https://www.blender.org/download/releases/5-3/"
+    },
+    {
+      "title": "AI usage generates a fragile codebase",
+      "points": 361,
+      "num_comments": 395,
+      "url": "https://evanxmerz.com/post/ai-usage-generates-a-fragile-codebase/"
+    },
+    {
+      "title": "Scion is back and is going to sell a kei truck in America",
+      "points": 307,
+      "num_comments": 228,
+      "url": "https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/"
+    },
+    {
+      "title": "Val Town is winding down",
+      "points": 299,
+      "num_comments": 77,
+      "url": "https://blog.val.town/winding-down"
+    },
+    {
+      "title": "Synaptics patent claims stop work on DisplayLink drivers",
+      "points": 283,
+      "num_comments": 139,
+      "url": "https://lwn.net/SubscriberLink/1102549/acbc92e00cee3a3f/"
+    },
+    {
+      "title": "Ableton Live 13",
+      "points": 271,
+      "num_comments": 294,
+      "url": "https://www.ableton.com/en/live/"
+    },
+    {
+      "title": "Show HN: Get your coding agent off ~2019 JavaScript, onto modern web primitives",
+      "points": 252,
+      "num_comments": 72,
+      "url": "https://github.com/GoogleChrome/modern-web-guidance"
     }
   ]
 }
