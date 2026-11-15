@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T01:17:28.854215",
+  "generated_at": "2026-11-15T00:46:02.667497",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -991,26 +991,34 @@
       "seed": "Gemini 4 Argon Pro Ultra 違い",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 9,
-        "question_troubleshoot": 1
+        "metric_cost_spec": 8,
+        "question_troubleshoot": 1,
+        "comparison": 1
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 hydrogen",
+        "gemini 4 argon",
         "gemini 4",
         "gemini 4 carbon",
-        "gemini 4 hydrogen とは",
         "gemini 4 hydrogen 性能",
-        "gemini 4 argon",
-        "gemini 4 carbon 性能",
-        "gemini 4 hydrogen thinking",
-        "gemini 4 hydrogen argon",
-        "gemini 4 hydrogen api"
+        "gemini 4 hydrogen とは",
+        "gemini 4 いつ",
+        "gemini 4 argon いつから",
+        "gemini 4 hydrogen 3.1 pro 比較",
+        "gemini 4 carbon 料金"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "gemini 4 hydrogen",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "hydrogen"
+          ]
+        },
+        {
+          "query": "gemini 4 hydrogen 性能",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "hydrogen"
@@ -1024,32 +1032,11 @@
           ]
         },
         {
-          "query": "gemini 4 hydrogen 性能",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "hydrogen"
-          ]
-        },
-        {
-          "query": "gemini 4 hydrogen thinking",
-          "intent": "metric_cost_spec",
+          "query": "gemini 4 hydrogen 3.1 pro 比較",
+          "intent": "comparison",
           "missing_in_body": [
             "hydrogen",
-            "thinking"
-          ]
-        },
-        {
-          "query": "gemini 4 hydrogen argon",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "hydrogen"
-          ]
-        },
-        {
-          "query": "gemini 4 hydrogen api",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "hydrogen"
+            "3.1"
           ]
         }
       ]
@@ -1065,8 +1052,8 @@
       "top_suggestions": [
         "gemini api",
         "gemini api key",
-        "gemini api 料金",
         "gemini apiキー",
+        "gemini api 料金",
         "gemini api 無料枠",
         "gemini api 無料",
         "gemini api 無料枠 制限",
@@ -1167,11 +1154,11 @@
         "google ai pro",
         "google ai plus",
         "google aiモード",
-        "google aiチャット",
         "google ai ultra",
-        "google ai studio 日本語",
+        "google aiチャット",
         "google ai プラン",
-        "google ai studio 日本語にする方法"
+        "google ai studio 日本語",
+        "google ai studio アプリ"
       ],
       "title_optimization_opportunities": [
         {
@@ -1186,6 +1173,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "ultra"
+          ]
+        },
+        {
+          "query": "google ai studio アプリ",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "アプリ"
           ]
         }
       ],
@@ -1205,13 +1199,6 @@
           ]
         },
         {
-          "query": "google ai studio 日本語",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "日本語"
-          ]
-        },
-        {
           "query": "google ai プラン",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1219,11 +1206,10 @@
           ]
         },
         {
-          "query": "google ai studio 日本語にする方法",
+          "query": "google ai studio 日本語",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "日本語",
-            "方法"
+            "日本語"
           ]
         }
       ]
@@ -2432,135 +2418,135 @@
   "zenn_daily_trending": [
     {
       "title": "ISUCON2026 で優勝しました（準備編）",
-      "liked_count": 403,
+      "liked_count": 422,
       "comments_count": 0,
       "url": "https://zenn.dev/luvtechno/articles/isucon2026-preparation",
       "published_at": "2026-11-11"
     },
     {
       "title": "Claude Codeで最近使っているTips【2026/11】",
-      "liked_count": 254,
+      "liked_count": 275,
       "comments_count": 0,
       "url": "https://zenn.dev/oikon/articles/claude-code-recipe",
       "published_at": "2026-11-10"
     },
     {
       "title": "Software Factoryの先へ：全社の仕事をAI-NativeにするUbieの内製クラウドエージェント基盤",
-      "liked_count": 151,
+      "liked_count": 166,
       "comments_count": 0,
       "url": "https://zenn.dev/ubie_dev/articles/45501469c9c044",
       "published_at": "2026-11-12"
     },
     {
       "title": "退屈なCoding AgentはMuseにやらせよう",
-      "liked_count": 222,
-      "comments_count": 0,
+      "liked_count": 228,
+      "comments_count": 1,
       "url": "https://zenn.dev/watany/articles/342b9815dd0553",
       "published_at": "2026-11-10"
     },
     {
-      "title": "ng: Neovim のためのシンプルな GUI",
-      "liked_count": 29,
-      "comments_count": 0,
-      "url": "https://zenn.dev/shougo/articles/ng-nvim-simple-gui",
-      "published_at": "2026-11-13"
-    },
-    {
-      "title": "5年後のエンジニアは、何に責任を持つのだろうか",
-      "liked_count": 14,
-      "comments_count": 0,
-      "url": "https://zenn.dev/ara_ta3/articles/thinking-about-engineers-five-years-from-now",
-      "published_at": "2026-11-13"
-    },
-    {
-      "title": "仕組み編：Two-Towerによる検索システム（学習・推論・配信）",
-      "liked_count": 23,
-      "comments_count": 0,
-      "url": "https://zenn.dev/ca_kagglers/articles/two-tower-mechanism",
-      "published_at": "2026-11-13"
-    },
-    {
       "title": "【pstack】AIに敵対的レビューをさせるな。トークンは検証に使え",
-      "liked_count": 24,
+      "liked_count": 53,
       "comments_count": 3,
       "url": "https://zenn.dev/karamage/articles/5c3f8370b2b370",
       "published_at": "2026-11-13"
     },
     {
-      "title": "AIエージェントが決定を勝手に変えてしまった5つのパターンと工夫",
-      "liked_count": 37,
-      "comments_count": 2,
-      "url": "https://zenn.dev/dress_code/articles/568fd547315abe",
-      "published_at": "2026-11-12"
+      "title": "ng: Neovim のためのシンプルな GUI",
+      "liked_count": 46,
+      "comments_count": 0,
+      "url": "https://zenn.dev/shougo/articles/ng-nvim-simple-gui",
+      "published_at": "2026-11-13"
     },
     {
-      "title": "AIで膨らみ続けるテストケースを、リスクベースドテストで選んで回すまでの記録",
-      "liked_count": 10,
+      "title": "Qwen3.8 Flash Nextに混ざる中国語を、出力層の書き換えで消した: 27%→0%、他の重みは1バイトも変えずに",
+      "liked_count": 21,
       "comments_count": 0,
-      "url": "https://zenn.dev/pivotmedia/articles/risk-based-testing-for-uat",
-      "published_at": "2026-11-12"
+      "url": "https://zenn.dev/caphtech/articles/qwen38-zh-ban",
+      "published_at": "2026-11-13"
+    },
+    {
+      "title": "5年後のエンジニアは、何に責任を持つのだろうか",
+      "liked_count": 25,
+      "comments_count": 0,
+      "url": "https://zenn.dev/ara_ta3/articles/thinking-about-engineers-five-years-from-now",
+      "published_at": "2026-11-13"
+    },
+    {
+      "title": "SlackでMarkdown記法が使えるようになっていた",
+      "liked_count": 26,
+      "comments_count": 0,
+      "url": "https://zenn.dev/lnest_knowledge/articles/ed5977bd7b6c1f",
+      "published_at": "2026-11-11"
+    },
+    {
+      "title": "仕組み編：Two-Towerによる検索システム（学習・推論・配信）",
+      "liked_count": 25,
+      "comments_count": 0,
+      "url": "https://zenn.dev/ca_kagglers/articles/two-tower-mechanism",
+      "published_at": "2026-11-13"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "FAA issues national ground stop",
-      "points": 1275,
-      "num_comments": 770,
-      "url": "https://www.nbcnews.com/news/us-news/faa-orders-nationwide-ground-stop-departing-flights-reasons-safety-rcna609247"
+      "title": "Lovable apps expose passport details and more than 200K private messages",
+      "points": 607,
+      "num_comments": 253,
+      "url": "https://www.crissyfield.de/research/lovable-en/"
     },
     {
-      "title": "Reverse engineering my Coway air purifier to ditch the cloud",
-      "points": 670,
-      "num_comments": 198,
-      "url": "https://scottjg.com/posts/2026-11-11-reverse-engineering-my-coway-air-purifier-to-ditch-the-cloud/"
+      "title": "SpaceX catches the Starship to end Flight 15",
+      "points": 595,
+      "num_comments": 395,
+      "url": "https://www.spacex.com/launches/starship-flight-15"
     },
     {
-      "title": "Doomsday: Friday, 13 November, A.D. 2026 (1960)",
+      "title": "Why get an expensive Pi when I have an old phone?",
+      "points": 495,
+      "num_comments": 280,
+      "url": "https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/"
+    },
+    {
+      "title": "Tech companies are trying to shift the concept of privacy again",
       "points": 446,
-      "num_comments": 306,
-      "url": "https://www.science.org/doi/10.1126/science.132.3436.1291"
+      "num_comments": 168,
+      "url": "https://www.eff.org/deeplinks/2026/11/tech-companies-are-trying-shift-entire-concept-privacy-again"
     },
     {
-      "title": "AI unlocks Gödel's notebooks, said to contain hundreds of proved theorems",
-      "points": 322,
+      "title": "KDE: The documentary [video]",
+      "points": 367,
+      "num_comments": 79,
+      "url": "https://tube.kockatoo.org/w/fFinNHfanLT7aBEb2B8y4c"
+    },
+    {
+      "title": "Italy fines Meta $887M over Android users' data access",
+      "points": 318,
+      "num_comments": 215,
+      "url": "https://www.reuters.com/world/italy-fines-meta-887-million-over-android-users-data-access-2026-11-14/"
+    },
+    {
+      "title": "PyPI's redesigned project pages with clearer security signals are now live",
+      "points": 197,
+      "num_comments": 90,
+      "url": "https://blog.pypi.org/posts/2026-11-06-ui-updates-complete/"
+    },
+    {
+      "title": "A family tree of software job titles",
+      "points": 188,
       "num_comments": 91,
-      "url": "https://www.theguardian.com/science/2026/nov/13/kurt-godel-notebooks-ai-helps-unlock-hidden-discoveries-man-who-transformed-maths"
+      "url": "https://zwischenzugs.com/2026/11/03/a-family-tree-of-software-job-titles/"
     },
     {
-      "title": "$11.4M in Nvidia hardware vanishes during shipment from CA to TX",
-      "points": 282,
-      "num_comments": 159,
-      "url": "https://www.freightwaves.com/news/11-4-million-in-nvidia-hardware-vanishes-during-shipment-from-california-to-texas"
+      "title": "Generative AI uses more energy on non-English text",
+      "points": 171,
+      "num_comments": 96,
+      "url": "https://news.umich.edu/generative-ai-uses-more-energy-on-non-english-text/"
     },
     {
-      "title": "It Takes 16 Clicks for a Student to Open a PowerPoint on an iPad",
-      "points": 276,
-      "num_comments": 140,
-      "url": "https://www.reddit.com/r/Teachers/comments/1xuup7a/technology_sucks_it_literally_takes_16_clicks_for/"
-    },
-    {
-      "title": "After 600 experiments, here's what I discovered about JEPA world models",
-      "points": 212,
-      "num_comments": 35,
-      "url": "https://haddyalchaer.com/jepa"
-    },
-    {
-      "title": "FM-1 Workbench",
-      "points": 179,
-      "num_comments": 102,
-      "url": "https://open.m-vave.com/fm1-workbench"
-    },
-    {
-      "title": "A technical vision for the Haskell ecosystem",
-      "points": 178,
-      "num_comments": 84,
-      "url": "https://discourse.haskell.org/t/a-technical-vision-for-the-haskell-ecosystem/15078"
-    },
-    {
-      "title": "Live airband on all frequencies from KORS. Victoria, CA also ground stopped",
-      "points": 178,
-      "num_comments": 44,
-      "url": "https://orcasairband.com/"
+      "title": "LinkedIn, Monster take down over 1000 fake job postings after CBC investigation",
+      "points": 171,
+      "num_comments": 89,
+      "url": "https://www.cbc.ca/news/canada/linkedin-monster-take-down-over-1-000-fake-job-postings-after-cbc-investigation-9.7415379"
     }
   ]
 }
