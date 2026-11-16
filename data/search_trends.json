@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T00:46:02.667497",
+  "generated_at": "2026-11-16T00:46:06.856413",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -366,8 +366,8 @@
         "deepseek flash v4",
         "deepseek flash 0731",
         "deepseek flash v4.1",
-        "deepseek flash v4 0731",
         "deepseek flash 4.1",
+        "deepseek flash v4 0731",
         "deepseek flash pro",
         "deepseek flash vision",
         "deepseek flash api",
@@ -992,21 +992,21 @@
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
         "metric_cost_spec": 8,
-        "question_troubleshoot": 1,
-        "comparison": 1
+        "comparison": 1,
+        "question_troubleshoot": 1
       },
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 hydrogen",
-        "gemini 4 argon",
         "gemini 4",
+        "gemini 4 argon",
         "gemini 4 carbon",
-        "gemini 4 hydrogen 性能",
+        "gemini 4 hydrogen 3.1 pro 比較",
         "gemini 4 hydrogen とは",
+        "gemini 4 krypton",
         "gemini 4 いつ",
         "gemini 4 argon いつから",
-        "gemini 4 hydrogen 3.1 pro 比較",
-        "gemini 4 carbon 料金"
+        "gemini 4 carbon 性能"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1018,10 +1018,11 @@
           ]
         },
         {
-          "query": "gemini 4 hydrogen 性能",
-          "intent": "metric_cost_spec",
+          "query": "gemini 4 hydrogen 3.1 pro 比較",
+          "intent": "comparison",
           "missing_in_body": [
-            "hydrogen"
+            "hydrogen",
+            "3.1"
           ]
         },
         {
@@ -1032,11 +1033,10 @@
           ]
         },
         {
-          "query": "gemini 4 hydrogen 3.1 pro 比較",
-          "intent": "comparison",
+          "query": "gemini 4 krypton",
+          "intent": "metric_cost_spec",
           "missing_in_body": [
-            "hydrogen",
-            "3.1"
+            "krypton"
           ]
         }
       ]
@@ -1053,8 +1053,8 @@
         "gemini api",
         "gemini api key",
         "gemini apiキー",
-        "gemini api 料金",
         "gemini api 無料枠",
+        "gemini api 料金",
         "gemini api 無料",
         "gemini api 無料枠 制限",
         "gemini apiキー 取得方法",
@@ -2018,23 +2018,23 @@
         "パーソナルai 作り方",
         "パーソナルアイテムとは",
         "パーソナルアイデンティティ",
+        "パーソナルaiエージェント",
         "パーソナルアイテック",
         "パーソナルaiエージェントとは",
-        "パーソナルaiエージェント",
         "パーソナルアイス",
         "パーソナルaiアシスタント"
       ],
       "title_optimization_opportunities": [
         {
-          "query": "パーソナルaiエージェントとは",
-          "intent": "question_troubleshoot",
+          "query": "パーソナルaiエージェント",
+          "intent": "metric_cost_spec",
           "missing_in_title": [
             "エージェント"
           ]
         },
         {
-          "query": "パーソナルaiエージェント",
-          "intent": "metric_cost_spec",
+          "query": "パーソナルaiエージェントとは",
+          "intent": "question_troubleshoot",
           "missing_in_title": [
             "エージェント"
           ]
@@ -2418,135 +2418,135 @@
   "zenn_daily_trending": [
     {
       "title": "ISUCON2026 で優勝しました（準備編）",
-      "liked_count": 422,
+      "liked_count": 439,
       "comments_count": 0,
       "url": "https://zenn.dev/luvtechno/articles/isucon2026-preparation",
       "published_at": "2026-11-11"
     },
     {
       "title": "Claude Codeで最近使っているTips【2026/11】",
-      "liked_count": 275,
+      "liked_count": 295,
       "comments_count": 0,
       "url": "https://zenn.dev/oikon/articles/claude-code-recipe",
       "published_at": "2026-11-10"
     },
     {
       "title": "Software Factoryの先へ：全社の仕事をAI-NativeにするUbieの内製クラウドエージェント基盤",
-      "liked_count": 166,
+      "liked_count": 189,
       "comments_count": 0,
       "url": "https://zenn.dev/ubie_dev/articles/45501469c9c044",
       "published_at": "2026-11-12"
     },
     {
       "title": "退屈なCoding AgentはMuseにやらせよう",
-      "liked_count": 228,
+      "liked_count": 234,
       "comments_count": 1,
       "url": "https://zenn.dev/watany/articles/342b9815dd0553",
       "published_at": "2026-11-10"
     },
     {
       "title": "【pstack】AIに敵対的レビューをさせるな。トークンは検証に使え",
-      "liked_count": 53,
+      "liked_count": 70,
       "comments_count": 3,
       "url": "https://zenn.dev/karamage/articles/5c3f8370b2b370",
       "published_at": "2026-11-13"
     },
     {
-      "title": "ng: Neovim のためのシンプルな GUI",
-      "liked_count": 46,
-      "comments_count": 0,
-      "url": "https://zenn.dev/shougo/articles/ng-nvim-simple-gui",
-      "published_at": "2026-11-13"
-    },
-    {
       "title": "Qwen3.8 Flash Nextに混ざる中国語を、出力層の書き換えで消した: 27%→0%、他の重みは1バイトも変えずに",
-      "liked_count": 21,
+      "liked_count": 38,
       "comments_count": 0,
       "url": "https://zenn.dev/caphtech/articles/qwen38-zh-ban",
       "published_at": "2026-11-13"
     },
     {
-      "title": "5年後のエンジニアは、何に責任を持つのだろうか",
-      "liked_count": 25,
+      "title": "ng: Neovim のためのシンプルな GUI",
+      "liked_count": 54,
       "comments_count": 0,
-      "url": "https://zenn.dev/ara_ta3/articles/thinking-about-engineers-five-years-from-now",
+      "url": "https://zenn.dev/shougo/articles/ng-nvim-simple-gui",
       "published_at": "2026-11-13"
     },
     {
-      "title": "SlackでMarkdown記法が使えるようになっていた",
-      "liked_count": 26,
+      "title": "フロントエンドのフレームワークを、安全に段階的に入れ替える",
+      "liked_count": 13,
       "comments_count": 0,
-      "url": "https://zenn.dev/lnest_knowledge/articles/ed5977bd7b6c1f",
-      "published_at": "2026-11-11"
+      "url": "https://zenn.dev/yasuakiomokawa/articles/de83bb4c4ea928",
+      "published_at": "2026-11-14"
     },
     {
-      "title": "仕組み編：Two-Towerによる検索システム（学習・推論・配信）",
-      "liked_count": 25,
+      "title": "脱WordPress：10年超の個人ブログをAstro + Cloudflare Workersへ移行しPageSpeed 100点を実現",
+      "liked_count": 39,
       "comments_count": 0,
-      "url": "https://zenn.dev/ca_kagglers/articles/two-tower-mechanism",
+      "url": "https://zenn.dev/unsoluble_sugar/articles/8cdf1efc01e6cb",
       "published_at": "2026-11-13"
+    },
+    {
+      "title": "【2026/11/13時点】Claude Duet を Team プランで触ってみた（組織で使うときの注意点つき）",
+      "liked_count": 16,
+      "comments_count": 0,
+      "url": "https://zenn.dev/canly/articles/e2bd67c9a4c18b",
+      "published_at": "2026-11-14"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Lovable apps expose passport details and more than 200K private messages",
-      "points": 607,
-      "num_comments": 253,
-      "url": "https://www.crissyfield.de/research/lovable-en/"
-    },
-    {
       "title": "SpaceX catches the Starship to end Flight 15",
-      "points": 595,
-      "num_comments": 395,
+      "points": 1640,
+      "num_comments": 1219,
       "url": "https://www.spacex.com/launches/starship-flight-15"
     },
     {
-      "title": "Why get an expensive Pi when I have an old phone?",
-      "points": 495,
-      "num_comments": 280,
-      "url": "https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/"
+      "title": "All AI-generated code should be Open Source",
+      "points": 1067,
+      "num_comments": 579,
+      "url": "https://jakub.jankiewicz.org/blog/ai-code-open-source/"
     },
     {
-      "title": "Tech companies are trying to shift the concept of privacy again",
-      "points": 446,
-      "num_comments": 168,
-      "url": "https://www.eff.org/deeplinks/2026/11/tech-companies-are-trying-shift-entire-concept-privacy-again"
+      "title": "The MacBook Pro's OLED PWM problem",
+      "points": 410,
+      "num_comments": 228,
+      "url": "https://macanorak.com/the-macbook-pros-oled-pwm-problem-when-a-better-display-becomes-worse-to-use/"
     },
     {
-      "title": "KDE: The documentary [video]",
-      "points": 367,
-      "num_comments": 79,
-      "url": "https://tube.kockatoo.org/w/fFinNHfanLT7aBEb2B8y4c"
+      "title": "Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests",
+      "points": 359,
+      "num_comments": 174,
+      "url": "https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html"
     },
     {
-      "title": "Italy fines Meta $887M over Android users' data access",
-      "points": 318,
-      "num_comments": 215,
-      "url": "https://www.reuters.com/world/italy-fines-meta-887-million-over-android-users-data-access-2026-11-14/"
+      "title": "Claude Code and Codex reverse engineered my 1994 Jeep's ECU over a $3 Arduino [video]",
+      "points": 324,
+      "num_comments": 160,
+      "url": "https://www.youtube.com/watch?v=WPj3aQ-xxpI"
     },
     {
-      "title": "PyPI's redesigned project pages with clearer security signals are now live",
-      "points": 197,
-      "num_comments": 90,
-      "url": "https://blog.pypi.org/posts/2026-11-06-ui-updates-complete/"
+      "title": "Why did some Apollo missions carry a grenade launcher? (2019)",
+      "points": 227,
+      "num_comments": 145,
+      "url": "https://space.stackexchange.com/questions/37775"
     },
     {
-      "title": "A family tree of software job titles",
-      "points": 188,
-      "num_comments": 91,
-      "url": "https://zwischenzugs.com/2026/11/03/a-family-tree-of-software-job-titles/"
+      "title": "Understanding Positional Embeddings in Modern LLMs",
+      "points": 195,
+      "num_comments": 26,
+      "url": "https://magazine.sebastianraschka.com/p/understanding-positional-embeddings"
     },
     {
-      "title": "Generative AI uses more energy on non-English text",
-      "points": 171,
-      "num_comments": 96,
-      "url": "https://news.umich.edu/generative-ai-uses-more-energy-on-non-english-text/"
+      "title": "Things That Turbo Pascal Is Smaller Than (2011)",
+      "points": 192,
+      "num_comments": 97,
+      "url": "https://prog21.dadgum.com/116.html"
     },
     {
-      "title": "LinkedIn, Monster take down over 1000 fake job postings after CBC investigation",
-      "points": 171,
+      "title": "Emacs Is My Browser",
+      "points": 172,
       "num_comments": 89,
-      "url": "https://www.cbc.ca/news/canada/linkedin-monster-take-down-over-1-000-fake-job-postings-after-cbc-investigation-9.7415379"
+      "url": "https://joshblais.com/blog/emacs-as-my-browser/"
+    },
+    {
+      "title": "A short explainer on how El Niño works [video]",
+      "points": 162,
+      "num_comments": 63,
+      "url": "https://www.youtube.com/watch?v=7_JF3etiAv8"
     }
   ]
 }
