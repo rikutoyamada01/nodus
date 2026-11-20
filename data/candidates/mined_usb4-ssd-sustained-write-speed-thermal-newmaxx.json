@@ -1,7 +1,7 @@
 {
   "query": "USB4 SSD sustained write speed thermal",
   "subreddit": "NewMaxx",
-  "mined_at": "2026-11-19T02:16:24.607185",
+  "mined_at": "2026-11-20T02:01:55.370680",
   "status": "ok",
   "total_quantitative_hits": 2,
   "reddit_findings": [],
@@ -40,5 +40,10 @@
       ]
     }
   ],
-  "errors": []
+  "errors": [
+    {
+      "source": "HackerNews",
+      "error": "The read operation timed out"
+    }
+  ]
 }
