@@ -1,16 +1,11 @@
 {
   "query": "Colab A100 L4 compute units burn rate",
   "subreddit": "GoogleColab",
-  "mined_at": "2026-11-20T02:01:34.068280",
-  "status": "degraded",
+  "mined_at": "2026-11-21T01:58:16.491772",
+  "status": "ok",
   "total_quantitative_hits": 0,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [],
-  "errors": [
-    {
-      "source": "HackerNews",
-      "error": "The read operation timed out"
-    }
-  ]
+  "errors": []
 }

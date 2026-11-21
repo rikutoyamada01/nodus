@@ -1,16 +1,11 @@
 {
   "query": "LiFePO4 power station inverter idle draw UPS ms",
   "subreddit": "SolarDIY",
-  "mined_at": "2026-11-20T02:02:05.708380",
-  "status": "degraded",
+  "mined_at": "2026-11-21T01:58:19.477768",
+  "status": "ok",
   "total_quantitative_hits": 0,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [],
-  "errors": [
-    {
-      "source": "HackerNews",
-      "error": "The read operation timed out"
-    }
-  ]
+  "errors": []
 }
