@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T01:58:35.445335",
+  "generated_at": "2026-11-22T00:57:48.046743",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -997,15 +997,15 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 neon",
-        "gemini 4 hydrogen",
         "gemini 4 argon",
+        "gemini 4 hydrogen",
         "gemini 4",
-        "gemini 4 neon argon",
-        "gemini 4 xenon",
         "gemini 4 carbon",
         "gemini 4 いつ",
         "gemini 4 argon いつから",
-        "gemini 4 neon とは"
+        "gemini 4 pro",
+        "gemini 4.0",
+        "gemini 4 hydrogen とは"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1024,24 +1024,17 @@
           ]
         },
         {
-          "query": "gemini 4 neon argon",
+          "query": "gemini 4.0",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "neon"
+            "4.0"
           ]
         },
         {
-          "query": "gemini 4 xenon",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "xenon"
-          ]
-        },
-        {
-          "query": "gemini 4 neon とは",
+          "query": "gemini 4 hydrogen とは",
           "intent": "question_troubleshoot",
           "missing_in_body": [
-            "neon"
+            "hydrogen"
           ]
         }
       ]
@@ -1060,11 +1053,11 @@
         "gemini apiキー",
         "gemini api 料金",
         "gemini api 無料枠",
-        "gemini api cli",
         "gemini api 無料",
         "gemini api 無料枠 制限",
         "gemini apiキー 取得方法",
-        "gemini api key 無料"
+        "gemini api key 無料",
+        "gemini api モデル"
       ],
       "title_optimization_opportunities": [
         {
@@ -1072,6 +1065,13 @@
           "intent": "metric_cost_spec",
           "missing_in_title": [
             "キー"
+          ]
+        },
+        {
+          "query": "gemini api モデル",
+          "intent": "metric_cost_spec",
+          "missing_in_title": [
+            "モデル"
           ]
         }
       ],
@@ -1089,13 +1089,6 @@
           "missing_in_body": [
             "無料",
             "枠"
-          ]
-        },
-        {
-          "query": "gemini api cli",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "cli"
           ]
         },
         {
@@ -1154,16 +1147,16 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
+        "google ai pro",
         "google ai",
         "google ai studio",
-        "google ai pro",
-        "google ai ultra",
         "google ai pro ブラック フライデー",
+        "google ai pro 半額キャンペーン",
         "google ai plus",
+        "google ai ultra",
         "google ai ブラックフライデー",
-        "google aiモード",
-        "google ai プラン",
-        "google ai studio 日本語"
+        "google ai black friday",
+        "google aiモード"
       ],
       "title_optimization_opportunities": [
         {
@@ -1191,6 +1184,14 @@
           ]
         },
         {
+          "query": "google ai pro 半額キャンペーン",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "半額",
+            "キャンペーン"
+          ]
+        },
+        {
           "query": "google ai plus",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1205,17 +1206,11 @@
           ]
         },
         {
-          "query": "google ai プラン",
+          "query": "google ai black friday",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "プラン"
-          ]
-        },
-        {
-          "query": "google ai studio 日本語",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "日本語"
+            "black",
+            "friday"
           ]
         }
       ]
@@ -2423,136 +2418,136 @@
   ],
   "zenn_daily_trending": [
     {
+      "title": "自分の代わりに動くAgentへ。Claude CodeとCodexで作る自律改善ハーネス",
+      "liked_count": 142,
+      "comments_count": 0,
+      "url": "https://zenn.dev/nttdata_tech/articles/9562962cc181a1",
+      "published_at": "2026-11-19"
+    },
+    {
       "title": "おい、 Mutation Test をやれ。テスト品質を、測るために",
-      "liked_count": 442,
+      "liked_count": 456,
       "comments_count": 1,
       "url": "https://zenn.dev/mizchi/articles/mutation-test-quality",
       "published_at": "2026-11-17"
     },
     {
       "title": "相次ぐOSSの脆弱性に、とりあえずクラウドWAF入れるだけでだいぶ違う話+Rootlessコンテナもいいぞ",
-      "liked_count": 57,
+      "liked_count": 76,
       "comments_count": 0,
       "url": "https://zenn.dev/kusuke/articles/98e178e6824cac",
       "published_at": "2026-11-19"
     },
     {
       "title": "毎月6,000 AI Agentsを捌くためにキーボードを捨てた話",
-      "liked_count": 179,
-      "comments_count": 0,
+      "liked_count": 188,
+      "comments_count": 1,
       "url": "https://zenn.dev/andoshin11/articles/ba68b39ef9a8ce",
       "published_at": "2026-11-17"
     },
     {
-      "title": "自分の代わりに動くAgentへ。Claude CodeとCodexで作る自律改善ハーネス",
-      "liked_count": 78,
-      "comments_count": 0,
-      "url": "https://zenn.dev/nttdata_tech/articles/9562962cc181a1",
-      "published_at": "2026-11-19"
-    },
-    {
       "title": "最近、コードを真面目に読まなくなった",
-      "liked_count": 82,
+      "liked_count": 84,
       "comments_count": 0,
       "url": "https://zenn.dev/hiromoo/articles/reading-less-preparing-more",
       "published_at": "2026-11-17"
     },
     {
       "title": "GitHub IssueにArtifactとしてHTMLとMarkdownを添付できるようになった",
-      "liked_count": 84,
+      "liked_count": 87,
       "comments_count": 0,
       "url": "https://zenn.dev/kesin11/articles/20261114_github_issue_artifact",
       "published_at": "2026-11-16"
     },
     {
-      "title": "ローカルLLM入門",
-      "liked_count": 65,
-      "comments_count": 0,
-      "url": "https://zenn.dev/port_inc/articles/ff974c7456f4db",
-      "published_at": "2026-11-17"
+      "title": "mizchi/mutator を入れてみた",
+      "liked_count": 69,
+      "comments_count": 1,
+      "url": "https://zenn.dev/polyco/articles/e05cb28c569801",
+      "published_at": "2026-11-16"
     },
     {
       "title": "Claude Desktop 開発のすゝめ",
-      "liked_count": 71,
+      "liked_count": 76,
       "comments_count": 0,
       "url": "https://zenn.dev/peoplex_blog/articles/vscode-to-claude-desktop",
       "published_at": "2026-11-17"
     },
     {
-      "title": "tsrs を導入したら oxlint の type-aware linting と typecheck が爆速になった話",
-      "liked_count": 45,
+      "title": "ローカルLLM入門",
+      "liked_count": 76,
       "comments_count": 0,
-      "url": "https://zenn.dev/dress_code/articles/6c179ae5129131",
-      "published_at": "2026-11-18"
+      "url": "https://zenn.dev/port_inc/articles/ff974c7456f4db",
+      "published_at": "2026-11-17"
     },
     {
-      "title": "CLAUDE.md や SKILL.md のルールを Turtle で書き、ルールの書き間違いや矛盾を lint で検査してみた話",
-      "liked_count": 7,
+      "title": "【TLA+】AIにテストケースを書かせるな。ルールを書け",
+      "liked_count": 26,
       "comments_count": 0,
-      "url": "https://zenn.dev/hma2moto/articles/turtle-agent-rules-pros-cons",
-      "published_at": "2026-11-19"
+      "url": "https://zenn.dev/karamage/articles/73027ee36796dc",
+      "published_at": "2026-11-21"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Levent Alpöge claims proof of the Generalized Riemann Hypothesis [pdf]",
-      "points": 2366,
-      "num_comments": 1599,
-      "url": "https://alpo.ge/remark.pdf"
-    },
-    {
       "title": "Hurried Announcement: Alessandro Masullo GRH",
-      "points": 1570,
-      "num_comments": 712,
+      "points": 2388,
+      "num_comments": 1159,
       "url": "https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/"
     },
     {
       "title": "Inkling 2 Mini",
-      "points": 681,
-      "num_comments": 108,
+      "points": 1378,
+      "num_comments": 280,
       "url": "https://thinkingmachines.ai/news/inkling-2-mini/"
     },
     {
-      "title": "Frostbite: A new CPU architecture discovered, designed and verified by AI",
-      "points": 628,
-      "num_comments": 327,
-      "url": "https://architectlabs.com/blog/frostbite"
+      "title": "Lean verification of the Riemann Hypothesis",
+      "points": 806,
+      "num_comments": 647,
+      "url": "https://leanprover-community.github.io/blog/posts/riemann-hypothesis/"
     },
     {
-      "title": "If you can't explain something in simple terms, you don't understand it (2017)",
-      "points": 624,
-      "num_comments": 293,
-      "url": "https://kottke.org/17/06/if-you-cant-explain-something-in-simple-terms-you-dont-understand-it"
+      "title": "Brazil's tax authority open-sources its tax calculator on GitHub under MIT",
+      "points": 731,
+      "num_comments": 234,
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/novembro/receita-federal-publica-primeiro-codigo-fonte-aberto-no-github-e-amplia-transparencia-da-reforma-tributaria"
     },
     {
-      "title": "Restricting AI agents in mobile operating systems platforms from capturing data",
-      "points": 510,
-      "num_comments": 304,
-      "url": "https://signal.org/blog/protecting-your-privacy/"
+      "title": "Ask HN: I have been unemployed for 2y. 15 years of experience, US. What to do?",
+      "points": 605,
+      "num_comments": 671,
+      "url": "https://news.ycombinator.com/item?id=50583761"
     },
     {
-      "title": "Unforced Navier-Stokes Singularity and the Generalized Riemann Hypothesis",
+      "title": "Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades'",
+      "points": 553,
+      "num_comments": 135,
+      "url": "https://www.theguardian.com/society/2026/nov/20/pill-pancreatic-cancer-breakthrough-daraxonrasib"
+    },
+    {
+      "title": "Detonating a pile of lead azide",
+      "points": 508,
+      "num_comments": 341,
+      "url": "https://www.science.org/content/blog-post/detonating-huge-pile-lead-azide-really"
+    },
+    {
+      "title": "Why there are still no non-WebKit browsers on iOS",
+      "points": 474,
+      "num_comments": 265,
+      "url": "https://blog.mozilla.org/en/mozilla/internet-policy/apple-ios-browser-engine-rules/"
+    },
+    {
+      "title": "My monitor was cutting my download speed by 75%",
+      "points": 472,
+      "num_comments": 227,
+      "url": "https://blog.tymscar.com/posts/studiodisplayethernet/"
+    },
+    {
+      "title": "Inkling-2-Mini in 5.4 GB Memory",
       "points": 341,
-      "num_comments": 141,
-      "url": "https://terrytao.wordpress.com/2026/11/20/unforced-euler-singularity-unforced-navier-stokes-singularity-and-the-generalized-riemann-hypothesis/"
-    },
-    {
-      "title": "Language Models Can Rewrite Their Own Weights",
-      "points": 340,
-      "num_comments": 111,
-      "url": "https://arxiv.org/abs/2611.21885"
-    },
-    {
-      "title": "We promoted developers into architects without informing them",
-      "points": 298,
-      "num_comments": 184,
-      "url": "https://manidoraisamy.com/developer-to-architect.html"
-    },
-    {
-      "title": "Finite-time blow-up for the Navier–Stokes equations",
-      "points": 258,
-      "num_comments": 82,
-      "url": "https://github.com/tristanbuckmaster/navier-stokes/"
+      "num_comments": 91,
+      "url": "https://github.com/ShinMegamiBoson/lookatmyquant"
     }
   ]
 }
