@@ -1,7 +1,7 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-11-22T00:57:39.310387",
+  "mined_at": "2026-11-23T01:24:27.752448",
   "status": "ok",
   "total_quantitative_hits": 3,
   "reddit_findings": [],
@@ -21,6 +21,19 @@
     },
     {
       "source": "GitHub",
+      "title": "cnc-chuck-load: contact-guided chuck loading with exact CPU replay",
+      "url": "https://github.com/ZIWU-AI/robotics-bench/pull/5",
+      "created_at": "2026-11-17",
+      "measurement_count": 4,
+      "extracted_numbers": [
+        "4dba",
+        "5 hours",
+        "9.1 min",
+        "12.4 min"
+      ]
+    },
+    {
+      "source": "GitHub",
       "title": "claude",
       "url": "https://github.com/98kuwa036/Bushidan-Multi-Agent/issues/5",
       "created_at": "2026-01-30",
@@ -32,17 +45,6 @@
         "256GB",
         "100GB",
         "20 tok/s"
-      ]
-    },
-    {
-      "source": "GitHub",
-      "title": "[BUG] Claude Code Usage for Max Plan hitting limits extremely fast",
-      "url": "https://github.com/anthropics/claude-code/issues/37394",
-      "created_at": "2026-03-22",
-      "measurement_count": 2,
-      "extracted_numbers": [
-        "5 hour",
-        "3 hour"
       ]
     }
   ],
