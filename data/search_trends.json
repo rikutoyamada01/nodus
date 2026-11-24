@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T01:24:44.362926",
+  "generated_at": "2026-11-24T05:08:41.221218",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -158,14 +158,23 @@
       "seed": "AIエージェント 常駐 VPS ミニPC",
       "dominant_market_intent": "metric_cost_spec",
       "intent_distribution": {
-        "metric_cost_spec": 1
+        "metric_cost_spec": 2
       },
-      "total_suggestions": 1,
+      "total_suggestions": 2,
       "top_suggestions": [
-        "aiエージェント 常駐"
+        "aiエージェント 常駐",
+        "常駐型 aiエージェント"
       ],
       "title_optimization_opportunities": [],
-      "uncovered_content_gaps": []
+      "uncovered_content_gaps": [
+        {
+          "query": "常駐型 aiエージェント",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "常駐型"
+          ]
+        }
+      ]
     },
     {
       "slug": "antigravity-quota-5-hour-weekly-ai-credits-guide",
@@ -460,8 +469,8 @@
         "docker バックアップ 方法",
         "docker volume バックアップ",
         "docker image バックアップ",
-        "docker ボリューム バックアップ",
         "docker compose バックアップ",
+        "docker ボリューム バックアップ",
         "growi docker バックアップ",
         "gitlab docker バックアップ",
         "redmine docker バックアップ"
@@ -610,8 +619,8 @@
         "onnx int8 inference",
         "onnx int8 model",
         "bge m3 onnx int8",
-        "sherpa onnx int8",
-        "kokoro onnx int8"
+        "kokoro onnx int8",
+        "ultralytics onnx int8"
       ],
       "title_optimization_opportunities": [
         {
@@ -660,17 +669,17 @@
           ]
         },
         {
-          "query": "sherpa onnx int8",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "sherpa"
-          ]
-        },
-        {
           "query": "kokoro onnx int8",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "kokoro"
+          ]
+        },
+        {
+          "query": "ultralytics onnx int8",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "ultralytics"
           ]
         }
       ]
@@ -745,14 +754,14 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "esp32-c6 matter",
-        "esp32 c6 matter router",
         "esp32 c6 matter border router",
+        "esp32 c6 matter router",
         "esp32 c6 matter over thread example",
         "esp32 c6 matter gateway",
         "esp32 c6 matter device",
+        "esp32 c6 matter thread border router",
         "esp32-c6 matter controller",
         "esp32 c6 matter coordinator",
-        "esp32 c6 matter switch",
         "esp32 c6 matter thread"
       ],
       "title_optimization_opportunities": [],
@@ -791,13 +800,6 @@
           "missing_in_body": [
             "coordinator"
           ]
-        },
-        {
-          "query": "esp32 c6 matter switch",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "switch"
-          ]
         }
       ]
     },
@@ -812,8 +814,8 @@
       "top_suggestions": [
         "esp32 deepsleep",
         "esp32 deepsleep 消費電力",
-        "esp32 deepsleep rtc",
         "esp32 deep sleep external wake up",
+        "esp32 deepsleep rtc",
         "esp32 deepsleep gpio",
         "esp32 deepsleep 復帰",
         "esp32 deep sleep code",
@@ -996,8 +998,8 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini 4 neon",
-        "gemini 4 argon",
         "gemini 4 hydrogen",
+        "gemini 4 argon",
         "gemini 4",
         "gemini 4 carbon",
         "gemini 4 いつ",
@@ -1150,12 +1152,12 @@
         "google ai",
         "google ai studio",
         "google ai pro 半額キャンペーン",
-        "google ai pro ブラック フライデー",
         "google ai plus",
+        "google ai pro ブラック フライデー",
         "google ai ultra",
         "google aiモード",
-        "google ai ブラックフライデー",
-        "google ai プラン"
+        "google ai プラン",
+        "google ai ブラックフライデー"
       ],
       "title_optimization_opportunities": [
         {
@@ -1183,6 +1185,13 @@
           ]
         },
         {
+          "query": "google ai plus",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "plus"
+          ]
+        },
+        {
           "query": "google ai pro ブラック フライデー",
           "intent": "metric_cost_spec",
           "missing_in_body": [
@@ -1191,10 +1200,10 @@
           ]
         },
         {
-          "query": "google ai plus",
+          "query": "google ai プラン",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "plus"
+            "プラン"
           ]
         },
         {
@@ -1202,13 +1211,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "ブラックフライデー"
-          ]
-        },
-        {
-          "query": "google ai プラン",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "プラン"
           ]
         }
       ]
@@ -1764,9 +1766,9 @@
         "weightedrandomsampler pytorch documentation",
         "weightedrandomsampler documentation",
         "weightedrandomsampler example",
+        "weightedrandomsampler replacement",
         "weightedrandomsampler pytorch example",
         "weightedrandomsampler docs",
-        "weightedrandomsampler replacement",
         "weightedrandomsampler shuffle",
         "weightedrandomsampler torch"
       ],
@@ -2110,17 +2112,9 @@
         "text to sql snowflake",
         "text to sql mcp",
         "text to sql agent",
-        "text to sql ai"
+        "text to sql github"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "text to sql ai",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ai"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "text-to-sql rag",
@@ -2162,6 +2156,13 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "agent"
+          ]
+        },
+        {
+          "query": "text to sql github",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "github"
           ]
         }
       ]
@@ -2417,135 +2418,135 @@
   "zenn_daily_trending": [
     {
       "title": "自分の代わりに動くAgentへ。Claude CodeとCodexで作る自律改善ハーネス",
-      "liked_count": 169,
+      "liked_count": 202,
       "comments_count": 0,
       "url": "https://zenn.dev/nttdata_tech/articles/9562962cc181a1",
       "published_at": "2026-11-19"
     },
     {
-      "title": "おい、 Mutation Test をやれ。テスト品質を、測るために",
-      "liked_count": 465,
-      "comments_count": 1,
-      "url": "https://zenn.dev/mizchi/articles/mutation-test-quality",
-      "published_at": "2026-11-17"
-    },
-    {
-      "title": "毎月6,000 AI Agentsを捌くためにキーボードを捨てた話",
-      "liked_count": 198,
-      "comments_count": 1,
-      "url": "https://zenn.dev/andoshin11/articles/ba68b39ef9a8ce",
-      "published_at": "2026-11-17"
-    },
-    {
-      "title": "相次ぐOSSの脆弱性に、とりあえずクラウドWAF入れるだけでだいぶ違う話+Rootlessコンテナもいいぞ",
-      "liked_count": 84,
+      "title": "著名なRust製OSSをLean 4で形式検証してみたら、めちゃめちゃバグが見つかった話",
+      "liked_count": 81,
       "comments_count": 0,
-      "url": "https://zenn.dev/kusuke/articles/98e178e6824cac",
-      "published_at": "2026-11-19"
+      "url": "https://zenn.dev/koukyosyumei/articles/31c8fcf4da45b7",
+      "published_at": "2026-11-23"
     },
     {
       "title": "寝てる間に自動で動くAIエージェントを誰でも作れる：10分でわかる pstack 実践ガイド",
-      "liked_count": 38,
+      "liked_count": 76,
       "comments_count": 0,
       "url": "https://zenn.dev/canly/articles/ca6875cd79539f",
       "published_at": "2026-11-20"
     },
     {
+      "title": "JSConf JP 2026 公開資料・Xアカウントリンクまとめ",
+      "liked_count": 16,
+      "comments_count": 0,
+      "url": "https://zenn.dev/h_yoshikawa0724/articles/2026-11-23-jsconf-jp-2026",
+      "published_at": "2026-11-23"
+    },
+    {
       "title": "Orca Botsが良さそう、何ができるのか",
-      "liked_count": 33,
+      "liked_count": 50,
       "comments_count": 0,
       "url": "https://zenn.dev/kg_motors_mibot/articles/orca-bot-intro",
       "published_at": "2026-11-22"
     },
     {
+      "title": "相次ぐOSSの脆弱性に、とりあえずクラウドWAF入れるだけでだいぶ違う話+Rootlessコンテナもいいぞ",
+      "liked_count": 95,
+      "comments_count": 0,
+      "url": "https://zenn.dev/kusuke/articles/98e178e6824cac",
+      "published_at": "2026-11-19"
+    },
+    {
       "title": "【TLA+】AIにテストケースを書かせるな。ルールを書け",
-      "liked_count": 50,
+      "liked_count": 72,
       "comments_count": 0,
       "url": "https://zenn.dev/karamage/articles/73027ee36796dc",
       "published_at": "2026-11-21"
     },
     {
-      "title": "Claude Desktop 開発のすゝめ",
-      "liked_count": 85,
+      "title": "Googleが実践するSTAMP/STPAとは何か？ 私たちのSREにも使えるのか",
+      "liked_count": 7,
       "comments_count": 0,
-      "url": "https://zenn.dev/peoplex_blog/articles/vscode-to-claude-desktop",
-      "published_at": "2026-11-17"
+      "url": "https://zenn.dev/maruloop/articles/7ff108e29741b5",
+      "published_at": "2026-11-23"
     },
     {
-      "title": "ローカルLLM入門",
-      "liked_count": 83,
+      "title": "なぜ今形式検証なのか",
+      "liked_count": 57,
       "comments_count": 0,
-      "url": "https://zenn.dev/port_inc/articles/ff974c7456f4db",
-      "published_at": "2026-11-17"
+      "url": "https://zenn.dev/ncdc/articles/dcec80b0c067b0",
+      "published_at": "2026-11-19"
     },
     {
-      "title": "CSS では書きにくいアニメーションを Web Animations API で書く",
-      "liked_count": 52,
+      "title": "プログラミング教育の功罪",
+      "liked_count": 6,
       "comments_count": 0,
-      "url": "https://zenn.dev/omu_tryangle/articles/b5817393592229",
-      "published_at": "2026-11-16"
+      "url": "https://zenn.dev/nobkz/articles/a8ed5591cd3e7d",
+      "published_at": "2026-11-23"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Toyota, Nissan, and Honda to standardize parts to lower costs",
-      "points": 1189,
-      "num_comments": 677,
-      "url": "https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/"
+      "title": "Nvidia Reinstates Jensen Huang as CEO",
+      "points": 2340,
+      "num_comments": 3323,
+      "url": "https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html"
     },
     {
-      "title": "Perplexity and Intelligence",
-      "points": 474,
-      "num_comments": 329,
-      "url": "https://openai.com/index/perplexity-and-intelligence/"
+      "title": "Ladybird is now in alpha",
+      "points": 1605,
+      "num_comments": 376,
+      "url": "https://ladybird.org/posts/alpha/"
     },
     {
-      "title": "What Happened to Silicon Valley?",
-      "points": 407,
-      "num_comments": 234,
-      "url": "https://www.oreilly.com/radar/what-happened-to-silicon-valley/"
+      "title": "\"Dario is hyping the dangers so OSS models are illegal and he stays in control\"",
+      "points": 1394,
+      "num_comments": 773,
+      "url": "https://twitter.com/ylecun/status/2124550037912920090"
     },
     {
-      "title": "The Birds of GTA 6: A Field Guide to Vice City and Leonida's Wildlife",
-      "points": 339,
-      "num_comments": 151,
-      "url": "https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife"
+      "title": "GLM-5.4: Toward generalized coding with our first loop transformer",
+      "points": 1087,
+      "num_comments": 353,
+      "url": "https://z.ai/blog/glm-5.4"
     },
     {
-      "title": "Show HN: I built a game where you are an LLM's subagent",
-      "points": 269,
-      "num_comments": 62,
-      "url": "https://github.com/gulivan/worker755"
+      "title": "Free alternative TV network built from the Internet Archive's forgotten videos",
+      "points": 964,
+      "num_comments": 169,
+      "url": "https://spelunkr.tv"
     },
     {
-      "title": "Open Social Web Alliance",
-      "points": 219,
-      "num_comments": 213,
-      "url": "https://osw-alliance.net/en/"
+      "title": "Per Arm's request, this site will be discontinued on 4 December 2026 :(",
+      "points": 945,
+      "num_comments": 217,
+      "url": "https://arm.jonpalmisc.com/"
     },
     {
-      "title": "A Beginner's Guide to Local AI with Inkling, Qwen, and Unsloth",
-      "points": 191,
-      "num_comments": 70,
-      "url": "https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth"
+      "title": "Kagi Mail (public beta)",
+      "points": 387,
+      "num_comments": 291,
+      "url": "https://blog.kagi.com/kagi-mail-public-beta"
     },
     {
-      "title": "Progress map for the Lean formalization of Alessandro Masullo's manuscript",
-      "points": 137,
-      "num_comments": 99,
-      "url": "https://claude.ai/artifact/CtQyX8qfYAF822bgHJHHE3"
+      "title": "Stalwart is now a drop-in replacement for Microsoft Exchange",
+      "points": 324,
+      "num_comments": 152,
+      "url": "https://stalw.art/blog/microsoft-exchange-replacement/"
     },
     {
-      "title": "A miniature San Francisco with live buses, planes and boats",
-      "points": 132,
-      "num_comments": 55,
-      "url": "https://smallsf.com/"
+      "title": "Spacecraft reaches Mercury on second-ever mission to enter its orbit",
+      "points": 322,
+      "num_comments": 106,
+      "url": "https://www.theguardian.com/science/2026/nov/20/spacecraft-mercury-second-ever-mission-orbit-bepicolombo"
     },
     {
-      "title": "I joined the NTP Pool, but not with my Stratum 1 Pi",
-      "points": 125,
-      "num_comments": 36,
-      "url": "https://www.jeffgeerling.com/blog/2026/i-joined-the-ntp-pool/"
+      "title": "VP ≠ VNP over Every Field",
+      "points": 300,
+      "num_comments": 258,
+      "url": "https://github.com/anthropics/formal-math/tree/main/vp-vnp"
     }
   ]
 }

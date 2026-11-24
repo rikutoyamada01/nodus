@@ -1,9 +1,9 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-11-23T01:24:27.752448",
+  "mined_at": "2026-11-24T05:08:23.682167",
   "status": "ok",
-  "total_quantitative_hits": 3,
+  "total_quantitative_hits": 2,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
@@ -17,19 +17,6 @@
         "90 GB",
         "96 GB",
         "199.98 CU"
-      ]
-    },
-    {
-      "source": "GitHub",
-      "title": "cnc-chuck-load: contact-guided chuck loading with exact CPU replay",
-      "url": "https://github.com/ZIWU-AI/robotics-bench/pull/5",
-      "created_at": "2026-11-17",
-      "measurement_count": 4,
-      "extracted_numbers": [
-        "4dba",
-        "5 hours",
-        "9.1 min",
-        "12.4 min"
       ]
     },
     {

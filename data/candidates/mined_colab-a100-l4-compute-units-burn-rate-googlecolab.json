@@ -1,11 +1,33 @@
 {
   "query": "Colab A100 L4 compute units burn rate",
   "subreddit": "GoogleColab",
-  "mined_at": "2026-11-23T01:24:26.689481",
+  "mined_at": "2026-11-24T05:08:22.462654",
   "status": "ok",
-  "total_quantitative_hits": 0,
+  "total_quantitative_hits": 1,
   "reddit_findings": [],
   "hn_findings": [],
-  "github_findings": [],
+  "github_findings": [
+    {
+      "source": "GitHub",
+      "title": "feat: Inkling 2 Mini Code and Security Post-Training",
+      "url": "https://github.com/akorite/inkling-2-mini-abliterated-and-post-training/issues/1",
+      "created_at": "2026-11-23",
+      "measurement_count": 12,
+      "extracted_numbers": [
+        "80 GB",
+        "20 GB",
+        "96 GB",
+        "80GB",
+        "40 GB",
+        "52.8 GB",
+        "24 GB",
+        "43 GB",
+        "53 GB",
+        "105 GB",
+        "105.6 GB",
+        "5 GB"
+      ]
+    }
+  ],
   "errors": []
 }
