@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T05:08:41.221218",
+  "generated_at": "2026-11-25T03:56:58.837660",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -1050,6 +1050,7 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini api",
+        "gemini api cli",
         "gemini api key",
         "gemini apiキー",
         "gemini api 料金",
@@ -1057,8 +1058,7 @@
         "gemini api 無料",
         "gemini api 無料枠 制限",
         "gemini apiキー 取得方法",
-        "gemini api key 無料",
-        "gemini api モデル"
+        "gemini api key 無料"
       ],
       "title_optimization_opportunities": [
         {
@@ -1067,16 +1067,16 @@
           "missing_in_title": [
             "キー"
           ]
-        },
-        {
-          "query": "gemini api モデル",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "モデル"
-          ]
         }
       ],
       "uncovered_content_gaps": [
+        {
+          "query": "gemini api cli",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "cli"
+          ]
+        },
         {
           "query": "gemini api key",
           "intent": "metric_cost_spec",
@@ -1148,13 +1148,13 @@
       },
       "total_suggestions": 10,
       "top_suggestions": [
-        "google ai pro",
         "google ai",
+        "google ai pro",
         "google ai studio",
-        "google ai pro 半額キャンペーン",
+        "google ai pro 半額 キャンペーン",
         "google ai plus",
-        "google ai pro ブラック フライデー",
         "google ai ultra",
+        "google ai pro ブラック フライデー",
         "google aiモード",
         "google ai プラン",
         "google ai ブラックフライデー"
@@ -1177,7 +1177,7 @@
       ],
       "uncovered_content_gaps": [
         {
-          "query": "google ai pro 半額キャンペーン",
+          "query": "google ai pro 半額 キャンペーン",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "半額",
@@ -2417,136 +2417,136 @@
   ],
   "zenn_daily_trending": [
     {
-      "title": "自分の代わりに動くAgentへ。Claude CodeとCodexで作る自律改善ハーネス",
-      "liked_count": 202,
-      "comments_count": 0,
-      "url": "https://zenn.dev/nttdata_tech/articles/9562962cc181a1",
-      "published_at": "2026-11-19"
-    },
-    {
       "title": "著名なRust製OSSをLean 4で形式検証してみたら、めちゃめちゃバグが見つかった話",
-      "liked_count": 81,
+      "liked_count": 133,
       "comments_count": 0,
       "url": "https://zenn.dev/koukyosyumei/articles/31c8fcf4da45b7",
       "published_at": "2026-11-23"
     },
     {
-      "title": "寝てる間に自動で動くAIエージェントを誰でも作れる：10分でわかる pstack 実践ガイド",
-      "liked_count": 76,
+      "title": "自分の代わりに動くAgentへ。Claude CodeとCodexで作る自律改善ハーネス",
+      "liked_count": 224,
       "comments_count": 0,
-      "url": "https://zenn.dev/canly/articles/ca6875cd79539f",
-      "published_at": "2026-11-20"
+      "url": "https://zenn.dev/nttdata_tech/articles/9562962cc181a1",
+      "published_at": "2026-11-19"
+    },
+    {
+      "title": "Claude Code の /ship を図解する",
+      "liked_count": 18,
+      "comments_count": 0,
+      "url": "https://zenn.dev/peoplex_blog/articles/claude-code-ship",
+      "published_at": "2026-11-24"
     },
     {
       "title": "JSConf JP 2026 公開資料・Xアカウントリンクまとめ",
-      "liked_count": 16,
+      "liked_count": 29,
       "comments_count": 0,
       "url": "https://zenn.dev/h_yoshikawa0724/articles/2026-11-23-jsconf-jp-2026",
       "published_at": "2026-11-23"
     },
     {
-      "title": "Orca Botsが良さそう、何ができるのか",
-      "liked_count": 50,
+      "title": "Claude Code を5〜8個並べても迷わないように、自分用のダッシュボードをバイブコーディングで作った",
+      "liked_count": 46,
       "comments_count": 0,
-      "url": "https://zenn.dev/kg_motors_mibot/articles/orca-bot-intro",
-      "published_at": "2026-11-22"
+      "url": "https://zenn.dev/nexta_/articles/a3ff76a9f98f1c",
+      "published_at": "2026-11-24"
     },
     {
-      "title": "相次ぐOSSの脆弱性に、とりあえずクラウドWAF入れるだけでだいぶ違う話+Rootlessコンテナもいいぞ",
-      "liked_count": 95,
+      "title": "寝てる間に自動で動くAIエージェントを誰でも作れる：10分でわかる pstack 実践ガイド",
+      "liked_count": 87,
       "comments_count": 0,
-      "url": "https://zenn.dev/kusuke/articles/98e178e6824cac",
-      "published_at": "2026-11-19"
-    },
-    {
-      "title": "【TLA+】AIにテストケースを書かせるな。ルールを書け",
-      "liked_count": 72,
-      "comments_count": 0,
-      "url": "https://zenn.dev/karamage/articles/73027ee36796dc",
-      "published_at": "2026-11-21"
-    },
-    {
-      "title": "Googleが実践するSTAMP/STPAとは何か？ 私たちのSREにも使えるのか",
-      "liked_count": 7,
-      "comments_count": 0,
-      "url": "https://zenn.dev/maruloop/articles/7ff108e29741b5",
-      "published_at": "2026-11-23"
-    },
-    {
-      "title": "なぜ今形式検証なのか",
-      "liked_count": 57,
-      "comments_count": 0,
-      "url": "https://zenn.dev/ncdc/articles/dcec80b0c067b0",
-      "published_at": "2026-11-19"
+      "url": "https://zenn.dev/canly/articles/ca6875cd79539f",
+      "published_at": "2026-11-20"
     },
     {
       "title": "プログラミング教育の功罪",
-      "liked_count": 6,
+      "liked_count": 22,
       "comments_count": 0,
       "url": "https://zenn.dev/nobkz/articles/a8ed5591cd3e7d",
       "published_at": "2026-11-23"
+    },
+    {
+      "title": "Copilot Studioのエージェント開発をClaude Codeにどこまで任せられるか試した",
+      "liked_count": 8,
+      "comments_count": 0,
+      "url": "https://zenn.dev/upgradetech/articles/a9a1637d3071c1",
+      "published_at": "2026-11-24"
+    },
+    {
+      "title": "Gemini 4 Neon を API で叩いて Claude Code・Codex CLI と比べた：65万トークンの超長文、費用、失敗",
+      "liked_count": 2,
+      "comments_count": 0,
+      "url": "https://zenn.dev/canly/articles/40e773759da8f8",
+      "published_at": "2026-11-24"
+    },
+    {
+      "title": "エンジニア20人の組織を、デザイナー1人と AI で支える仕組み",
+      "liked_count": 4,
+      "comments_count": 0,
+      "url": "https://zenn.dev/rimo/articles/c25919207b1cde",
+      "published_at": "2026-11-24"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Nvidia Reinstates Jensen Huang as CEO",
-      "points": 2340,
-      "num_comments": 3323,
-      "url": "https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html"
+      "title": "The Spray Bottle",
+      "points": 397,
+      "num_comments": 104,
+      "url": "https://mechanical-pencil.com/products/spray-bottle"
     },
     {
-      "title": "Ladybird is now in alpha",
-      "points": 1605,
-      "num_comments": 376,
-      "url": "https://ladybird.org/posts/alpha/"
+      "title": "Ternary Bonsai 2.5 27B",
+      "points": 371,
+      "num_comments": 127,
+      "url": "https://prismml.com/news/bonsai-2-5-27b"
     },
     {
-      "title": "\"Dario is hyping the dangers so OSS models are illegal and he stays in control\"",
-      "points": 1394,
-      "num_comments": 773,
-      "url": "https://twitter.com/ylecun/status/2124550037912920090"
+      "title": "Quad9 pulled their DNS service from France",
+      "points": 368,
+      "num_comments": 220,
+      "url": "https://quad9.net/news/blog/quad9-service-deactivation-in-france/"
     },
     {
-      "title": "GLM-5.4: Toward generalized coding with our first loop transformer",
-      "points": 1087,
-      "num_comments": 353,
-      "url": "https://z.ai/blog/glm-5.4"
+      "title": "GTA 6 Running on Windows",
+      "points": 317,
+      "num_comments": 408,
+      "url": "https://twitter.com/raul_bs3/status/2125213756238291075"
     },
     {
-      "title": "Free alternative TV network built from the Internet Archive's forgotten videos",
-      "points": 964,
-      "num_comments": 169,
-      "url": "https://spelunkr.tv"
+      "title": "Jetty Pro",
+      "points": 286,
+      "num_comments": 128,
+      "url": "http://hypercritical.co/2026/11/23/jetty-pro"
     },
     {
-      "title": "Per Arm's request, this site will be discontinued on 4 December 2026 :(",
-      "points": 945,
-      "num_comments": 217,
-      "url": "https://arm.jonpalmisc.com/"
+      "title": "Active intrusion campaign against Check Point security management servers",
+      "points": 271,
+      "num_comments": 139,
+      "url": "https://www.greynoise.io/blog/check-point-security-management-servers-intrusion-campaign"
     },
     {
-      "title": "Kagi Mail (public beta)",
-      "points": 387,
-      "num_comments": 291,
-      "url": "https://blog.kagi.com/kagi-mail-public-beta"
+      "title": "Matrix Multiplication is Θ(n^2.25) [pdf]",
+      "points": 242,
+      "num_comments": 92,
+      "url": "https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf"
     },
     {
-      "title": "Stalwart is now a drop-in replacement for Microsoft Exchange",
-      "points": 324,
-      "num_comments": 152,
-      "url": "https://stalw.art/blog/microsoft-exchange-replacement/"
+      "title": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+      "points": 200,
+      "num_comments": 59,
+      "url": "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities/"
     },
     {
-      "title": "Spacecraft reaches Mercury on second-ever mission to enter its orbit",
-      "points": 322,
-      "num_comments": 106,
-      "url": "https://www.theguardian.com/science/2026/nov/20/spacecraft-mercury-second-ever-mission-orbit-bepicolombo"
+      "title": "A training engine for your local model, using your idle compute",
+      "points": 192,
+      "num_comments": 64,
+      "url": "https://github.com/sous-labs/songe"
     },
     {
-      "title": "VP ≠ VNP over Every Field",
-      "points": 300,
-      "num_comments": 258,
-      "url": "https://github.com/anthropics/formal-math/tree/main/vp-vnp"
+      "title": "Heart attack and stroke risk detectable decades in advance",
+      "points": 182,
+      "num_comments": 88,
+      "url": "https://www.ed.ac.uk/news/heart-attack-and-stroke-risk-detectable-decades-in-advance"
     }
   ]
 }
