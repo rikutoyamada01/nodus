@@ -190,5 +190,29 @@
       "動画生成"
     ],
     "query_impressions": 0
+  },
+  {
+    "date": "2026-11-26",
+    "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
+    "source_mode": "GOOGLE_SUGGEST",
+    "action_type": "MARKET_CONTENT_GAP_CANDIDATE",
+    "trigger": "pos=0.0, source=GOOGLE_SUGGEST",
+    "uncovered_query": "mac ローカルllm 画像生成",
+    "missing_tokens": [
+      "画像生成"
+    ],
+    "query_impressions": 0
+  },
+  {
+    "date": "2026-11-26",
+    "slug": "local-llm-hardware-mac-unified-memory-vs-rtx-gpu-tokens-per-watt",
+    "source_mode": "GOOGLE_SUGGEST",
+    "action_type": "MARKET_CONTENT_GAP_CANDIDATE",
+    "trigger": "pos=0.0, source=GOOGLE_SUGGEST",
+    "uncovered_query": "mac ローカルllm 動画生成",
+    "missing_tokens": [
+      "動画生成"
+    ],
+    "query_impressions": 0
   }
 ]

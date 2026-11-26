@@ -1,9 +1,9 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-11-25T03:56:47.730416",
+  "mined_at": "2026-11-26T03:22:39.358471",
   "status": "ok",
-  "total_quantitative_hits": 2,
+  "total_quantitative_hits": 3,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
@@ -32,6 +32,27 @@
         "256GB",
         "100GB",
         "20 tok/s"
+      ]
+    },
+    {
+      "source": "GitHub",
+      "title": "chore(deps): bump oxsecurity/megalinter from 8 to 10",
+      "url": "https://github.com/chirag127/multisearchx/pull/5",
+      "created_at": "2026-08-12",
+      "measurement_count": 12,
+      "extracted_numbers": [
+        "4.55 GB",
+        "4.13 GB",
+        "1.61 GB",
+        "1.35 GB",
+        "2.52 GB",
+        "2.24 GB",
+        "1.47 GB",
+        "1.21 GB",
+        "2.23 GB",
+        "1.86 GB",
+        "2.25 GB",
+        "1.88 GB"
       ]
     }
   ],
