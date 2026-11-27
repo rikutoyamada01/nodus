@@ -1,9 +1,9 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-11-26T03:22:39.358471",
+  "mined_at": "2026-11-27T03:29:24.216656",
   "status": "ok",
-  "total_quantitative_hits": 3,
+  "total_quantitative_hits": 5,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
@@ -32,6 +32,42 @@
         "256GB",
         "100GB",
         "20 tok/s"
+      ]
+    },
+    {
+      "source": "GitHub",
+      "title": "feat(catalog): ERNIE 5.5 Flash Preview on 2x RTX PRO 6000 (experimental, 300K context; image not yet in a registry)",
+      "url": "https://github.com/onprem-ai/deployment-catalog/pull/40",
+      "created_at": "2026-11-27",
+      "measurement_count": 6,
+      "extracted_numbers": [
+        "300,000 tokens",
+        "165.9 GB",
+        "301.9 GB",
+        "599.6 GB",
+        "1,213,175 tokens",
+        "1,048,576 tokens"
+      ]
+    },
+    {
+      "source": "GitHub",
+      "title": "chore(deps): bump oxsecurity/megalinter from 8 to 10",
+      "url": "https://github.com/chirag127/OmniDistribute/pull/5",
+      "created_at": "2026-08-12",
+      "measurement_count": 12,
+      "extracted_numbers": [
+        "4.55 GB",
+        "4.13 GB",
+        "1.61 GB",
+        "1.35 GB",
+        "2.52 GB",
+        "2.24 GB",
+        "1.47 GB",
+        "1.21 GB",
+        "2.23 GB",
+        "1.86 GB",
+        "2.25 GB",
+        "1.88 GB"
       ]
     },
     {
