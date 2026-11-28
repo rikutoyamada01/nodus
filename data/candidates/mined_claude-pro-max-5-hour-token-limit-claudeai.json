@@ -1,9 +1,9 @@
 {
   "query": "Claude Pro Max 5 hour token limit",
   "subreddit": "ClaudeAI",
-  "mined_at": "2026-11-27T03:29:24.216656",
+  "mined_at": "2026-11-28T03:05:34.078900",
   "status": "ok",
-  "total_quantitative_hits": 5,
+  "total_quantitative_hits": 4,
   "reddit_findings": [],
   "hn_findings": [],
   "github_findings": [
@@ -32,21 +32,6 @@
         "256GB",
         "100GB",
         "20 tok/s"
-      ]
-    },
-    {
-      "source": "GitHub",
-      "title": "feat(catalog): ERNIE 5.5 Flash Preview on 2x RTX PRO 6000 (experimental, 300K context; image not yet in a registry)",
-      "url": "https://github.com/onprem-ai/deployment-catalog/pull/40",
-      "created_at": "2026-11-27",
-      "measurement_count": 6,
-      "extracted_numbers": [
-        "300,000 tokens",
-        "165.9 GB",
-        "301.9 GB",
-        "599.6 GB",
-        "1,213,175 tokens",
-        "1,048,576 tokens"
       ]
     },
     {

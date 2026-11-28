@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T03:29:33.347316",
+  "generated_at": "2026-11-28T03:05:47.729004",
   "google_suggest_analysis": [
     {
       "slug": "100w-140w-gan-charger-thermal-throttling-real-world-tests",
@@ -1013,13 +1013,13 @@
         "gemini 4 argon",
         "gemini 4",
         "gemini 4 neon",
-        "gemini 4 hydrogen",
         "gemini 4 carbon",
         "gemini 4 argon 料金",
         "gemini 4 argon いつから",
         "gemini 4 いつ",
         "gemini 4 pro",
-        "gemini 4.0"
+        "gemini 4.0",
+        "gemini 4 argon 性能"
       ],
       "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
@@ -1028,13 +1028,6 @@
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "neon"
-          ]
-        },
-        {
-          "query": "gemini 4 hydrogen",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "hydrogen"
           ]
         },
         {
@@ -1056,8 +1049,8 @@
       "total_suggestions": 10,
       "top_suggestions": [
         "gemini api",
-        "gemini api cli",
         "gemini api key",
+        "gemini api cli",
         "gemini apiキー",
         "gemini api 料金",
         "gemini api 無料枠",
@@ -1084,17 +1077,17 @@
       ],
       "uncovered_content_gaps": [
         {
-          "query": "gemini api cli",
-          "intent": "metric_cost_spec",
-          "missing_in_body": [
-            "cli"
-          ]
-        },
-        {
           "query": "gemini api key",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "key"
+          ]
+        },
+        {
+          "query": "gemini api cli",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "cli"
           ]
         },
         {
@@ -1156,34 +1149,27 @@
       "top_suggestions": [
         "google ai pro",
         "google ai",
-        "google ai studio",
         "google ai pro 半額キャンペーン",
+        "google ai studio",
+        "google ai pro 半額 キャンペーン 新規",
         "google ai plus",
         "google ai ブラックフライデー",
         "google ai pro ブラック フライデー",
-        "google aiモード",
-        "google ai プラン",
-        "google ai ultra"
+        "google ai pro キャンペーン",
+        "google ai pro black friday"
       ],
-      "title_optimization_opportunities": [
-        {
-          "query": "google aiモード",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "モード"
-          ]
-        },
-        {
-          "query": "google ai ultra",
-          "intent": "metric_cost_spec",
-          "missing_in_title": [
-            "ultra"
-          ]
-        }
-      ],
+      "title_optimization_opportunities": [],
       "uncovered_content_gaps": [
         {
           "query": "google ai pro 半額キャンペーン",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "半額",
+            "キャンペーン"
+          ]
+        },
+        {
+          "query": "google ai pro 半額 キャンペーン 新規",
           "intent": "metric_cost_spec",
           "missing_in_body": [
             "半額",
@@ -1213,10 +1199,18 @@
           ]
         },
         {
-          "query": "google ai プラン",
+          "query": "google ai pro キャンペーン",
           "intent": "metric_cost_spec",
           "missing_in_body": [
-            "プラン"
+            "キャンペーン"
+          ]
+        },
+        {
+          "query": "google ai pro black friday",
+          "intent": "metric_cost_spec",
+          "missing_in_body": [
+            "black",
+            "friday"
           ]
         }
       ]
@@ -2487,135 +2481,135 @@
   "zenn_daily_trending": [
     {
       "title": "著名なRust製OSSをLean 4で形式検証してみたら、めちゃめちゃバグが見つかった話",
-      "liked_count": 168,
+      "liked_count": 179,
       "comments_count": 0,
       "url": "https://zenn.dev/koukyosyumei/articles/31c8fcf4da45b7",
       "published_at": "2026-11-23"
     },
     {
+      "title": "迷惑メール対策をしているのに、なぜ詐欺メールは届くのか",
+      "liked_count": 50,
+      "comments_count": 1,
+      "url": "https://zenn.dev/akagumi/articles/catch-all-phishing-invisible-chars",
+      "published_at": "2026-11-26"
+    },
+    {
+      "title": "GitHub ActionsからPATもGitHub App Private Keyも駆逐する",
+      "liked_count": 22,
+      "comments_count": 0,
+      "url": "https://zenn.dev/tmknom/articles/github-app-token-exchange-system",
+      "published_at": "2026-11-27"
+    },
+    {
+      "title": "自宅PCを格安ファイルサーバーとして構築してみた",
+      "liked_count": 19,
+      "comments_count": 0,
+      "url": "https://zenn.dev/nextbeat/articles/7c820845a91d7d",
+      "published_at": "2026-11-27"
+    },
+    {
+      "title": "Claude Code を5〜8個並べても迷わないように、自分用のダッシュボードをバイブコーディングで作った",
+      "liked_count": 101,
+      "comments_count": 2,
+      "url": "https://zenn.dev/nexta_/articles/a3ff76a9f98f1c",
+      "published_at": "2026-11-24"
+    },
+    {
       "title": "アウトプットの「質」ってじゃあなんなんだよ",
-      "liked_count": 57,
+      "liked_count": 62,
       "comments_count": 0,
       "url": "https://zenn.dev/watany/articles/1efe3adea67dd5",
       "published_at": "2026-11-25"
     },
     {
       "title": "【自動化】Muse のサイドチャットへ Webhook を届ける MuseKnock の仕組み",
-      "liked_count": 32,
+      "liked_count": 36,
       "comments_count": 1,
       "url": "https://zenn.dev/codehex/articles/33bc6ee330b880",
       "published_at": "2026-11-25"
     },
     {
-      "title": "Claude Code を5〜8個並べても迷わないように、自分用のダッシュボードをバイブコーディングで作った",
-      "liked_count": 95,
-      "comments_count": 2,
-      "url": "https://zenn.dev/nexta_/articles/a3ff76a9f98f1c",
-      "published_at": "2026-11-24"
-    },
-    {
-      "title": "マーダーミステリーのシナリオを形式手法で検証しようとしたら、バグと曖昧さが見つかった",
-      "liked_count": 49,
-      "comments_count": 1,
-      "url": "https://zenn.dev/henteko/articles/ed8d1458246d7a",
-      "published_at": "2026-11-25"
-    },
-    {
-      "title": "迷惑メール対策をしているのに、なぜ詐欺メールは届くのか",
-      "liked_count": 19,
-      "comments_count": 0,
-      "url": "https://zenn.dev/akagumi/articles/catch-all-phishing-invisible-chars",
-      "published_at": "2026-11-26"
-    },
-    {
-      "title": "自動運転の予測軌跡の可視化動画を誰でも高速に作れるようにする",
-      "liked_count": 8,
-      "comments_count": 0,
-      "url": "https://zenn.dev/turing_motors/articles/cbf9872ca90166",
-      "published_at": "2026-11-26"
-    },
-    {
-      "title": "結局「オントロジー」って何なのさ 〜概念と良さを4つのレイヤーで整理する〜",
-      "liked_count": 27,
-      "comments_count": 0,
-      "url": "https://zenn.dev/algomatic/articles/ece749a7e3cb24",
-      "published_at": "2026-11-25"
-    },
-    {
-      "title": "Claude Code のセキュリティ、2026年11月時点のベストプラクティス（サンドボックス・権限・MCP）",
-      "liked_count": 17,
-      "comments_count": 0,
-      "url": "https://zenn.dev/happy_elements/articles/27e14ff6754044",
-      "published_at": "2026-11-25"
-    },
-    {
       "title": "作業を止めずに進めるClaude Codeの/btw・/fork・/rewindなどの使い分け",
-      "liked_count": 17,
+      "liked_count": 31,
       "comments_count": 0,
       "url": "https://zenn.dev/nextbeat/articles/b0ccca979da06b",
       "published_at": "2026-11-26"
+    },
+    {
+      "title": "Leanで安全制約を書くと、ハザード候補がビルドエラーとして見つかる",
+      "liked_count": 5,
+      "comments_count": 0,
+      "url": "https://zenn.dev/kokeshim0chi/articles/lean-safety-constraint-build-error",
+      "published_at": "2026-11-27"
+    },
+    {
+      "title": "禁止しても止まらないClaudeの「欲」を飼いならしてみる",
+      "liked_count": 8,
+      "comments_count": 0,
+      "url": "https://zenn.dev/rescuenow/articles/9d1e89a941f4f1",
+      "published_at": "2026-11-27"
     }
   ],
   "hackernews_frontpage": [
     {
-      "title": "Holy shit holy shit holy shit holy shit: The magnitude of what’s now happening",
-      "points": 2001,
-      "num_comments": 1821,
-      "url": "https://scottaaronson.blog/?p=10379"
+      "title": "Credit card skimming scripts using WebRTC found on popular shopping sites",
+      "points": 445,
+      "num_comments": 232,
+      "url": "https://www.infohawk.com/news/2026-11-27-black-friday-webrtc-skimmer"
     },
     {
-      "title": "Tell HN: Happy Thanksgiving",
-      "points": 633,
-      "num_comments": 138,
-      "url": "https://news.ycombinator.com/item?id=50655664"
-    },
-    {
-      "title": "Intel One Mono font (2023)",
-      "points": 480,
-      "num_comments": 243,
-      "url": "https://github.com/intel/intel-one-mono"
-    },
-    {
-      "title": "Nextcloud Office Desktop app",
+      "title": "Michael Nielsen took down his book on neural nets",
       "points": 406,
-      "num_comments": 206,
-      "url": "https://nextcloud.com/blog/euro-office-comes-to-your-desktop-with-the-nextcloud-office-desktop-app/"
+      "num_comments": 267,
+      "url": "https://neuralnetworksanddeeplearning.com/"
     },
     {
-      "title": "AI made self-hosting fun again",
-      "points": 386,
-      "num_comments": 211,
-      "url": "https://janlukas.blog/posts/ai-self-hosting"
-    },
-    {
-      "title": "AMD-specific fork of llama.cpp",
-      "points": 300,
-      "num_comments": 73,
-      "url": "https://devnull.land/amd-specific-llama-cpp"
-    },
-    {
-      "title": "OpenAI may be in cost control mode",
-      "points": 295,
-      "num_comments": 296,
-      "url": "https://micjm.com/blog/openai-is-in-cost-control-mode/"
-    },
-    {
-      "title": "YouTube Ad Punisher – Auto-reloads YouTube pages when an ad plays",
-      "points": 290,
-      "num_comments": 374,
-      "url": "https://github.com/antonpictures/youtube-punisher"
-    },
-    {
-      "title": "Kamil Khan Mumtaz: Pakistani architect, admired at home, almost invisible abroad",
-      "points": 274,
-      "num_comments": 52,
-      "url": "https://worksinprogress.co/issue/the-greatest-architect-youve-never-heard-of-is-in-pakistan/"
-    },
-    {
-      "title": "Google Will Make AI Agents Use Its MCP Servers. The Gmail One Can't Send Email",
-      "points": 265,
+      "title": "GPT 6.2 Astra Solves a Historical Mystery",
+      "points": 342,
       "num_comments": 222,
-      "url": "https://techstackups.com/articles/google-workspace-ai-agents-mcp/"
+      "url": "https://generativehistory.substack.com/p/gpt-62-astra-solves-a-historical"
+    },
+    {
+      "title": "Show HN: bouncemarket – a live prediction market game for a bouncing ball",
+      "points": 333,
+      "num_comments": 115,
+      "url": "https://bouncemarket.minhanhday.com/"
+    },
+    {
+      "title": "States sue SpaceX to stop Grok from generating child sex images, revenge porn",
+      "points": 286,
+      "num_comments": 158,
+      "url": "https://www.oag.state.va.us/media-center/news-releases/jay-jones/3162-attorneys-general-jones-and-rayfield-file-suit-against-spacex-parent-company-of-x-xai-and-grok-over-creation-and-promotion-of-child-exploitation-and-non-consensual-images-on-platform"
+    },
+    {
+      "title": "Convex skills send the user's app idea to a remote server without telling them",
+      "points": 240,
+      "num_comments": 76,
+      "url": "https://github.com/convex/convex-backend-skill/issues/64"
+    },
+    {
+      "title": "False computer-checked proofs",
+      "points": 192,
+      "num_comments": 76,
+      "url": "https://cr.yp.to/proofs/falseccp.html"
+    },
+    {
+      "title": "First images of the impact of DART asteroid deflection experiment",
+      "points": 188,
+      "num_comments": 57,
+      "url": "https://arstechnica.com/space/2026/11/europes-hera-mission-returns-to-the-chaotic-scene-of-a-cosmic-smashup/"
+    },
+    {
+      "title": "Google's DeepCrossAttention achieves comparable model quality up to 3x faster",
+      "points": 153,
+      "num_comments": 55,
+      "url": "https://research.google/blog/supercharging-transformer-residual-connections/"
+    },
+    {
+      "title": "Citroën Hydraulic System",
+      "points": 142,
+      "num_comments": 50,
+      "url": "https://www.citroenet.org.uk/miscellaneous/hydraulics/hydraulics-1.html"
     }
   ]
 }
